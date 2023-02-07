@@ -22,7 +22,7 @@
 	"dataBaseName":"acmeshop",
 	"executeSQLs":[
 		"CREATE DATABASE IF NOT EXISTS acmeshop;",
-		"USE springboot_demo;",
+		"USE acmeshop;",
 		"CREATE TABLE IF NOT EXISTS `Counters` (`id` int(11) NOT NULL AUTO_INCREMENT, `count` int(11) NOT NULL DEFAULT 1, `createdAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP, `updatedAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP, PRIMARY KEY (`id`)) ENGINE = InnoDB DEFAULT CHARSET = utf8;"
 	]                                               
 }
