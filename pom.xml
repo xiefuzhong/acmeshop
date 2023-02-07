@@ -8,11 +8,11 @@
         <version>2.5.5</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>com.tencent</groupId>
-    <artifactId>springboot-wxcloudrun</artifactId>
+    <groupId>com.acme</groupId>
+    <artifactId>acme-mall</artifactId>
     <version>1.0</version>
-    <name>springboot-wxcloudrun</name>
-    <description>Demo project for Spring Boot</description>
+    <name>acme-mall</name>
+    <description>阿可美微信小程序商城</description>
     <properties>
         <java.version>1.8</java.version>
     </properties>
