@@ -4,7 +4,7 @@ import com.acme.acmemall.model.Counter;
 
 import java.util.Optional;
 
-public interface CounterService {
+public interface ICounterService {
 
   Optional<Counter> getCounter(Integer id);
 

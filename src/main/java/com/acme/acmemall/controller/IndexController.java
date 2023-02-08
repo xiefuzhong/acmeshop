@@ -1,14 +1,13 @@
 package com.acme.acmemall.controller;
 
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
- * index控制器
+ * 首页入口
  */
-@Controller
-
-public class IndexController {
+@RestController
+public class IndexController extends ApiBase {
 
   /**
    * 主页页面

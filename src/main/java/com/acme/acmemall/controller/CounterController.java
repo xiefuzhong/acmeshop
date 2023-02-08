@@ -1,11 +1,11 @@
 package com.acme.acmemall.controller;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import com.acme.acmemall.config.ApiResponse;
 import com.acme.acmemall.dto.CounterRequest;
 import com.acme.acmemall.model.Counter;
-import com.acme.acmemall.service.CounterService;
+import com.acme.acmemall.service.ICounterService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,10 +21,10 @@ import java.util.Optional;
 
 public class CounterController {
 
-  final CounterService counterService;
+  final ICounterService counterService;
   final Logger logger;
 
-  public CounterController(@Autowired CounterService counterService) {
+  public CounterController(@Autowired ICounterService counterService) {
     this.counterService = counterService;
     this.logger = LoggerFactory.getLogger(CounterController.class);
   }
