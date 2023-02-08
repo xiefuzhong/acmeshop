@@ -26,12 +26,12 @@ public class GoodsController extends ApiBase {
     @IgnoreAuth
     @GetMapping(value = "count")
     public Object count() {
-        Map<String, Object> resultObj = new HashMap();
+        Map<String, Object> result = new HashMap();
         Map param = new HashMap();
         param.put("is_delete", 0);
         param.put("is_on_sale", 1);
         Integer goodsCount = goodsService.queryTotal(param);
-        resultObj.put("goodsCount", goodsCount);
-        return toResponsSuccess(resultObj);
+        result.put("goodsCount", goodsCount);
+        return toResponsSuccess(result);
     }
 }
