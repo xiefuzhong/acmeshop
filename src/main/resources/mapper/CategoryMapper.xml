@@ -12,7 +12,7 @@
         <result property="parentId" column="parent_id"/>
         <result property="sortOrder" column="sort_order"/>
         <result property="showIndex" column="show_index"/>
-        <result property="showflag" column="is_show"/>
+        <result property="showFlag" column="is_show"/>
         <result property="bannerUrl" column="banner_url"/>
         <result property="iconUrl" column="icon_url"/>
         <result property="imgUrl" column="img_url"/>
