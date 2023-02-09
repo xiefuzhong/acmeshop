@@ -20,7 +20,7 @@ public class AdVo implements Serializable {
     //主键
     private Integer id;
     //广告位置Id
-    private Integer ad_position_id;
+    private Integer adPositionId;
     //形式
     private Integer mediaType;
     //广告名称
