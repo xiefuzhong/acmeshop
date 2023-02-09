@@ -1,5 +1,8 @@
 package com.acme.acmemall.service;
 
+import com.acme.acmemall.model.GoodsVo;
+
+import java.util.List;
 import java.util.Map;
 
 public interface IGoodsService {
@@ -11,4 +14,6 @@ public interface IGoodsService {
      * @return 数量
      */
     int queryTotal(Map<String, Object> map);
+
+    List<GoodsVo> queryGoodsList(Map<String, Object> map);
 }
