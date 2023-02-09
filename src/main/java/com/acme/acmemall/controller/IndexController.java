@@ -1,14 +1,8 @@
 package com.acme.acmemall.controller;
 
 import com.acme.acmemall.annotation.IgnoreAuth;
-import com.acme.acmemall.model.AdVo;
-import com.acme.acmemall.model.CategoryVo;
-import com.acme.acmemall.model.ChannelVo;
-import com.acme.acmemall.model.GoodsVo;
-import com.acme.acmemall.service.IAdService;
-import com.acme.acmemall.service.ICategoryService;
-import com.acme.acmemall.service.IChannelService;
-import com.acme.acmemall.service.IGoodsService;
+import com.acme.acmemall.model.*;
+import com.acme.acmemall.service.*;
 import com.github.pagehelper.PageHelper;
 import com.google.common.collect.Maps;
 import io.swagger.annotations.Api;
@@ -43,6 +37,9 @@ public class IndexController extends ApiBase {
 
     @Autowired
     private IGoodsService goodsService;
+
+    @Autowired
+    private ITopicService topicService;
 
     /**
      * 主页页面
@@ -131,10 +128,24 @@ public class IndexController extends ApiBase {
         param.put("is_new", 1);
         param.put("is_delete", 0);
         param.put("is_on_sale", 1);
-//        param.put("fields", "id, name, list_pic_url, retail_price");
+        // 自定义查询返回字段
+        // param.put("fields", "id, name, list_pic_url, retail_price");
         PageHelper.startPage(0, 4, false);
         List<GoodsVo> newGoods = goodsService.queryGoodsList(param);
         resultObj.put("newGoodsList", newGoods);
+        return toResponsSuccess(resultObj);
+    }
+
+    @ApiOperation(value = "topic")
+    @IgnoreAuth
+    @GetMapping(value = "topic")
+    public Object topic() {
+        Map<String, Object> resultObj = Maps.newHashMap();
+        Map<String, Object> param = Maps.newHashMap();
+        param.put("offset", 0);
+        param.put("limit", 3);
+        List<TopicVo> topicList = topicService.queryTopicList(param);
+        resultObj.put("topicList", topicList);
         return toResponsSuccess(resultObj);
     }
 }
