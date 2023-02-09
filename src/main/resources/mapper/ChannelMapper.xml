@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.acme.acmemall.dao.ChannelMapper">
+
+    <!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.acme.acmemall.model.ChannelVo" id="channelMap">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="url" column="url"/>
+        <result property="iconUrl" column="icon_url"/>
+        <result property="sortOrder" column="sort_order"/>
+    </resultMap>
+
+    <select id="queryObject" resultMap="channelMap">
+		select * from t_acme_mall_channel where id = #{value}
+	</select>
+
+    <select id="queryList" resultMap="channelMap">
+        select * from t_acme_mall_channel
+        <if test="ad_position_id != null and ad_position_id != null">
+            and ad_position_id = #{ad_position_id}
+        </if>
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+            <otherwise>
+                order by id desc
+            </otherwise>
+        </choose>
+        <if test="offset != null and limit != null">
+            limit #{offset}, #{limit}
+        </if>
+    </select>
+
+    <select id="queryTotal" resultType="int">
+		select count(*) from t_acme_mall_channel
+	</select>
+
+    <insert id="save" parameterType="com.acme.acmemall.model.ChannelVo" useGeneratedKeys="true" keyProperty="id">
+		insert into t_acme_mall_channel
+		(
+			`name`, 
+			`url`, 
+			`icon_url`, 
+			`sort_order`
+		)
+		values
+		(
+			#{name}, 
+			#{url}, 
+			#{iconUrl},
+			#{sortOrder}
+		)
+	</insert>
+
+    <update id="update" parameterType="com.acme.acmemall.model.ChannelVo">
+        update t_acme_mall_channel
+        <set>
+            <if test="name != null">`name` = #{name},</if>
+            <if test="url != null">`url` = #{url},</if>
+            <if test="iconUrl != null">`icon_url` = #{iconUrl},</if>
+            <if test="sortOrder != null">`sort_order` = #{sortOrder}</if>
+        </set>
+        <where>
+            id = #{id}
+        </where>
+    </update>
+
+    <delete id="delete">
+		delete from t_acme_mall_channel where id = #{value}
+	</delete>
+
+    <delete id="deleteBatch">
+        delete from t_acme_mall_channel where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

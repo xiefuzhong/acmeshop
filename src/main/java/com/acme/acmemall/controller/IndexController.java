@@ -2,7 +2,9 @@ package com.acme.acmemall.controller;
 
 import com.acme.acmemall.annotation.IgnoreAuth;
 import com.acme.acmemall.model.AdVo;
+import com.acme.acmemall.model.ChannelVo;
 import com.acme.acmemall.service.IAdService;
+import com.acme.acmemall.service.IChannelService;
 import com.google.common.collect.Maps;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -26,6 +28,9 @@ public class IndexController extends ApiBase {
   @Autowired
   private IAdService adService;
 
+  @Autowired
+  private IChannelService channelService;
+
   /**
    * 主页页面
    * @return API response html
@@ -41,10 +46,23 @@ public class IndexController extends ApiBase {
   public Object banner() {
     Map<String, Object> resultObj = Maps.newHashMap();
     Map<String, Object> param = Maps.newHashMap();
-    param.put("ad_position_id", 1);
+    param.put("adPositionId", 1);
     List<AdVo> banner = adService.queryAdList(param);
     resultObj.put("banner", banner);
     return toResponsSuccess(resultObj);
+  }
+
+  @ApiOperation(value = "channel")
+  @IgnoreAuth
+  @GetMapping(value = "channel")
+  public Object channel() {
+    Map<String, Object> resultMap = Maps.newHashMap();
+    Map<String, Object> param = Maps.newHashMap();
+    param.put("sidx", "sortOrder ");
+    param.put("order", "asc ");
+    List<ChannelVo> channel = channelService.queryChannelList(param);
+    resultMap.put("channel", channel);
+    return toResponsSuccess(resultMap);
   }
 
 }
