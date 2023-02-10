@@ -136,6 +136,21 @@ public class IndexController extends ApiBase {
         return toResponsSuccess(resultObj);
     }
 
+    @ApiOperation(value = "爆款信息")
+    @IgnoreAuth
+    @GetMapping(value = "hotGoods")
+    public Object hotGoods() {
+        Map<String, Object> resultObj = Maps.newHashMap();
+        Map<String, Object> param = Maps.newHashMap();
+        param.put("is_hot", "1"); // 热门
+        param.put("is_delete", 0);
+        param.put("is_on_sale", 1); // 在售商品
+        PageHelper.startPage(0, 3, false);
+        List<GoodsVo> hotGoods = goodsService.queryGoodsList(param);
+        resultObj.put("hotGoodsList", hotGoods);
+        return toResponsSuccess(resultObj);
+    }
+
     @ApiOperation(value = "topic")
     @IgnoreAuth
     @GetMapping(value = "topic")

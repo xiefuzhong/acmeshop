@@ -114,32 +114,34 @@
             limit #{offset}, #{limit}
         </if>
     </select>
-    
+
     <select id="queryKillList" resultMap="goodsMap">
-        SELECT * FROM t_acme_mall_goods  WHERE is_secKill=2 and start_time &lt; NOW() AND end_time &gt; NOW()  order by ${sidx}  ${order}
+        SELECT * FROM t_acme_mall_goods WHERE is_secKill=2 and start_time &lt; NOW() AND end_time &gt; NOW() order by
+        ${sidx} ${order}
     </select>
 
     <select id="queryKillPage" resultMap="goodsMap">
-    SELECT * FROM t_acme_mall_goods  WHERE is_secKill=#{is_secKill} and start_time &lt; NOW() AND end_time &gt; NOW()  order by ${sidx} ${order}  limit #{offset}, #{limit}
+        SELECT * FROM t_acme_mall_goods WHERE is_secKill=#{is_secKill} and start_time &lt; NOW() AND end_time &gt; NOW()
+        order by ${sidx} ${order} limit #{offset}, #{limit}
     </select>
 
     <select id="queryKillTotal" resultType="int">
-        SELECT count(1) FROM t_acme_mall_goods  WHERE is_secKill=#{is_secKill} and is_delete = 0 and is_on_sale = 1
+        SELECT count(1) FROM t_acme_mall_goods WHERE is_secKill=#{is_secKill} and is_delete = 0 and is_on_sale = 1
     </select>
     <select id="queryTop4" resultMap="goodsMap">
-		SELECT * FROM `t_acme_mall_goods` WHERE brand_id=#{brand_id} and is_delete =0 and is_on_sale=1
-		 LIMIT 4
+        SELECT * FROM `t_acme_mall_goods` WHERE brand_id=#{brand_id} and is_delete =0 and is_on_sale=1
+        LIMIT 4
     </select>
-    
+
 
     <select id="queryHotGoodsList" resultMap="goodsMap">
-      /*  select a.*,b.id as product_id
+        /* select a.*,b.id as product_id
         from t_acme_mall_goods a
         left join t_acme_mall_product b on a.id = b.goods_id
         left join t_acme_mall_product c on a.id = c.goods_id and c.retail_price > b.retail_price and b.id != c.id
         where 1 = 1 and b.id is not null and c.id is null and a.is_delete = 0 and a.is_on_sale = 1*/
 
-        select a.*  from t_acme_mall_goods a where 1 = 1 and a.is_delete = 0 and a.is_on_sale = 1
+        select a.* from t_acme_mall_goods a where 1 = 1 and a.is_delete = 0 and a.is_on_sale = 1
         <if test="is_new != null and is_new != ''">
             and a.is_new = #{is_new}
         </if>
@@ -161,7 +163,7 @@
         <if test="keyword != null">
             and a.keywords like concat('%',#{keyword},'%')
         </if>
-         <if test="is_on_sale != null and is_on_sale != ''">
+        <if test="is_on_sale != null and is_on_sale != ''">
             and a.is_on_sale = #{is_on_sale}
         </if>
         <if test="categoryIds != null">
@@ -248,39 +250,40 @@
     </select>
 
     <select id="queryTotal" resultType="int">
-		select count(*) from t_acme_mall_goods
-		where 1 = 1
+        select count(*) from t_acme_mall_goods
+        where 1 = 1
         and is_delete = 0 and is_on_sale = 1
         <if test="is_hot != null and is_hot != ''">
             and is_hot = #{is_hot}
         </if>
-	</select>
+    </select>
 
     <select id="queryMaxId" resultType="java.lang.Integer" parameterType="map">
         SELECT MAX(id) FROM t_acme_mall_goods
     </select>
-    
+
     <insert id="save" parameterType="com.acme.acmemall.model.GoodsVo">
         insert into t_acme_mall_goods
         (
-	        `id`,
-	        `name`,
-	        `primary_pic_url`,
-	        `list_pic_url`
+        `id`,
+        `name`,
+        `primary_pic_url`,
+        `list_pic_url`
         )
         values
         (
-	        #{id},
-	        #{name},
-	        #{primary_pic_url},
-	        #{list_pic_url}
+        #{id},
+        #{name},
+        #{primary_pic_url},
+        #{list_pic_url}
         )
     </insert>
     <select id="queryFxList" resultMap="goodsMap">
         select
-            t_acme_mall_goods.*,t_acme_mall_brand.name as brand_name
+        t_acme_mall_goods.*,t_acme_mall_brand.name as brand_name
         from t_acme_mall_goods ,t_acme_mall_brand
-        where 1 = 1 and  t_acme_mall_goods.brand_id=t_acme_mall_brand.id   and t_acme_mall_goods.is_delete = 0 and t_acme_mall_goods.is_on_sale = 1
+        where 1 = 1 and t_acme_mall_goods.brand_id=t_acme_mall_brand.id and t_acme_mall_goods.is_delete = 0 and
+        t_acme_mall_goods.is_on_sale = 1
         <if test="is_new != null and is_new != ''">
             and t_acme_mall_goods.is_new = #{is_new}
         </if>
@@ -302,12 +305,12 @@
         <if test="merchantId != null ">
             and t_acme_mall_goods.merchant_id=#{merchantId}
         </if>
-   <!--     <if test="is_delete != null">
-            and t_acme_mall_goods.is_delete = #{is_delete}
-        </if>
-        <if test="is_on_sale != null and is_on_sale != ''">
-            and t_acme_mall_goods.is_on_sale = #{is_on_sale}
-        </if>-->
+        <!--     <if test="is_delete != null">
+                 and t_acme_mall_goods.is_delete = #{is_delete}
+             </if>
+             <if test="is_on_sale != null and is_on_sale != ''">
+                 and t_acme_mall_goods.is_on_sale = #{is_on_sale}
+             </if>-->
         <if test="categoryIds != null">
             and t_acme_mall_goods.category_id in
             <foreach item="item" collection="categoryIds" open="(" separator="," close=")">
@@ -336,7 +339,8 @@
         select
         count(t_acme_mall_goods.id)
         from t_acme_mall_goods ,t_acme_mall_brand
-        where 1 = 1 and  t_acme_mall_goods.brand_id=t_acme_mall_brand.id and t_acme_mall_goods.is_delete = 0 and t_acme_mall_goods.is_on_sale = 1
+        where 1 = 1 and t_acme_mall_goods.brand_id=t_acme_mall_brand.id and t_acme_mall_goods.is_delete = 0 and
+        t_acme_mall_goods.is_on_sale = 1
         <if test="is_new != null and is_new != ''">
             and t_acme_mall_goods.is_new = #{is_new}
         </if>
@@ -371,9 +375,10 @@
     </select>
     <!--查询团购列表-->
     <select id="queryGroupList" resultMap="goodsMap">
-        SELECT * FROM t_acme_mall_goods  WHERE is_secKill=#{is_secKill} and is_delete = 0 and is_on_sale = 1  order by ${sidx} ${order}  limit #{offset}, #{limit}
+        SELECT * FROM t_acme_mall_goods WHERE is_secKill=#{is_secKill} and is_delete = 0 and is_on_sale = 1 order by
+        ${sidx} ${order} limit #{offset}, #{limit}
     </select>
     <select id="queryGroupTotal" resultType="int">
-        SELECT count(1) FROM t_acme_mall_goods  WHERE is_secKill=#{is_secKill} and is_delete = 0 and is_on_sale = 1
+        SELECT count(1) FROM t_acme_mall_goods WHERE is_secKill=#{is_secKill} and is_delete = 0 and is_on_sale = 1
     </select>
 </mapper>

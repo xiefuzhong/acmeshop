@@ -3,6 +3,7 @@ package com.acme.acmemall.service.impl;
 import com.acme.acmemall.dao.GoodsMapper;
 import com.acme.acmemall.model.GoodsVo;
 import com.acme.acmemall.service.IGoodsService;
+import org.apache.commons.collections.MapUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,6 +32,13 @@ public class GoodsService implements IGoodsService {
      */
     @Override
     public List<GoodsVo> queryGoodsList(Map<String, Object> map) {
+        if ("1".equals(MapUtils.getString(map, "is_hot"))) {
+            // 热门商品查询
+            goodsDao.queryHotGoodsList(map);
+        } else if ("1".equals(MapUtils.getString(map, "is_new"))) {
+            // 新品收发查询
+            return goodsDao.queryList(map);
+        }
         return goodsDao.queryList(map);
     }
 }
