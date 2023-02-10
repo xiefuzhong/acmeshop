@@ -14,4 +14,12 @@ public class UserService implements IUserService {
     public LoginUserVo queryByOpenId(String openId) {
         return null;
     }
+
+    /**
+     * @param user
+     */
+    @Override
+    public void save(LoginUserVo user) {
+
+    }
 }

@@ -9,4 +9,6 @@ import com.acme.acmemall.model.LoginUserVo;
 public interface IUserService {
 
     LoginUserVo queryByOpenId(String openId);
+
+    void save(LoginUserVo user);
 }
