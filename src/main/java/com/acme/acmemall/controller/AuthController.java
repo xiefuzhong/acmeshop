@@ -46,11 +46,10 @@ public class AuthController extends ApiBase {
     /**
      * 微信授权登录
      */
-    @ApiOperation(value = "登录")
+    @ApiOperation(value = "微信授权登录")
     @IgnoreAuth
     @PostMapping("login_by_weixin")
     public Object loginByWeixin(@RequestBody LoginInfo loginInfo, HttpServletRequest request) {
-
         //获取openid
         String requestUrl = UserUtils.getWebAccess(loginInfo.getCode());//通过自定义工具类组合出小程序需要的登录凭证 code
         logger.info("》》》requestUrl为：" + requestUrl);
