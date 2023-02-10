@@ -34,4 +34,6 @@ public class GoodsController extends ApiBase {
         result.put("goodsCount", goodsCount);
         return toResponsSuccess(result);
     }
+
+
 }

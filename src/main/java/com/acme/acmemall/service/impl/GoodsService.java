@@ -16,7 +16,7 @@ public class GoodsService implements IGoodsService {
     private GoodsMapper goodsDao;
 
     /**
-     * 统计商品数量
+     * 统计在售商品数量
      *
      * @param map 查询条件
      * @return 数量

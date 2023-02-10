@@ -98,7 +98,10 @@ public class IndexController extends ApiBase {
                     childCategoryIds.add(categoryEntity.getId());
                 }
             }
-
+            if (childCategoryIds.isEmpty()) {
+                logger.info("parent_id：" + categoryItem.getId() + " sub ids is null");
+                continue;
+            }
             param = Maps.newHashMap();
             param.put("categoryIds", childCategoryIds);
             param.put("fields", "id as id, name as name, list_pic_url as list_pic_url, retail_price as retail_price");
