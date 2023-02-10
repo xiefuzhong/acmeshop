@@ -77,11 +77,11 @@ public class AuthController extends ApiBase {
             userVo = new LoginUserVo();
             userVo.setUsername(Base64.encode(loginInfo.getNickName()));
             userVo.setPassword(openid);
-            userVo.setRegisterTime(nowTime);
-            userVo.setRegisterIp(this.getClientIp());
-            userVo.setLastLoginIp(userVo.getRegisterIp());
-            userVo.setLastLoginTime(userVo.getRegisterTime());
-            userVo.setWeixinOpenid(openid);
+            userVo.setRegister_time(nowTime);
+            userVo.setRegister_ip(this.getClientIp());
+            userVo.setLast_login_ip(userVo.getRegister_ip());
+            userVo.setLast_login_time(userVo.getRegister_time());
+            userVo.setWeixin_openid(openid);
             userVo.setAvatar(loginInfo.getAvatarUrl());
             userVo.setGender(loginInfo.getGender()); // //性别 0：未知、1：男、2：女
             userVo.setNickname(Base64.encode(loginInfo.getNickName()));
