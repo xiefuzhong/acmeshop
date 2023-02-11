@@ -21,4 +21,15 @@ public class CategoryService implements ICategoryService {
     public List<CategoryVo> queryCategoryList(Map<String, Object> map) {
         return categoryDao.queryList(map);
     }
+
+    /**
+     * 详情查询
+     *
+     * @param id
+     * @return
+     */
+    @Override
+    public CategoryVo queryObject(Integer id) {
+        return categoryDao.queryObject(id);
+    }
 }
