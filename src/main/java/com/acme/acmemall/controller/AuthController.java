@@ -50,7 +50,6 @@ public class AuthController extends ApiBase {
     @IgnoreAuth
     @PostMapping("login_by_weixin")
     public Object loginByWeixin(@RequestBody LoginInfo loginInfo, HttpServletRequest request) {
-        logger.info(JSONObject.toJSON(loginInfo));
         //获取openid
         String requestUrl = UserUtils.getWebAccess(loginInfo.getCode());//通过自定义工具类组合出小程序需要的登录凭证 code
         logger.info("》》》requestUrl为：" + requestUrl);
@@ -74,6 +73,7 @@ public class AuthController extends ApiBase {
 //        }
         Date nowTime = new Date();
         LoginUserVo userVo = userService.queryByOpenId(openid);
+        logger.info(JSONObject.toJSON(userVo));
         if (null == userVo) {
             userVo = new LoginUserVo();
             userVo.setUsername(Base64.encode(loginInfo.getNickName()));
@@ -89,6 +89,7 @@ public class AuthController extends ApiBase {
             // 保存授权登录信息
             userService.save(userVo);
         }
+        logger.info(JSONObject.toJSON(userVo));
         Map<String, Object> tokenMap = tokenService.createToken(userVo.getUserId());
         String token = MapUtils.getString(tokenMap, "token");
 
