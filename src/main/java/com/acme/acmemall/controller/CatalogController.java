@@ -43,9 +43,9 @@ public class CatalogController extends ApiBase {
         Map params = new HashMap();
         params.put("page", page);
         params.put("limit", size);
-        params.put("sidx", "sort_order");
+        params.put("sidx", "sortOrder");
         params.put("order", "asc");
-        params.put("parent_id", 0);
+        params.put("parentId", 0);
         //查询列表数据
         List<CategoryVo> data = categoryService.queryCategoryList(params);
         //
@@ -61,7 +61,7 @@ public class CatalogController extends ApiBase {
 
         //获取子分类数据
         if (null != currentCategory && null != currentCategory.getId()) {
-            params.put("parent_id", currentCategory.getId());
+            params.put("parentId", currentCategory.getId());
             currentCategory.setSubCategoryList(categoryService.queryCategoryList(params));
         }
 
