@@ -10,7 +10,7 @@ public class UserUtils {
         return String.format(ResourceUtil.getConfigByName("wx.getCode"), APPID, REDIRECT_URI, SCOPE);
     }
 
-    //替换字符串
+    // 小程序登录接口
     public static String getWebAccess(String CODE) {
         return String.format(ResourceUtil.getConfigByName("wx.webAccessTokenhttps"),
                 ResourceUtil.getConfigByName("wx.appId"),
