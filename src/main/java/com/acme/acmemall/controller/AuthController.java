@@ -89,7 +89,7 @@ public class AuthController extends ApiBase {
             // 保存授权登录信息
             userService.save(userVo);
         }
-        logger.info(JSONObject.toJSON(userVo));
+        logger.info("userVo>>"+JSONObject.toJSON(userVo));
         Map<String, Object> tokenMap = tokenService.createToken(userVo.getUserId());
         String token = MapUtils.getString(tokenMap, "token");
 
