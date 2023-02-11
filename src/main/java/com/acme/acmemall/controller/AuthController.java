@@ -50,6 +50,7 @@ public class AuthController extends ApiBase {
     @IgnoreAuth
     @PostMapping("login_by_weixin")
     public Object loginByWeixin(@RequestBody LoginInfo loginInfo, HttpServletRequest request) {
+        logger.info("loginByWeixin.loginInfo>>"+JSONObject.toJSON(loginInfo));
         //获取openid
         String requestUrl = UserUtils.getWebAccess(loginInfo.getCode());//通过自定义工具类组合出小程序需要的登录凭证 code
         logger.info("》》》requestUrl为：" + requestUrl);
