@@ -50,12 +50,14 @@ public class AuthController extends ApiBase {
     @IgnoreAuth
     @PostMapping("login_by_weixin")
     public Object loginByWeixin(@RequestBody LoginInfo loginInfo, HttpServletRequest request) {
+        logger.info(JSONObject.toJSON(loginInfo));
         //获取openid
         String requestUrl = UserUtils.getWebAccess(loginInfo.getCode());//通过自定义工具类组合出小程序需要的登录凭证 code
         logger.info("》》》requestUrl为：" + requestUrl);
         String res = restTemplate.getForObject(requestUrl, String.class);
         logger.info("res==" + res);
         JSONObject sessionData = JSON.parseObject(res);
+        // {"session_key":"GhiV7gQt9PYZc5OTo\/lp8Q==","openid":"oSjwN5S9p3sk02PXauTTz3TR1zP0"}
         String openid = sessionData.getString("openid");
         logger.info("》》》promoterId：" + loginInfo.getPromoterId());
         String session_key = sessionData.getString("session_key");//不知道啥用。
@@ -91,6 +93,7 @@ public class AuthController extends ApiBase {
         String token = MapUtils.getString(tokenMap, "token");
 
         if (StringUtils.isNullOrEmpty(token)) {
+            logger.info("createToken fail!");
             return toResponsFail("登录失败");
         }
         Map<String, Object> resultObj = new HashMap<String, Object>();
