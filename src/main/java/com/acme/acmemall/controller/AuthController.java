@@ -10,6 +10,7 @@ import com.acme.acmemall.utils.StringUtils;
 import com.acme.acmemall.utils.UserUtils;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.google.common.collect.Maps;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.collections.MapUtils;
@@ -23,7 +24,6 @@ import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -60,7 +60,7 @@ public class AuthController extends ApiBase {
         // {"session_key":"GhiV7gQt9PYZc5OTo\/lp8Q==","openid":"oSjwN5S9p3sk02PXauTTz3TR1zP0"}
         String openid = sessionData.getString("openid");
         logger.info("》》》promoterId：" + loginInfo.getPromoterId());
-        String session_key = sessionData.getString("session_key");//不知道啥用。
+        String session_key = sessionData.getString("session_key");// 用于解密 getUserInfo返回的敏感数据。
         if (null == sessionData || StringUtils.isNullOrEmpty(openid)) {
             logger.error("session_key>>" + session_key);
             return toResponsFail("登录失败");
@@ -99,9 +99,10 @@ public class AuthController extends ApiBase {
             logger.info("createToken fail!");
             return toResponsFail("登录失败");
         }
-        Map<String, Object> resultObj = new HashMap<String, Object>();
-        //resultObj.put("openid", openid);
+        Map<String, Object> resultObj = Maps.newHashMap();
+        resultObj.put("openid", openid);
         resultObj.put("userVo", userVo);
+        resultObj.put("session_key",session_key);
         return toResponsSuccess(resultObj);
     }
 }
