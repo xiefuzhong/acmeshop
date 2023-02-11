@@ -73,7 +73,7 @@ public class AuthController extends ApiBase {
 //        }
         Date nowTime = new Date();
         LoginUserVo userVo = userService.queryByOpenId(openid);
-        logger.info(JSONObject.toJSON(userVo));
+        logger.info("LoginUserVo>>" +JSONObject.toJSON(userVo));
         if (null == userVo) {
             userVo = new LoginUserVo();
             userVo.setUsername(Base64.encode(loginInfo.getNickName()));
