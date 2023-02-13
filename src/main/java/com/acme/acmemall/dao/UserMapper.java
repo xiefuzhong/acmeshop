@@ -1,15 +1,13 @@
 package com.acme.acmemall.dao;
 
 import com.acme.acmemall.model.LoginUserVo;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 /**
  * 用户
- *
- * @author admin
- *
- * @date 2017-03-23 15:22:06
  */
+@Mapper
 public interface UserMapper extends BaseDao<LoginUserVo> {
     LoginUserVo queryByMobile(String mobile);
 
