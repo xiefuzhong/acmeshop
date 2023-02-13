@@ -104,7 +104,7 @@
     </update>
 
     <update id="updateUserCoupon" parameterType="com.acme.acmemall.model.CouponVo">
-        update nideshop_user_coupon
+        update t_acme_mall_user_coupon
         <set>
             <if test="coupon_status != null">`coupon_status` = #{coupon_status}</if>
         </set>
@@ -125,7 +125,7 @@
     <select id="queryUserCoupons" resultMap="couponMap">
         select a.*,b.coupon_number,b.user_id,b.coupon_status,b.id user_coupon_id
         from t_acme_mall_coupon a
-        left join nideshop_user_coupon b on a.id = b.coupon_id
+        left join t_acme_mall_user_coupon b on a.id = b.coupon_id
         where 1 = 1 and a.merchant_id=b.merchant_id
         <if test="id != null">
             and a.`id` = #{id}
@@ -189,7 +189,7 @@
     <select id="queryUserCouponList" resultMap="couponMap">
         select a.*,b.coupon_number,b.user_id
         from t_acme_mall_coupon a
-        left join nideshop_user_coupon b on a.id = b.coupon_id
+        left join t_acme_mall_user_coupon b on a.id = b.coupon_id
         where 1 = 1
         and a.use_end_date >= now()
         and now() >= a.use_start_date
@@ -200,14 +200,14 @@
     <select id="getUserCoupon" resultMap="couponMap">
         select a.*,b.coupon_number,b.user_id,b.coupon_status,b.id user_coupon_id
         from t_acme_mall_coupon a
-        left join nideshop_user_coupon b on a.id = b.coupon_id
+        left join t_acme_mall_user_coupon b on a.id = b.coupon_id
         where 1 = 1
         and b.id = #{id}
     </select>
     <select id="getValidUserCoupons" resultMap="couponMap">
         select a.*,b.coupon_number,b.user_id,b.id as user_coupon_id
         from t_acme_mall_coupon a
-        left join nideshop_user_coupon b on a.id = b.coupon_id
+        left join t_acme_mall_user_coupon b on a.id = b.coupon_id
         where 1 = 1
         and a.use_end_date >= now()
         and now() >= a.use_start_date

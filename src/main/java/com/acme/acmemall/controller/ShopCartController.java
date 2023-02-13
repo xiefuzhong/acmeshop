@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -41,13 +42,11 @@ import java.util.Map;
 @RequestMapping("/api/cart")
 public class ShopCartController extends ApiBase {
 
+    private static final BigDecimal ZERO = BigDecimal.ZERO;
     @Autowired
     private IShopCartService cartService;
-
     @Autowired
     private ICouponService couponService;
-
-    private static final BigDecimal ZERO = BigDecimal.ZERO;
 
     /**
      * 获取购物车信息，所有对购物车的增删改操作，都要重新返回购物车的信息
@@ -55,7 +54,7 @@ public class ShopCartController extends ApiBase {
     @ApiOperation(value = "获取购物车信息")
     @GetMapping("index")
     public Object index(@LoginUser LoginUserVo loginUser) {
-        logger.info("cart.index.loginuser>>"+ JSONObject.toJSON(loginUser));
+        logger.info("cart.index.loginuser>>" + JSONObject.toJSON(loginUser));
         return toResponsSuccess(getCart(loginUser));
     }
 
@@ -70,8 +69,9 @@ public class ShopCartController extends ApiBase {
         //查询列表数据
         Map param = Maps.newHashMap();
         param.put("user_id", loginUser.getUserId());
-        logger.info("user_id>>"+loginUser.getUserId());
+        logger.info("user_id>>" + loginUser.getUserId());
         List<ShopCartVo> cartList = cartService.queryCartList(param);
+        logger.info("cart.list.size =" + (cartList.isEmpty() ? 0 : cartList.size()));
         //获取购物车统计信息
         Integer goodsCount = 0; // 商品数量
         BigDecimal goodsAmount = BigDecimal.ZERO; // 商品金额
@@ -97,7 +97,7 @@ public class ShopCartController extends ApiBase {
             BigDecimal fullCutDec = BigDecimal.ZERO;
             BigDecimal minAmount = new BigDecimal(100000);
             for (CouponVo couponVo : couponVos) {
-                BigDecimal difDec = couponVo.getMin_goods_amount().subtract(checkedGoodsAmount).setScale(2, BigDecimal.ROUND_HALF_UP);
+                BigDecimal difDec = couponVo.getMin_goods_amount().subtract(checkedGoodsAmount).setScale(2, RoundingMode.HALF_UP);
                 if (couponVo.getSend_type() == 0 && difDec.doubleValue() > 0.0
                         && minAmount.compareTo(couponVo.getMin_goods_amount()) > 0) {
                     fullCutDec = couponVo.getType_money();
