@@ -67,6 +67,7 @@ public class ShopCartController extends ApiBase {
         //查询列表数据
         Map param = Maps.newHashMap();
         param.put("user_id", loginUser.getUserId());
+        logger.info("user_id>>"+loginUser.getUserId());
         List<ShopCartVo> cartList = cartService.queryCartList(param);
         //获取购物车统计信息
         Integer goodsCount = 0; // 商品数量
@@ -82,7 +83,7 @@ public class ShopCartController extends ApiBase {
             }
         }
         // 获取优惠信息提示
-        Map couponParam = new HashMap();
+        Map couponParam = Maps.newHashMap();
         couponParam.put("enabled", true);
         Integer[] send_types = new Integer[]{0, 7};
         couponParam.put("send_types", send_types);
