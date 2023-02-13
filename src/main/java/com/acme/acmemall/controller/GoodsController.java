@@ -134,7 +134,7 @@ public class GoodsController extends ApiBase {
             //查找二级分类的parent_id
             Map categoryParam = new HashMap();
             categoryParam.put("ids", categoryIds);
-            categoryParam.put("fields", "parentId");
+            categoryParam.put("fields", "parent_id"); // 查询字段=数据库字段名
             List<CategoryVo> parentCategoryList = categoryService.queryCategoryList(categoryParam);
             //
             List<Integer> parentIds = new ArrayList();
