@@ -184,7 +184,7 @@
         delete from t_acme_mall_cart
         where  user_id = #{user_id} and  session_id = #{session_id} and  checked = #{checked}
     </delete>
-    <select id="queryMerCartList" parameterType="java.lang.Long" resultType="com.platform.entity.MerCartVo">
+    <select id="queryMerCartList" parameterType="java.lang.Long" resultType="com.acme.acmemall.model.MerCartVo">
             SELECT
             cart.merchant_id as merchantId,
             sys.merchant_name as merchantName,
