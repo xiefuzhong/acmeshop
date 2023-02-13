@@ -1,11 +1,10 @@
 package com.acme.acmemall.acpect;
 
+import org.apache.log4j.Logger;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
@@ -18,11 +17,11 @@ import java.util.Arrays;
 @Component
 public class ControllerAspect {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ControllerAspect.class);
+    private final org.apache.log4j.Logger logger = Logger.getLogger(getClass());
 
     @Pointcut("execution(* com.acme.acmemall.controller.*.*(..))")
     private void point() {
-        LOGGER.info("-----------------------point----------------------------");
+        logger.info("-----------------------point----------------------------");
     }
 
     @Around("pointCutMethodController()")
@@ -30,8 +29,8 @@ public class ControllerAspect {
         long begin = System.nanoTime();
         Object result = pjp.proceed();
         long end = System.nanoTime();
-        LOGGER.info("Controller method：{}，prams：{}，cost time：{} ns，cost：{} ms",
-                pjp.getSignature().toString(), Arrays.toString(pjp.getArgs()), (end - begin), (end - begin) / 1000000);
+        long cost = end-begin;
+        logger.info("Controller method："+pjp.getSignature().toString()+"，prams："+Arrays.toString(pjp.getArgs())+"，cost time："+cost+" ns");
         return result;
     }
 
