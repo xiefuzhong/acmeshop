@@ -5,6 +5,7 @@ import com.acme.acmemall.exception.ApiCusException;
 import com.acme.acmemall.model.LoginUserVo;
 import com.acme.acmemall.service.IUserService;
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
@@ -26,6 +27,8 @@ public class AuthorizationInterceptor extends HandlerInterceptorAdapter {
 
     public static final String LOGIN_USER_KEY = "LOGIN_USER_KEY";
     public static final String LOGIN_TOKEN_KEY = "X-Acme-Token";
+
+    private final Logger logger = Logger.getLogger(getClass());
 
 
     @Override
@@ -52,13 +55,14 @@ public class AuthorizationInterceptor extends HandlerInterceptorAdapter {
         if (StringUtils.isBlank(openId)) {
             openId = request.getParameter(LOGIN_TOKEN_KEY);
         }
-
+        logger.info("operId="+openId);
         //token为空
         if (StringUtils.isBlank(openId)) {
             // 如果有@IgnoreAuth注解，则不验证openId
             if (annotation != null) {
                 return true;
             } else {
+                logger.info("open id is null");
                 throw new ApiCusException("请先登录", 401);
             }
         }
@@ -73,6 +77,7 @@ public class AuthorizationInterceptor extends HandlerInterceptorAdapter {
             } else {
                 LoginUserVo userVo = userService.queryByOpenId(openId);
                 if (userVo == null && annotation == null) {
+                    logger.info("queryByOpenId return null");
                     throw new ApiCusException("请先登录", 401);
                 }
                 //设置userId到request里，后续根据userId，获取用户信息
