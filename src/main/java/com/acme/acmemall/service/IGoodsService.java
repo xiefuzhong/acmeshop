@@ -15,5 +15,11 @@ public interface IGoodsService {
      */
     int queryTotal(Map<String, Object> map);
 
+    /**
+     * 商品列表查询
+     *
+     * @param map 查询条件
+     * @return 查询结果
+     */
     List<GoodsVo> queryGoodsList(Map<String, Object> map);
 }
