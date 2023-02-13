@@ -82,14 +82,14 @@ public class IndexController extends ApiBase {
     public Object category() {
         Map<String, Object> resultMap = Maps.newHashMap();
         Map<String, Object> param = Maps.newHashMap();
-        param.put("parent_id", 0);
+        param.put("parentId", 0);
         param.put("notName", "推荐");
         List<CategoryVo> categoryList = categoryService.queryCategoryList(param);
         List<Map<String, Object>> newCategoryList = new ArrayList<>();
 
         for (CategoryVo categoryItem : categoryList) {
             param.remove("fields");
-            param.put("parent_id", categoryItem.getId());
+            param.put("parentId", categoryItem.getId());
             List<CategoryVo> categoryEntityList = categoryService.queryCategoryList(param);
             List<Integer> childCategoryIds = null;
             if (categoryEntityList != null && categoryEntityList.size() > 0) {
@@ -99,7 +99,7 @@ public class IndexController extends ApiBase {
                 }
             }
             if (childCategoryIds.isEmpty()) {
-                logger.info("parent_id：" + categoryItem.getId() + " sub ids is null");
+                logger.info("parentId：" + categoryItem.getId() + " sub ids is null");
                 continue;
             }
             param = Maps.newHashMap();
