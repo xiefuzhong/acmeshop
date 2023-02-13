@@ -97,10 +97,10 @@
 			#{bannerUrl},
 			#{iconUrl},
 			#{imgUrl},
-			#{wap_bannerUrl},
+			#{wapBannerUrl},
 			#{level},
 			#{type},
-			#{front_name}
+			#{frontName}
 		)
 	</insert>
 
