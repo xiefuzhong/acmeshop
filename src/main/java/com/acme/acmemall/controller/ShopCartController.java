@@ -16,6 +16,7 @@ import com.acme.acmemall.model.ShopCartVo;
 import com.acme.acmemall.service.ICouponService;
 import com.acme.acmemall.service.IShopCartService;
 import com.acme.acmemall.utils.StringUtils;
+import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Maps;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -54,6 +55,7 @@ public class ShopCartController extends ApiBase {
     @ApiOperation(value = "获取购物车信息")
     @GetMapping("index")
     public Object index(@LoginUser LoginUserVo loginUser) {
+        logger.info("cart.index.loginuser>>"+ JSONObject.toJSON(loginUser));
         return toResponsSuccess(getCart(loginUser));
     }
 
@@ -63,6 +65,7 @@ public class ShopCartController extends ApiBase {
     @ApiOperation(value = "获取购物车中的数据")
     @GetMapping("getCart")
     public Object getCart(@LoginUser LoginUserVo loginUser) {
+        logger.info("获取购物车中的数据");
         Map<String, Object> resultObj = Maps.newHashMap();
         //查询列表数据
         Map param = Maps.newHashMap();

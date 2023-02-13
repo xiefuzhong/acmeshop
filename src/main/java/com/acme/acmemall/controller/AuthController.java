@@ -14,7 +14,6 @@ import com.google.common.collect.Maps;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.collections.MapUtils;
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -33,7 +32,6 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController extends ApiBase {
-    private final Logger logger = Logger.getLogger(getClass());
     @Autowired
     private IUserService userService;
     @Autowired
