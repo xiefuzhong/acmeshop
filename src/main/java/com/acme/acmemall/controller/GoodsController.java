@@ -316,14 +316,15 @@ public class GoodsController extends ApiBase {
         comment.put("count", commentCount);
         comment.put("data", commentInfo);
         //当前用户是否收藏
-        Map collectParam = Maps.newHashMap();
-        collectParam.put("user_id", getUserId());
-        collectParam.put("value_id", id);
-        collectParam.put("type_id", 0);
-        Integer userHasCollect = collectService.queryTotal(collectParam);
-        if (userHasCollect > 0) {
-            userHasCollect = 1;
-        }
+//        Map collectParam = Maps.newHashMap();
+//        collectParam.put("user_id", getUserId());
+//        collectParam.put("value_id", id);
+//        collectParam.put("type_id", 0);
+//        Integer userHasCollect = collectService.queryTotal(collectParam);
+//        if (userHasCollect > 0) {
+//            userHasCollect = 1;
+//        }
+        Integer userHasCollect = 1;
         //记录用户的足迹
         FootprintVo footprintEntity = new FootprintVo();
         footprintEntity.setAdd_time(System.currentTimeMillis() / 1000);
