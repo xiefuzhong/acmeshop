@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * @description:
+ * @description:商品橱窗展示信息
  * @author: ihpangzi
  * @time: 2023/2/14 8:55
  */
