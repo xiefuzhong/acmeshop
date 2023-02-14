@@ -18,7 +18,7 @@ import java.util.Map;
 public class CouponService implements ICouponService {
 
     @Autowired
-    CouponMapper couponDao;
+    CouponMapper mapper;
 
     /**
      * @param map
@@ -26,7 +26,7 @@ public class CouponService implements ICouponService {
      */
     @Override
     public List<CouponVo> queryCouponList(Map<String, Object> map) {
-        return couponDao.queryList(map);
+        return mapper.queryList(map);
     }
 
     /**
@@ -37,7 +37,7 @@ public class CouponService implements ICouponService {
      */
     @Override
     public List<CouponVo> queryUserCoupons(Map<String, Object> params) {
-        return null;
+        return mapper.queryUserCoupons(params);
     }
 
     /**
@@ -48,7 +48,7 @@ public class CouponService implements ICouponService {
      */
     @Override
     public CouponVo getUserCoupon(Integer id) {
-        return null;
+        return mapper.getUserCoupon(id);
     }
 
     /**
@@ -59,7 +59,7 @@ public class CouponService implements ICouponService {
      */
     @Override
     public CouponVo queryMaxUserEnableCoupon(Map<String, Object> params) {
-        return null;
+        return mapper.queryMaxUserEnableCoupon(params);
     }
 
     /**
@@ -70,7 +70,7 @@ public class CouponService implements ICouponService {
      */
     @Override
     public List<CouponVo> queryUserCouponList(Map<String, Object> params) {
-        return null;
+        return mapper.queryUserCouponList(params);
     }
 
     /**
@@ -88,6 +88,6 @@ public class CouponService implements ICouponService {
      */
     @Override
     public List<CouponVo> getValidUserCoupons(Map param) {
-        return null;
+        return mapper.getValidUserCoupons(param);
     }
 }
