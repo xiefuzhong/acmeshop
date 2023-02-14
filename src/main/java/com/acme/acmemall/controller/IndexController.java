@@ -7,6 +7,7 @@ import com.github.pagehelper.PageHelper;
 import com.google.common.collect.Maps;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -98,7 +99,7 @@ public class IndexController extends ApiBase {
                     childCategoryIds.add(categoryEntity.getId());
                 }
             }
-            if (childCategoryIds.isEmpty()) {
+            if (CollectionUtils.isEmpty(childCategoryIds)) {
                 logger.info("parentId：" + categoryItem.getId() + " sub ids is null");
                 continue;
             }
