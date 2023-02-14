@@ -1,5 +1,6 @@
 package com.acme.acmemall.service.impl;
 
+import com.acme.acmemall.dao.GoodsGalleryMapper;
 import com.acme.acmemall.model.GoodsGalleryVo;
 import com.acme.acmemall.service.IGoodsGalleryService;
 import org.springframework.stereotype.Service;
@@ -14,12 +15,13 @@ import java.util.Map;
  */
 @Service
 public class GoodsGalleryService implements IGoodsGalleryService {
+    private GoodsGalleryMapper mapper;
     /**
      * @param map
      * @return
      */
     @Override
     public List<GoodsGalleryVo> queryGoodsGalleryList(Map<String, Object> map) {
-        return null;
+        return mapper.queryList(map);
     }
 }
