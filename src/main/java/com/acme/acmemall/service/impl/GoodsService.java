@@ -41,4 +41,14 @@ public class GoodsService implements IGoodsService {
         }
         return goodsDao.queryList(map);
     }
+
+    /**
+     * 商品详情查询
+     * @param goodsId ID
+     * @return 商品详情
+     */
+    @Override
+    public GoodsVo queryObject(long goodsId) {
+        return goodsDao.queryObject(goodsId);
+    }
 }

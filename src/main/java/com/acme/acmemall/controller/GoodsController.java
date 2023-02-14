@@ -3,14 +3,15 @@ package com.acme.acmemall.controller;
 import com.acme.acmemall.annotation.IgnoreAuth;
 import com.acme.acmemall.annotation.LoginUser;
 import com.acme.acmemall.common.QueryParam;
-import com.acme.acmemall.model.CategoryVo;
-import com.acme.acmemall.model.GoodsVo;
-import com.acme.acmemall.model.LoginUserVo;
-import com.acme.acmemall.service.ICategoryService;
-import com.acme.acmemall.service.IGoodsService;
+import com.acme.acmemall.model.*;
+import com.acme.acmemall.service.*;
+import com.acme.acmemall.utils.Base64;
+import com.acme.acmemall.utils.DateUtils;
 import com.acme.acmemall.utils.PageUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -21,8 +22,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -31,10 +30,41 @@ import java.util.Map;
 @RequestMapping("/api/goods")
 public class GoodsController extends ApiBase {
     @Autowired
+    IBrandService brandService;
+    @Autowired
     private IGoodsService goodsService;
-
     @Autowired
     private ICategoryService categoryService;
+    @Autowired
+    private IUserService userService;
+    @Autowired
+    private IGoodsSpecService goodsSpecService;
+    @Autowired
+    private IProductService productService;
+    @Autowired
+    private IGoodsGalleryService galleryService;
+    @Autowired
+    private ICouponService couponService;
+    @Autowired
+    private IAttributeService attributeService;
+
+    @Autowired
+    private IGoodsIssueService issueService;
+
+    @Autowired
+    private ICommentService commentService;
+
+    @Autowired
+    private ICommentPictureService commentPictureService;
+
+    @Autowired
+    private ICollectService collectService;
+
+    @Autowired
+    private IFootprintService footprintService;
+
+    @Autowired
+    private IUserCouponService userCouponService;
 
     /**
      * 　　在售的商品总数
@@ -43,8 +73,8 @@ public class GoodsController extends ApiBase {
     @IgnoreAuth
     @GetMapping(value = "count")
     public Object count() {
-        Map<String, Object> result = new HashMap();
-        Map param = new HashMap();
+        Map<String, Object> result = Maps.newHashMap();
+        Map param = Maps.newHashMap();
         param.put("is_delete", 0);
         param.put("is_on_sale", 1);
         Integer goodsCount = goodsService.queryTotal(param);
@@ -60,10 +90,10 @@ public class GoodsController extends ApiBase {
     @IgnoreAuth
     @GetMapping(value = "category")
     public Object category(Integer id) {
-        Map<String, Object> resultObj = new HashMap();
+        Map<String, Object> resultObj = Maps.newHashMap();
         CategoryVo currentCategory = categoryService.queryObject(id);
         CategoryVo parentCategory = categoryService.queryObject(currentCategory.getParentId());
-        Map params = new HashMap();
+        Map params = Maps.newHashMap();
         params.put("parentId", currentCategory.getParentId());
         List<CategoryVo> brotherCategory = categoryService.queryCategoryList(params);
         resultObj.put("currentCategory", currentCategory);
@@ -86,7 +116,7 @@ public class GoodsController extends ApiBase {
                        Integer brandId, String keyword, Integer isNew, Integer isHot,
                        @RequestParam(value = "page", defaultValue = "1") Integer page, @RequestParam(value = "size", defaultValue = "10") Integer size,
                        String sort, String order) {
-        Map params = new HashMap();
+        Map params = Maps.newHashMap();
         params.put("is_delete", 0);
         params.put("is_on_sale", 1);
         params.put("brand_id", brandId);
@@ -116,7 +146,7 @@ public class GoodsController extends ApiBase {
 //
 //        }
         //筛选的分类
-        List<CategoryVo> filterCategory = new ArrayList();
+        List<CategoryVo> filterCategory = Lists.newArrayList();
         CategoryVo rootCategory = new CategoryVo();
         rootCategory.setId(0);
         rootCategory.setName("全部");
@@ -127,22 +157,22 @@ public class GoodsController extends ApiBase {
         List<GoodsVo> categoryEntityList = goodsService.queryGoodsList(params);
         params.remove("fields");
         if (null != categoryEntityList && categoryEntityList.size() > 0) {
-            List<Integer> categoryIds = new ArrayList();
+            List<Integer> categoryIds = Lists.newArrayList();
             for (GoodsVo goodsVo : categoryEntityList) {
                 categoryIds.add(goodsVo.getCategory_id());
             }
             //查找二级分类的parent_id
-            Map categoryParam = new HashMap();
+            Map categoryParam = Maps.newHashMap();
             categoryParam.put("ids", categoryIds);
             categoryParam.put("fields", "parent_id"); // 查询字段=数据库字段名
             List<CategoryVo> parentCategoryList = categoryService.queryCategoryList(categoryParam);
             //
-            List<Integer> parentIds = new ArrayList();
+            List<Integer> parentIds = Lists.newArrayList();
             for (CategoryVo categoryEntity : parentCategoryList) {
                 parentIds.add(categoryEntity.getParentId());
             }
             //一级分类
-            categoryParam = new HashMap();
+            categoryParam = Maps.newHashMap();
             categoryParam.put("fields", "id,name");
             categoryParam.put("order", "asc");
             categoryParam.put("sidx", "sort_order");
@@ -154,8 +184,8 @@ public class GoodsController extends ApiBase {
         }
         //加入分类条件
         if (null != categoryId && categoryId > 0) {
-            List<Integer> categoryIds = new ArrayList();
-            Map categoryParam = new HashMap();
+            List<Integer> categoryIds = Lists.newArrayList();
+            Map categoryParam = Maps.newHashMap();
             categoryParam.put("parentId", categoryId);
             categoryParam.put("fields", "id");
             List<CategoryVo> childIds = categoryService.queryCategoryList(categoryParam);
@@ -178,5 +208,184 @@ public class GoodsController extends ApiBase {
         goodsData.setFilterCategory(filterCategory);
         goodsData.setGoodsList(goodsList);
         return toResponsSuccess(goodsData);
+    }
+
+    /**
+     * 商品详情页数据
+     */
+    @ApiOperation(value = " 商品详情页数据")
+    @IgnoreAuth
+    @ApiImplicitParams({@ApiImplicitParam(name = "id", value = "商品id", paramType = "path", required = true),
+            @ApiImplicitParam(name = "referrer", value = "商品referrer", paramType = "path", required = false)})
+    @GetMapping(value = "detail")
+    public Object detail(@LoginUser LoginUserVo userVo, Integer id, Long referrer) {
+        logger.info("goods.detail===============================>" + id);
+        Map<String, Object> resultObj = Maps.newHashMap();
+        Long userId = getUserId();
+        if (userVo != null){
+            userId = userVo.getUserId();
+        }else{
+            logger.info("访客浏览");
+        }
+
+        //MlsUserEntity2 loginUser = mlsUserSer.getEntityMapper().findByUserId(userId);
+        GoodsVo info = goodsService.queryObject(id);
+        //info.setDiscount(info.getRetail_price().multiply(new BigDecimal("10")).divide(info.getMarket_price(), 1, BigDecimal.ROUND_HALF_UP).toString());
+        Long mid = info.getMerchantId();
+//        Map<String, Object> sysuser = this.mlsUserSer.getEntityMapper().getSysUserByMid(mid);
+        // 佣金计算
+//        info.setUser_brokerage_price(info.getRetail_price().multiply(new BigDecimal(sysuser.get("FX").toString())).multiply(new BigDecimal(info.getBrokerage_percent()).divide(new BigDecimal("10000"))).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+
+        //
+        Map specParamMap = Maps.newHashMap();
+        specParamMap.put("fields", "gs.*, s.name");
+        specParamMap.put("goods_id", id);
+        specParamMap.put("specification", true);
+//        specificationParam.put("sidx", "s.sort_order");
+        specParamMap.put("order", "asc");
+        // 商品规格信息
+        List<GoodsSpecificationVo> goodsSpecList = goodsSpecService.queryGoodsSpecList(specParamMap);
+
+        List<Map> specList = Lists.newArrayList();
+        //按规格名称分组
+        for (int i = 0; i < goodsSpecList.size(); i++) {
+            GoodsSpecificationVo specItem = goodsSpecList.get(i);
+            //
+            List<GoodsSpecificationVo> tempSpecList = null;
+            for (int j = 0; j < specList.size(); j++) {
+                if (specList.get(j).get("specification_id").equals(specItem.getSpecification_id())) {
+                    tempSpecList = (List<GoodsSpecificationVo>) specList.get(j).get("valueList");
+                    break;
+                }
+            }
+            //
+            if (null == tempSpecList) {
+                Map temp = Maps.newHashMap();
+                temp.put("specification_id", specItem.getSpecification_id());
+                temp.put("name", specItem.getName());
+                temp.put("pic_url", specItem.getPic_url());
+                tempSpecList = Lists.newArrayList();
+                tempSpecList.add(specItem);
+                temp.put("valueList", tempSpecList);
+                specList.add(temp);
+            } else {
+                for (int j = 0; j < specList.size(); j++) {
+                    if (specList.get(j).get("specification_id").equals(specItem.getSpecification_id())) {
+                        tempSpecList = (List<GoodsSpecificationVo>) specList.get(j).get("valueList");
+                        tempSpecList.add(specItem);
+                        break;
+                    }
+                }
+            }
+        }
+        // 产品查询
+        Map productParam = Maps.newHashMap();
+        productParam.put("goods_id", id);
+        List<ProductVo> productList = productService.queryProductList(productParam);
+        List<GoodsGalleryVo> gallery = galleryService.queryGoodsGalleryList(productParam);
+        Map ngaParam = Maps.newHashMap();
+        ngaParam.put("fields", "nga.value, na.name");
+        ngaParam.put("sidx", "nga.id");
+        ngaParam.put("order", "asc");
+        ngaParam.put("goods_id", id);
+        List<AttributeVo> attribute = attributeService.queryAttributeList(ngaParam);
+        //
+        Map issueParam = Maps.newHashMap();
+//        issueParam.put("goods_id", id);
+        List<GoodsIssueVo> issue = issueService.queryIssueList(issueParam);
+        //
+        BrandVo brand = brandService.queryObject(info.getBrand_id());
+        //
+        productParam.put("value_id", id);
+        productParam.put("type_id", 0);
+        Integer commentCount = commentService.queryTotal(productParam);
+        List<CommentVo> hotComment = commentService.queryCommentList(productParam);
+        Map commentInfo = Maps.newHashMap();
+        if (null != hotComment && hotComment.size() > 0) {
+            LoginUserVo commentUser = userService.queryObject(hotComment.get(0).getUser_id());
+            commentInfo.put("content", Base64.decode(hotComment.get(0).getContent()));
+            commentInfo.put("add_time", DateUtils.timeToStr(hotComment.get(0).getAdd_time(), DateUtils.DATE_PATTERN));
+            commentInfo.put("nickname", commentUser.getNickname());
+            commentInfo.put("avatar", commentUser.getAvatar());
+            Map paramPicture = Maps.newHashMap();
+            paramPicture.put("comment_id", hotComment.get(0).getId());
+            List<CommentPictureVo> picList = commentPictureService.queryCommentPicList(paramPicture);
+            commentInfo.put("pic_list", picList);
+        }
+        Map comment = Maps.newHashMap();
+        comment.put("count", commentCount);
+        comment.put("data", commentInfo);
+        //当前用户是否收藏
+        Map collectParam = Maps.newHashMap();
+        collectParam.put("user_id", getUserId());
+        collectParam.put("value_id", id);
+        collectParam.put("type_id", 0);
+        Integer userHasCollect = collectService.queryTotal(collectParam);
+        if (userHasCollect > 0) {
+            userHasCollect = 1;
+        }
+        //记录用户的足迹
+        FootprintVo footprintEntity = new FootprintVo();
+        footprintEntity.setAdd_time(System.currentTimeMillis() / 1000);
+        footprintEntity.setGoods_brief(info.getGoods_brief());
+        footprintEntity.setList_pic_url(info.getList_pic_url());
+        footprintEntity.setGoods_id(info.getId());
+        footprintEntity.setName(info.getName());
+        footprintEntity.setRetail_price(info.getRetail_price());
+        footprintEntity.setUser_id(userId);
+        if (null != referrer) {
+            footprintEntity.setReferrer(referrer);
+        } else {
+            footprintEntity.setReferrer(0L);
+        }
+        footprintService.save(footprintEntity);
+        //
+        resultObj.put("info", info);
+        resultObj.put("gallery", gallery);
+        resultObj.put("attribute", attribute);
+        resultObj.put("userHasCollect", userHasCollect);
+        resultObj.put("issue", issue);
+        resultObj.put("comment", comment);
+        resultObj.put("brand", brand);
+        resultObj.put("specificationList", specList);
+        resultObj.put("productList", productList);
+        // 记录推荐人是否可以领取红包，用户登录时校验
+//        try {
+//            // 是否已经有可用的转发红包
+//            Map params = Maps.newHashMap();
+//            params.put("user_id", userId);
+//            params.put("send_type", 2);
+//            params.put("unUsed", true);
+//            List<CouponVo> enabledCouponVos = couponService.queryUserCoupons(params);
+//            if ((null == enabledCouponVos || enabledCouponVos.size() == 0)
+//                    && null != referrer && null != userId) {
+//                // 获取优惠信息提示
+//                Map couponParam = Maps.newHashMap();
+//                couponParam.put("enabled", true);
+//                Integer[] send_types = new Integer[]{2};
+//                couponParam.put("send_types", send_types);
+//                List<CouponVo> couponVos = couponService.queryCouponList(couponParam);
+//                if (null != couponVos && couponVos.size() > 0) {
+//                    CouponVo couponVo = couponVos.get(0);
+//                    Map footprintParam = Maps.newHashMap();
+//                    footprintParam.put("goods_id", id);
+//                    footprintParam.put("referrer", referrer);
+//                    Integer footprintNum = footprintService.queryTotal(footprintParam);
+//                    if (null != footprintNum && null != couponVo.getMin_transmit_num()
+//                            && footprintNum > couponVo.getMin_transmit_num()) {
+//                        UserCouponVo userCouponVo = new UserCouponVo();
+//                        userCouponVo.setAdd_time(new Date());
+//                        userCouponVo.setCoupon_id(couponVo.getId());
+//                        userCouponVo.setCoupon_number(CharUtil.getRandomString(12));
+//                        userCouponVo.setUser_id(getUserId());
+//                        userCouponService.save(userCouponVo);
+//                    }
+//                }
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+
+        return toResponsSuccess(resultObj);
     }
 }

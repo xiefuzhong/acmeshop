@@ -21,6 +21,15 @@ public class UserService implements IUserService {
     }
 
     /**
+     * @param id
+     * @return
+     */
+    @Override
+    public LoginUserVo queryObject(long id) {
+        return userDao.queryObject(id);
+    }
+
+    /**
      * @param user
      */
     @Override

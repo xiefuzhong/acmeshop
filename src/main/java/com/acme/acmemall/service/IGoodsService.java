@@ -22,4 +22,6 @@ public interface IGoodsService {
      * @return 查询结果
      */
     List<GoodsVo> queryGoodsList(Map<String, Object> map);
+
+    GoodsVo queryObject(long goodsId);
 }

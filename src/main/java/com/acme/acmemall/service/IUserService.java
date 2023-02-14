@@ -10,5 +10,7 @@ public interface IUserService {
 
     LoginUserVo queryByOpenId(String openId);
 
+    LoginUserVo queryObject(long id);
+
     void save(LoginUserVo user);
 }

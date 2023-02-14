@@ -1,0 +1,39 @@
+package com.acme.acmemall.model;
+
+import lombok.Data;
+
+import java.io.Serializable;
+import java.math.BigDecimal;
+
+/**
+ * @description:
+ * @author: ihpangzi
+ * @time: 2023/2/13 17:38
+ */
+@Data
+public class ProductVo implements Serializable {
+    //主键
+    private Integer id;
+    //商品Id
+    private Integer goods_id;
+    //产品Id
+    private Integer product_id;
+    //商品规格ids
+    private String goods_specification_ids;
+    //商品序列号
+    private String goods_sn;
+    //商品库存
+    private Integer goods_number;
+    //零售价格
+    private BigDecimal market_price;
+    //时长价
+    private BigDecimal retail_price;
+    //商品名称
+    private String goods_name;
+    //商品图片
+    private String list_pic_url;
+    //商户id
+    private Long merchant_id;
+    //活动价格
+    private BigDecimal group_price;
+}
