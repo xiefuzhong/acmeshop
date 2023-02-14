@@ -3,6 +3,7 @@ package com.acme.acmemall.service.impl;
 import com.acme.acmemall.dao.GoodsGalleryMapper;
 import com.acme.acmemall.model.GoodsGalleryVo;
 import com.acme.acmemall.service.IGoodsGalleryService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,6 +16,7 @@ import java.util.Map;
  */
 @Service
 public class GoodsGalleryService implements IGoodsGalleryService {
+    @Autowired
     private GoodsGalleryMapper mapper;
     /**
      * @param map
