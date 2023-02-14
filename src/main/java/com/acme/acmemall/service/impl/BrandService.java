@@ -2,6 +2,7 @@ package com.acme.acmemall.service.impl;
 
 import com.acme.acmemall.model.BrandVo;
 import com.acme.acmemall.service.IBrandService;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
@@ -11,6 +12,7 @@ import java.util.Map;
  * @author: ihpangzi
  * @time: 2023/2/14 9:24
  */
+@Service
 public class BrandService implements IBrandService {
     /**
      * @param id

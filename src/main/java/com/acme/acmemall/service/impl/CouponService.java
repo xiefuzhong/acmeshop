@@ -20,8 +20,6 @@ public class CouponService implements ICouponService {
     @Autowired
     CouponMapper couponDao;
 
-    @Autowired
-
     /**
      * @param map
      * @return
