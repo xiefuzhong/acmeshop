@@ -32,39 +32,39 @@ public class GoodsController extends ApiBase {
     @Autowired
     IBrandService brandService;
     @Autowired
-    private IGoodsService goodsService;
+    IGoodsService goodsService;
     @Autowired
-    private ICategoryService categoryService;
+    ICategoryService categoryService;
     @Autowired
-    private IUserService userService;
+    IUserService userService;
     @Autowired
-    private IGoodsSpecService goodsSpecService;
+    IGoodsSpecService goodsSpecService;
     @Autowired
-    private IProductService productService;
+    IProductService productService;
     @Autowired
-    private IGoodsGalleryService galleryService;
+    IGoodsGalleryService galleryService;
     @Autowired
-    private ICouponService couponService;
+    ICouponService couponService;
     @Autowired
-    private IAttributeService attributeService;
+    IAttributeService attributeService;
 
     @Autowired
-    private IGoodsIssueService issueService;
+    IGoodsIssueService issueService;
 
     @Autowired
-    private ICommentService commentService;
+    ICommentService commentService;
 
     @Autowired
-    private ICommentPictureService commentPictureService;
+    ICommentPictureService pictureService;
 
     @Autowired
-    private ICollectService collectService;
+    ICollectService collectService;
 
     @Autowired
-    private IFootprintService footprintService;
+    IFootprintService footprintService;
 
-    @Autowired
-    private IUserCouponService userCouponService;
+//    @Autowired
+//    IUserCouponService userCouponService;
 
     /**
      * 　　在售的商品总数
@@ -309,7 +309,7 @@ public class GoodsController extends ApiBase {
             commentInfo.put("avatar", commentUser.getAvatar());
             Map paramPicture = Maps.newHashMap();
             paramPicture.put("comment_id", hotComment.get(0).getId());
-            List<CommentPictureVo> picList = commentPictureService.queryCommentPicList(paramPicture);
+            List<CommentPictureVo> picList = pictureService.queryCommentPicList(paramPicture);
             commentInfo.put("pic_list", picList);
         }
         Map comment = Maps.newHashMap();
