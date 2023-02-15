@@ -1,6 +1,7 @@
 package com.acme.acmemall.service.impl;
 
 import com.acme.acmemall.dao.ShopCartMapper;
+import com.acme.acmemall.model.MerCartVo;
 import com.acme.acmemall.model.ShopCartVo;
 import com.acme.acmemall.service.IShopCartService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,5 +63,41 @@ public class ShopCartService implements IShopCartService {
     @Override
     public void delete(Integer id) {
         mapper.delete(id);
+    }
+
+    /**
+     * @param userId
+     * @param productIdsArray
+     */
+    @Override
+    public void deleteByUserAndProductIds(Long userId, String[] productIdsArray) {
+        mapper.deleteByUserAndProductIds(userId,productIdsArray);
+    }
+
+    /**
+     * @param userId
+     * @return
+     */
+    @Override
+    public List<MerCartVo> queryMerCartList(Long userId) {
+        return mapper.queryMerCartList(userId);
+    }
+
+    /**
+     * @param map
+     * @return
+     */
+    @Override
+    public List<ShopCartVo> queryCheckedByUserIdAndMerId(Map map) {
+        return mapper.queryCheckedByUserIdAndMerId(map);
+    }
+
+    /**
+     * @param merchantId
+     * @return
+     */
+    @Override
+    public String queryMerchantName(Long merchantId) {
+        return mapper.queryMerchantName(merchantId);
     }
 }

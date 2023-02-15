@@ -1,5 +1,6 @@
 package com.acme.acmemall.service;
 
+import com.acme.acmemall.model.MerCartVo;
 import com.acme.acmemall.model.ShopCartVo;
 
 import java.util.List;
@@ -22,4 +23,12 @@ public interface IShopCartService {
     ShopCartVo queryObject(Integer id);
 
     void delete(Integer id);
+
+    void deleteByUserAndProductIds(Long userId, String[] productIdsArray);
+
+    List<MerCartVo> queryMerCartList(Long userId);
+
+    List<ShopCartVo> queryCheckedByUserIdAndMerId(Map map);
+
+    String queryMerchantName(Long merchantId);
 }

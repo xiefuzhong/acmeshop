@@ -3,6 +3,7 @@ package com.acme.acmemall.controller;
 import com.acme.acmemall.annotation.IgnoreAuth;
 import com.acme.acmemall.model.CategoryVo;
 import com.acme.acmemall.service.ICategoryService;
+import com.google.common.collect.Maps;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -13,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -39,8 +39,8 @@ public class CatalogController extends ApiBase {
     public Object index(Integer id,
                         @RequestParam(value = "page", defaultValue = "1") Integer page,
                         @RequestParam(value = "size", defaultValue = "10") Integer size) {
-        Map<String, Object> resultObj = new HashMap();
-        Map params = new HashMap();
+        Map<String, Object> resultObj = Maps.newHashMap();
+        Map params = Maps.newHashMap();
         params.put("page", page);
         params.put("limit", size);
         params.put("sidx", "sort_order");
@@ -77,8 +77,8 @@ public class CatalogController extends ApiBase {
     @IgnoreAuth
     @GetMapping(value = "current")
     public Object current(Integer id) {
-        Map<String, Object> resultObj = new HashMap();
-        Map params = new HashMap();
+        Map<String, Object> resultObj = Maps.newHashMap();
+        Map params = Maps.newHashMap();
         params.put("parentId", 0);
         CategoryVo currentCategory = null;
         if (null != id) {

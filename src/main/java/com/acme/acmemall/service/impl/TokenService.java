@@ -4,11 +4,11 @@ import com.acme.acmemall.dao.TokenMapper;
 import com.acme.acmemall.model.Token;
 import com.acme.acmemall.service.ITokenService;
 import com.acme.acmemall.utils.CharUtil;
+import com.google.common.collect.Maps;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
 
 @Service
@@ -60,7 +60,7 @@ public class TokenService implements ITokenService {
             tokenDao.update(token);
         }
 
-        Map<String, Object> map = new HashMap<>();
+        Map<String, Object> map = Maps.newHashMap();
         map.put("token", token);
         map.put("expire", EXPIRE2);
         return map;

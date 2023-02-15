@@ -12,6 +12,10 @@ spring:
     view:
       suffix: .html
       prefix: /
+  cache:
+    type: EHCACHE
+    ehcache:
+      config: classpath:ehcache.xml
 
 mybatis:
   mapper-locations: classpath*:mapper/*Mapper.xml

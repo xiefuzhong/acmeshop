@@ -1,8 +1,7 @@
 package com.acme.acmemall.config;
 
+import com.google.common.collect.Maps;
 import lombok.Data;
-
-import java.util.HashMap;
 
 @Data
 public final class ApiResponse {
@@ -18,7 +17,7 @@ public final class ApiResponse {
   }
   
   public static ApiResponse ok() {
-    return new ApiResponse(0, "", new HashMap<>());
+    return new ApiResponse(0, "", Maps.newHashMap());
   }
 
   public static ApiResponse ok(Object data) {
@@ -26,6 +25,6 @@ public final class ApiResponse {
   }
 
   public static ApiResponse error(String errorMsg) {
-    return new ApiResponse(0, errorMsg, new HashMap<>());
+    return new ApiResponse(0, errorMsg, Maps.newHashMap());
   }
 }

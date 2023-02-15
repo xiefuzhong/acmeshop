@@ -4,6 +4,7 @@ import com.acme.acmemall.annotation.IgnoreAuth;
 import com.acme.acmemall.model.*;
 import com.acme.acmemall.service.*;
 import com.github.pagehelper.PageHelper;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -13,7 +14,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -86,7 +86,7 @@ public class IndexController extends ApiBase {
         param.put("parentId", 0);
         param.put("notName", "推荐");
         List<CategoryVo> categoryList = categoryService.queryCategoryList(param);
-        List<Map<String, Object>> newCategoryList = new ArrayList<>();
+        List<Map<String, Object>> newCategoryList = Lists.newArrayList();
 
         for (CategoryVo categoryItem : categoryList) {
             param.remove("fields");
@@ -94,7 +94,7 @@ public class IndexController extends ApiBase {
             List<CategoryVo> categoryEntityList = categoryService.queryCategoryList(param);
             List<Integer> childCategoryIds = null;
             if (categoryEntityList != null && categoryEntityList.size() > 0) {
-                childCategoryIds = new ArrayList<>();
+                childCategoryIds = Lists.newArrayList();
                 for (CategoryVo categoryEntity : categoryEntityList) {
                     childCategoryIds.add(categoryEntity.getId());
                 }

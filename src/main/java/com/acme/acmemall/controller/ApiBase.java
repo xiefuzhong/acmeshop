@@ -3,6 +3,7 @@ package com.acme.acmemall.controller;
 import com.acme.acmemall.interceptor.AuthorizationInterceptor;
 import com.acme.acmemall.model.LoginUserVo;
 import com.alibaba.fastjson.JSONObject;
+import com.google.common.collect.Maps;
 import org.apache.log4j.Logger;
 import org.apache.shiro.authz.UnauthorizedException;
 import org.springframework.beans.TypeMismatchException;
@@ -20,7 +21,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Map;
 
 
@@ -64,7 +64,7 @@ public class ApiBase {
      * @Description:构建统一格式返回对象
      */
     public Map<String, Object> toResponsObject(int requestCode, String msg, Object data) {
-        Map<String, Object> obj = new HashMap<String, Object>(3);
+        Map<String, Object> obj = Maps.newHashMap();
         obj.put("errno", requestCode);
         obj.put("errmsg", msg);
         if (data != null) {
@@ -83,7 +83,7 @@ public class ApiBase {
     }
 
     public Map<String, Object> toResponsSuccessForSelect(Object data) {
-        Map<String, Object> result = new HashMap<>(2);
+        Map<String, Object> result = Maps.newHashMap();
         result.put("list", data);
         return toResponsObject(0, "执行成功", result);
     }
