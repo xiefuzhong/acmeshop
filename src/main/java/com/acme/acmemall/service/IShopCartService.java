@@ -18,4 +18,8 @@ public interface IShopCartService {
     void save(ShopCartVo cartInfo);
 
     void update(ShopCartVo cartInfo);
+
+    ShopCartVo queryObject(Integer id);
+
+    void delete(Integer id);
 }

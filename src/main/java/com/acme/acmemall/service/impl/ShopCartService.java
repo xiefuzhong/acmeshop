@@ -46,4 +46,21 @@ public class ShopCartService implements IShopCartService {
     public void update(ShopCartVo cartInfo) {
         mapper.update(cartInfo);
     }
+
+    /**
+     * @param id
+     * @return
+     */
+    @Override
+    public ShopCartVo queryObject(Integer id) {
+        return mapper.queryObject(id);
+    }
+
+    /**
+     * @param id
+     */
+    @Override
+    public void delete(Integer id) {
+        mapper.delete(id);
+    }
 }
