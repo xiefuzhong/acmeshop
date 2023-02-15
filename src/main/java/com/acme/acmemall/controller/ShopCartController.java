@@ -379,6 +379,7 @@ public class ShopCartController extends ApiBase {
         ArrayList checkedGoodsList = Lists.newArrayList();
 
         List<MerCartVo> merCartVoList = Lists.newArrayList();
+        // 购物车下单
         if (type.equals("cart")) {
             Map<String, Object> cartData = (Map<String, Object>) this.getCart(loginUser);
             List<ShopCartVo> cartVoList = Lists.newArrayList();

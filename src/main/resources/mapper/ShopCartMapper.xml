@@ -184,6 +184,8 @@
         delete from t_acme_mall_cart
         where  user_id = #{user_id} and  session_id = #{session_id} and  checked = #{checked}
     </delete>
+
+<!--    freightPrice 运费-->
     <select id="queryMerCartList" parameterType="java.lang.Long" resultType="com.acme.acmemall.model.MerCartVo">
             SELECT
             cart.merchant_id as merchantId,
@@ -191,9 +193,7 @@
             sum(
                 cart.retail_price * cart.number
             ) as orderTotalPrice,
-            sum(
-                goods.extra_price * cart.number
-            ) as freightPrice
+            ifnull(sum(goods.extra_price * cart.number),0) as freightPrice
         FROM
             t_acme_mall_cart cart,
             t_acme_mall_goods goods,
