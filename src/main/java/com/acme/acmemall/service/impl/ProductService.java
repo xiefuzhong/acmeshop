@@ -27,4 +27,13 @@ public class ProductService implements IProductService {
     public List<ProductVo> queryProductList(Map<String, Object> map) {
         return mapper.queryList(map);
     }
+
+    /**
+     * @param productId
+     * @return
+     */
+    @Override
+    public ProductVo queryObject(Integer productId) {
+        return mapper.queryObject(productId);
+    }
 }

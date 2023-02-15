@@ -18,7 +18,8 @@ import java.util.Map;
 public class ShopCartService implements IShopCartService {
 
     @Autowired
-    private ShopCartMapper carDao;
+    private ShopCartMapper mapper;
+
     /**
      * 购物车查询
      *
@@ -27,6 +28,22 @@ public class ShopCartService implements IShopCartService {
      */
     @Override
     public List<ShopCartVo> queryCartList(Map<String, Object> map) {
-        return carDao.queryList(map);
+        return this.mapper.queryList(map);
+    }
+
+    /**
+     * @param cartInfo
+     */
+    @Override
+    public void save(ShopCartVo cartInfo) {
+        mapper.save(cartInfo);
+    }
+
+    /**
+     * @param cartInfo
+     */
+    @Override
+    public void update(ShopCartVo cartInfo) {
+        mapper.update(cartInfo);
     }
 }

@@ -14,4 +14,8 @@ public interface IShopCartService {
      * @return 购物车清单
      */
     List<ShopCartVo> queryCartList(Map<String, Object> map);
+
+    void save(ShopCartVo cartInfo);
+
+    void update(ShopCartVo cartInfo);
 }
