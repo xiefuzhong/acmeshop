@@ -5,15 +5,15 @@ server:
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://${MYSQL_ADDRESS}/${MYSQL_DATABASE:acmeshop}
-    username: ${MYSQL_USERNAME}
-    password: ${MySQL_PASSWORD}
+    url: jdbc:mysql://sh-cynosdbmysql-grp-2v3prg8g.sql.tencentcdb.com:27853/${MYSQL_DATABASE:acmeshop}
+    username: acmeshop
+    password: !QAZ2wsx
   mvc:
     view:
       suffix: .html
       prefix: /
   cache:
-    type: EHCACHE
+    type: ehcache
     ehcache:
       config: classpath:ehcache.xml
 

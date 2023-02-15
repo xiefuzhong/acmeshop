@@ -13,7 +13,7 @@ spring:
       suffix: .html
       prefix: /
   cache:
-    type: EHCACHE
+    type: ehcache
     ehcache:
       config: classpath:ehcache.xml
 
