@@ -279,10 +279,13 @@ public class GoodsController extends ApiBase {
             }
         }
         // 产品查询
-        Map productParam = Maps.newHashMap();
-        productParam.put("goods_id", id);
-        List<ProductVo> productList = productService.queryProductList(productParam);
-        List<GoodsGalleryVo> gallery = galleryService.queryGoodsGalleryList(productParam);
+        Map paramMap = Maps.newHashMap();
+        paramMap.put("goods_id", id);
+        List<ProductVo> productList = productService.queryProductList(paramMap);
+
+        paramMap.put("sidx", "id");
+        paramMap.put("order", "asc");
+        List<GoodsGalleryVo> gallery = galleryService.queryGoodsGalleryList(paramMap);
         Map ngaParam = Maps.newHashMap();
         ngaParam.put("fields", "nga.value, na.name");
         ngaParam.put("sidx", "nga.id");
@@ -296,10 +299,10 @@ public class GoodsController extends ApiBase {
         //
         BrandVo brand = brandService.queryObject(info.getBrand_id());
         //
-        productParam.put("value_id", id);
-        productParam.put("type_id", 0);
-        Integer commentCount = commentService.queryTotal(productParam);
-        List<CommentVo> hotComment = commentService.queryCommentList(productParam);
+        paramMap.put("value_id", id);
+        paramMap.put("type_id", 0);
+        Integer commentCount = commentService.queryTotal(paramMap);
+        List<CommentVo> hotComment = commentService.queryCommentList(paramMap);
         Map commentInfo = Maps.newHashMap();
         if (null != hotComment && hotComment.size() > 0) {
             LoginUserVo commentUser = userService.queryObject(hotComment.get(0).getUser_id());
