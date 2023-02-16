@@ -80,11 +80,14 @@ public class ShopCartController extends ApiBase {
         logger.info("user_id>>" + loginUser.getUserId());
         List<ShopCartVo> cartList = cartService.queryCartList(param);
         logger.info("cart.list.size =" + (cartList.isEmpty() ? 0 : cartList.size()));
-        //获取购物车统计信息
+        // 获取购物车统计信息
         Integer goodsCount = 0; // 商品数量
-        BigDecimal goodsAmount = BigDecimal.ZERO; // 商品金额
-        Integer checkedGoodsCount = 0; // 校验数量
-        BigDecimal checkedGoodsAmount = BigDecimal.ZERO; // 校验金额
+        // 商品金额
+        BigDecimal goodsAmount = BigDecimal.ZERO;
+        // 校验数量
+        Integer checkedGoodsCount = 0;
+        // 校验金额
+        BigDecimal checkedGoodsAmount = BigDecimal.ZERO;
         for (ShopCartVo cartItem : cartList) {
             goodsCount += cartItem.getNumber();
             goodsAmount = goodsAmount.add(cartItem.getAmount());
@@ -360,7 +363,8 @@ public class ShopCartController extends ApiBase {
      */
     @ApiOperation(value = "订单提交前的检验和填写相关订单信息")
     @GetMapping("checkout")
-    public Object checkout(@LoginUser LoginUserVo loginUser, Integer couponId, @RequestParam(defaultValue = "cart") String type, Integer addressId, String activityType) {
+    public Object checkout(@LoginUser LoginUserVo loginUser, Integer couponId,
+                           @RequestParam(defaultValue = "cart") String type, Integer addressId, String activityType) {
         //activityType="2";
         Map<String, Object> resultObj = Maps.newHashMap();
         //根据收货地址计算运费
@@ -412,7 +416,6 @@ public class ShopCartController extends ApiBase {
             if (goods.getIs_secKill() == 3) {
                 if ("2".equals(activityType)) {//团购购买
                     productInfo.setRetail_price(productInfo.getGroup_price());
-
                 }
             }
             goodsTotalPrice = productInfo.getRetail_price().multiply(new BigDecimal(goodsVO.getNumber()));

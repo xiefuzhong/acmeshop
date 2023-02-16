@@ -10,11 +10,15 @@ import java.util.regex.Pattern;
 /**
  * 名称：StringUtils <br>
  * 描述：String工具类<br>
+ * @author ihpangzi
  *
  */
 public class StringUtils {
     public static final String EMPTY = "";
     private static Pattern linePattern = Pattern.compile("_(\\w)");
+
+    /**INT*/
+    private static final String NUMBER = "-?\\d+";
 
     /**
      * 判断字符串是否不为空，不为空则返回true
@@ -36,17 +40,21 @@ public class StringUtils {
      * @return
      */
     public static boolean isNullOrEmpty(Object obj) {
-        if (obj == null)
+        if (obj == null) {
             return true;
+        }
 
-        if (obj instanceof CharSequence)
+        if (obj instanceof CharSequence) {
             return ((CharSequence) obj).length() == 0;
+        }
 
-        if (obj instanceof Collection)
+        if (obj instanceof Collection) {
             return ((Collection) obj).isEmpty();
+        }
 
-        if (obj instanceof Map)
+        if (obj instanceof Map) {
             return ((Map) obj).isEmpty();
+        }
 
         if (obj instanceof Object[]) {
             Object[] object = (Object[]) obj;
@@ -141,11 +149,11 @@ public class StringUtils {
     }
 
     public static int parseInt(Object str, int defaultValue) {
-        if (str == null || str.equals("")) {
+        if (str == null || "".equals(str)) {
             return defaultValue;
         }
         String s = str.toString().trim();
-        if (!s.matches("-?\\d+")) {
+        if (!s.matches(NUMBER)) {
             return defaultValue;
         }
         return Integer.parseInt(s);
