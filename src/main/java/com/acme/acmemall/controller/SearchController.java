@@ -1,5 +1,6 @@
 package com.acme.acmemall.controller;
 
+import com.acme.acmemall.annotation.IgnoreAuth;
 import com.acme.acmemall.annotation.LoginUser;
 import com.acme.acmemall.common.QueryParam;
 import com.acme.acmemall.model.KeywordsVo;
@@ -8,9 +9,12 @@ import com.acme.acmemall.model.SearchHistoryVo;
 import com.acme.acmemall.service.IKeywordsService;
 import com.acme.acmemall.service.ISearchHistoryService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -82,5 +86,40 @@ public class SearchController extends ApiBase {
         resultObj.put("historyKeywordList", historyKeywordList);
         resultObj.put("hotKeywordList", hotKeywordList);
         return toResponsSuccess(resultObj);
+    }
+
+    /**
+     * 　　helper
+     */
+    @ApiOperation(value = "搜索商品")
+    @ApiImplicitParams({@ApiImplicitParam(name = "keyword", value = "关键字", paramType = "path", required = true)})
+    @IgnoreAuth
+    @GetMapping("helper")
+    public Object helper(@LoginUser LoginUserVo loginUser, String keyword) {
+        Map param = new HashMap();
+        param.put("fields", "distinct keyword");
+        param.put("keyword", keyword);
+        param.put("limit", 10);
+        param.put("offset", 0);
+        List<KeywordsVo> keywords = keywordsService.queryKeywordsList(param);
+        String[] keys = new String[keywords.size()];
+        if (null != keywords) {
+            int i = 0;
+            for (KeywordsVo keywordsVo : keywords) {
+                keys[i] = keywordsVo.getKeyword();
+                i++;
+            }
+        }
+        return toResponsSuccess(keys);
+    }
+
+    /**
+     * 　清空历史搜索记录
+     */
+    @PostMapping("clearhistory")
+    public Object clearhistory(@LoginUser LoginUserVo loginUser) {
+        searchHistoryService.deleteByUserId(loginUser.getUserId());
+        //
+        return toResponsSuccess("");
     }
 }

@@ -28,4 +28,12 @@ public class SearchHistoryService implements ISearchHistoryService {
     public List<SearchHistoryVo> querySearchHistoryList(Map<String, Object> map) {
         return mapper.queryList(map);
     }
+
+    /**
+     * @param userId
+     */
+    @Override
+    public void deleteByUserId(Long userId) {
+        mapper.deleteByUserId(userId);
+    }
 }

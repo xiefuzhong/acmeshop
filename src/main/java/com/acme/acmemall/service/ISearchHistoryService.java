@@ -8,4 +8,6 @@ import java.util.Map;
 public interface ISearchHistoryService {
 
     List<SearchHistoryVo> querySearchHistoryList(Map<String,Object> map);
+
+    void deleteByUserId(Long userId);
 }
