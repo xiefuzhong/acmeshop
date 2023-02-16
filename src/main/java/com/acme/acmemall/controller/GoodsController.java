@@ -8,6 +8,7 @@ import com.acme.acmemall.service.*;
 import com.acme.acmemall.utils.Base64;
 import com.acme.acmemall.utils.DateUtils;
 import com.acme.acmemall.utils.PageUtils;
+import com.acme.acmemall.utils.StringUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
@@ -63,6 +64,9 @@ public class GoodsController extends ApiBase {
     @Autowired
     IFootprintService footprintService;
 
+    @Autowired
+    ISearchHistoryService searchHistoryService;
+
 //    @Autowired
 //    IUserCouponService userCouponService;
 
@@ -114,7 +118,8 @@ public class GoodsController extends ApiBase {
     @GetMapping(value = "list")
     public Object list(@LoginUser LoginUserVo loginUser, Integer categoryId,
                        Integer brandId, String keyword, Integer isNew, Integer isHot,
-                       @RequestParam(value = "page", defaultValue = "1") Integer page, @RequestParam(value = "size", defaultValue = "10") Integer size,
+                       @RequestParam(value = "page", defaultValue = "1") Integer page,
+                       @RequestParam(value = "size", defaultValue = "10") Integer size,
                        String sort, String order) {
         Map params = Maps.newHashMap();
         params.put("is_delete", 0);
@@ -135,16 +140,17 @@ public class GoodsController extends ApiBase {
             params.put("sidx", "id");
             params.put("order", "desc");
         }
-        //添加到搜索历史
-//        if (!StringUtils.isNullOrEmpty(keyword)) {
-//            SearchHistoryVo searchHistoryVo = new SearchHistoryVo();
-//            searchHistoryVo.setAdd_time(System.currentTimeMillis() / 1000);
-//            searchHistoryVo.setKeyword(keyword);
-//            searchHistoryVo.setUser_id(null != loginUser ? loginUser.getUserId().toString() : "");
-//            searchHistoryVo.setFrom("");
-//            searchHistoryService.save(searchHistoryVo);
-//
-//        }
+        // 添加到搜索历史
+        if (!StringUtils.isNullOrEmpty(keyword)) {
+            SearchHistoryVo searchHistoryVo = new SearchHistoryVo();
+            searchHistoryVo.setAdd_time(System.currentTimeMillis() / 1000);
+            searchHistoryVo.setKeyword(keyword);
+            searchHistoryVo.setUser_id(null != loginUser ? loginUser.getUserId().toString() : "");
+            searchHistoryVo.setFrom("");
+            searchHistoryService.save(searchHistoryVo);
+
+        }
+
         //筛选的分类
         List<CategoryVo> filterCategory = Lists.newArrayList();
         CategoryVo rootCategory = new CategoryVo();

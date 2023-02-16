@@ -19,7 +19,7 @@ public interface IAddressService {
      * @param map
      * @return
      */
-    List<AddressVo> queryList(Map<String, Object> map);
+    List<AddressVo> queryAddressList(Map<String, Object> map);
 
     /**
      * 用户默认地址
@@ -27,4 +27,14 @@ public interface IAddressService {
      * @return
      */
     AddressVo queryDefaultAddress(Long userId);
+
+    void updateIsDefault(AddressVo entity1);
+
+    void save(AddressVo entity);
+
+    void update(AddressVo entity);
+
+    void delete(Integer id);
+
+    List<AddressVo> queryaddressUserlist(Map<String, Object> param);
 }

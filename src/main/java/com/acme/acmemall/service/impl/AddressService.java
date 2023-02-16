@@ -1,7 +1,9 @@
 package com.acme.acmemall.service.impl;
 
+import com.acme.acmemall.dao.AddressMapper;
 import com.acme.acmemall.model.AddressVo;
 import com.acme.acmemall.service.IAddressService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,6 +16,10 @@ import java.util.Map;
  */
 @Service
 public class AddressService implements IAddressService {
+
+    @Autowired
+    AddressMapper mapper;
+
     /**
      * 收件地址
      *
@@ -22,7 +28,7 @@ public class AddressService implements IAddressService {
      */
     @Override
     public AddressVo queryObject(Integer id) {
-        return null;
+        return mapper.queryObject(id);
     }
 
     /**
@@ -32,8 +38,8 @@ public class AddressService implements IAddressService {
      * @return
      */
     @Override
-    public List<AddressVo> queryList(Map<String, Object> map) {
-        return null;
+    public List<AddressVo> queryAddressList(Map<String, Object> map) {
+        return mapper.queryList(map);
     }
 
     /**
@@ -44,6 +50,47 @@ public class AddressService implements IAddressService {
      */
     @Override
     public AddressVo queryDefaultAddress(Long userId) {
-        return null;
+        return mapper.queryDefaultAddress(userId);
+    }
+
+    /**
+     * @param address
+     */
+    @Override
+    public void updateIsDefault(AddressVo address) {
+        mapper.updateIsDefault(address);
+    }
+
+    /**
+     * @param entity
+     */
+    @Override
+    public void save(AddressVo entity) {
+        mapper.save(entity);
+    }
+
+    /**
+     * @param entity
+     */
+    @Override
+    public void update(AddressVo entity) {
+        mapper.update(entity);
+    }
+
+    /**
+     * @param id
+     */
+    @Override
+    public void delete(Integer id) {
+        mapper.delete(id);
+    }
+
+    /**
+     * @param param
+     * @return
+     */
+    @Override
+    public List<AddressVo> queryaddressUserlist(Map<String, Object> param) {
+        return mapper.queryAddressCustomerlist(param);
     }
 }

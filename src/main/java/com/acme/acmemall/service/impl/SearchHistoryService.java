@@ -36,4 +36,12 @@ public class SearchHistoryService implements ISearchHistoryService {
     public void deleteByUserId(Long userId) {
         mapper.deleteByUserId(userId);
     }
+
+    /**
+     * @param searchHistoryVo
+     */
+    @Override
+    public void save(SearchHistoryVo searchHistoryVo) {
+        mapper.save(searchHistoryVo);
+    }
 }
