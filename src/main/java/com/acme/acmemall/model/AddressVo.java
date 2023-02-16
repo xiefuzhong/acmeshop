@@ -1,6 +1,7 @@
 package com.acme.acmemall.model;
 
 import lombok.Data;
+import org.apache.commons.lang.StringUtils;
 
 import java.io.Serializable;
 
@@ -36,4 +37,20 @@ public class AddressVo implements Serializable {
     private Integer is_default = 0;
 
     private String full_region;
+
+    public String getFull_region() {
+        if (StringUtils.isEmpty(full_region)) {
+            full_region = "";
+            if(null != getProvinceName() && getProvinceName().length() > 0){
+                full_region += getProvinceName();
+            }
+            if(null != getCityName() && getCityName().length() > 0){
+                full_region += getCityName();
+            }
+            if(null != getCountyName() && getCountyName().length() > 0){
+                full_region += getCountyName();
+            }
+        }
+        return full_region;
+    }
 }

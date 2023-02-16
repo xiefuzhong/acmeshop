@@ -5,6 +5,11 @@ import lombok.Data;
 import java.io.Serializable;
 import java.util.List;
 
+/**
+ * @description: 分类
+ * @author: ihpangzi
+ * @time: 2023/2/14 8:57
+ */
 @Data
 public class CategoryVo implements Serializable {
     //主键

@@ -5,7 +5,7 @@ import lombok.Data;
 import java.io.Serializable;
 
 /**
- * @description:
+ * @description:商品购买信息
  * @author: ihpangzi
  * @time: 2023/2/15 14:27
  */
