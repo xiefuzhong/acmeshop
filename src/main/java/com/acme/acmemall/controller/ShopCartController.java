@@ -476,7 +476,7 @@ public class ShopCartController extends ApiBase {
 
         resultObj.put("couponPrice", couponPrice);
         resultObj.put("checkedGoodsList", merCartVoList);
-        resultObj.put("checkedGoodsList", checkedGoodsList);
+//        resultObj.put("checkedGoodsList", checkedGoodsList);
         resultObj.put("goodsTotalPrice", goodsTotalPrice);
         resultObj.put("orderTotalPrice", orderTotalPrice);
         resultObj.put("actualPrice", actualPrice);
