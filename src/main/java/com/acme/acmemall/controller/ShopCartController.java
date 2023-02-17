@@ -407,7 +407,7 @@ public class ShopCartController extends ApiBase {
                 cartVoList = cartService.queryCheckedByUserIdAndMerId(map);
                 merCartVo.setCartVoList(cartVoList);
                 //获取用户可用优惠券列表
-//                List<CouponVo> couponVos = couponService.queryUserCoupons(map);
+                List<CouponVo> couponVos = couponService.queryUserCoupons(map);
                 List<CouponVo> validCouponVos = couponService.getValidUserCoupons(map);
                 merCartVo.setUserCouponList(validCouponVos);
                 merCartVoList.add(merCartVo);
@@ -451,7 +451,7 @@ public class ShopCartController extends ApiBase {
             map.put("user_id", loginUser.getUserId());
             map.put("merchantId", merCartVo.getMerchantId());
             map.put("goodsTotalPrice", merCartVo.getOrderTotalPrice());
-//            List<CouponVo> couponVos = couponService.queryUserCoupons(map);
+            List<CouponVo> couponVos = couponService.queryUserCoupons(map);
             List<CouponVo> validCouponVos = couponService.getValidUserCoupons(map);
             merCartVo.setUserCouponList(validCouponVos);
             merCartVoList.add(merCartVo);
