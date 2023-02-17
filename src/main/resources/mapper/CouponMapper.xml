@@ -215,7 +215,7 @@
         and b.coupon_status=1
         and a.merchant_id=#{merchantId}
         and a.min_goods_amount &lt;= #{goodsTotalPrice}
-        and b.user_id = #{user_id} and b.order_id is null
+        and b.user_id = #{user_id} and b.order_id =0
     </select>
 
 </mapper>
