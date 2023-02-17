@@ -43,4 +43,6 @@ public interface ICouponService {
     int updateUserCoupon(CouponVo couponVo);
 
     List<CouponVo> getValidUserCoupons(Map param);
+
+    CouponVo queryObject(Integer couponId);
 }

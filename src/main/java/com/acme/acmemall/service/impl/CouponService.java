@@ -90,4 +90,13 @@ public class CouponService implements ICouponService {
     public List<CouponVo> getValidUserCoupons(Map param) {
         return mapper.getValidUserCoupons(param);
     }
+
+    /**
+     * @param couponId
+     * @return
+     */
+    @Override
+    public CouponVo queryObject(Integer couponId) {
+        return mapper.queryObject(couponId);
+    }
 }
