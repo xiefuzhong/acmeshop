@@ -4,7 +4,6 @@ import com.acme.acmemall.annotation.LoginUser;
 import com.acme.acmemall.interceptor.AuthorizationInterceptor;
 import com.acme.acmemall.model.LoginUserVo;
 import com.acme.acmemall.service.IUserService;
-import com.alibaba.fastjson.JSONObject;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.MethodParameter;
@@ -43,7 +42,6 @@ public class LoginUserHandlerMethodArgumentResolver implements HandlerMethodArgu
             logger.info("loginuser is null");
             return null;
         }
-        logger.info("resolveArgument>>"+ JSONObject.toJSON(user));
 //        user = userService.queryByOpenId(null);
         return user;
     }

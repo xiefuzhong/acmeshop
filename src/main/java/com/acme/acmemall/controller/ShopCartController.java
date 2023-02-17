@@ -329,6 +329,7 @@ public class ShopCartController extends ApiBase {
 
     /**
      * 获取购物车商品的总件件数
+     *
      * @param loginUser
      * @return
      */
@@ -364,13 +365,18 @@ public class ShopCartController extends ApiBase {
     @ApiOperation(value = "订单提交前的检验和填写相关订单信息")
     @GetMapping("checkout")
     public Object checkout(@LoginUser LoginUserVo loginUser, Integer couponId,
-                           @RequestParam(defaultValue = "cart") String type, Integer addressId, String activityType) {
+                           @RequestParam(defaultValue = "cart") String type,
+                           Integer addressId,
+                           String activityType) {
         //activityType="2";
         Map<String, Object> resultObj = Maps.newHashMap();
-        //根据收货地址计算运费
+
+        //根据收货地址计算运费,当前取商品的附加值做运费(预先设定或可编辑根据实际咨询获得)
         BigDecimal freightPrice = BigDecimal.ZERO;
+
         //订单总金额
         BigDecimal goodsTotalPrice = BigDecimal.ZERO;
+
         //默认收货地址
         AddressVo checkedAddress = null;
         if (StringUtils.isNullOrEmpty(addressId) || addressId == 0) {
@@ -451,12 +457,11 @@ public class ShopCartController extends ApiBase {
             merCartVoList.add(merCartVo);
         }
 
-
         //获取可用的优惠券信息
         BigDecimal couponPrice = new BigDecimal("0.00");
         if (couponId != null && couponId != 0) {
-//            CouponVo couponVo = couponMapper.getUserCoupon(couponId);
-            CouponVo couponVo = new CouponVo();// 查询用户优惠券
+            // 查询用户优惠券
+            CouponVo couponVo = couponService.getUserCoupon(couponId);
             if (couponVo != null) {
                 couponPrice = couponVo.getType_money();
             }
@@ -471,7 +476,7 @@ public class ShopCartController extends ApiBase {
 
         resultObj.put("couponPrice", couponPrice);
         resultObj.put("checkedGoodsList", merCartVoList);
-//        resultObj.put("checkedGoodsList", checkedGoodsList);
+        resultObj.put("checkedGoodsList", checkedGoodsList);
         resultObj.put("goodsTotalPrice", goodsTotalPrice);
         resultObj.put("orderTotalPrice", orderTotalPrice);
         resultObj.put("actualPrice", actualPrice);
