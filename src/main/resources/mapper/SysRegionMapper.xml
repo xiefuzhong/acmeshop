@@ -35,6 +35,9 @@
             <if test="type != null and type != ''">
                 AND a.type = #{type}
             </if>
+            <if test="parentId!='' and parentId!=null">
+                AND a.parent_id=#{parentId}
+            </if>
         </where>
         <choose>
             <when test="sidx != null and sidx.trim() != ''">

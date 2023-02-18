@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -48,7 +49,9 @@ public class SysRegionService implements ISysRegionService {
             return Lists.newArrayList();
         }
         if (CollectionUtils.isEmpty(regionList)) {
-            return Lists.newArrayList();
+            Map param = Maps.newHashMap();
+            param.put("parentId", parentId);
+            return mapper.queryList(param);
         }
         return regionList.stream().filter(regionVo -> (regionVo.getParent_id() != null && regionVo.getParent_id() == parentId)).collect(Collectors.toList());
     }
