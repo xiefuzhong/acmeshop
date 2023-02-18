@@ -42,6 +42,7 @@ public class SysRegionService implements ISysRegionService {
      */
     @Override
     public List<RegionVo> getChildrenByParentId(Integer parentId) {
+        logger.info("region.getChildrenByParentId>>");
         if (parentId == null) {
             return Lists.newArrayList();
         }
