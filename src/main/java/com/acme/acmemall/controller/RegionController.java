@@ -30,6 +30,7 @@ public class RegionController extends ApiBase {
     @GetMapping("region-list")
     public Object list(Integer parentId) {
         List<RegionVo> regionVoList = regionService.getChildrenByParentId(parentId);
+        logger.info("region-list.size=="+regionVoList.size());
         return toResponsSuccess(regionVoList);
     }
 }
