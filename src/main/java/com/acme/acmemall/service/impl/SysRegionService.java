@@ -32,6 +32,7 @@ public class SysRegionService implements ISysRegionService {
         logger.info("<--region.init()-->");
         if (null != regionList) {
             regionList = mapper.queryList(Maps.newHashMap());
+            logger.info("init>>"+regionList.size());
         }
     }
 
@@ -42,7 +43,7 @@ public class SysRegionService implements ISysRegionService {
      */
     @Override
     public List<RegionVo> getChildrenByParentId(Integer parentId) {
-        logger.info("region.getChildrenByParentId>>");
+        logger.info("region.getChildrenByParentId>>"+parentId);
         if (parentId == null) {
             return Lists.newArrayList();
         }
