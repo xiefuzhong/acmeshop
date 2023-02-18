@@ -136,7 +136,7 @@
         <if test="send_type != null">
             and a.send_type = #{send_type}
         </if>
-        <if test="merchantId != null  and merchant_id !=''">
+        <if test="merchantId != null  and merchantId !=''">
             and a.merchant_id = #{merchantId}
         </if>
         <if test="coupon_status != null">

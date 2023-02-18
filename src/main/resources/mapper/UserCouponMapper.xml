@@ -36,25 +36,31 @@
     <select id="queryList" resultMap="userCouponMap">
         select a.* from t_acme_mall_user_coupon a
         left join t_acme_mall_coupon b on b.id = a.coupon_id
-        where 1 = 1 and a.merchant_id=b.merchant_id
-        <if test="coupon_number != null">
-            and a.coupon_number = #{coupon_number}
-        </if>
-        <if test="user_id != null">
-            and a.user_id = #{user_id}
-        </if>
-        <if test="merchantId != null and merchantId!=''">
-            and a.merchant_id = #{merchantId}
-        </if>
-        <if test="send_type != null">
-            and b.send_type = #{send_type}
-        </if>
-        <if test="referrer != null">
-            and a.referrer = #{referrer}
-        </if>
-        <if test="source_key != null">
-            and a.source_key = #{source_key}
-        </if>
+        <where>
+            and a.merchant_id=b.merchant_id
+            <if test="coupon_number != null">
+                and a.coupon_number = #{coupon_number}
+            </if>
+            <if test="user_id != null">
+                and a.user_id = #{user_id}
+            </if>
+            <if test="merchantId != null and merchantId!=''">
+                and a.merchant_id = #{merchantId}
+            </if>
+            <if test="send_type != null">
+                and b.send_type = #{send_type}
+            </if>
+            <if test="referrer != null">
+                and a.referrer = #{referrer}
+            </if>
+            <if test="source_key != null">
+                and a.source_key = #{source_key}
+            </if>
+            AND a.id in
+            <foreach item="couponId" collection="couponIds" open="(" separator="," close=")">
+                #{couponId}
+            </foreach>
+        </where>
         <choose>
             <when test="sidx != null and sidx.trim() != ''">
                 order by ${sidx} ${order}
