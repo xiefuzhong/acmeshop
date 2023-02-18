@@ -52,6 +52,9 @@ public class AddressController extends ApiBase {
     @GetMapping("detail")
     public Object detail(Integer id, @LoginUser LoginUserVo loginUser) {
         AddressVo entity = addressService.queryObject(id);
+        if (entity == null){
+            return toResponsSuccess(null);
+        }
         //判断越权行为，智能删除用户自己的
         if (!entity.getUserId().equals(loginUser.getUserId())) {
             return toResponsObject(403, "您无权查看", "");
