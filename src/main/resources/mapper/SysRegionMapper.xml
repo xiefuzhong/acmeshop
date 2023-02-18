@@ -65,7 +65,7 @@
         </where>
     </select>
 
-    <insert id="save" parameterType="com.platform.entity.SysRegionEntity" useGeneratedKeys="true" keyProperty="id">
+    <insert id="save" parameterType="com.acme.acmemall.model.RegionVo" useGeneratedKeys="true" keyProperty="id">
 		insert into sys_region
 		(
 			`parent_id`, 

@@ -17,7 +17,7 @@ import java.util.List;
  * @author: ihpangzi
  * @time: 2023/2/18 16:38
  */
-@Api(tags = "评论")
+@Api(tags = "基础数据")
 @RestController
 @RequestMapping("/api/basic-data")
 public class RegionController extends ApiBase {
