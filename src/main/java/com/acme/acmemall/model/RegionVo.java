@@ -21,12 +21,4 @@ public class RegionVo implements Serializable {
     private Integer type;
     //区域代理Id
     private Integer agency_id;
-
-    public RegionVo(SysRegionEntity regionEntity) {
-        id = regionEntity.getId();
-        parent_id = regionEntity.getParentId();
-        name = regionEntity.getName();
-        type = regionEntity.getType();
-        agency_id = regionEntity.getAgencyId();
-    }
 }
