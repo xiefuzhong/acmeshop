@@ -15,6 +15,12 @@ import java.util.Map;
  */
 @Mapper
 public interface ShopCartMapper extends BaseDao<ShopCartVo> {
+    /**
+     * 购物车明细是否选中
+     * @param productIds
+     * @param isChecked
+     * @param userId
+     */
     void updateCheck(@Param("productIds") String[] productIds,
                      @Param("isChecked") Integer isChecked, @Param("userId") Long userId);
 
@@ -31,4 +37,6 @@ public interface ShopCartMapper extends BaseDao<ShopCartVo> {
     List<ShopCartVo> queryCheckedByUserIdAndMerId(Map map);
 
     String queryMerchantName(Long merchantId);
+
+    void batchUpdate(List<ShopCartVo> cartList);
 }

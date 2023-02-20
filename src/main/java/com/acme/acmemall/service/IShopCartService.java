@@ -31,4 +31,6 @@ public interface IShopCartService {
     List<ShopCartVo> queryCheckedByUserIdAndMerId(Map map);
 
     String queryMerchantName(Long merchantId);
+
+    void updateCheck(String[] productIdArray, Integer isChecked, Long userId);
 }

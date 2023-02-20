@@ -359,7 +359,7 @@ public class ShopCartController extends ApiBase {
     }
 
     /**
-     * 订单提交前的检验和填写相关订单信息
+     * 下单前信息确认：订单提交前的检验和填写相关订单信息
      * activityType 1 直接购买  2 团购购买
      */
     @ApiOperation(value = "订单提交前的检验和填写相关订单信息")
@@ -481,6 +481,23 @@ public class ShopCartController extends ApiBase {
         resultObj.put("orderTotalPrice", orderTotalPrice);
         resultObj.put("actualPrice", actualPrice);
         return toResponsSuccess(resultObj);
+    }
+
+    /**
+     * 是否选择商品，如果已经选择，则取消选择，批量操作
+     */
+    @ApiOperation(value = "是否选择商品")
+    @PostMapping("checked")
+    public Object checked(@LoginUser LoginUserVo loginUser) {
+        JSONObject request = getJsonRequest();
+        String productIds = request.getString("productIds");
+        Integer isChecked = request.getInteger("isChecked");
+        if (StringUtils.isNullOrEmpty(productIds)) {
+            return this.toResponsFail("删除出错");
+        }
+        String[] productIdArray = productIds.split(",");
+        cartService.updateCheck(productIdArray, isChecked, loginUser.getUserId());
+        return toResponsSuccess(getCart(loginUser));
     }
 
     private String[] getSpecificationIdsArray(String ids) {

@@ -144,6 +144,30 @@
         where id = #{id}
     </update>
 
+    <update id="batchUpdate" parameterType="list">
+        <foreach collection="cartList" separator="," item="cart">
+            update t_acme_mall_cart
+            <set>
+                <if test="user_id != null">`user_id` = #{cart.user_id},</if>
+                <if test="session_id != null">`session_id` = #{cart.session_id},</if>
+                <if test="goods_id != null">`goods_id` = #{cart.goods_id},</if>
+                <if test="goods_sn != null">`goods_sn` = #{cart.goods_sn},</if>
+                <if test="product_id != null">`product_id` = #{cart.product_id},</if>
+                <if test="goods_name != null">`goods_name` = #{cart.goods_name},</if>
+                <if test="market_price != null">`market_price` = #{cart.market_price},</if>
+                <if test="retail_price != null">`retail_price` = #{cart.retail_price},</if>
+                <if test="number != null">`number` = #{cart.number},</if>
+                <if test="goods_specifition_name_value != null">`goods_specifition_name_value` =
+                    #{cart.goods_specifition_name_value},
+                </if>
+                <if test="goods_specifition_ids != null">`goods_specifition_ids` = #{cart.goods_specifition_ids},</if>
+                <if test="checked != null">`checked` = #{cart.checked},</if>
+                <if test="list_pic_url != null">`list_pic_url` = #{cart.list_pic_url},</if>
+            </set>
+            where id = #{cart.id}
+        </foreach>
+    </update>
+
     <update id="updateCheck">
         update t_acme_mall_cart
         set `checked` = #{isChecked}

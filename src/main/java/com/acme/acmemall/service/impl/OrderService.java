@@ -51,6 +51,9 @@ public class OrderService implements IOrderService {
 //        if (addressId == null || addressId.intValue() == 0) {
 //            return ResultMap.error(103,"请先选择或添加收件地址!");
 //        }
+        // 购物车商品ID
+        request.getString("cartId");
+
         // 校验是否选择
         AddressVo checkedAddress = request.getObject("checkedAddress", AddressVo.class);
         if (checkedAddress == null) {

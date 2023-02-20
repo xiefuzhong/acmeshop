@@ -5,7 +5,7 @@ server:
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://sh-cynosdbmysql-grp-2v3prg8g.sql.tencentcdb.com:27853/${MYSQL_DATABASE:acmeshop}
+    url: jdbc:mysql://sh-cynosdbmysql-grp-2v3prg8g.sql.tencentcdb.com:27853/${MYSQL_DATABASE:acmeshop}?allowMultiQueries=true
     username: acmeshop
     password: !QAZ2wsx
   mvc:
