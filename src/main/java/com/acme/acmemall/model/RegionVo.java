@@ -14,7 +14,7 @@ public class RegionVo implements Serializable {
     //主键
     private Integer id;
     //父节点
-    private Integer parent_id;
+    private Integer parentId;
     //区域名称
     private String name;
     // 类型 0国家 1省份 2地市 3区县
