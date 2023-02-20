@@ -20,5 +20,5 @@ public class RegionVo implements Serializable {
     // 类型 0国家 1省份 2地市 3区县
     private Integer type;
     //区域代理Id
-    private Integer agency_id;
+    private Integer agencyId;
 }
