@@ -30,5 +30,5 @@ pagehelper:
 
 logging:
   level:
-    root: ${LOG_LEVEL}
+    root: debug
 
