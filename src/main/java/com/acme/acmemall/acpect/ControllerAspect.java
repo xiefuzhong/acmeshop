@@ -23,7 +23,7 @@ public class ControllerAspect {
         logger.info("-----------------------point----------------------------");
     }
 
-    @Around("pointCutMethodController()")
+    @Around("point()")
     public Object doAround(ProceedingJoinPoint pjp) throws Throwable {
         long begin = System.nanoTime();
         Object result = pjp.proceed();
