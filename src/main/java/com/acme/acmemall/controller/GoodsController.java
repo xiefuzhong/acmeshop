@@ -2,7 +2,6 @@ package com.acme.acmemall.controller;
 
 import com.acme.acmemall.annotation.IgnoreAuth;
 import com.acme.acmemall.annotation.LoginUser;
-import com.acme.acmemall.common.QueryParam;
 import com.acme.acmemall.model.*;
 import com.acme.acmemall.service.*;
 import com.acme.acmemall.utils.Base64;
@@ -203,9 +202,9 @@ public class GoodsController extends ApiBase {
         }
         //查询列表数据
         params.put("fields", "id, name, list_pic_url, market_price, retail_price, goods_brief,is_service");
-        QueryParam query = new QueryParam(params);
+//        QueryParam query = new QueryParam(params);
         PageHelper.startPage(page, size);
-        List<GoodsVo> goodsList = goodsService.queryGoodsList(query);
+        List<GoodsVo> goodsList = goodsService.queryGoodsList(params);
         PageUtils goodsData = new PageUtils(new PageInfo(goodsList));
         //搜索到的商品
         for (CategoryVo categoryEntity : filterCategory) {
