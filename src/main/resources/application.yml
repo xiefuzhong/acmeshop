@@ -30,5 +30,5 @@ pagehelper:
 
 logging:
   level:
-    root: debug
+    com.acme.acmemall: debug
 
