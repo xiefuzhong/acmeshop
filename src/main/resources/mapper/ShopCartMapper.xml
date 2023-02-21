@@ -209,7 +209,7 @@
         where  user_id = #{user_id} and  session_id = #{session_id} and  checked = #{checked}
     </delete>
 
-<!--    freightPrice 运费-->
+<!--    查询用户已选择的购物车信息-->
     <select id="queryMerCartList" parameterType="java.lang.Long" resultType="com.acme.acmemall.model.MerCartVo">
             SELECT
             cart.merchant_id as merchantId,

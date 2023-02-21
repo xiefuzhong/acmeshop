@@ -52,7 +52,7 @@ public class OrderService implements IOrderService {
 //            return ResultMap.error(103,"请先选择或添加收件地址!");
 //        }
         // 购物车商品ID
-        request.getString("cartId");
+        String[] cartIds = request.getString("cartIds").split("_");
 
         // 校验是否选择
         AddressVo checkedAddress = request.getObject("checkedAddress", AddressVo.class);
