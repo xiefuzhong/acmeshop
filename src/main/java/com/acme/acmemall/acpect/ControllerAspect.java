@@ -1,11 +1,12 @@
 package com.acme.acmemall.acpect;
 
+import org.apache.log4j.Logger;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.stereotype.Component;
-import org.apache.log4j.Logger;
+
 import java.util.Arrays;
 
 
@@ -29,7 +30,7 @@ public class ControllerAspect {
         Object result = pjp.proceed();
         long end = System.nanoTime();
         long cost = end-begin;
-        logger.info("Controller method："+pjp.getSignature().toString()+"，prams："+Arrays.toString(pjp.getArgs())+"，cost time："+cost+" ns");
+        logger.info("Controller method："+pjp.getSignature().toString()+"，prams："+(pjp.getArgs().length>0? Arrays.toString(pjp.getArgs()):"void")+"，cost time："+cost+" ns");
         return result;
     }
 
