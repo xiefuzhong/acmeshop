@@ -63,7 +63,7 @@
             </otherwise>
         </choose>
         <if test="offset != null and limit != null">
-            limit #{limit}
+            limit #{offset}, #{limit}
         </if>
     </select>
 
