@@ -111,7 +111,7 @@
             </otherwise>
         </choose>
         <if test="offset != null and limit != null">
-            limit #{offset}, #{limit}
+            limit  #{limit}
         </if>
     </select>
 
@@ -187,7 +187,7 @@
             </otherwise>
         </choose>
         <if test="offset != null and limit != null">
-            limit #{offset}, #{limit}
+            limit #{limit}
         </if>
     </select>
 
