@@ -26,11 +26,11 @@ public class ControllerAspect {
 
     @Around("point()")
     public Object doAround(ProceedingJoinPoint pjp) throws Throwable {
-        long begin = System.nanoTime();
+        long begin = System.currentTimeMillis();
         Object result = pjp.proceed();
-        long end = System.nanoTime();
+        long end = System.currentTimeMillis();
         long cost = end-begin;
-        logger.info("Controller method："+pjp.getSignature().toString()+"，prams："+(pjp.getArgs().length>0? Arrays.toString(pjp.getArgs()):"void")+"，cost time："+cost+" ns");
+        logger.info("Controller method："+pjp.getSignature().toString()+"，prams："+(pjp.getArgs().length>0? Arrays.toString(pjp.getArgs()):"void")+"，cost time："+cost+" ms");
         return result;
     }
 
