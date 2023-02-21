@@ -204,7 +204,7 @@ public class GoodsController extends ApiBase {
         //查询列表数据
         params.put("fields", "id, name, list_pic_url, market_price, retail_price, goods_brief,is_service");
         QueryParam query = new QueryParam(params);
-        PageHelper.startPage(query.getPage(), query.getLimit());
+        PageHelper.startPage(page, size);
         List<GoodsVo> goodsList = goodsService.queryGoodsList(query);
         PageUtils goodsData = new PageUtils(new PageInfo(goodsList));
         //搜索到的商品
