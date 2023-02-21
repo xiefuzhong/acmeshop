@@ -28,3 +28,7 @@ pagehelper:
   support-methods-arguments: true
   params: count=countSql
 
+logging:
+  level:
+    root: ${LOG_LEVEL}
+
