@@ -78,7 +78,7 @@ public class AuthorizationInterceptor extends HandlerInterceptorAdapter {
                 LoginUserVo userVo = userService.queryByOpenId(openId);
                 if (userVo == null && annotation == null) {
                     logger.info("queryByOpenId return null");
-//                    throw new ApiCusException("请先登录", 401);
+                    throw new ApiCusException("请先登录", 401);
                 }
                 //设置userId到request里，后续根据userId，获取用户信息
                 request.setAttribute(LOGIN_USER_KEY, userVo);

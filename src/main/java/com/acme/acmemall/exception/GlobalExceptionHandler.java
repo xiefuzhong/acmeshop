@@ -2,7 +2,6 @@ package com.acme.acmemall.exception;
 
 import com.acme.acmemall.common.ResultMap;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
@@ -11,7 +10,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
  * @author: ihpangzi
  * @time: 2023/2/22 10:59
  */
-@ControllerAdvice
+//@ControllerAdvice
 public class GlobalExceptionHandler {
 
     /**
