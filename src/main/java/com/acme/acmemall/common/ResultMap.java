@@ -1,5 +1,7 @@
 package com.acme.acmemall.common;
 
+import com.acme.acmemall.exception.ResultCodeEnum;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -23,6 +25,19 @@ public class ResultMap extends HashMap<String, Object> {
 
     public static ResultMap error(String msg) {
         return error(500, msg);
+    }
+
+    public static ResultMap response(ResultCodeEnum resultCode){
+        ResultMap resultMap = new ResultMap();
+        resultMap.put("code", resultCode.getMessage());
+        resultMap.put("msg", resultCode.getMessage());
+        return resultMap;
+    }
+
+    public static ResultMap response(ResultCodeEnum resultCode,Object data){
+        ResultMap resultMap = response(resultCode);
+        resultMap.put("data",data);
+        return resultMap;
     }
 
     public static ResultMap error(int code, String msg) {

@@ -1,6 +1,7 @@
 package com.acme.acmemall.resolver;
 
 import com.acme.acmemall.annotation.LoginUser;
+import com.acme.acmemall.exception.ApiCusException;
 import com.acme.acmemall.interceptor.AuthorizationInterceptor;
 import com.acme.acmemall.model.LoginUserVo;
 import com.acme.acmemall.service.IUserService;
@@ -40,7 +41,7 @@ public class LoginUserHandlerMethodArgumentResolver implements HandlerMethodArgu
     	LoginUserVo user =(LoginUserVo) request.getAttribute(AuthorizationInterceptor.LOGIN_USER_KEY, RequestAttributes.SCOPE_REQUEST);
         if (user == null) {
             logger.info("loginuser is null");
-            return null;
+            throw new ApiCusException("请先登录",401);
         }
 //        user = userService.queryByOpenId(null);
         return user;
