@@ -1,6 +1,6 @@
 package com.acme.acmemall.model;
 
-import lombok.Data;
+import lombok.*;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -11,7 +11,10 @@ import java.util.Date;
  * @author: ihpangzi
  * @time: 2023/2/14 10:29
  */
-@Data
+@Getter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class UserCouponVo implements Serializable {
     //主键
     private Integer id;

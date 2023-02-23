@@ -52,6 +52,9 @@ public class ShopCartVo implements Serializable {
     //商户ID
     private Long merchant_id;
 
+    // 运费
+    private BigDecimal extra_price;
+
     /**
      * 节省金额计算=产品零售价格-实际零售价格
      *
@@ -64,9 +67,21 @@ public class ShopCartVo implements Serializable {
         return crash_save_price;
     }
 
-    public BigDecimal getAmount() {
+    /**
+     * 商品总额=商品价格*数量
+     * @return
+     */
+    public BigDecimal getGoodsTotalAmount() {
         if (retail_price != null && number != null) {
             return retail_price.multiply(new BigDecimal(number));
+        }
+        return BigDecimal.ZERO;
+    }
+
+    // 计算运费
+    public BigDecimal getExtraPrice(){
+        if (extra_price != null && number != null) {
+            return extra_price.multiply(new BigDecimal(number));
         }
         return BigDecimal.ZERO;
     }

@@ -56,6 +56,15 @@
             <if test="source_key != null">
                 and a.source_key = #{source_key}
             </if>
+            <if test="coupon_status != null">
+                and a.coupon_status = #{coupon_status}
+            </if>
+            <if test="selected != null and selected == true">
+                AND b.use_end_date >= now()
+                AND now() >= b.use_start_date
+                AND b.min_goods_amount &lt;= #{goodsTotalPrice}
+            </if>
+
             AND a.id in
             <foreach item="couponId" collection="couponIds" open="(" separator="," close=")">
                 #{couponId}

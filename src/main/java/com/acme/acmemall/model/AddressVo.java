@@ -38,19 +38,31 @@ public class AddressVo implements Serializable {
 
     private String full_region;
 
-    public String getFull_region() {
-        if (StringUtils.isEmpty(full_region)) {
-            full_region = "";
-            if(null != getProvinceName() && getProvinceName().length() > 0){
-                full_region += getProvinceName();
+    /**
+     * 地址拼接信息
+     * @return
+     */
+    public String getAddress() {
+        //    return full_region;
+        if (StringUtils.isNotEmpty(this.full_region)) {
+            return full_region;
+        } else {
+            StringBuffer strBuff = new StringBuffer();
+
+            if (StringUtils.isNotEmpty(this.provinceName)) {
+                strBuff.append(this.provinceName).append(" ");
             }
-            if(null != getCityName() && getCityName().length() > 0){
-                full_region += getCityName();
+            if (StringUtils.isNotEmpty(this.cityName)) {
+                strBuff.append(this.cityName).append(" ");
             }
-            if(null != getCountyName() && getCountyName().length() > 0){
-                full_region += getCountyName();
+            if (StringUtils.isNotEmpty(this.countyName)) {
+                strBuff.append(this.countyName).append(" ");
             }
+//            if (StringUtils.isNotEmpty(this.detailInfo)) {
+//                strBuff.append(this.detailInfo).append(" ");
+//            }
+            this.full_region = strBuff.toString();
+            return this.full_region;
         }
-        return full_region;
     }
 }

@@ -1,19 +1,31 @@
 package com.acme.acmemall.model;
 
-import lombok.Data;
+import com.acme.acmemall.exception.ApiCusException;
+import com.acme.acmemall.exception.ResultCodeEnum;
+import com.google.common.collect.Lists;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * @description:
  * @author: ihpangzi
  * @time: 2023/2/18 11:56
  */
-@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+@Getter
 public class OrderVo implements Serializable {
     //主键
     private Integer id;
@@ -62,17 +74,24 @@ public class OrderVo implements Serializable {
     //
     private String pay_name;
     //快递费用
-    private BigDecimal shipping_fee;
+
+    @Builder.Default
+    private BigDecimal shipping_fee = BigDecimal.ZERO;
     //实际需要支付的金额
-    private BigDecimal actual_price;
+    @Builder.Default
+    private BigDecimal actual_price = BigDecimal.ZERO;
     // 积分
     private Integer integral;
     // 积分抵扣金额
-    private BigDecimal integral_money;
+    @Builder.Default
+    private BigDecimal integral_money = BigDecimal.ZERO;
     //订单总价
-    private BigDecimal order_price;
+    @Builder.Default
+    private BigDecimal order_price = BigDecimal.ZERO;
+
+    @Builder.Default
     //商品总价
-    private BigDecimal goods_price;
+    private BigDecimal goods_price = BigDecimal.ZERO;
     //新增时间
     private Date add_time;
     //确认时间
@@ -80,33 +99,40 @@ public class OrderVo implements Serializable {
     //付款时间
     private Date pay_time;
     //配送费用
-    private Integer freight_price;
+    @Builder.Default
+    private BigDecimal freight_price = BigDecimal.ZERO;
     //使用的优惠券id
     private Integer coupon_id;
     //
     private Integer parent_id;
     //优惠价格
-    private BigDecimal coupon_price;
+    @Builder.Default
+    private BigDecimal coupon_price = BigDecimal.ZERO;
     //
     private Integer callback_status;
     //
     private Integer goodsCount; //订单的商品
     private String order_status_text;//订单状态的处理
     private Map handleOption; //可操作的选项
-    private BigDecimal full_cut_price; //订单满减
+
+    @Builder.Default
+    private BigDecimal full_cut_price = BigDecimal.ZERO; //订单满减
     private String full_region;//区县
     //1购物车、2普通、3秒杀、4团购
     private String order_type; // 订单状态
     private String goods_name;//商品名称
     private String list_pic_url;//图片地址
     private String goods_id;//商品ID
-    private BigDecimal all_price;//全部总价
+
+    @Builder.Default
+    private BigDecimal all_price = BigDecimal.ZERO;//全部总价
     private String all_order_id;//总订单ID
     //新增
     //推广人id
     private int promoter_id;
     //本订单佣金
-    private BigDecimal brokerage;
+    @Builder.Default
+    private BigDecimal brokerage = BigDecimal.ZERO;
     //fx状态 默认为0是没有分润金额，已分润状态变成1
     private Integer fx_status;
     //商户id
@@ -114,26 +140,141 @@ public class OrderVo implements Serializable {
     //团购ID
     private String group_buying_id;
 
-    public String getFull_region() {
+    // 收货人地址ID
+    private long addressId;
+
+    private List<OrderGoodsVo> items = Lists.newArrayList();
+
+    public String getAddress() {
         //    return full_region;
-        if (StringUtils.isNotEmpty(this.full_region)){
+        if (StringUtils.isNotEmpty(this.full_region)) {
             return full_region;
-        } else{
+        } else {
             StringBuffer strBuff = new StringBuffer();
-            if (StringUtils.isNotEmpty(this.country)){
+            if (StringUtils.isNotEmpty(this.country)) {
                 strBuff.append(this.country).append(" ");
             }
-            if(StringUtils.isNotEmpty(this.province)){
+            if (StringUtils.isNotEmpty(this.province)) {
                 strBuff.append(this.province).append(" ");
             }
-            if (StringUtils.isNotEmpty(this.city)){
+            if (StringUtils.isNotEmpty(this.city)) {
                 strBuff.append(this.city).append(" ");
             }
-            if (StringUtils.isNotEmpty(this.district)){
+            if (StringUtils.isNotEmpty(this.district)) {
                 strBuff.append(this.district).append(" ");
             }
             this.full_region = strBuff.toString();
             return this.full_region;
+        }
+    }
+
+    /**
+     * 订单提交
+     *
+     * @param userCouponList 用户优惠优惠
+     * @param cartList       购物车明细
+     * @param address        收件人地址
+     * @return
+     */
+    public OrderVo submit(List<UserCouponVo> userCouponList, List<ShopCartVo> cartList, AddressVo address) {
+        // 订单收件人信息
+        setAddress(address);
+
+        // 优惠信息
+        if (CollectionUtils.isNotEmpty(userCouponList)) {
+            UserCouponVo userCoupon = userCouponList.stream().findFirst().get();
+            this.coupon_id = userCoupon.getCoupon_id();
+            this.coupon_price = userCoupon.getCoupon_price();
+            this.full_cut_price = userCoupon.getCoupon_price();
+        }
+        // 商品数量
+        this.goodsCount = cartList.stream().mapToInt(ShopCartVo::getNumber).sum();
+        // 商品总价
+        this.goods_price = BigDecimal.valueOf(cartList.stream().mapToDouble(cart -> cart.getGoodsTotalAmount().doubleValue()).sum());
+        // 运费
+        this.freight_price = BigDecimal.valueOf(cartList.stream().mapToDouble(cart -> cart.getExtraPrice().doubleValue()).sum());
+        // 订单实付金额
+        this.actual_price = goods_price.add(freight_price).subtract(coupon_price);
+
+        // 订单明细
+        cartList.stream().forEach(cartVo -> {
+            addOrderItem(cartVo);
+        });
+        // 收集商品信息，1.数量，总价，优惠信息，
+        // 收集支付信息 支付金额，运费
+        // 收集订单明细信息
+        return this;
+    }
+
+    /**
+     * 付款
+     * @return
+     */
+    public OrderVo pay(OrderVo orderVo){
+        this.pay_id = UUID.randomUUID().toString();
+        this.pay_name = null;
+        this.pay_time = new Date();
+        this.pay_status = 2;
+        return this;
+    }
+
+    /**
+     * 取消订单
+     * @return
+     */
+    public OrderVo cancle(OrderVo orderVo){
+        return this;
+    }
+
+    /**
+     * 评价
+     * @return
+     */
+    public OrderVo grade(){
+        return this;
+    }
+
+    /**
+     * 发货
+     * @return
+     */
+    public OrderVo shipped(){
+        return this;
+    }
+
+    private void setAddress(AddressVo address) {
+        this.addressId = address.getId();
+        this.address = address.getAddress() + address.getDetailInfo();
+        this.province = address.getProvinceName();
+        this.city = address.getCityName();
+        this.district = address.getCountyName();
+        this.full_region = address.getAddress() ;
+        this.country = address.getNationalCode();
+        this.consignee = address.getUserName();
+        this.mobile = address.getTelNumber();
+    }
+
+    private void addOrderItem(ShopCartVo cartVo) {
+        OrderGoodsVo item = OrderGoodsVo.builder()
+                .order_id(this.id)
+                .goods_id(cartVo.getGoods_id())
+                .product_id(cartVo.getProduct_id())
+                .goods_specifition_ids(cartVo.getGoods_specifition_ids())
+                .goods_specifition_name_value(cartVo.getGoods_specifition_name_value())
+                .goods_sn(cartVo.getGoods_sn())
+                .goods_name(cartVo.getGoods_name())
+                .market_price(cartVo.getMarket_price())
+                .retail_price(cartVo.getRetail_price())
+                .number(cartVo.getNumber())
+                .list_pic_url(cartVo.getList_pic_url())
+                .is_real(1)
+                .build();
+        this.items.add(item);
+    }
+
+    public void check() {
+        if (this.actual_price.compareTo(BigDecimal.ZERO) <= 0) {
+            throw new ApiCusException(ResultCodeEnum.FAILED.getMessage());
         }
     }
 }

@@ -90,10 +90,10 @@ public class ShopCartController extends ApiBase {
         BigDecimal checkedGoodsAmount = BigDecimal.ZERO;
         for (ShopCartVo cartItem : cartList) {
             goodsCount += cartItem.getNumber();
-            goodsAmount = goodsAmount.add(cartItem.getAmount());
+            goodsAmount = goodsAmount.add(cartItem.getGoodsTotalAmount());
             if (null != cartItem.getChecked() && 1 == cartItem.getChecked()) {
                 checkedGoodsCount += cartItem.getNumber();
-                checkedGoodsAmount = checkedGoodsAmount.add(cartItem.getAmount());
+                checkedGoodsAmount = checkedGoodsAmount.add(cartItem.getGoodsTotalAmount());
             }
         }
         // 获取优惠信息提示

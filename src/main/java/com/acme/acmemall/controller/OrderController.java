@@ -1,8 +1,10 @@
 package com.acme.acmemall.controller;
 
 import com.acme.acmemall.annotation.LoginUser;
+import com.acme.acmemall.controller.reqeust.OrderSubmitRequest;
 import com.acme.acmemall.model.LoginUserVo;
 import com.acme.acmemall.service.IOrderService;
+import com.alibaba.fastjson.JSONObject;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.collections.MapUtils;
@@ -21,7 +23,7 @@ import java.util.Map;
 @Api(tags = "订单相关")
 @RestController
 @RequestMapping("/api/order")
-public class OrderController extends ApiBase{
+public class OrderController extends ApiBase {
 
     @Autowired
     IOrderService orderService;
@@ -31,7 +33,9 @@ public class OrderController extends ApiBase{
     public Object submit(@LoginUser LoginUserVo loginUser) {
         Map resultObj = null;
         try {
-            resultObj = orderService.submit(getJsonRequest(), loginUser);
+            OrderSubmitRequest request = JSONObject.toJavaObject(getJsonRequest(), OrderSubmitRequest.class);
+            request.check();
+            resultObj = orderService.submit(request, loginUser);
             if (null != resultObj) {
                 return toResponsObject(MapUtils.getInteger(resultObj, "errno"), MapUtils.getString(resultObj, "errmsg"), resultObj.get("data"));
             }
