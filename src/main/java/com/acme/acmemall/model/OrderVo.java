@@ -145,7 +145,7 @@ public class OrderVo implements Serializable {
 
     private List<OrderGoodsVo> items = Lists.newArrayList();
 
-    public String getAddress() {
+    public String getFull_region() {
         //    return full_region;
         if (StringUtils.isNotEmpty(this.full_region)) {
             return full_region;
