@@ -152,8 +152,7 @@ public class CouponController extends ApiBase {
         if (null == couponVo || null == couponVo.getUse_end_date() || couponVo.getUse_end_date().before(new Date())) {
             return toResponsFail("当前优惠码已经过期");
         }
-        userCouponVo.setUser_id(loginUser.getUserId());
-        userCouponVo.setAdd_time(new Date());
+        userCouponVo.exchange(loginUser.getUserId());
         userCouponService.update(userCouponVo);
         return toResponsSuccess(userCouponVo);
     }
@@ -193,13 +192,13 @@ public class CouponController extends ApiBase {
             return toResponsFail("优惠券已领完");
         }
         if (null != newCouponConfig) {
-            UserCouponVo userCouponVo = new UserCouponVo();
-            userCouponVo.setAdd_time(new Date());
-            userCouponVo.setCoupon_id(newCouponConfig.getId());
-            userCouponVo.setCoupon_number(CharUtil.getRandomString(12));
-            userCouponVo.setUser_id(loginUser.getUserId());
-            userCouponVo.setMerchantId(newCouponConfig.getMerchantId());
-            userCouponVo.setCoupon_price(newCouponConfig.getType_money());
+            UserCouponVo userCouponVo = UserCouponVo.builder()
+                    .add_time(new Date())
+                    .coupon_id(newCouponConfig.getId())
+                    .coupon_number(CharUtil.getRandomString(12))
+                    .user_id(loginUser.getUserId())
+                    .coupon_price(newCouponConfig.getType_money())
+                    .build();
             userCouponService.save(userCouponVo);
             return toResponsSuccess(userCouponVo);
         }else {
@@ -247,12 +246,13 @@ public class CouponController extends ApiBase {
         couponParam.put("send_type", 4);
         CouponVo newCouponConfig = couponService.queryMaxUserEnableCoupon(couponParam);
         if (null != newCouponConfig) {
-            UserCouponVo userCouponVo = new UserCouponVo();
-            userCouponVo.setAdd_time(new Date());
-            userCouponVo.setCoupon_id(newCouponConfig.getId());
-            userCouponVo.setCoupon_number(CharUtil.getRandomString(12));
-            userCouponVo.setUser_id(loginUser.getUserId());
-            userCouponVo.setCoupon_price(newCouponConfig.getType_money());
+            UserCouponVo userCouponVo = UserCouponVo.builder()
+                    .add_time(new Date())
+                    .coupon_id(newCouponConfig.getId())
+                    .coupon_number(CharUtil.getRandomString(12))
+                    .user_id(loginUser.getUserId())
+                    .coupon_price(newCouponConfig.getType_money())
+                    .build();
             userCouponService.save(userCouponVo);
             return toResponsSuccess(userCouponVo);
         }

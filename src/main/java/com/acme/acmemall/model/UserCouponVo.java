@@ -46,4 +46,9 @@ public class UserCouponVo implements Serializable {
     private Date use_end_date;
     //最小使用金额
     private BigDecimal min_goods_amount;
+
+    public void exchange(long user_id){
+        this.add_time = new Date();
+        this.user_id = user_id;
+    }
 }
