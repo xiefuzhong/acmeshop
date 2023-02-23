@@ -244,7 +244,7 @@ public class OrderVo implements Serializable {
 
     private void setAddress(AddressVo address) {
         this.addressId = address.getId();
-        this.address = address.getAddress() + address.getDetailInfo();
+        this.address = address.getDetailInfo();
         this.province = address.getProvinceName();
         this.city = address.getCityName();
         this.district = address.getCountyName();
