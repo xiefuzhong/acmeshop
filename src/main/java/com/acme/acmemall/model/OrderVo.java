@@ -178,7 +178,7 @@ public class OrderVo implements Serializable {
      */
     public OrderVo submit(List<UserCouponVo> userCouponList, List<ShopCartVo> cartList, AddressVo address) {
         // 订单收件人信息
-        setAddress(address);
+        setAddressInfo(address);
 
         // 优惠信息
         if (CollectionUtils.isNotEmpty(userCouponList)) {
@@ -242,7 +242,7 @@ public class OrderVo implements Serializable {
         return this;
     }
 
-    private void setAddress(AddressVo address) {
+    private void setAddressInfo(AddressVo address) {
         this.addressId = address.getId();
         this.address = address.getDetailInfo();
         this.province = address.getProvinceName();
