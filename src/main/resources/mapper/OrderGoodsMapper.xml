@@ -52,7 +52,7 @@
 	
 	
 	<select id="queryInvalidOrder" resultMap="orderGoodsMap">
-		SELECT og.* FROM `nideshop_order` o LEFT JOIN `t_acme_mall_order_goods` og 
+		SELECT og.* FROM `t_acme_mall_order` o LEFT JOIN `t_acme_mall_order_goods` og
 		ON o.id=og.order_id WHERE  o.add_time &lt; CURDATE()-1 AND o.order_status=0
 	</select>
 
