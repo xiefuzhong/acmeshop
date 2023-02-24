@@ -81,8 +81,7 @@ public class OrderService implements IOrderService {
         // 查询用户已选择的购物车中信息，用来重新计算校验
         String[] cartIds = request.getCartIds().split(",");
         Map paramMap = Maps.newHashMap();
-        paramMap.put("userId", loginUser.getUserId());
-
+        paramMap.put("user_id", loginUser.getUserId());
         paramMap.put("checked", 1);
         paramMap.put("cartIds", Lists.newArrayList(cartIds));
         List<ShopCartVo> cartList = cartMapper.queryList(paramMap);

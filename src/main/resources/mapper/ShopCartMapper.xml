@@ -56,6 +56,10 @@
         <if test="merchant_id != null">
             AND a.merchant_id = #{merchant_id}
         </if>
+        AND a.id in
+        <foreach item="cartId" collection="cartIds" open="(" separator="," close=")">
+            #{cartId}
+        </foreach>
         <choose>
             <when test="sidx != null and sidx.trim() != ''">
                 order by ${sidx} ${order}
