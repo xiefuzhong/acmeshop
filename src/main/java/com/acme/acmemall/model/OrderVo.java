@@ -146,6 +146,7 @@ public class OrderVo implements Serializable {
     // 收货人地址ID
     private long addressId;
 
+    @Builder.Default
     private List<OrderGoodsVo> items = Lists.newArrayList();
 
     public String getFull_region() {
