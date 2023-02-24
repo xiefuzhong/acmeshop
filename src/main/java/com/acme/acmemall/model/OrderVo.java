@@ -31,7 +31,7 @@ import java.util.UUID;
 @Getter
 public class OrderVo implements Serializable {
     //主键
-    private Integer id;
+    private String id;
     //订单序列号
     private String order_sn;
     //会员Id
@@ -209,7 +209,7 @@ public class OrderVo implements Serializable {
         for (int i = 0; i < cartList.size(); i++) {
             ShopCartVo cartVo = cartList.get(i);
             System.out.println("cart-->" + JSON.toJSONString(cartVo));
-            OrderGoodsVo item = OrderFactory.buildOrderItem(cartVo, this.id);
+            OrderGoodsVo item = OrderFactory.buildOrderItem(cartVo, id);
             System.out.println("Order.item-->" + JSON.toJSONString(item));
             this.items.add(item);
         }

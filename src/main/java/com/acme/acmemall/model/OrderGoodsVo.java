@@ -16,17 +16,17 @@ public class OrderGoodsVo implements Serializable {
     private static final long serialVersionUID = 1L;
 
     //主键
-    private Integer id;
+    private Long id;
     //订单Id
-    private Integer order_id;
+    private String order_id;
     //商品id
-    private Integer goods_id;
+    private Long goods_id;
     //商品名称
     private String goods_name;
     //商品序列号
     private String goods_sn;
     //产品Id
-    private Integer product_id;
+    private Long product_id;
     //商品数量
     private Integer number;
     //市场价
@@ -43,5 +43,5 @@ public class OrderGoodsVo implements Serializable {
     private String list_pic_url;
 
     //使用的优惠券id
-    private Integer coupon_id;
+    private Long coupon_id;
 }

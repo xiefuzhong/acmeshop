@@ -3,6 +3,7 @@ package com.acme.acmemall.factory;
 import com.acme.acmemall.model.OrderGoodsVo;
 import com.acme.acmemall.model.OrderVo;
 import com.acme.acmemall.model.ShopCartVo;
+import com.acme.acmemall.utils.SnowFlakeGenerateIdWorker;
 
 import java.util.Date;
 import java.util.UUID;
@@ -15,7 +16,9 @@ import java.util.UUID;
 public class OrderFactory {
 
     public static OrderVo buildCartOrder(long userId) {
+        String id = new SnowFlakeGenerateIdWorker(0,0).generateNextId();
         return OrderVo.builder()
+                .id(id)
                 .all_order_id(UUID.randomUUID().toString().replaceAll("-", ""))
                 .add_time(new Date())
                 .order_status(0)
@@ -24,11 +27,11 @@ public class OrderFactory {
                 .build();
     }
 
-    public static OrderGoodsVo buildOrderItem(ShopCartVo cartVo,Integer orderId){
+    public static OrderGoodsVo buildOrderItem(ShopCartVo cartVo,String orderId){
         return OrderGoodsVo.builder()
                 .order_id(orderId)
-                .goods_id(cartVo.getGoods_id())
-                .product_id(cartVo.getProduct_id())
+                .goods_id(Long.valueOf(cartVo.getGoods_id()))
+                .product_id(Long.valueOf(cartVo.getProduct_id()))
                 .goods_specifition_ids(cartVo.getGoods_specifition_ids())
                 .goods_specifition_name_value(cartVo.getGoods_specifition_name_value())
                 .goods_sn(cartVo.getGoods_sn())
