@@ -4,7 +4,6 @@ import com.acme.acmemall.exception.ApiCusException;
 import com.acme.acmemall.exception.ResultCodeEnum;
 import com.acme.acmemall.factory.OrderFactory;
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Lists;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -199,7 +198,6 @@ public class OrderVo implements Serializable {
         // 订单实付金额
         this.actual_price = goods_price.add(freight_price).subtract(coupon_price);
 
-        System.out.println("cartList=" + JSONObject.toJSONString(cartList));
         // 订单明细
         cartList.stream().forEach(cartVo -> this.items.add(OrderFactory.buildOrderItem(cartVo, id)));
         return this;
