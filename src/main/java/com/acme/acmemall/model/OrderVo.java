@@ -248,7 +248,7 @@ public class OrderVo implements Serializable {
         this.province = address.getProvinceName();
         this.city = address.getCityName();
         this.district = address.getCountyName();
-        this.full_region = address.getAddress() ;
+        this.full_region = address.getFull_region() ;
         this.country = address.getNationalCode();
         this.consignee = address.getUserName();
         this.mobile = address.getTelNumber();
