@@ -40,26 +40,28 @@
         from t_acme_mall_cart a
         left join t_acme_mall_goods b on a.goods_id = b.id
         left join t_acme_mall_product c on c.goods_id = a.goods_id and c.id = a.product_id
-        where 1 = 1
-        <if test="user_id != null">
-            AND a.user_id = #{user_id}
-        </if>
-        <if test="goods_id != null">
-            AND a.goods_id = #{goods_id}
-        </if>
-        <if test="product_id != null">
-            AND a.product_id = #{product_id}
-        </if>
-        <if test="checked != null">
-            AND a.checked = #{checked}
-        </if>
-        <if test="merchant_id != null">
-            AND a.merchant_id = #{merchant_id}
-        </if>
-        AND a.id in
-        <foreach item="cartId" collection="cartIds" open="(" separator="," close=")">
-            #{cartId}
-        </foreach>
+        <where>
+            <if test="user_id != null">
+                AND a.user_id = #{user_id}
+            </if>
+            <if test="goods_id != null">
+                AND a.goods_id = #{goods_id}
+            </if>
+            <if test="product_id != null">
+                AND a.product_id = #{product_id}
+            </if>
+            <if test="checked != null">
+                AND a.checked = #{checked}
+            </if>
+            <if test="merchant_id != null">
+                AND a.merchant_id = #{merchant_id}
+            </if>
+<!--            AND a.id in-->
+<!--            <foreach item="cartId" collection="cartIds" open="(" separator="," close=")">-->
+<!--                #{cartId}-->
+<!--            </foreach>-->
+        </where>
+
         <choose>
             <when test="sidx != null and sidx.trim() != ''">
                 order by ${sidx} ${order}
