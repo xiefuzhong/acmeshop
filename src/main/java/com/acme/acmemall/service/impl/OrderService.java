@@ -16,6 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -70,23 +72,7 @@ public class OrderService implements IOrderService {
             return ResultMap.error(102, "请选择联系地址");
         }
         // 用户选择的优惠券信息
-        List<UserCouponVo> userCouponList = Lists.newArrayList();
-        if (StringUtils.isNotEmpty(request.getUserCouponId())) {
-            // 优惠券
-            String[] userCouponIds = request.getUserCouponId().split(",");
-            Map paramMap = Maps.newHashMap();
-            paramMap.put("user_id", loginUser.getUserId());
-            paramMap.put("coupon_status", 1); // 可用
-            paramMap.put("couponIds", Lists.newArrayList(userCouponIds));
-            paramMap.put("selected", true);
-            // 商品总额
-            paramMap.put("goodsTotalPrice", request.getGoodsTotalPrice());
-            // 校验用户选择的优惠券
-            userCouponList = userCouponMapper.queryList(paramMap);
-            if (CollectionUtils.isEmpty(userCouponList) || userCouponIds.length != userCouponList.size()) {
-                return ResultMap.response(ResultCodeEnum.FAILED);
-            }
-        }
+        List<UserCouponVo> userCouponList = getUserCouponVos(request.getUserCouponId(), request.getGoodsTotalPrice(), loginUser);
 
         // 购物车明细校验
         if (StringUtils.isEmpty(request.getCartIds())) {
@@ -118,8 +104,30 @@ public class OrderService implements IOrderService {
                 .build();
         userCouponMapper.updateCouponStatus(uc);
         // 删除购物车
-        List<String> productIds  =cartList.stream().map(cartVo -> cartVo.getProduct_id()+"").collect(Collectors.toList());
+        List<String> productIds = cartList.stream().map(cartVo -> cartVo.getProduct_id() + "").collect(Collectors.toList());
         cartMapper.deleteByUserAndProductIds(loginUser.getUserId(), (String[]) productIds.stream().toArray());
         return ResultMap.response(ResultCodeEnum.SUCCESS, order);
+    }
+
+    private List<UserCouponVo> getUserCouponVos(String userCouponId, BigDecimal goodsTotalPrice, LoginUserVo loginUser) {
+        List<UserCouponVo> userCouponList = Lists.newArrayList();
+        if (StringUtils.isNotEmpty(userCouponId)) {
+            // 优惠券
+            String[] userCouponIds = userCouponId.split(",");
+            List couponIds = Arrays.asList(userCouponIds).stream().filter(item -> Integer.parseInt(item) > 0).collect(Collectors.toList());
+            if (CollectionUtils.isEmpty(couponIds)) {
+                return userCouponList;
+            }
+            Map paramMap = Maps.newHashMap();
+            paramMap.put("user_id", loginUser.getUserId());
+            paramMap.put("coupon_status", 1); // 可用
+            paramMap.put("couponIds", couponIds);
+            paramMap.put("selected", true);
+            // 商品总额
+            paramMap.put("goodsTotalPrice", goodsTotalPrice);
+            // 校验用户选择的优惠券
+            userCouponList = userCouponMapper.queryList(paramMap);
+        }
+        return userCouponList;
     }
 }
