@@ -7,6 +7,7 @@ import com.acme.acmemall.exception.ResultCodeEnum;
 import com.acme.acmemall.factory.OrderFactory;
 import com.acme.acmemall.model.*;
 import com.acme.acmemall.service.IOrderService;
+import com.alibaba.fastjson.JSON;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.apache.commons.collections.CollectionUtils;
@@ -90,6 +91,7 @@ public class OrderService implements IOrderService {
             return ResultMap.response(ResultCodeEnum.FAILED);
         }
         OrderVo order = OrderFactory.buildCartOrder(loginUser.getUserId());
+        logger.info("order>>"+ JSON.toJSONString(order));
         order.submit(userCouponList, cartList, addressVo);
         order.check();
 
