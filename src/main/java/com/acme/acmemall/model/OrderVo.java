@@ -195,10 +195,9 @@ public class OrderVo implements Serializable {
         // 订单实付金额
         this.actual_price = goods_price.add(freight_price).subtract(coupon_price);
 
+        System.out.println("cartList.size="+cartList.size());
         // 订单明细
-        cartList.forEach(cartVo -> {
-            this.items.add(buildOrderItem(cartVo));
-        });
+        cartList.forEach(cartVo -> this.items.add(buildOrderItem(cartVo)));
 
         // 收集商品信息，1.数量，总价，优惠信息，
         // 收集支付信息 支付金额，运费
