@@ -197,8 +197,9 @@ public class OrderVo implements Serializable {
 
         // 订单明细
         cartList.forEach(cartVo -> {
-            this.addOrderItem(cartVo);
+            this.items.add(buildOrderItem(cartVo));
         });
+
         // 收集商品信息，1.数量，总价，优惠信息，
         // 收集支付信息 支付金额，运费
         // 收集订单明细信息
@@ -253,8 +254,8 @@ public class OrderVo implements Serializable {
         this.mobile = address.getTelNumber();
     }
 
-    private void addOrderItem(ShopCartVo cartVo) {
-        OrderGoodsVo item = OrderGoodsVo.builder()
+    private OrderGoodsVo buildOrderItem(ShopCartVo cartVo) {
+        return OrderGoodsVo.builder()
                 .order_id(this.id)
                 .goods_id(cartVo.getGoods_id())
                 .product_id(cartVo.getProduct_id())
@@ -268,7 +269,6 @@ public class OrderVo implements Serializable {
                 .list_pic_url(cartVo.getList_pic_url())
                 .is_real(1)
                 .build();
-        this.items.add(item);
     }
 
     public void check() {
