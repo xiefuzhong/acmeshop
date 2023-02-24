@@ -197,6 +197,10 @@ public class OrderVo implements Serializable {
         this.freight_price = BigDecimal.valueOf(cartList.stream().mapToDouble(cart -> cart.getExtraPrice().doubleValue()).sum());
         // 订单实付金额
         this.actual_price = goods_price.add(freight_price).subtract(coupon_price);
+        // 订单总价=商品总价+运费
+        this.order_price=goods_price.add(freight_price);
+        // 总付款金额
+        this.all_price=actual_price;
 
         // 订单明细
         cartList.stream().forEach(cartVo -> this.items.add(OrderFactory.buildOrderItem(cartVo, id)));
