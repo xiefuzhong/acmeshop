@@ -158,6 +158,7 @@
     <insert id="save" parameterType="com.acme.acmemall.model.OrderVo" useGeneratedKeys="true" keyProperty="id">
 		insert into t_acme_mall_order
 		(
+            `id`,
 			`order_sn`,
 			`user_id`,
 			`order_status`,
@@ -202,7 +203,8 @@
 		)
 		values
 		(
-			#{order_sn},
+			#{id},
+            #{order_sn},
 			#{user_id},
 			#{order_status},
 			#{shipping_status},
