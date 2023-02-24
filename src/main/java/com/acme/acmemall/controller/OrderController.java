@@ -29,11 +29,10 @@ public class OrderController extends ApiBase {
     @ApiOperation(value = "订单提交")
     @PostMapping("submit")
     public Object submit(@LoginUser LoginUserVo loginUser) {
-        ResultMap resultObj = null;
         try {
             OrderSubmitRequest request = JSONObject.toJavaObject(getJsonRequest(), OrderSubmitRequest.class);
             request.check();
-            resultObj = orderService.submit(request, loginUser);
+            ResultMap resultObj = orderService.submit(request, loginUser);
             if (null != resultObj) {
                 logger.info("Order.submit()=="+JSONObject.toJSONString(resultObj));
                 return resultObj;

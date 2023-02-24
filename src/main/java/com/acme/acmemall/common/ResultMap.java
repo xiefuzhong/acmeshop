@@ -16,7 +16,7 @@ public class ResultMap extends HashMap<String, Object> {
     private static final long serialVersionUID = 1L;
 
     public ResultMap() {
-        put("code", 0);
+        put("errno", 0);
     }
 
     public static ResultMap error() {
@@ -29,8 +29,8 @@ public class ResultMap extends HashMap<String, Object> {
 
     public static ResultMap response(ResultCodeEnum resultCode){
         ResultMap resultMap = new ResultMap();
-        resultMap.put("code", resultCode.getMessage());
-        resultMap.put("msg", resultCode.getMessage());
+        resultMap.put("errno", resultCode.getMessage());
+        resultMap.put("errmsg", resultCode.getMessage());
         return resultMap;
     }
 
@@ -42,14 +42,14 @@ public class ResultMap extends HashMap<String, Object> {
 
     public static ResultMap error(int code, String msg) {
         ResultMap r = new ResultMap();
-        r.put("code", code);
-        r.put("msg", msg);
+        r.put("errno", code);
+        r.put("errmsg", msg);
         return r;
     }
 
     public static ResultMap ok(String msg) {
         ResultMap r = new ResultMap();
-        r.put("msg", msg);
+        r.put("errmsg", msg);
         return r;
     }
 
