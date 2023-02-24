@@ -29,7 +29,7 @@ public class ResultMap extends HashMap<String, Object> {
 
     public static ResultMap response(ResultCodeEnum resultCode){
         ResultMap resultMap = new ResultMap();
-        resultMap.put("errno", resultCode.getMessage());
+        resultMap.put("errno", resultCode.getCode());
         resultMap.put("errmsg", resultCode.getMessage());
         return resultMap;
     }
