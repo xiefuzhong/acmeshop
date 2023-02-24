@@ -75,7 +75,7 @@
 		)
 		values
 		(
-		#{order_id},
+		    #{order_id},
 			#{goods_id},
 			#{goods_name},
 			#{goods_sn},
@@ -91,7 +91,7 @@
 		)
 	</insert>
 
-    <insert id="saveBatch" parameterType="List">
+    <insert id="saveBatch" parameterType="list">
         insert into t_acme_mall_order_goods
         (
         `order_id`,
@@ -111,19 +111,19 @@
         values
         <foreach collection="list" item="item" separator=",">
             (
-            #{order_id},
-            #{goods_id},
-            #{goods_name},
-            #{goods_sn},
-            #{product_id},
-            #{number},
-            #{market_price},
-            #{retail_price},
-            #{goods_specifition_name_value},
-            #{is_real},
-            #{goods_specifition_ids},
-            #{list_pic_url},
-            #{coupon_id}
+            #{item.order_id},
+            #{item.goods_id},
+            #{item.goods_name},
+            #{item.goods_sn},
+            #{item.product_id},
+            #{item.number},
+            #{item.market_price},
+            #{item.retail_price},
+            #{item.goods_specifition_name_value},
+            #{item.is_real},
+            #{item.goods_specifition_ids},
+            #{item.list_pic_url},
+            #{item.coupon_id}
             )
         </foreach>
     </insert>
