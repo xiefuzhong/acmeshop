@@ -199,11 +199,19 @@ public class OrderVo implements Serializable {
 
         System.out.println("cartList=" + JSONObject.toJSONString(cartList));
         // 订单明细
-        cartList.forEach(cartVo -> {
-            System.out.println("cart-->" + JSON.toJSONString(cartVo));
-            this.items.add(buildOrderItem(cartVo));
-        });
+//        cartList.forEach(cartVo -> {
+//            System.out.println("cart-->" + JSON.toJSONString(cartVo));
+//            this.items.add(buildOrderItem(cartVo));
+//        });
 
+        for (int i = 0; i < cartList.size(); i++) {
+            ShopCartVo cartVo = cartList.get(i);
+            System.out.println("cart-->" + JSON.toJSONString(cartVo));
+            OrderGoodsVo item = buildOrderItem(cartVo);
+            System.out.println("Order.item-->" + JSON.toJSONString(item));
+            this.items.add(item);
+        }
+        System.out.println("Order.items.size()>>"+items.size());
         // 收集商品信息，1.数量，总价，优惠信息，
         // 收集支付信息 支付金额，运费
         // 收集订单明细信息
