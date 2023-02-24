@@ -5,6 +5,8 @@ import org.apache.commons.lang.math.RandomUtils;
 
 import java.net.Inet4Address;
 import java.net.UnknownHostException;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Random;
 
 /**
@@ -107,7 +109,7 @@ public class SnowFlakeGenerateIdWorker {
 
     }
 
-    private static Long getWorkId() {
+    private Long getWorkId() {
         try {
             String host = Inet4Address.getLocalHost().getHostAddress();
             return Long.valueOf(host.hashCode() % 32);
@@ -116,7 +118,7 @@ public class SnowFlakeGenerateIdWorker {
         }
     }
 
-    private static Long getCenterId() {
+    private Long getCenterId() {
         try {
             String host = Inet4Address.getLocalHost().getHostName();
             return Long.valueOf(host.hashCode() % 32);
@@ -202,10 +204,21 @@ public class SnowFlakeGenerateIdWorker {
     protected long timeGen() {
         return System.currentTimeMillis();
     }
+    /**
+     * 生成订单的编号order_sn
+     */
+    public static String generateOrderNumber() {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(new Date());
+        String timeStr = DateUtils.format(cal.getTime(), DateUtils.DATE_TIME_PATTERN_YYYY_MM_DD_HH_MM_SS_SSS);
+        return timeStr + CharUtil.getRandomNum(6);
+    }
+
 
     public static void main(String[] args) {
         for (int i = 0; i < 100; i++) {
-            System.out.println(new SnowFlakeGenerateIdWorker(0, 0).generateId(System.currentTimeMillis()));
+//            System.out.println(new SnowFlakeGenerateIdWorker(0, 0).generateId(System.currentTimeMillis()));
+            System.out.println(SnowFlakeGenerateIdWorker.generateOrderNumber());
         }
 
     }

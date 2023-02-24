@@ -7,7 +7,6 @@ import com.acme.acmemall.exception.ResultCodeEnum;
 import com.acme.acmemall.factory.OrderFactory;
 import com.acme.acmemall.model.*;
 import com.acme.acmemall.service.IOrderService;
-import com.alibaba.fastjson.JSON;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.apache.commons.collections.CollectionUtils;
@@ -90,11 +89,10 @@ public class OrderService implements IOrderService {
             logger.error("Order.submit-->cartList is empty");
             return ResultMap.response(ResultCodeEnum.FAILED);
         }
-        OrderVo order = OrderFactory.buildCartOrder(loginUser.getUserId());
-        logger.info("order>>"+ JSON.toJSONString(order));
+        OrderVo order = OrderFactory.buildNewOrder(loginUser.getUserId());
         order.submit(userCouponList, cartList, addressVo);
         order.check();
-
+        logger.info("order.submit >> "+ order.toString());
         // 保存order以及明细表
         orderMapper.save(order);
         orderItemMapper.saveBatch(order.getItems());

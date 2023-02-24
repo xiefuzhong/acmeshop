@@ -6,7 +6,6 @@ import com.acme.acmemall.model.ShopCartVo;
 import com.acme.acmemall.utils.SnowFlakeGenerateIdWorker;
 
 import java.util.Date;
-import java.util.UUID;
 
 /**
  * @description:
@@ -15,11 +14,10 @@ import java.util.UUID;
  */
 public class OrderFactory {
 
-    public static OrderVo buildCartOrder(long userId) {
-        String id = new SnowFlakeGenerateIdWorker(0,0).generateNextId();
+    public static OrderVo buildNewOrder(long userId) {
         return OrderVo.builder()
-                .id(id)
-                .all_order_id(UUID.randomUUID().toString().replaceAll("-", ""))
+                .id(SnowFlakeGenerateIdWorker.generateOrderNumber())
+                .all_order_id(SnowFlakeGenerateIdWorker.generateOrderNumber())
                 .add_time(new Date())
                 .order_status(0)
                 .pay_status(0)
