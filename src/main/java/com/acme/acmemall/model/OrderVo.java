@@ -2,6 +2,7 @@ package com.acme.acmemall.model;
 
 import com.acme.acmemall.exception.ApiCusException;
 import com.acme.acmemall.exception.ResultCodeEnum;
+import com.acme.acmemall.factory.OrderFactory;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Lists;
@@ -207,7 +208,7 @@ public class OrderVo implements Serializable {
         for (int i = 0; i < cartList.size(); i++) {
             ShopCartVo cartVo = cartList.get(i);
             System.out.println("cart-->" + JSON.toJSONString(cartVo));
-            OrderGoodsVo item = buildOrderItem(cartVo);
+            OrderGoodsVo item = OrderFactory.buildOrderItem(cartVo,this.id);
             System.out.println("Order.item-->" + JSON.toJSONString(item));
             this.items.add(item);
         }
@@ -268,23 +269,6 @@ public class OrderVo implements Serializable {
         this.country = address.getNationalCode();
         this.consignee = address.getUserName();
         this.mobile = address.getTelNumber();
-    }
-
-    private OrderGoodsVo buildOrderItem(ShopCartVo cartVo) {
-        return OrderGoodsVo.builder()
-                .order_id(this.id)
-                .goods_id(cartVo.getGoods_id())
-                .product_id(cartVo.getProduct_id())
-                .goods_specifition_ids(cartVo.getGoods_specifition_ids())
-                .goods_specifition_name_value(cartVo.getGoods_specifition_name_value())
-                .goods_sn(cartVo.getGoods_sn())
-                .goods_name(cartVo.getGoods_name())
-                .market_price(cartVo.getMarket_price())
-                .retail_price(cartVo.getRetail_price())
-                .number(cartVo.getNumber())
-                .list_pic_url(cartVo.getList_pic_url())
-                .is_real(1)
-                .build();
     }
 
     public void check() {
