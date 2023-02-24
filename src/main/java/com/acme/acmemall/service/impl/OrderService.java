@@ -105,8 +105,8 @@ public class OrderService implements IOrderService {
                 .build();
         userCouponMapper.updateCouponStatus(uc);
         // 删除购物车
-        List<String> productIds = cartList.stream().map(cartVo -> cartVo.getProduct_id() + "").collect(Collectors.toList());
-        cartMapper.deleteByUserAndProductIds(loginUser.getUserId(), (String[]) productIds.stream().toArray());
+        List<String> productIds = cartList.stream().map(cartVo -> cartVo.getProduct_id().toString()).collect(Collectors.toList());
+        cartMapper.deleteByUserAndProductIds(loginUser.getUserId(), productIds.toArray(new String[productIds.size()]));
         return ResultMap.response(ResultCodeEnum.SUCCESS, order);
     }
 
