@@ -209,11 +209,11 @@ public class OrderVo implements Serializable {
         for (int i = 0; i < cartList.size(); i++) {
             ShopCartVo cartVo = cartList.get(i);
             System.out.println("cart-->" + JSON.toJSONString(cartVo));
-            OrderGoodsVo item = OrderFactory.buildOrderItem(cartVo,this.id);
+            OrderGoodsVo item = OrderFactory.buildOrderItem(cartVo, this.id);
             System.out.println("Order.item-->" + JSON.toJSONString(item));
             this.items.add(item);
         }
-        System.out.println("Order.items.size()>>"+items.size());
+        System.out.println("Order.items.size()>>" + items.size());
         // 收集商品信息，1.数量，总价，优惠信息，
         // 收集支付信息 支付金额，运费
         // 收集订单明细信息
@@ -274,6 +274,9 @@ public class OrderVo implements Serializable {
 
     public void check() {
         if (this.actual_price.compareTo(BigDecimal.ZERO) <= 0) {
+            throw new ApiCusException(ResultCodeEnum.FAILED.getMessage());
+        }
+        if (CollectionUtils.isEmpty(this.items) || this.items.size() > 1000) {
             throw new ApiCusException(ResultCodeEnum.FAILED.getMessage());
         }
     }

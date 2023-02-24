@@ -91,6 +91,43 @@
 		)
 	</insert>
 
+    <insert id="saveBatch" parameterType="List">
+        insert into t_acme_mall_order_goods
+        (
+        `order_id`,
+        `goods_id`,
+        `goods_name`,
+        `goods_sn`,
+        `product_id`,
+        `number`,
+        `market_price`,
+        `retail_price`,
+        `goods_specifition_name_value`,
+        `is_real`,
+        `goods_specifition_ids`,
+        `list_pic_url`,
+        `coupon_id`
+        )
+        values
+        <foreach collection="list" item="item" separator=",">
+            (
+            #{order_id},
+            #{goods_id},
+            #{goods_name},
+            #{goods_sn},
+            #{product_id},
+            #{number},
+            #{market_price},
+            #{retail_price},
+            #{goods_specifition_name_value},
+            #{is_real},
+            #{goods_specifition_ids},
+            #{list_pic_url},
+            #{coupon_id}
+            )
+        </foreach>
+    </insert>
+
     <update id="update" parameterType="com.acme.acmemall.model.OrderGoodsVo">
         update t_acme_mall_order_goods
         <set>
