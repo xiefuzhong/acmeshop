@@ -179,7 +179,6 @@ public class OrderVo implements Serializable {
     public OrderVo submit(List<UserCouponVo> userCouponList, List<ShopCartVo> cartList, AddressVo address) {
         // 订单收件人信息
         setAddressInfo(address);
-
         // 优惠信息
         if (CollectionUtils.isNotEmpty(userCouponList)) {
             UserCouponVo userCoupon = userCouponList.stream().findFirst().get();

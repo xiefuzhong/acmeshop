@@ -19,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @description:
@@ -99,20 +100,26 @@ public class OrderService implements IOrderService {
         paramMap.put("checked", 1);
         paramMap.put("cartIds", Lists.newArrayList(cartIds));
         List<ShopCartVo> cartList = cartMapper.queryList(paramMap);
-
-        OrderVo orderInfo = OrderFactory.buildCartOrder(loginUser.getUserId());
-        orderInfo.submit(userCouponList, cartList, addressVo);
-        orderInfo.check();
+        if (CollectionUtils.isEmpty(cartList)) {
+            logger.error("Order.submit-->cartList is empty");
+            return ResultMap.response(ResultCodeEnum.FAILED);
+        }
+        OrderVo order = OrderFactory.buildCartOrder(loginUser.getUserId());
+        order.submit(userCouponList, cartList, addressVo);
+        order.check();
 
         // 保存order以及明细表
-        orderMapper.save(orderInfo);
-        orderItemMapper.saveBatch(orderInfo.getItems());
+        orderMapper.save(order);
+        orderItemMapper.saveBatch(order.getItems());
         // 释放优惠券信息
-        UserCouponVo uc = UserCouponVo.builder().coupon_id(orderInfo.getCoupon_id())
+        UserCouponVo uc = UserCouponVo.builder().coupon_id(order.getCoupon_id())
                 .coupon_status(2)
                 .used_time(new Date())
                 .build();
         userCouponMapper.updateCouponStatus(uc);
-        return ResultMap.response(ResultCodeEnum.SUCCESS, orderInfo);
+        // 删除购物车
+        List<String> productIds  =cartList.stream().map(cartVo -> cartVo.getProduct_id()+"").collect(Collectors.toList());
+        cartMapper.deleteByUserAndProductIds(loginUser.getUserId(), (String[]) productIds.stream().toArray());
+        return ResultMap.response(ResultCodeEnum.SUCCESS, order);
     }
 }
