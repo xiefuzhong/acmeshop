@@ -14,14 +14,17 @@ import java.util.Date;
  */
 public class OrderFactory {
 
-    public static OrderVo buildNewOrder(long userId) {
+    public static OrderVo buildNewOrder(long userId,String type) {
         return OrderVo.builder()
                 .id(SnowFlakeGenerateIdWorker.generateOrderNumber())
                 .all_order_id(SnowFlakeGenerateIdWorker.generateOrderNumber())
+                .order_sn(SnowFlakeGenerateIdWorker.generateOrderNumber())
                 .add_time(new Date())
                 .order_status(0)
+                .order_type(type)
                 .pay_status(0)
                 .user_id(userId)
+                .shipping_status(0)
                 .build();
     }
 

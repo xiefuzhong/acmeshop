@@ -89,10 +89,10 @@ public class OrderService implements IOrderService {
             logger.error("Order.submit-->cartList is empty");
             return ResultMap.response(ResultCodeEnum.FAILED);
         }
-        OrderVo order = OrderFactory.buildNewOrder(loginUser.getUserId());
+        OrderVo order = OrderFactory.buildNewOrder(loginUser.getUserId(), request.getType());
         order.submit(userCouponList, cartList, addressVo);
         order.check();
-        logger.info("order.submit >> "+ order.toString());
+        logger.info("order.submit >> " + order);
         // 保存order以及明细表
         orderMapper.save(order);
         orderItemMapper.saveBatch(order.getItems());
