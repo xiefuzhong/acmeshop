@@ -2,6 +2,8 @@ package com.acme.acmemall.model;
 
 import com.acme.acmemall.exception.ApiCusException;
 import com.acme.acmemall.exception.ResultCodeEnum;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Lists;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -195,9 +197,12 @@ public class OrderVo implements Serializable {
         // 订单实付金额
         this.actual_price = goods_price.add(freight_price).subtract(coupon_price);
 
-        System.out.println("cartList.size="+cartList.size());
+        System.out.println("cartList=" + JSONObject.toJSONString(cartList));
         // 订单明细
-        cartList.forEach(cartVo -> this.items.add(buildOrderItem(cartVo)));
+        cartList.forEach(cartVo -> {
+            System.out.println("cart-->" + JSON.toJSONString(cartVo));
+            this.items.add(buildOrderItem(cartVo));
+        });
 
         // 收集商品信息，1.数量，总价，优惠信息，
         // 收集支付信息 支付金额，运费
@@ -207,9 +212,10 @@ public class OrderVo implements Serializable {
 
     /**
      * 付款
+     *
      * @return
      */
-    public OrderVo pay(OrderVo orderVo){
+    public OrderVo pay(OrderVo orderVo) {
         this.pay_id = UUID.randomUUID().toString();
         this.pay_name = null;
         this.pay_time = new Date();
@@ -219,25 +225,28 @@ public class OrderVo implements Serializable {
 
     /**
      * 取消订单
+     *
      * @return
      */
-    public OrderVo cancle(OrderVo orderVo){
+    public OrderVo cancle(OrderVo orderVo) {
         return this;
     }
 
     /**
      * 评价
+     *
      * @return
      */
-    public OrderVo grade(){
+    public OrderVo grade() {
         return this;
     }
 
     /**
      * 发货
+     *
      * @return
      */
-    public OrderVo shipped(){
+    public OrderVo shipped() {
         return this;
     }
 
@@ -247,7 +256,7 @@ public class OrderVo implements Serializable {
         this.province = address.getProvinceName();
         this.city = address.getCityName();
         this.district = address.getCountyName();
-        this.full_region = address.getFull_region() ;
+        this.full_region = address.getFull_region();
         this.country = address.getNationalCode();
         this.consignee = address.getUserName();
         this.mobile = address.getTelNumber();
