@@ -198,9 +198,9 @@ public class OrderVo implements Serializable {
         // 订单实付金额
         this.actual_price = goods_price.add(freight_price).subtract(coupon_price);
         // 订单总价=商品总价+运费
-        this.order_price=goods_price.add(freight_price);
+        this.order_price = goods_price.add(freight_price);
         // 总付款金额
-        this.all_price=actual_price;
+        this.all_price = actual_price;
 
         // 订单明细
         cartList.stream().forEach(cartVo -> this.items.add(OrderFactory.buildOrderItem(cartVo, id)));
@@ -266,6 +266,10 @@ public class OrderVo implements Serializable {
         if (CollectionUtils.isEmpty(this.items) || this.items.size() > 1000) {
             throw new ApiCusException(ResultCodeEnum.FAILED.getMessage());
         }
+    }
+
+    public String getOrder_status_text() {
+        return OrderStatus.parse(order_status).getDescription();
     }
 
     @Override
