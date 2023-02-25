@@ -108,6 +108,15 @@ public class OrderService implements IOrderService {
         return ResultMap.response(ResultCodeEnum.SUCCESS, order);
     }
 
+    /**
+     * @param params
+     * @return
+     */
+    @Override
+    public List<OrderVo> queryOrderList(Map params) {
+        return orderMapper.queryList(params);
+    }
+
     private List<UserCouponVo> getUserCouponVos(String userCouponId, BigDecimal goodsTotalPrice, LoginUserVo loginUser) {
         List<UserCouponVo> userCouponList = Lists.newArrayList();
         if (StringUtils.isNotEmpty(userCouponId)) {

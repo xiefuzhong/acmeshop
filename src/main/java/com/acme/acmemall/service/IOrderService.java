@@ -3,6 +3,10 @@ package com.acme.acmemall.service;
 import com.acme.acmemall.common.ResultMap;
 import com.acme.acmemall.controller.reqeust.OrderSubmitRequest;
 import com.acme.acmemall.model.LoginUserVo;
+import com.acme.acmemall.model.OrderVo;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * @description:购物车功能
@@ -18,4 +22,6 @@ public interface IOrderService {
      * @return 订单提交结果
      */
     ResultMap submit(OrderSubmitRequest request, LoginUserVo loginUser);
+
+    List<OrderVo> queryOrderList(Map params);
 }
