@@ -282,15 +282,6 @@ public class OrderVo implements Serializable {
     }
 
     /**
-     * 根据订单状态获取可操作按钮的配置
-     *
-     * @return
-     */
-    public Map getHandleOption() {
-        return OrderHandleOption.builder().build().canOption(order_status);
-    }
-
-    /**
      * JSON转化
      *
      * @return
