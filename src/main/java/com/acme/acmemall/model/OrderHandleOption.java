@@ -2,7 +2,10 @@ package com.acme.acmemall.model;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.util.Map;
 
@@ -11,7 +14,10 @@ import java.util.Map;
  * @author: ihpangzi
  * @time: 2023/2/25 16:10
  */
+@AllArgsConstructor
+@NoArgsConstructor
 @Builder
+@Getter
 public class OrderHandleOption {
     /**
      * 取消操作
