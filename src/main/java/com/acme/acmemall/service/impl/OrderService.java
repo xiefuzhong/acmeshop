@@ -89,7 +89,7 @@ public class OrderService implements IOrderService {
         }
         OrderVo order = OrderFactory.buildNewOrder(loginUser.getUserId(), request.getType());
         order.submit(userCouponList, cartList, addressVo);
-        order.check();
+        order.checkSubmit();
         logger.info("order.submit >> " + order);
         // 保存order以及明细表
         orderMapper.save(order);

@@ -259,7 +259,10 @@ public class OrderVo implements Serializable {
         this.mobile = address.getTelNumber();
     }
 
-    public void check() {
+    /**
+     * 订单提交校验操作
+     */
+    public void checkSubmit() {
         if (this.actual_price.compareTo(BigDecimal.ZERO) <= 0) {
             throw new ApiCusException(ResultCodeEnum.FAILED.getMessage());
         }
@@ -268,10 +271,29 @@ public class OrderVo implements Serializable {
         }
     }
 
+    /**
+     * 订单状态描述
+     *
+     * @return
+     */
     public String getOrder_status_text() {
         return OrderStatus.parse(order_status).getDescription();
     }
 
+    /**
+     * 根据订单状态获取可操作按钮的配置
+     *
+     * @return
+     */
+    public Map getHandleOption() {
+        return new OrderHandleOption().canOption(order_status);
+    }
+
+    /**
+     * JSON转化
+     *
+     * @return
+     */
     @Override
     public String toString() {
         return JSON.toJSONString(this);
