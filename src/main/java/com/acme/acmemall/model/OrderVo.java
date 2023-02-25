@@ -286,7 +286,7 @@ public class OrderVo implements Serializable {
      * @return
      */
     public Map getHandleOption() {
-        return new OrderHandleOption().canOption(order_status);
+        return OrderHandleOption.builder().build().canOption(order_status);
     }
 
     /**

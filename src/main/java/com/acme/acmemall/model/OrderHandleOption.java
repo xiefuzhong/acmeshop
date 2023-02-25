@@ -3,7 +3,6 @@ package com.acme.acmemall.model;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import lombok.Builder;
-import lombok.Data;
 
 import java.util.Map;
 
@@ -12,7 +11,7 @@ import java.util.Map;
  * @author: ihpangzi
  * @time: 2023/2/25 16:10
  */
-@Data
+@Builder
 public class OrderHandleOption {
     /**
      * 取消操作
@@ -59,7 +58,7 @@ public class OrderHandleOption {
     /**
      * 根据订单状态，设置订单可操作按钮
      *
-     * @param status
+     * @param statusCode
      */
     public Map<String, Boolean> canOption(int statusCode) {
         OrderStatus status = OrderStatus.parse(statusCode);
