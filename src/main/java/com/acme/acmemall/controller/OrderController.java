@@ -3,6 +3,7 @@ package com.acme.acmemall.controller;
 import com.acme.acmemall.annotation.LoginUser;
 import com.acme.acmemall.common.ResultMap;
 import com.acme.acmemall.controller.reqeust.OrderSubmitRequest;
+import com.acme.acmemall.exception.ResultCodeEnum;
 import com.acme.acmemall.model.LoginUserVo;
 import com.acme.acmemall.model.OrderVo;
 import com.acme.acmemall.service.IOrderService;
@@ -74,6 +75,7 @@ public class OrderController extends ApiBase {
         PageHelper.startPage(page, size);
         List<OrderVo> orderList = orderService.queryOrderList(params);
         PageUtils goodsData = new PageUtils(new PageInfo(orderList));
+        ResultMap.response(ResultCodeEnum.SUCCESS,goodsData);
         return toResponsSuccess(goodsData);
     }
 }

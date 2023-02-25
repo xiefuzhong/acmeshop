@@ -9,7 +9,6 @@ import java.util.List;
  * 分页工具类
  *
  * @author IHPANGZI
- *
  * @date 2023-02-07
  */
 public class PageUtils implements Serializable {
@@ -49,9 +48,10 @@ public class PageUtils implements Serializable {
      */
     private Object goodsList;
 
-    public PageUtils(){
+    public PageUtils() {
 
     }
+
     /**
      * 分页
      *
