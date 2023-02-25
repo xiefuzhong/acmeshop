@@ -78,7 +78,7 @@
 	</select>
 
     <select id="queryList" resultMap="orderMap">
-        SELECT o.*, g.goods_name, g.list_pic_url, g.goods_id FROM t_acme_mall_order o
+        SELECT DISTINCT o.*, g.goods_name, g.list_pic_url, g.goods_id FROM t_acme_mall_order o
         LEFT JOIN t_acme_mall_order_goods g ON o.id = g.order_id
         <where>
            	<if test="user_id != null">
