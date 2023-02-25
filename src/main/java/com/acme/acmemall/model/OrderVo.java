@@ -281,6 +281,10 @@ public class OrderVo implements Serializable {
         return OrderStatus.parse(order_status).getDescription();
     }
 
+    public Map getHandleOption() {
+        return OrderHandleOption.builder().build().canOption(this.order_status);
+    }
+
     /**
      * JSON转化
      *
