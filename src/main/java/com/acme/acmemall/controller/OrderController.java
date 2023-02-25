@@ -60,7 +60,7 @@ public class OrderController extends ApiBase {
     @RequestMapping("list")
     public Object list(@LoginUser LoginUserVo loginUser, Integer order_status,
                        @RequestParam(value = "page", defaultValue = "1") Integer page,
-                       @RequestParam(value = "size", defaultValue = "10") Integer size) {
+                       @RequestParam(value = "size", defaultValue = "3") Integer size) {
         Map params = Maps.newHashMap();
         params.put("user_id", loginUser.getUserId());
         params.put("page", page);
@@ -74,7 +74,9 @@ public class OrderController extends ApiBase {
         PageHelper.startPage(page, size);
         List<OrderVo> orderList = orderService.queryOrderList(params);
         logger.info("Order.list="+(CollectionUtils.isEmpty(orderList)?0:orderList.size()));
-        PageUtils goodsData = new PageUtils(new PageInfo(orderList));
+        PageInfo pageInfo = new PageInfo<>(orderList);
+        logger.info("pageinfo-->"+JSONObject.toJSONString(pageInfo));
+        PageUtils goodsData = new PageUtils(pageInfo);
         return toResponsSuccess(goodsData);
     }
 }
