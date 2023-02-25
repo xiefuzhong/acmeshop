@@ -88,6 +88,7 @@ public class OrderHandleOption {
                 break;
             }
         }
+        System.out.println("option-->"+JSON.toJSONString(this));
         return JSON.parseObject(JSON.toJSONString(this), new TypeReference<Map<String, Boolean>>() {
         });
     }

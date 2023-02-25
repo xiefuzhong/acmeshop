@@ -75,7 +75,7 @@ public class OrderController extends ApiBase {
         List<OrderVo> orderList = orderService.queryOrderList(params);
         logger.info("Order.list="+(CollectionUtils.isEmpty(orderList)?0:orderList.size()));
         PageInfo pageInfo = new PageInfo<>(orderList);
-        logger.info("pageinfo-->"+JSONObject.toJSONString(pageInfo));
+//        logger.info("pageinfo-->"+JSONObject.toJSONString(pageInfo));
         PageUtils goodsData = new PageUtils(pageInfo);
         return toResponsSuccess(goodsData);
     }
