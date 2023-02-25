@@ -113,7 +113,7 @@ public class OrderVo implements Serializable {
     //
     private Integer callback_status;
     //
-    private Integer goodsCount; //订单的商品
+    private Integer goodsCount; // 订单的商品数量
     private String order_status_text;//订单状态的处理
     private Map handleOption; //可操作的选项
 

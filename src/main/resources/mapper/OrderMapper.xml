@@ -51,6 +51,7 @@
         <result property="group_buying_id" column="group_buying_id"/>
         <result property="order_type" column="order_type"/>
         <result property="addressId" column="address_id"/>
+        <result property="goodsCount" column="goods_count"/>
     </resultMap>
 
     <select id="queryObject" resultMap="orderMap">
@@ -198,7 +199,8 @@
 			`brokerage`,
 			`merchant_id`,
 			`group_buying_id`,
-            `address_id`
+            `address_id`,
+            `goods_count`
 
 		)
 		values
@@ -243,7 +245,8 @@
 			#{brokerage},
 			#{merchant_id},
 			#{group_buying_id},
-            #{addressId}
+            #{addressId},
+            #{goodsCount}
 		)
 	</insert>
 
@@ -286,6 +289,7 @@
             <if test="brokerage != null">`brokerage` = #{brokerage},</if>
             <if test="fx_status != null">`fx_status` = #{fx_status},</if>
             <if test="addressId != null">`address_id` = #{addressId},</if>
+            <if test="goodsCount != null">`goods_count` = #{goodsCount},</if>
         </set>
         where id = #{id}
     </update>
