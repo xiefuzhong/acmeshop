@@ -1,6 +1,7 @@
 package com.acme.acmemall.utils;
 
 import com.github.pagehelper.PageInfo;
+import lombok.Data;
 
 import java.io.Serializable;
 import java.util.List;
@@ -11,6 +12,7 @@ import java.util.List;
  * @author IHPANGZI
  * @date 2023-02-07
  */
+@Data
 public class PageUtils implements Serializable {
     private static final long serialVersionUID = 1L;
     /**
@@ -73,61 +75,5 @@ public class PageUtils implements Serializable {
         this.numsPerPage = pageInfo.getPageSize();
         this.currentPage = pageInfo.getPageNum();
         this.totalPages = pageInfo.getPages();
-    }
-
-    public int getCount() {
-        return count;
-    }
-
-    public void setCount(int count) {
-        this.count = count;
-    }
-
-    public int getNumsPerPage() {
-        return numsPerPage;
-    }
-
-    public void setNumsPerPage(int numsPerPage) {
-        this.numsPerPage = numsPerPage;
-    }
-
-    public int getTotalPages() {
-        return totalPages;
-    }
-
-    public void setTotalPages(int totalPages) {
-        this.totalPages = totalPages;
-    }
-
-    public int getCurrentPage() {
-        return currentPage;
-    }
-
-    public void setCurrentPage(int currentPage) {
-        this.currentPage = currentPage;
-    }
-
-    public List<?> getData() {
-        return data;
-    }
-
-    public void setData(List<?> data) {
-        this.data = data;
-    }
-
-    public Object getFilterCategory() {
-        return filterCategory;
-    }
-
-    public void setFilterCategory(Object filterCategory) {
-        this.filterCategory = filterCategory;
-    }
-
-    public Object getGoodsList() {
-        return goodsList;
-    }
-
-    public void setGoodsList(Object goodsList) {
-        this.goodsList = goodsList;
     }
 }

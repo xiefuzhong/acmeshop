@@ -3,7 +3,6 @@ package com.acme.acmemall.controller;
 import com.acme.acmemall.annotation.LoginUser;
 import com.acme.acmemall.common.ResultMap;
 import com.acme.acmemall.controller.reqeust.OrderSubmitRequest;
-import com.acme.acmemall.exception.ResultCodeEnum;
 import com.acme.acmemall.model.LoginUserVo;
 import com.acme.acmemall.model.OrderVo;
 import com.acme.acmemall.service.IOrderService;
@@ -14,6 +13,7 @@ import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Maps;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -70,12 +70,11 @@ public class OrderController extends ApiBase {
         if (order_status!=null){
             params.put("order_status", order_status);
         }
-
         //查询列表数据
         PageHelper.startPage(page, size);
         List<OrderVo> orderList = orderService.queryOrderList(params);
+        logger.info("Order.list="+(CollectionUtils.isEmpty(orderList)?0:orderList.size()));
         PageUtils goodsData = new PageUtils(new PageInfo(orderList));
-        ResultMap.response(ResultCodeEnum.SUCCESS,goodsData);
         return toResponsSuccess(goodsData);
     }
 }
