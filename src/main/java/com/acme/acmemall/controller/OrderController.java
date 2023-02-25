@@ -66,7 +66,10 @@ public class OrderController extends ApiBase {
         params.put("limit", size);
         params.put("sidx", "id");
         params.put("order", "desc");
-        params.put("order_status", order_status);
+        if (order_status!=null){
+            params.put("order_status", order_status);
+        }
+
         //查询列表数据
         PageHelper.startPage(page, size);
         List<OrderVo> orderList = orderService.queryOrderList(params);
