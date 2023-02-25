@@ -201,6 +201,7 @@ public class OrderVo implements Serializable {
         this.order_price = goods_price.add(freight_price);
         // 总付款金额
         this.all_price = actual_price;
+        this.handleOption = OrderHandleOption.builder().build().canOption(this.order_status);
 
         // 订单明细
         cartList.stream().forEach(cartVo -> this.items.add(OrderFactory.buildOrderItem(cartVo, id)));
