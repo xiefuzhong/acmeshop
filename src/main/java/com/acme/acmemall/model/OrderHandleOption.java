@@ -62,6 +62,12 @@ public class OrderHandleOption {
     Boolean buy = Boolean.FALSE;
 
     /**
+     * 修改地址-待发货才可以
+     */
+    @Builder.Default
+    boolean updateAddress = Boolean.FALSE;
+
+    /**
      * 根据订单状态，设置订单可操作按钮
      *
      * @param statusCode
@@ -72,6 +78,7 @@ public class OrderHandleOption {
             case TO_BE_PAID: {
                 this.pay = Boolean.TRUE;
                 this.cancel = Boolean.TRUE;
+                this.updateAddress = Boolean.TRUE;
                 break;
             }
             case CANCELED: {
@@ -81,6 +88,7 @@ public class OrderHandleOption {
             }
             case TO_BE_SHIPPED: {
                 this.cancel = Boolean.TRUE;
+                this.updateAddress = Boolean.TRUE;
                 break;
             }
             case TO_BE_RECEIVED: {
