@@ -115,6 +115,17 @@ public class OrderService implements IOrderService {
         return orderMapper.queryList(params);
     }
 
+    /**
+     * 订单详情查询
+     *
+     * @param orderId
+     * @return 订单详情
+     */
+    @Override
+    public OrderVo findOrder(String orderId) {
+        return orderMapper.queryObject(orderId);
+    }
+
     private List<UserCouponVo> getUserCouponVos(String userCouponId, BigDecimal goodsTotalPrice, LoginUserVo loginUser) {
         List<UserCouponVo> userCouponList = Lists.newArrayList();
         if (StringUtils.isNotEmpty(userCouponId)) {

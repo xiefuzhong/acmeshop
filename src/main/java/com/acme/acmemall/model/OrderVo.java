@@ -31,7 +31,7 @@ import java.util.UUID;
 public class OrderVo implements Serializable {
     //主键
     private String id;
-    //订单序列号
+    // 订单编号
     private String order_sn;
     //会员Id
     private Long user_id;

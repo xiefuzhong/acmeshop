@@ -17,11 +17,19 @@ public interface IOrderService {
     /**
      * 订单提交
      *
-     * @param request 订单提交请求参数
-     * @param loginUser   登录用户信息
+     * @param request   订单提交请求参数
+     * @param loginUser 登录用户信息
      * @return 订单提交结果
      */
     ResultMap submit(OrderSubmitRequest request, LoginUserVo loginUser);
 
     List<OrderVo> queryOrderList(Map params);
+
+    /**
+     * 订单详情查询
+     *
+     * @param orderId
+     * @return 订单详情
+     */
+    OrderVo findOrder(String orderId);
 }

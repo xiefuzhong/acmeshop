@@ -28,9 +28,7 @@
     <select id="queryList" resultMap="orderGoodsMap">
         select * from t_acme_mall_order_goods
         <where>
-            <if test="order_id != null and order_id != ''">
-                and order_id = #{order_id}
-            </if>
+            AND order_id = #{order_id}
         </where>
         <choose>
             <when test="sidx != null and sidx.trim() != ''">
@@ -48,8 +46,7 @@
     <select id="queryTotal" resultType="int">
 		select count(*) from t_acme_mall_order_goods 
 	</select>
-	
-	
+
 	
 	<select id="queryInvalidOrder" resultMap="orderGoodsMap">
 		SELECT og.* FROM `t_acme_mall_order` o LEFT JOIN `t_acme_mall_order_goods` og

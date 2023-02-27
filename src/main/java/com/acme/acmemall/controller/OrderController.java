@@ -4,7 +4,9 @@ import com.acme.acmemall.annotation.LoginUser;
 import com.acme.acmemall.common.ResultMap;
 import com.acme.acmemall.controller.reqeust.OrderSubmitRequest;
 import com.acme.acmemall.model.LoginUserVo;
+import com.acme.acmemall.model.OrderGoodsVo;
 import com.acme.acmemall.model.OrderVo;
+import com.acme.acmemall.service.IOrderGoodsService;
 import com.acme.acmemall.service.IOrderService;
 import com.acme.acmemall.utils.PageUtils;
 import com.alibaba.fastjson.JSONObject;
@@ -14,11 +16,9 @@ import com.google.common.collect.Maps;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
@@ -35,6 +35,9 @@ public class OrderController extends ApiBase {
 
     @Autowired
     IOrderService orderService;
+
+    @Autowired
+    IOrderGoodsService orderGoodsService;
 
     @ApiOperation(value = "订单提交")
     @PostMapping("submit")
@@ -78,5 +81,35 @@ public class OrderController extends ApiBase {
 //        logger.info("pageinfo-->"+JSONObject.toJSONString(pageInfo));
         PageUtils goodsData = new PageUtils(pageInfo);
         return toResponsSuccess(goodsData);
+    }
+
+    /**
+     * 获取订单详情
+     */
+    @ApiOperation(value = "获取订单详情")
+    @GetMapping("detail")
+    public Object detail(String orderId) {
+        Map resultObj = Maps.newHashMap();
+        //
+        OrderVo orderInfo = orderService.findOrder(orderId);
+        if (null == orderInfo) {
+            return toResponsObject(400, "订单不存在", "");
+        }
+        Map orderGoodsParam = Maps.newHashMap();
+        orderGoodsParam.put("order_id", orderId);
+        //订单的商品
+        List<OrderGoodsVo> orderGoods = orderGoodsService.queryList(orderGoodsParam);
+        //订单最后支付时间
+
+        //订单可操作的选择,删除，支付，收货，评论，退换货
+        Map handleOption = orderInfo.getHandleOption();
+        //
+        resultObj.put("orderInfo", orderInfo);
+        resultObj.put("orderGoods", orderGoods);
+        resultObj.put("handleOption", handleOption);
+        if (!StringUtils.isEmpty(orderInfo.getShipping_code()) && !StringUtils.isEmpty(orderInfo.getShipping_no())) {
+            resultObj.put("shippingList", null);
+        }
+        return toResponsSuccess(resultObj);
     }
 }
