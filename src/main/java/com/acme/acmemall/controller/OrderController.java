@@ -80,6 +80,7 @@ public class OrderController extends ApiBase {
         PageInfo pageInfo = new PageInfo<>(orderList);
 //        logger.info("pageinfo-->"+JSONObject.toJSONString(pageInfo));
         PageUtils goodsData = new PageUtils(pageInfo);
+
         return toResponsSuccess(goodsData);
     }
 
@@ -110,7 +111,7 @@ public class OrderController extends ApiBase {
         if (!StringUtils.isEmpty(orderInfo.getShipping_code()) && !StringUtils.isEmpty(orderInfo.getShipping_no())) {
             resultObj.put("shippingList", null);
         }
-        return toResponsSuccess(resultObj);
+        return ResultMap.ok(resultObj);
     }
 
     /**
@@ -124,11 +125,11 @@ public class OrderController extends ApiBase {
             orderVo.cancle(orderVo, loginUserVo.getUserId());
             // 退款场景待@todo
             orderService.updateOrder(orderVo);
-            return toResponsSuccess("操作成功");
+            return ResultMap.ok("操作成功");
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return toResponsSuccess("提交失败");
+        return ResultMap.error("操作失败");
     }
 
     /**
@@ -141,11 +142,11 @@ public class OrderController extends ApiBase {
             OrderVo orderVo = orderService.findOrder(orderId);
             orderVo.delete(orderVo, loginUserVo.getUserId());
             orderService.updateOrder(orderVo);
-            return toResponsSuccess("操作成功");
+            return ResultMap.ok("操作成功");
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return toResponsSuccess("提交失败");
+        return ResultMap.error("操作失败");
     }
 
 }
