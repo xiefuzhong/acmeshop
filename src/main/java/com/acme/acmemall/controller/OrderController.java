@@ -134,7 +134,7 @@ public class OrderController extends ApiBase {
     /**
      * 删除已取消的订单
      */
-    @ApiOperation(value = "删除订单")
+    @ApiOperation(value = "删除已取消的订单")
     @RequestMapping("delete")
     public Object deleteOrder(@LoginUser LoginUserVo loginUserVo, String orderId) {
         try {
