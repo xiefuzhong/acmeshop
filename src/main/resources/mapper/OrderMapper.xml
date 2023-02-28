@@ -88,6 +88,7 @@
         SELECT DISTINCT o.*, g.goods_name, g.list_pic_url, g.goods_id FROM t_acme_mall_order o
         LEFT JOIN t_acme_mall_order_goods g ON o.id = g.order_id
         <where>
+            AND o.order_status!=102
            	<if test="user_id != null">
                 and o.user_id = #{user_id}
             </if>
