@@ -124,7 +124,7 @@ public class OrderController extends ApiBase {
             orderVo.cancle(orderVo, loginUserVo.getUserId());
             // 退款场景待@todo
             orderService.updateOrder(orderVo);
-            return toResponsSuccess("取消成功");
+            return toResponsSuccess("操作成功");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -141,7 +141,7 @@ public class OrderController extends ApiBase {
             OrderVo orderVo = orderService.findOrder(orderId);
             orderVo.delete(orderVo, loginUserVo.getUserId());
             orderService.updateOrder(orderVo);
-            return toResponsSuccess("取消成功");
+            return toResponsSuccess("操作成功");
         } catch (Exception e) {
             e.printStackTrace();
         }
