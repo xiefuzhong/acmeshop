@@ -129,7 +129,7 @@
             <if test="source_key != null">`source_key` = #{source_key}</if>
             <if test="referrer != null">`referrer` = #{referrer}</if>
         </set>
-        where id = #{id}
+        where `id`= #{id}
     </update>
     
     <update id="updateCouponStatus" parameterType="com.acme.acmemall.model.UserCouponVo">
@@ -138,15 +138,15 @@
         	<if test="used_time != null">`used_time` = #{used_time},</if>
             <if test="coupon_status != null">`coupon_status` = #{coupon_status}</if>
         </set>
-        where id = #{id}
+        where `id` = #{id}
     </update>
 
     <delete id="delete">
-		delete from t_acme_mall_user_coupon where id = #{value}
+		delete from t_acme_mall_user_coupon where `id` = #{value}
 	</delete>
 
     <delete id="deleteBatch">
-        delete from t_acme_mall_user_coupon where id in
+        delete from t_acme_mall_user_coupon where `id`in
         <foreach item="id" collection="array" open="(" separator="," close=")">
             #{id}
         </foreach>

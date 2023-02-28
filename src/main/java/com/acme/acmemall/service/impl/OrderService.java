@@ -139,7 +139,7 @@ public class OrderService implements IOrderService {
                     .coupon_status(1)
                     .used_time(null)
                     .build();
-            userCouponMapper.update(uc);
+            userCouponMapper.updateCouponStatus(uc);
         }
     }
 
