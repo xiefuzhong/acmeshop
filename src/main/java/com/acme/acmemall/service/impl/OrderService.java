@@ -133,7 +133,8 @@ public class OrderService implements IOrderService {
     public void updateOrder(OrderVo orderVo) {
         // 更新优惠券状态
         orderMapper.update(orderVo);
-        if (orderVo.getCoupon_id() != null && orderVo.getCoupon_id() > 0) {
+        if (orderVo.getCoupon_id() != null && orderVo.getCoupon_id() > 0
+                && OrderStatus.TO_BE_PAID == OrderStatus.parse(orderVo.getOrder_status())) {
             UserCouponVo uc = UserCouponVo.builder()
                     .id(orderVo.getCoupon_id())
                     .coupon_status(1)

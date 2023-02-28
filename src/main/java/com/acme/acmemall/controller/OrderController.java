@@ -131,5 +131,21 @@ public class OrderController extends ApiBase {
         return toResponsSuccess("提交失败");
     }
 
+    /**
+     * 删除已取消的订单
+     */
+    @ApiOperation(value = "删除订单")
+    @RequestMapping("delete")
+    public Object deleteOrder(@LoginUser LoginUserVo loginUserVo, String orderId) {
+        try {
+            OrderVo orderVo = orderService.findOrder(orderId);
+            orderVo.delete(orderVo, loginUserVo.getUserId());
+            orderService.updateOrder(orderVo);
+            return toResponsSuccess("取消成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return toResponsSuccess("提交失败");
+    }
 
 }

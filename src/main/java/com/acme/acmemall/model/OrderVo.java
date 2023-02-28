@@ -232,13 +232,8 @@ public class OrderVo implements Serializable {
      *
      * @return
      */
-    public OrderVo cancle(OrderVo orderVo,long userId) {
-        if (orderVo == null) {
-            throw  new ApiCusException("订单不存在");
-        }
-        if (orderVo.getUser_id() != userId){
-            throw new ApiCusException("非法用户不能取消");
-        }
+    public void cancle(OrderVo orderVo,long userId) {
+        check(orderVo, userId);
         OrderStatus status = OrderStatus.parse(orderVo.order_status);
         if (status != OrderStatus.TO_BE_PAID){
             throw new ApiCusException("当前订单状态不支持取消订单");
@@ -246,7 +241,31 @@ public class OrderVo implements Serializable {
         this.order_status = OrderStatus.CANCELED.code;
         this.order_status_text = OrderStatus.CANCELED.getDescription();
         this.cancle_time = new Date();
-        return this;
+    }
+
+    private static void check(OrderVo orderVo, long userId) {
+        if (orderVo == null) {
+            throw  new ApiCusException("订单不存在");
+        }
+        if (orderVo.getUser_id() != userId){
+            throw new ApiCusException("非法用户不能取消");
+        }
+    }
+
+    /**
+     * 逻辑删除(标记)
+     * @param orderVo
+     * @param userId
+     */
+    public void delete(OrderVo orderVo,long userId){
+        check(orderVo, userId);
+        OrderStatus status = OrderStatus.parse(orderVo.order_status);
+        if (status != OrderStatus.CANCELED){
+            throw new ApiCusException("当前订单状态不支持删除订单");
+        }
+        this.order_status = OrderStatus.DELETED.code;
+        this.order_status_text = OrderStatus.DELETED.getDescription();
+        this.delete_time = new Date();
     }
 
     /**

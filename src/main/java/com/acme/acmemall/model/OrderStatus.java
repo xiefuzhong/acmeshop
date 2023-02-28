@@ -6,6 +6,7 @@ public enum OrderStatus {
     COMPLETED(301, "已完成"),
     PAID(200, "已付款"),
     CANCELED(101, "已取消"),
+    DELETED(102, "已删除"),
     CANCELED_RETURNED(401, "已取消"),
     RETURNED(402, "已退货"),
     TO_BE_SHIPPED(201, "待发货");
