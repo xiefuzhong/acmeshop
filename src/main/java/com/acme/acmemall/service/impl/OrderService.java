@@ -126,6 +126,23 @@ public class OrderService implements IOrderService {
         return orderMapper.queryObject(orderId);
     }
 
+    /**
+     * @param orderVo
+     */
+    @Override
+    public void updateOrder(OrderVo orderVo) {
+        // 更新优惠券状态
+        orderMapper.update(orderVo);
+        if (orderVo.getCoupon_id() != null && orderVo.getCoupon_id() > 0) {
+            UserCouponVo uc = UserCouponVo.builder()
+                    .id(orderVo.getCoupon_id())
+                    .coupon_status(1)
+                    .used_time(null)
+                    .build();
+            userCouponMapper.update(uc);
+        }
+    }
+
     private List<UserCouponVo> getUserCouponVos(String userCouponId, BigDecimal goodsTotalPrice, LoginUserVo loginUser) {
         List<UserCouponVo> userCouponList = Lists.newArrayList();
         if (StringUtils.isNotEmpty(userCouponId)) {

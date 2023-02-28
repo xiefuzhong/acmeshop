@@ -32,4 +32,6 @@ public interface IOrderService {
      * @return 订单详情
      */
     OrderVo findOrder(String orderId);
+
+    void updateOrder(OrderVo orderVo);
 }

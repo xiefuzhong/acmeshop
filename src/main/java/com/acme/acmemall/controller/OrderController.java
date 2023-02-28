@@ -47,7 +47,7 @@ public class OrderController extends ApiBase {
             request.check();
             ResultMap resultObj = orderService.submit(request, loginUser);
             if (null != resultObj) {
-                logger.info("Order.submit()=="+JSONObject.toJSONString(resultObj));
+                logger.info("Order.submit()==" + JSONObject.toJSONString(resultObj));
                 return resultObj;
             }
         } catch (Exception e) {
@@ -70,13 +70,13 @@ public class OrderController extends ApiBase {
         params.put("limit", size);
         params.put("sidx", "id");
         params.put("order", "desc");
-        if (order_status!=null){
+        if (order_status != null) {
             params.put("order_status", order_status);
         }
         //查询列表数据
         PageHelper.startPage(page, size);
         List<OrderVo> orderList = orderService.queryOrderList(params);
-        logger.info("Order.list="+(CollectionUtils.isEmpty(orderList)?0:orderList.size()));
+        logger.info("Order.list=" + (CollectionUtils.isEmpty(orderList) ? 0 : orderList.size()));
         PageInfo pageInfo = new PageInfo<>(orderList);
 //        logger.info("pageinfo-->"+JSONObject.toJSONString(pageInfo));
         PageUtils goodsData = new PageUtils(pageInfo);
@@ -112,4 +112,25 @@ public class OrderController extends ApiBase {
         }
         return toResponsSuccess(resultObj);
     }
+
+    /**
+     * 取消订单，恢复优惠券，更新订单状态
+     */
+    @ApiOperation(value = "取消订单")
+    @RequestMapping("cancel")
+    public Object cancelOrder(@LoginUser LoginUserVo loginUserVo, String orderId) {
+        try {
+            OrderVo orderVo = orderService.findOrder(orderId);
+            orderVo.cancle(orderVo, loginUserVo.getUserId());
+            // 退款场景待@todo
+
+            orderService.updateOrder(orderVo);
+            return toResponsSuccess("取消成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return toResponsSuccess("提交失败");
+    }
+
+
 }

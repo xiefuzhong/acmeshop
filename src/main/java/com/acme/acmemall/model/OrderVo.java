@@ -94,8 +94,14 @@ public class OrderVo implements Serializable {
     @Builder.Default
     //商品总价
     private BigDecimal goods_price = BigDecimal.ZERO;
-    //新增时间
+    //新增时间-下单时间
     private Date add_time;
+
+    // 订单删除时间
+    private Date delete_time;
+
+    // 取消时间
+    private Date cancle_time;
     //确认时间
     private Date confirm_time;
     //付款时间
@@ -226,7 +232,20 @@ public class OrderVo implements Serializable {
      *
      * @return
      */
-    public OrderVo cancle(OrderVo orderVo) {
+    public OrderVo cancle(OrderVo orderVo,long userId) {
+        if (orderVo == null) {
+            throw  new ApiCusException("订单不存在");
+        }
+        if (orderVo.getUser_id() != userId){
+            throw new ApiCusException("非法用户不能取消");
+        }
+        OrderStatus status = OrderStatus.parse(orderVo.order_status);
+        if (status != OrderStatus.TO_BE_PAID){
+            throw new ApiCusException("当前订单状态不支持取消订单");
+        }
+        this.order_status = OrderStatus.CANCELED.code;
+        this.order_status_text = OrderStatus.CANCELED.getDescription();
+        this.cancle_time = new Date();
         return this;
     }
 
