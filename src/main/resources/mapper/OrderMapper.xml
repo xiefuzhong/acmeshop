@@ -60,7 +60,11 @@
 		select a.*,b.code as  shipping_code,b.name as shipping_name
 		from t_acme_mall_order a
 		left join t_acme_mall_shipping b on a.shipping_id = b.id
-		where a.id = #{value}
+        <where>
+            AND a.id = #{value}
+            AND a.order_status != 102
+        </where>
+
 	</select>
 	
 	<select id="queryByAllOrderId" resultMap="orderMap">
