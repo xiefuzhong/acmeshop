@@ -225,9 +225,9 @@ public class GoodsController extends ApiBase {
         logger.info("goods.detail===============================>" + id);
         Map<String, Object> resultObj = Maps.newHashMap();
         Long userId = getUserId();
-        if (userVo != null){
+        if (userVo != null) {
             userId = userVo.getUserId();
-        }else{
+        } else {
             logger.info("访客浏览");
         }
 
@@ -408,7 +408,7 @@ public class GoodsController extends ApiBase {
         param.put("is_hot", "1"); // 热门
         param.put("is_delete", 0);
         param.put("is_on_sale", 1); // 在售商品
-        PageHelper.startPage(0, 3);
+        PageHelper.startPage(0, 3, false);
         List<GoodsVo> hotGoods = goodsService.queryGoodsList(param);
         resultObj.put("hotGoodsList", hotGoods);
         return ResultMap.ok(resultObj);
