@@ -2,6 +2,7 @@ package com.acme.acmemall.controller;
 
 import com.acme.acmemall.annotation.IgnoreAuth;
 import com.acme.acmemall.annotation.LoginUser;
+import com.acme.acmemall.common.ResultMap;
 import com.acme.acmemall.model.*;
 import com.acme.acmemall.service.*;
 import com.acme.acmemall.utils.Base64;
@@ -65,9 +66,6 @@ public class GoodsController extends ApiBase {
 
     @Autowired
     ISearchHistoryService searchHistoryService;
-
-//    @Autowired
-//    IUserCouponService userCouponService;
 
     /**
      * 　　在售的商品总数
@@ -396,5 +394,23 @@ public class GoodsController extends ApiBase {
 //        }
 
         return toResponsSuccess(resultObj);
+    }
+
+    /**
+     * 　　人气推荐
+     */
+    @ApiOperation(value = "人气推荐")
+    @IgnoreAuth
+    @GetMapping(value = "hot")
+    public Object hot() {
+        Map<String, Object> resultObj = Maps.newHashMap();
+        Map<String, Object> param = Maps.newHashMap();
+        param.put("is_hot", "1"); // 热门
+        param.put("is_delete", 0);
+        param.put("is_on_sale", 1); // 在售商品
+        PageHelper.startPage(0, 3);
+        List<GoodsVo> hotGoods = goodsService.queryGoodsList(param);
+        resultObj.put("hotGoodsList", hotGoods);
+        return ResultMap.ok(resultObj);
     }
 }
