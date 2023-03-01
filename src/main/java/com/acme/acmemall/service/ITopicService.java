@@ -12,4 +12,11 @@ public interface ITopicService {
      * @return 专题列表
      */
     List<TopicVo> queryTopicList(Map<String, Object> map);
+
+    /**
+     * 专题详情
+     * @param id
+     * @return
+     */
+    TopicVo queryObject(Integer id);
 }

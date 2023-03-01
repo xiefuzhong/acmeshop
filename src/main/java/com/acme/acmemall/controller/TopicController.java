@@ -1,8 +1,10 @@
 package com.acme.acmemall.controller;
 
 import com.acme.acmemall.annotation.IgnoreAuth;
+import com.acme.acmemall.annotation.LoginUser;
 import com.acme.acmemall.common.ResultMap;
 import com.acme.acmemall.exception.ResultCodeEnum;
+import com.acme.acmemall.model.LoginUserVo;
 import com.acme.acmemall.model.TopicVo;
 import com.acme.acmemall.service.ITopicService;
 import com.acme.acmemall.utils.PageUtils;
@@ -44,5 +46,12 @@ public class TopicController extends ApiBase {
         List<TopicVo> topicList = topicService.queryTopicList(param);
         PageUtils pageUtil = new PageUtils(new PageInfo(topicList));
         return ResultMap.response(ResultCodeEnum.SUCCESS, pageUtil);
+    }
+
+    @IgnoreAuth
+    @GetMapping("detail")
+    public Object detail(@LoginUser LoginUserVo loginUser, Integer id) {
+        TopicVo topicEntity = topicService.queryObject(id);
+        return toResponsSuccess(topicEntity);
     }
 }

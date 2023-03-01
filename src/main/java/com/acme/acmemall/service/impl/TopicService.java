@@ -23,4 +23,15 @@ public class TopicService implements ITopicService {
     public List<TopicVo> queryTopicList(Map<String, Object> map) {
         return topicDao.queryList(map);
     }
+
+    /**
+     * 专题详情
+     *
+     * @param id
+     * @return
+     */
+    @Override
+    public TopicVo queryObject(Integer id) {
+        return topicDao.queryObject(id);
+    }
 }
