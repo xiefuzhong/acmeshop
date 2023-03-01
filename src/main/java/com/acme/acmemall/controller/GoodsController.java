@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -404,13 +405,11 @@ public class GoodsController extends ApiBase {
     @GetMapping(value = "hot")
     public Object hot() {
         Map<String, Object> resultObj = Maps.newHashMap();
-        Map<String, Object> param = Maps.newHashMap();
-        param.put("is_hot", "1"); // 热门
-        param.put("is_delete", 0);
-        param.put("is_on_sale", 1); // 在售商品
-        PageHelper.startPage(0, 3, false);
-        List<GoodsVo> hotGoods = goodsService.queryGoodsList(param);
-        resultObj.put("hotGoodsList", hotGoods);
+        Map bannerInfo = new HashMap();
+        bannerInfo.put("url", "");
+        bannerInfo.put("name", "大家都在买的严选好物");
+        bannerInfo.put("img_url", "https://platform-wxmall.oss-cn-beijing.aliyuncs.com/upload/20180727/1504208321fef4.png");
+        resultObj.put("bannerInfo", bannerInfo);
         return ResultMap.ok(resultObj);
     }
 }
