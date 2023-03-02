@@ -81,8 +81,6 @@
 			`promoter_id`,
 			`promoter_name`,
 			`qr_code`
-
-
 		)
 		values
 		(
@@ -102,7 +100,6 @@
 			#{promoterId},
 			#{promoterName},
 			#{qrCode}
-
 		)
 	</insert>
 

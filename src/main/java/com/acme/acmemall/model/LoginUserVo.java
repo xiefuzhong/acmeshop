@@ -42,7 +42,7 @@ public class LoginUserVo implements Serializable {
     //身份证号
     private String idCard;
     //推广人id
-    private int promoterId;
+    private int promoterId=0;
     //推广人姓名
     private String promoterName;
     //是否实名认证 1：是 2：否

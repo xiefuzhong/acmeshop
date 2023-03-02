@@ -85,6 +85,7 @@ public class AuthController extends ApiBase {
             userVo.setAvatar(loginInfo.getAvatarUrl());
             userVo.setGender(loginInfo.getGender()); // //性别 0：未知、1：男、2：女
             userVo.setNickname(Base64.encode(loginInfo.getNickName()));
+            userVo.setPromoterId(loginInfo.getPromoterId());
             // 保存授权登录信息
             userService.save(userVo);
             logger.info("userId>>"+userVo.getUserId());
