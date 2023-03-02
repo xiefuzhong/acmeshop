@@ -1,6 +1,7 @@
 package com.acme.acmemall.controller;
 
 import com.acme.acmemall.annotation.LoginUser;
+import com.acme.acmemall.common.ResultMap;
 import com.acme.acmemall.model.LoginUserVo;
 import com.acme.acmemall.model.OrderGoodsVo;
 import com.acme.acmemall.model.OrderVo;
@@ -43,9 +44,14 @@ public class PayController extends ApiBase {
     @ApiOperation(value = "获取待支付订单的请求参数")
     @GetMapping("prepay")
     public Object payPrepay(@LoginUser LoginUserVo loginUser, String orderId) {
-//        @todo
-//        String allOrderId = orderService.queryObject(orderId).getAll_order_id();
-//        List<OrderVo> orders = orderService.queryByAllOrderId(allOrderId);
+        OrderVo orderVo = orderService.findOrder(orderId);
+        if (orderVo == null) {
+            return ResultMap.error(400, "订单不存在");
+        }
+        if (!orderVo.checkOwner(loginUser.getUserId())) {
+            return  ResultMap.error(400, "用户不存在");
+        }
+
         List<OrderVo> orders = Lists.newArrayList();
         String body = null;
         BigDecimal allPrice = BigDecimal.ZERO;

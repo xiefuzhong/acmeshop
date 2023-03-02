@@ -154,6 +154,15 @@ public class OrderVo implements Serializable {
     @Builder.Default
     private List<OrderGoodsVo> items = Lists.newArrayList();
 
+    private static void check(OrderVo orderVo, long userId) {
+        if (orderVo == null) {
+            throw new ApiCusException("订单不存在");
+        }
+        if (orderVo.getUser_id() != userId) {
+            throw new ApiCusException("非法用户不能取消");
+        }
+    }
+
     public String getFull_region() {
         //    return full_region;
         if (StringUtils.isNotEmpty(this.full_region)) {
@@ -161,7 +170,7 @@ public class OrderVo implements Serializable {
         } else {
             StringBuffer strBuff = new StringBuffer();
             if (StringUtils.isNotEmpty(this.country)) {
-                strBuff.append(this.country.equalsIgnoreCase("CN")?"中国":this.country).append(" ");
+                strBuff.append(this.country.equalsIgnoreCase("CN") ? "中国" : this.country).append(" ");
             }
             if (StringUtils.isNotEmpty(this.province)) {
                 strBuff.append(this.province).append(" ");
@@ -232,10 +241,10 @@ public class OrderVo implements Serializable {
      *
      * @return
      */
-    public void cancle(OrderVo orderVo,long userId) {
+    public void cancle(OrderVo orderVo, long userId) {
         check(orderVo, userId);
         OrderStatus status = OrderStatus.parse(orderVo.order_status);
-        if (status != OrderStatus.TO_BE_PAID){
+        if (status != OrderStatus.TO_BE_PAID) {
             throw new ApiCusException("当前订单状态不支持取消订单");
         }
         this.order_status = OrderStatus.CANCELED.code;
@@ -243,24 +252,16 @@ public class OrderVo implements Serializable {
         this.cancle_time = new Date();
     }
 
-    private static void check(OrderVo orderVo, long userId) {
-        if (orderVo == null) {
-            throw  new ApiCusException("订单不存在");
-        }
-        if (orderVo.getUser_id() != userId){
-            throw new ApiCusException("非法用户不能取消");
-        }
-    }
-
     /**
      * 逻辑删除(标记)
+     *
      * @param orderVo
      * @param userId
      */
-    public void delete(OrderVo orderVo,long userId){
+    public void delete(OrderVo orderVo, long userId) {
         check(orderVo, userId);
         OrderStatus status = OrderStatus.parse(orderVo.order_status);
-        if (status != OrderStatus.CANCELED){
+        if (status != OrderStatus.CANCELED) {
             throw new ApiCusException("当前订单状态不支持删除订单");
         }
         this.order_status = OrderStatus.DELETED.code;
@@ -321,6 +322,13 @@ public class OrderVo implements Serializable {
 
     public Map getHandleOption() {
         return OrderHandleOption.builder().build().canOption(this.order_status);
+    }
+
+    public boolean checkOwner(long userId) {
+        if (userId <= 0) {
+            return false;
+        }
+        return userId == this.user_id;
     }
 
     /**
