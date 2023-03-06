@@ -65,4 +65,23 @@ public class AddressVo implements Serializable {
             return this.full_region;
         }
     }
+
+    @Override
+    public String toString() {
+        final StringBuffer sb = new StringBuffer("AddressVo{");
+        sb.append("id=").append(id);
+        sb.append(", userId=").append(userId);
+//        sb.append(", userName='").append(userName).append('\'');
+//        sb.append(", telNumber='").append(telNumber).append('\'');
+        sb.append(", postalCode='").append(postalCode).append('\'');
+        sb.append(", nationalCode='").append(nationalCode).append('\'');
+        sb.append(", provinceName='").append(provinceName).append('\'');
+        sb.append(", cityName='").append(cityName).append('\'');
+        sb.append(", countyName='").append(countyName).append('\'');
+        sb.append(", detailInfo='").append(detailInfo).append('\'');
+        sb.append(", is_default=").append(is_default);
+        sb.append(", full_region='").append(full_region).append('\'');
+        sb.append('}');
+        return sb.toString();
+    }
 }

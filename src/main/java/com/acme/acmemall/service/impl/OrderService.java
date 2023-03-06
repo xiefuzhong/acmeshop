@@ -68,7 +68,8 @@ public class OrderService implements IOrderService {
             return ResultMap.error(101, "请先添加到购物车,暂不支持其他方式");
         }
         AddressVo addressVo = addressMapper.queryObject(request.getAddressId());
-        if (addressVo == null || addressVo.getUserId() != loginUser.getUserId()) {
+        logger.info(addressVo.toString());
+        if (addressVo == null || !addressVo.getUserId().equals(loginUser.getUserId())) {
             return ResultMap.error(102, "请选择联系地址");
         }
         // 用户选择的优惠券信息
