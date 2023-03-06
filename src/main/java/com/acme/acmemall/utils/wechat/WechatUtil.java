@@ -390,9 +390,11 @@ public class WechatUtil {
      */
     public static String getPrivatekey(String fileName) throws IOException {
         String content = new String(Files.readAllBytes(Paths.get(fileName)), StandardCharsets.UTF_8);
+        logger.info(fileName+"-----"+content);
         String privatekey = content.replace("-----BEGIN CERTIFICATE-----", "")
                 .replace("-----END CERTIFICATE-----", "")
                 .replaceAll("\\s+", "");
+
         return privatekey;
     }
 }
