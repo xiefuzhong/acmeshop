@@ -84,7 +84,7 @@ public class PayController extends ApiBase {
             parame.put("spbill_create_ip", getClientIp());
             parame.put("openid", loginUser.getWeixin_openid());
             String sign = WechatUtil.arraySign(parame, ResourceUtil.getConfigByName("wx.paySignKey"));
-            logger.info(sign);
+            logger.info("["+sign+"]");
             // 数字签证
             parame.put("sign", sign);
 
