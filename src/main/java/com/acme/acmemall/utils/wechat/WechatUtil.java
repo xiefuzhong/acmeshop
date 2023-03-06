@@ -31,11 +31,6 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.security.KeyFactory;
-import java.security.NoSuchAlgorithmException;
-import java.security.PrivateKey;
-import java.security.spec.InvalidKeySpecException;
-import java.security.spec.PKCS8EncodedKeySpec;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -102,12 +97,6 @@ public class WechatUtil {
         params.put("spbill_create_ip", "192.168.0.1");
         //签名前必须要参数全部写在前面
         params.put("sign", arraySign(params, ResourceUtil.getConfigByName("wx.paySignKey")));
-        try {
-            PrivateKey privateKey = getPrivatekey(ResourceUtil.getConfigByName("wx.paySignKey"));
-
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
         return params;
     }
 
@@ -399,18 +388,11 @@ public class WechatUtil {
      * @return 私钥对象
      * @throws IOException
      */
-    private static PrivateKey getPrivatekey(String fileName) throws IOException {
+    public static String getPrivatekey(String fileName) throws IOException {
         String content = new String(Files.readAllBytes(Paths.get(fileName)), StandardCharsets.UTF_8);
-        try {
-            String privatekey = content.replace("-----BEGIN CERTIFICATE-----", "")
-                    .replace("-----END CERTIFICATE-----", "")
-                    .replaceAll("\\s+", "");
-            KeyFactory keyFactory = KeyFactory.getInstance("RSA");
-            return keyFactory.generatePrivate(new PKCS8EncodedKeySpec(Base64.getDecoder().decode(privatekey)));
-        } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException("当前Java环境不支持RSA", e);
-        } catch (InvalidKeySpecException e) {
-            throw new RuntimeException("无效的密钥格式");
-        }
+        String privatekey = content.replace("-----BEGIN CERTIFICATE-----", "")
+                .replace("-----END CERTIFICATE-----", "")
+                .replaceAll("\\s+", "");
+        return privatekey;
     }
 }
