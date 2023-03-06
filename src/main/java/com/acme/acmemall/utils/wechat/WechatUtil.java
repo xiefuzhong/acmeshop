@@ -273,7 +273,7 @@ public class WechatUtil {
         }
         temp.append("&key=");
         temp.append(paySignKey);
-        System.out.println(temp);
+//        System.out.println(temp);
         String packageSign = MD5.getMessageDigest(temp.toString());
         logger.info(packageSign);
         return packageSign;
@@ -318,9 +318,10 @@ public class WechatUtil {
         httpPost.setEntity(postEntity);
 
         HttpResponse httpResponse = httpClient.execute(httpPost);
+        logger.info(httpResponse.getStatusLine());
         HttpEntity httpEntity = httpResponse.getEntity();
         String reusltObj = EntityUtils.toString(httpEntity, "UTF-8");
-        logger.info("请求结果:" + reusltObj);
+        logger.info("请求结果:[" + reusltObj+"]");
         return reusltObj;
 
     }
