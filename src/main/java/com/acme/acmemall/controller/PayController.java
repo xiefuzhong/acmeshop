@@ -1,5 +1,6 @@
 package com.acme.acmemall.controller;
 
+import com.acme.acmemall.annotation.IgnoreAuth;
 import com.acme.acmemall.annotation.LoginUser;
 import com.acme.acmemall.common.ResultMap;
 import com.acme.acmemall.model.LoginUserVo;
@@ -9,14 +10,17 @@ import com.acme.acmemall.utils.CharUtil;
 import com.acme.acmemall.utils.MapUtils;
 import com.acme.acmemall.utils.ResourceUtil;
 import com.acme.acmemall.utils.XmlUtil;
+import com.acme.acmemall.utils.wechat.WechatRefundApiResult;
 import com.acme.acmemall.utils.wechat.WechatUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
 import java.math.BigDecimal;
 import java.util.Map;
 import java.util.TreeMap;
@@ -113,7 +117,7 @@ public class PayController extends ApiBase {
                     resultObj.put("paySign", paySign);
 
                     OrderVo newOrder = OrderVo.builder().all_order_id(orderVo.getAll_order_id()).pay_id(prepay_id).build();
-                    newOrder.paid(newOrder);
+                    newOrder.prePay(newOrder);
                     orderService.updateStatus(newOrder);
 
                     //redis设置订单状态@todo
@@ -126,6 +130,99 @@ public class PayController extends ApiBase {
             return toResponsFail("下单失败,error=" + e.getMessage());
         }
         return toResponsFail("下单失败");
+    }
+
+    /**
+     * 微信订单回调接口
+     *
+     * @return
+     */
+    @ApiOperation(value = "微信订单回调接口")
+    @RequestMapping(value = "/notify", method = RequestMethod.POST, produces = "text/html;charset=UTF-8")
+    @IgnoreAuth
+    @ResponseBody
+    public void notify(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            request.setCharacterEncoding("UTF-8");
+            response.setCharacterEncoding("UTF-8");
+            response.setContentType("text/html;charset=UTF-8");
+            response.setHeader("Access-Control-Allow-Origin", "*");
+            InputStream in = request.getInputStream();
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            byte[] buffer = new byte[1024];
+            int len = 0;
+            while ((len = in.read(buffer)) != -1) {
+                out.write(buffer, 0, len);
+            }
+            out.close();
+            in.close();
+            //xml数据
+            String reponseXml = new String(out.toByteArray(), "utf-8");
+
+            WechatRefundApiResult result = (WechatRefundApiResult) XmlUtil.xmlStrToBean(reponseXml, WechatRefundApiResult.class);
+
+            //处理订单的redis状态
+//            String value = RedisUtils.get(result.getOut_trade_no().toString());
+//            if(value != null && "51".equals(value)) {
+//                RedisUtils.del(result.getOut_trade_no().toString());
+//            }else {
+//                //查询支付已结操作过
+//                response.getWriter().write(setXml("SUCCESS", "OK"));
+//                return;
+//            }
+            OrderVo orderVo = orderService.findOrder(result.getOut_trade_no());
+            if (!orderVo.getPay_status().equals(1)){
+                response.getWriter().write(setXml("SUCCESS", "OK"));
+                return;
+            }
+
+            String result_code = result.getResult_code();
+            if (result_code.equalsIgnoreCase("FAIL")) {
+                //订单编号
+                String out_trade_no = result.getOut_trade_no();
+                logger.error("订单" + out_trade_no + "支付失败");
+                response.getWriter().write(setXml("SUCCESS", "OK"));
+            } else if (result_code.equalsIgnoreCase("SUCCESS")) {
+                Map<Object, Object> retMap = XmlUtil.xmlStrToTreeMap(reponseXml);
+                String sign = WechatUtil.arraySign(retMap, ResourceUtil.getConfigByName("wx.paySignKey"));
+                if(!sign.equals(result.getSign())) {//判断签名
+                    return;
+                }
+
+                // 更改订单状态
+                // 业务处理
+                OrderVo orderInfo = orderService.findOrder(result.getOut_trade_no());
+                orderInfo.paid(orderInfo);
+
+                orderService.updateStatus(orderInfo);
+
+//                Map<String, Object> map = new HashMap<String, Object>();
+//                map.put("all_order_id", result.getOut_trade_no());
+//                List<OrderVo> lists = orderService.queryList(map);
+//                OrderVo vo = null;
+//                for(OrderVo v : lists) {
+//                    vo = v;
+//                    try {
+//                        //调用分销接口(现在支付成功就分润，后期要改造变成收货后，或者变成不可以体现的分润)
+//                        fx(new Long(vo.getPromoter_id()), vo.getBrokerage(), vo.getOrder_price(), vo.getId(), vo.getMerchant_id());
+//                    }catch(Exception e) {
+//                        System.out.println("================分销错误开始================");
+//                        e.printStackTrace();
+//                        System.out.println("================分销错误结束================");
+//                    }
+//                }
+
+
+                response.getWriter().write(setXml("SUCCESS", "OK"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return;
+        }
+    }
+
+    public static String setXml(String return_code, String return_msg) {
+        return "<xml><return_code><![CDATA[" + return_code + "]]></return_code><return_msg><![CDATA[" + return_msg + "]]></return_msg></xml>";
     }
 
 }

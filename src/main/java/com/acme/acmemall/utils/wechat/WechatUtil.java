@@ -28,9 +28,6 @@ import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -380,21 +377,5 @@ public class WechatUtil {
                 logger.error(e.getMessage(), e);
             }
         }
-    }
-
-    /**
-     * 获取私钥
-     * @param fileName 私钥位置
-     * @return 私钥对象
-     * @throws IOException
-     */
-    public static String getPrivatekey(String fileName) throws IOException {
-        String content = new String(Files.readAllBytes(Paths.get(fileName)), StandardCharsets.UTF_8);
-        logger.info(fileName+"-----"+content);
-        String privatekey = content.replace("-----BEGIN CERTIFICATE-----", "")
-                .replace("-----END CERTIFICATE-----", "")
-                .replaceAll("\\s+", "");
-
-        return privatekey;
     }
 }

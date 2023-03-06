@@ -229,11 +229,26 @@ public class OrderVo implements Serializable {
      *
      * @return
      */
-    public OrderVo paid(OrderVo orderVo) {
+    public OrderVo prePay(OrderVo orderVo) {
         this.pay_id = UUID.randomUUID().toString();
         this.pay_name = null;
         this.pay_time = new Date();
+        // 支付中
+        this.pay_status = 1;
+        return this;
+    }
+
+    /**
+     * 付款成功
+     * @param orderVo
+     * @return
+     */
+    public OrderVo paid(OrderVo orderVo){
         this.pay_status = 2;
+        this.order_status = OrderStatus.TO_BE_SHIPPED.getCode();
+        this.order_status_text = OrderStatus.TO_BE_SHIPPED.getDescription();
+        this.shipping_status = 0;
+        this.pay_time = new Date();
         return this;
     }
 
