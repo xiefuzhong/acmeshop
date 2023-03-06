@@ -229,7 +229,7 @@ public class OrderVo implements Serializable {
      *
      * @return
      */
-    public OrderVo pay(OrderVo orderVo) {
+    public OrderVo paid(OrderVo orderVo) {
         this.pay_id = UUID.randomUUID().toString();
         this.pay_name = null;
         this.pay_time = new Date();

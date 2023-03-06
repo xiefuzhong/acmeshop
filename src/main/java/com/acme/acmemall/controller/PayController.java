@@ -45,9 +45,9 @@ public class PayController extends ApiBase {
             return ResultMap.error(400, "订单不存在");
         }
         if (!orderVo.checkOwner(loginUser.getUserId())) {
-            return  ResultMap.error(400, "用户不存在");
+            return ResultMap.error(400, "用户不存在");
         }
-        if(!orderVo.canPay()){
+        if (!orderVo.canPay()) {
             return ResultMap.error(400, "当前订单已支付,请不要重复操作");
         }
         String body = orderVo.getPayBody_title();
@@ -112,13 +112,9 @@ public class PayController extends ApiBase {
                     String paySign = WechatUtil.arraySign(resultObj, ResourceUtil.getConfigByName("wx.paySignKey"));
                     resultObj.put("paySign", paySign);
 
-//                    OrderVo newOrder = orderService.queryObject(allOrderId);
-//                    newOrder.setPay_id(prepay_id);
-//                    newOrder.setPay_status(1);
-//                    newOrder.setAll_order_id(allOrderId.toString());
-                    OrderVo newOrder = OrderVo.builder().build();
-                    newOrder.pay(null);
-//                    orderService.updateStatus(newOrder); // @todo
+                    OrderVo newOrder = OrderVo.builder().all_order_id(orderVo.getAll_order_id()).pay_id(prepay_id).build();
+                    newOrder.paid(newOrder);
+                    orderService.updateStatus(newOrder);
 
                     //redis设置订单状态@todo
 //                    RedisUtils.set(allOrderId.toString(), "51", 60*60*24);

@@ -34,4 +34,6 @@ public interface IOrderService {
     OrderVo findOrder(String orderId);
 
     void updateOrder(OrderVo orderVo);
+
+    void updateStatus(OrderVo newOrder);
 }

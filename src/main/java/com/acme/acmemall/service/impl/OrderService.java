@@ -145,6 +145,14 @@ public class OrderService implements IOrderService {
         }
     }
 
+    /**
+     * @param newOrder
+     */
+    @Override
+    public void updateStatus(OrderVo newOrder) {
+        orderMapper.updateStatus(newOrder);
+    }
+
     private List<UserCouponVo> getUserCouponVos(String userCouponId, BigDecimal goodsTotalPrice, LoginUserVo loginUser) {
         List<UserCouponVo> userCouponList = Lists.newArrayList();
         if (StringUtils.isNotEmpty(userCouponId)) {
