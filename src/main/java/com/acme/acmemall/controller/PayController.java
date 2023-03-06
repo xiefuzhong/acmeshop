@@ -79,7 +79,7 @@ public class PayController extends ApiBase {
             parame.put("trade_type", ResourceUtil.getConfigByName("wx.tradeType"));
             parame.put("spbill_create_ip", getClientIp());
             parame.put("openid", loginUser.getWeixin_openid());
-            String sign = WechatUtil.arraySign(parame, WechatUtil.getPrivatekey(ResourceUtil.getConfigByName("wx.paySignKey")));
+            String sign = WechatUtil.arraySign(parame, ResourceUtil.getConfigByName("wx.paySignKey"));
             // 数字签证
             parame.put("sign", sign);
 
@@ -109,7 +109,7 @@ public class PayController extends ApiBase {
                     resultObj.put("nonceStr", nonceStr);
                     resultObj.put("package", "prepay_id=" + prepay_id);
                     resultObj.put("signType", "MD5");
-                    String paySign = WechatUtil.arraySign(resultObj, WechatUtil.getPrivatekey(ResourceUtil.getConfigByName("wx.paySignKey")));
+                    String paySign = WechatUtil.arraySign(resultObj, ResourceUtil.getConfigByName("wx.paySignKey"));
                     resultObj.put("paySign", paySign);
 
                     OrderVo newOrder = OrderVo.builder().all_order_id(orderVo.getAll_order_id()).pay_id(prepay_id).build();
