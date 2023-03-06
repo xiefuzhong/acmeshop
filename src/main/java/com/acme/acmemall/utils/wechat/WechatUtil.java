@@ -28,6 +28,14 @@ import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.security.KeyFactory;
+import java.security.NoSuchAlgorithmException;
+import java.security.PrivateKey;
+import java.security.spec.InvalidKeySpecException;
+import java.security.spec.PKCS8EncodedKeySpec;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -39,7 +47,7 @@ import java.util.*;
  * @date 2017年6月6日  下午5:05:03
  */
 public class WechatUtil {
-    private static Log logger = LogFactory.getLog(WechatUtil.class);
+    private static final Log logger = LogFactory.getLog(WechatUtil.class);
     /**
      * 充值客户端类型--微信公众号
      */
@@ -51,49 +59,58 @@ public class WechatUtil {
 
     /**
      * 方法描述：企业付款到零钱
-     * @param openid		用户openId
-     * @param payMoney		支付金额
-     * @param userName		真实姓名
-     * @param payCountId	流水号，唯一
+     *
+     * @param openid     用户openId
+     * @param payMoney   支付金额
+     * @param userName   真实姓名
+     * @param payCountId 流水号，唯一
      * @return
      */
-    public static WechatRefundApiResult wxPayMoneyToUser(String openid, Double payMoney, String userName,String payCountId) {
+    public static WechatRefundApiResult wxPayMoneyToUser(String openid, Double payMoney, String userName, String payCountId) {
         //初始化请求微信服务器的配置信息包括appid密钥等
         //转换金钱格式
         BigDecimal bdpayMoney = new BigDecimal(payMoney, MathContext.DECIMAL32);
         //构建请求参数
-        Map<Object, Object> params = payMoneyToUser(openid, bdpayMoney, userName,payCountId);
+        Map<Object, Object> params = payMoneyToUser(openid, bdpayMoney, userName, payCountId);
         String mapToXml = MapUtils.convertMap2Xml(params);
         //请求微信
         String reponseXml = sendorgPay(mapToXml, WechatConfig.getSslcsf());
         WechatRefundApiResult result = (WechatRefundApiResult) XmlUtil.xmlStrToBean(reponseXml, WechatRefundApiResult.class);
         return result;
     }
+
     /**
      * 方法描述：分账请求参数
-  */
- private static Map<Object, Object> payMoneyToUser(String openid, BigDecimal bdpayMoney, String userName,String payCountId) {
- 	
-     Map<Object, Object> params = new HashMap<Object, Object>();
-     //微信分配的公众账号ID（企业号corpid即为此appId）
-     params.put("mch_appid", ResourceUtil.getConfigByName("wx.appId"));
-     //微信支付分配的商户号
-     params.put("mchid", ResourceUtil.getConfigByName("wx.mchId"));
-     //随机字符串，不长于32位。推荐随机数生成算法
-     params.put("nonce_str", CharUtil.getRandomString(16));
-     //商户侧传给微信的订单号
-     params.put("partner_trade_no", payCountId);
-     params.put("openid", openid);//收款人openid
-     params.put("check_name", "FORCE_CHECK");//强校验真实姓名
-     params.put("re_user_name", userName);//收款用户真实姓名。 
-     params.put("amount", bdpayMoney.multiply(new BigDecimal(100)).intValue());       //转账总金额，单位为分，只能为整数
-     params.put("desc", "销售分润给"+userName+"，金额："+bdpayMoney);//转账备注。
-     //商户系统内部的退款单号，商户系统内部唯一，同一退款单号多次请求只退一笔
-     params.put("spbill_create_ip", "192.168.0.1");
-     //签名前必须要参数全部写在前面
-     params.put("sign", arraySign(params, ResourceUtil.getConfigByName("wx.paySignKey")));
-     return params;
- }
+     */
+    private static Map<Object, Object> payMoneyToUser(String openid, BigDecimal bdpayMoney, String userName, String payCountId) {
+
+        Map<Object, Object> params = new HashMap<Object, Object>();
+        //微信分配的公众账号ID（企业号corpid即为此appId）
+        params.put("mch_appid", ResourceUtil.getConfigByName("wx.appId"));
+        //微信支付分配的商户号
+        params.put("mchid", ResourceUtil.getConfigByName("wx.mchId"));
+        //随机字符串，不长于32位。推荐随机数生成算法
+        params.put("nonce_str", CharUtil.getRandomString(16));
+        //商户侧传给微信的订单号
+        params.put("partner_trade_no", payCountId);
+        params.put("openid", openid);//收款人openid
+        params.put("check_name", "FORCE_CHECK");//强校验真实姓名
+        params.put("re_user_name", userName);//收款用户真实姓名。
+        params.put("amount", bdpayMoney.multiply(new BigDecimal(100)).intValue());       //转账总金额，单位为分，只能为整数
+        params.put("desc", "销售分润给" + userName + "，金额：" + bdpayMoney);//转账备注。
+        //商户系统内部的退款单号，商户系统内部唯一，同一退款单号多次请求只退一笔
+        params.put("spbill_create_ip", "192.168.0.1");
+        //签名前必须要参数全部写在前面
+        params.put("sign", arraySign(params, ResourceUtil.getConfigByName("wx.paySignKey")));
+        try {
+            PrivateKey privateKey = getPrivatekey(ResourceUtil.getConfigByName("wx.paySignKey"));
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return params;
+    }
+
     /**
      * 企业付款逻辑
      **/
@@ -130,7 +147,7 @@ public class WechatUtil {
         }
     }
 
-    
+
     /**
      * 方法描述：微信退款逻辑
      * 创建时间：2017年4月12日  上午11:04:25
@@ -221,6 +238,107 @@ public class WechatUtil {
     }
 
     /**
+     * 支付交易ID
+     */
+    public static String getBundleId() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmssSSS");
+        String tradeno = dateFormat.format(new Date());
+        String str = "000000" + (int) (Math.random() * 1000000);
+        tradeno = tradeno + str.substring(str.length() - 6);
+        return tradeno;
+    }
+
+    /**
+     * 方法描述：根据签名加密请求参数
+     * 创建时间：2017年6月8日  上午11:28:52
+     * 作者： xubo
+     *
+     * @param
+     * @return
+     */
+    public static String arraySign(Map<Object, Object> params, String paySignKey) {
+        boolean encode = false;
+        Set<Object> keysSet = params.keySet();
+        Object[] keys = keysSet.toArray();
+        Arrays.sort(keys);
+        StringBuffer temp = new StringBuffer();
+        boolean first = true;
+        for (Object key : keys) {
+            if (first) {
+                first = false;
+            } else {
+                temp.append("&");
+            }
+            temp.append(key).append("=");
+            Object value = params.get(key);
+            String valueString = "";
+            if (null != value) {
+                valueString = value.toString();
+            }
+            if (encode) {
+                try {
+                    temp.append(URLEncoder.encode(valueString, "UTF-8"));
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                temp.append(valueString);
+            }
+        }
+        temp.append("&key=");
+        temp.append(paySignKey);
+        System.out.println(temp);
+        String packageSign = MD5.getMessageDigest(temp.toString());
+        return packageSign;
+    }
+
+    /**
+     * 请求，只请求一次，不做重试
+     *
+     * @param url
+     * @param data
+     * @return
+     * @throws Exception
+     */
+    public static String requestOnce(final String url, String data) throws Exception {
+        BasicHttpClientConnectionManager connManager;
+        connManager = new BasicHttpClientConnectionManager(
+                RegistryBuilder.<ConnectionSocketFactory>create()
+                        .register("http", PlainConnectionSocketFactory.getSocketFactory())
+                        .register("https", SSLConnectionSocketFactory.getSocketFactory())
+                        .build(),
+                null,
+                null,
+                null
+        );
+
+        HttpClient httpClient = HttpClientBuilder.create()
+                .setConnectionManager(connManager)
+                .build();
+
+        HttpPost httpPost = new HttpPost(url);
+
+        RequestConfig requestConfig = RequestConfig.custom()
+                .setSocketTimeout(5000)
+                .setConnectTimeout(5000)
+                .setConnectionRequestTimeout(10000).build();
+
+        httpPost.setConfig(requestConfig);
+
+        StringEntity postEntity = new StringEntity(data, "UTF-8");
+        httpPost.addHeader("Content-Type", "text/xml");
+        httpPost.addHeader("User-Agent", "wxpay sdk java v1.0 " + ResourceUtil.getConfigByName("wx.mchId"));
+        httpPost.setEntity(postEntity);
+
+        HttpResponse httpResponse = httpClient.execute(httpPost);
+        HttpEntity httpEntity = httpResponse.getEntity();
+        String reusltObj = EntityUtils.toString(httpEntity, "UTF-8");
+        logger.info("请求结果:" + reusltObj);
+        return reusltObj;
+
+    }
+
+    /**
      * 方法描述：微信查询退款逻辑
      * 创建时间：2017年4月12日  上午11:04:25
      * 作者： xubo
@@ -276,103 +394,23 @@ public class WechatUtil {
     }
 
     /**
-     * 支付交易ID
+     * 获取私钥
+     * @param fileName 私钥位置
+     * @return 私钥对象
+     * @throws IOException
      */
-    public static String getBundleId() {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmssSSS");
-        String tradeno = dateFormat.format(new Date());
-        String str = "000000" + (int) (Math.random() * 1000000);
-        tradeno = tradeno + str.substring(str.length() - 6);
-        return tradeno;
-    }
-
-    /**
-     * 方法描述：根据签名加密请求参数
-     * 创建时间：2017年6月8日  上午11:28:52
-     * 作者： xubo
-     *
-     * @param
-     * @return
-     */
-    public static String arraySign(Map<Object, Object> params, String paySignKey) {
-        boolean encode = false;
-        Set<Object> keysSet = params.keySet();
-        Object[] keys = keysSet.toArray();
-        Arrays.sort(keys);
-        StringBuffer temp = new StringBuffer();
-        boolean first = true;
-        for (Object key : keys) {
-            if (first) {
-                first = false;
-            } else {
-                temp.append("&");
-            }
-            temp.append(key).append("=");
-            Object value = params.get(key);
-            String valueString = "";
-            if (null != value) {
-                valueString = value.toString();
-            }
-            if (encode) {
-                try {
-                    temp.append(URLEncoder.encode(valueString, "UTF-8"));
-                } catch (UnsupportedEncodingException e) {
-                    e.printStackTrace();
-                }
-            } else {
-                temp.append(valueString);
-            }
+    private static PrivateKey getPrivatekey(String fileName) throws IOException {
+        String content = new String(Files.readAllBytes(Paths.get(fileName)), StandardCharsets.UTF_8);
+        try {
+            String privatekey = content.replace("-----BEGIN CERTIFICATE-----", "")
+                    .replace("-----END CERTIFICATE-----", "")
+                    .replaceAll("\\s+", "");
+            KeyFactory keyFactory = KeyFactory.getInstance("RSA");
+            return keyFactory.generatePrivate(new PKCS8EncodedKeySpec(Base64.getDecoder().decode(privatekey)));
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException("当前Java环境不支持RSA", e);
+        } catch (InvalidKeySpecException e) {
+            throw new RuntimeException("无效的密钥格式");
         }
-        temp.append("&key=");
-        temp.append(paySignKey);
-        System.out.println(temp.toString());
-        String packageSign = MD5.getMessageDigest(temp.toString());
-        return packageSign;
-    }
-
-    /**
-     * 请求，只请求一次，不做重试
-     *
-     * @param url
-     * @param data
-     * @return
-     * @throws Exception
-     */
-    public static String requestOnce(final String url, String data) throws Exception {
-        BasicHttpClientConnectionManager connManager;
-        connManager = new BasicHttpClientConnectionManager(
-                RegistryBuilder.<ConnectionSocketFactory>create()
-                        .register("http", PlainConnectionSocketFactory.getSocketFactory())
-                        .register("https", SSLConnectionSocketFactory.getSocketFactory())
-                        .build(),
-                null,
-                null,
-                null
-        );
-
-        HttpClient httpClient = HttpClientBuilder.create()
-                .setConnectionManager(connManager)
-                .build();
-
-        HttpPost httpPost = new HttpPost(url);
-
-        RequestConfig requestConfig = RequestConfig.custom()
-                .setSocketTimeout(5000)
-                .setConnectTimeout(5000)
-                .setConnectionRequestTimeout(10000).build();
-
-        httpPost.setConfig(requestConfig);
-
-        StringEntity postEntity = new StringEntity(data, "UTF-8");
-        httpPost.addHeader("Content-Type", "text/xml");
-        httpPost.addHeader("User-Agent", "wxpay sdk java v1.0 " + ResourceUtil.getConfigByName("wx.mchId"));
-        httpPost.setEntity(postEntity);
-
-        HttpResponse httpResponse = httpClient.execute(httpPost);
-        HttpEntity httpEntity = httpResponse.getEntity();
-        String reusltObj = EntityUtils.toString(httpEntity, "UTF-8");
-        logger.info("请求结果:" + reusltObj);
-        return reusltObj;
-
     }
 }

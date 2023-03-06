@@ -18,6 +18,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 /**
  * @description:
@@ -329,6 +330,19 @@ public class OrderVo implements Serializable {
             return false;
         }
         return userId == this.user_id;
+    }
+
+    public boolean canPay() {
+        return this.pay_status.compareTo(1) <= 0;
+    }
+
+    public String getPayBody_title() {
+        if (CollectionUtils.isEmpty(items)) {
+            return this.all_order_id;
+        }
+        List<String> names = items.stream().map(OrderGoodsVo::getGoods_name).collect(Collectors.toList());
+        return names.stream().collect(Collectors.joining(",")) + "等";
+
     }
 
     /**
