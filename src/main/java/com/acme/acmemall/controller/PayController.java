@@ -58,8 +58,6 @@ public class PayController extends ApiBase {
         if (!orderVo.canPay()) {
             return ResultMap.error(400, "当前订单已支付,请不要重复操作");
         }
-        String body = new String(orderVo.getPayBody_title());
-        String nonceStr = NonceUtil.createNonce(32);
 
         //https://pay.weixin.qq.com/wiki/doc/api/wxa/wxa_api.php?chapter=7_7&index=3
         Map<Object, Object> resultObj = new TreeMap();
@@ -69,13 +67,12 @@ public class PayController extends ApiBase {
             parame.put("appid", ResourceUtil.getConfigByName("wx.appId"));
             // 商家账号。
             parame.put("mch_id", ResourceUtil.getConfigByName("wx.mchId"));
-            String randomStr = NonceUtil.createNonce(18);
             // 随机字符串
-            parame.put("nonce_str", randomStr);
+            parame.put("nonce_str", NonceUtil.createNonce(18));
             // 商户订单编号
             parame.put("out_trade_no", orderId);
             // 商品描述
-            parame.put("body", body);
+            parame.put("body", new String(orderVo.getPayBody_title()));
             //支付金额
             parame.put("total_fee", orderVo.getActual_price().multiply(new BigDecimal(100)).intValue());
             logger.info("***************" + parame.get("total_fee") + "***************");
@@ -121,7 +118,7 @@ public class PayController extends ApiBase {
                     resultObj.put("appId", ResourceUtil.getConfigByName("wx.appId"));
                     //resultObj.put("timeStamp", DateUtils.timeToStr(System.currentTimeMillis() / 1000, DateUtils.DATE_TIME_PATTERN));
                     resultObj.put("timeStamp", System.currentTimeMillis() / 1000 + "");
-                    resultObj.put("nonceStr", nonceStr);
+                    resultObj.put("nonceStr", NonceUtil.createNonce(32));
                     resultObj.put("package", "prepay_id=" + prepay_id);
                     resultObj.put("signType", "MD5");
                     String paySign = WechatUtil.arraySign(resultObj, ResourceUtil.getConfigByName("wx.paySignKey"));

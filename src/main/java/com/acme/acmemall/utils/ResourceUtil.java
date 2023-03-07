@@ -62,7 +62,7 @@ public class ResourceUtil {
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
-        return value;
+        return value.trim();
     }
 
     /**

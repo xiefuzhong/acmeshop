@@ -275,7 +275,7 @@ public class WechatUtil {
         }
         temp.append("&key=");
         temp.append(paySignKey);
-        logger.info("orgString="+temp.toString());
+        logger.info("orgString>>"+temp.toString());
         String packageSign = MD5.getMessageDigest(temp.toString());
         logger.info("sign="+packageSign);
         return packageSign;
