@@ -12,7 +12,6 @@ import com.acme.acmemall.utils.ResourceUtil;
 import com.acme.acmemall.utils.XmlUtil;
 import com.acme.acmemall.utils.wechat.WechatRefundApiResult;
 import com.acme.acmemall.utils.wechat.WechatUtil;
-import com.google.common.collect.Maps;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -87,13 +86,15 @@ public class PayController extends ApiBase {
             // 交易类型APP
             parame.put("trade_type", ResourceUtil.getConfigByName("wx.tradeType"));
             parame.put("spbill_create_ip", getClientIp());
-            parame.put("env_id", ResourceUtil.getConfigByName("wx.envId")); // 接收微信支付异步通知回调的云函数所在的环境 ID
+
             parame.put("openid", loginUser.getWeixin_openid());
-            parame.put("callback_type", 2); // 1 云函数 2 云托管
-            Map<String, String> containerMap = Maps.newHashMap();
-            containerMap.put("service", ResourceUtil.getConfigByName("wx.container-service"));
-            containerMap.put("path", ResourceUtil.getConfigByName("wx.container-path"));
-            parame.put("container", containerMap);
+
+//            parame.put("env_id", ResourceUtil.getConfigByName("wx.envId")); // 接收微信支付异步通知回调的云函数所在的环境 ID
+//            parame.put("callback_type", 2); // 1 云函数 2 云托管
+//            Map<String, String> containerMap = Maps.newHashMap();
+//            containerMap.put("service", ResourceUtil.getConfigByName("wx.container-service"));
+//            containerMap.put("path", ResourceUtil.getConfigByName("wx.container-path"));
+//            parame.put("container", containerMap);
             String sign = WechatUtil.arraySign(parame, ResourceUtil.getConfigByName("wx.paySignKey"));
             logger.info("[" + sign + "]");
             // 数字签证
