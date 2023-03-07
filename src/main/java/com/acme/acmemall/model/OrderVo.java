@@ -356,7 +356,7 @@ public class OrderVo implements Serializable {
             return this.all_order_id;
         }
         List<String> names = items.stream().map(OrderGoodsVo::getGoods_name).collect(Collectors.toList());
-        return names.stream().collect(Collectors.joining(",")) + "等";
+        return names.stream().collect(Collectors.joining(",")) + " and so on";
 
     }
 

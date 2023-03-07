@@ -6,10 +6,10 @@ import com.acme.acmemall.common.ResultMap;
 import com.acme.acmemall.model.LoginUserVo;
 import com.acme.acmemall.model.OrderVo;
 import com.acme.acmemall.service.IOrderService;
-import com.acme.acmemall.utils.CharUtil;
 import com.acme.acmemall.utils.MapUtils;
 import com.acme.acmemall.utils.ResourceUtil;
 import com.acme.acmemall.utils.XmlUtil;
+import com.acme.acmemall.utils.wechat.NonceUtil;
 import com.acme.acmemall.utils.wechat.WechatRefundApiResult;
 import com.acme.acmemall.utils.wechat.WechatUtil;
 import io.swagger.annotations.Api;
@@ -58,8 +58,8 @@ public class PayController extends ApiBase {
         if (!orderVo.canPay()) {
             return ResultMap.error(400, "当前订单已支付,请不要重复操作");
         }
-        String body = orderVo.getPayBody_title();
-        String nonceStr = CharUtil.getRandomString(32);
+        String body = new String(orderVo.getPayBody_title());
+        String nonceStr = NonceUtil.createNonce(32);
 
         //https://pay.weixin.qq.com/wiki/doc/api/wxa/wxa_api.php?chapter=7_7&index=3
         Map<Object, Object> resultObj = new TreeMap();
@@ -69,7 +69,7 @@ public class PayController extends ApiBase {
             parame.put("appid", ResourceUtil.getConfigByName("wx.appId"));
             // 商家账号。
             parame.put("mch_id", ResourceUtil.getConfigByName("wx.mchId"));
-            String randomStr = CharUtil.getRandomNum(18).toUpperCase();
+            String randomStr = NonceUtil.createNonce(18);
             // 随机字符串
             parame.put("nonce_str", randomStr);
             // 商户订单编号
@@ -79,14 +79,12 @@ public class PayController extends ApiBase {
             //支付金额
             parame.put("total_fee", orderVo.getActual_price().multiply(new BigDecimal(100)).intValue());
             logger.info("***************" + parame.get("total_fee") + "***************");
-            //System.out.println(orderInfo.getActual_price().multiply(new BigDecimal(100)).intValue() + "***************");
             //parame.put("total_fee", 1);
             // 回调地址 @todo
             parame.put("notify_url", ResourceUtil.getConfigByName("wx.notifyUrl"));
             // 交易类型APP
             parame.put("trade_type", ResourceUtil.getConfigByName("wx.tradeType"));
             parame.put("spbill_create_ip", getClientIp());
-
             parame.put("openid", loginUser.getWeixin_openid());
 
 //            parame.put("env_id", ResourceUtil.getConfigByName("wx.envId")); // 接收微信支付异步通知回调的云函数所在的环境 ID

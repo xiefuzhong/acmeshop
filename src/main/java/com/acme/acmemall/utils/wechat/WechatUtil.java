@@ -4,6 +4,7 @@ import com.acme.acmemall.utils.CharUtil;
 import com.acme.acmemall.utils.MapUtils;
 import com.acme.acmemall.utils.ResourceUtil;
 import com.acme.acmemall.utils.XmlUtil;
+import com.alibaba.fastjson.JSONObject;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.http.HttpEntity;
@@ -243,6 +244,7 @@ public class WechatUtil {
      * @return
      */
     public static String arraySign(Map<Object, Object> params, String paySignKey) {
+        logger.info("param:"+ JSONObject.toJSONString(params));
         boolean encode = false;
         Set<Object> keysSet = params.keySet();
         Object[] keys = keysSet.toArray();
@@ -273,9 +275,9 @@ public class WechatUtil {
         }
         temp.append("&key=");
         temp.append(paySignKey);
-//        System.out.println(temp);
+        logger.info("orgString="+temp.toString());
         String packageSign = MD5.getMessageDigest(temp.toString());
-        logger.info(packageSign);
+        logger.info("sign="+packageSign);
         return packageSign;
     }
 
