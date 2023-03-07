@@ -322,6 +322,7 @@ public class WechatUtil {
         HttpResponse httpResponse = httpClient.execute(httpPost);
         logger.info(httpResponse.getStatusLine());
         HttpEntity httpEntity = httpResponse.getEntity();
+        logger.info("getContentLength>>"+httpEntity.getContentLength());
         String reusltObj = EntityUtils.toString(httpEntity, "UTF-8");
         logger.info("请求结果:[" + reusltObj+"]");
         return reusltObj;
