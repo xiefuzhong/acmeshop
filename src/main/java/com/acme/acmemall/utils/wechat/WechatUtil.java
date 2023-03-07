@@ -247,7 +247,8 @@ public class WechatUtil {
         logger.info("param:"+ JSONObject.toJSONString(params));
         boolean encode = false;
         Set<Object> keysSet = params.keySet();
-        Object[] keys = keysSet.toArray();
+        String[] str = new String[params.size()];
+        Object[] keys = keysSet.toArray(str);
         Arrays.sort(keys);
         StringBuffer temp = new StringBuffer();
         boolean first = true;
@@ -278,7 +279,7 @@ public class WechatUtil {
         logger.info("orgString>>"+temp.toString());
         String packageSign = MD5.getMessageDigest(temp.toString());
         logger.info("sign="+packageSign);
-        return packageSign;
+        return packageSign.toUpperCase(Locale.ROOT);
     }
 
     /**
@@ -306,6 +307,7 @@ public class WechatUtil {
                 .build();
 
         HttpPost httpPost = new HttpPost(url);
+        httpPost.setEntity(new StringEntity(data, "utf-8"));
 
         RequestConfig requestConfig = RequestConfig.custom()
                 .setSocketTimeout(5000)
@@ -314,10 +316,9 @@ public class WechatUtil {
 
         httpPost.setConfig(requestConfig);
 
-        StringEntity postEntity = new StringEntity(data, "UTF-8");
         httpPost.addHeader("Content-Type", "text/xml");
         httpPost.addHeader("User-Agent", "wxpay sdk java v1.0 " + ResourceUtil.getConfigByName("wx.mchId"));
-        httpPost.setEntity(postEntity);
+
 
         HttpResponse httpResponse = httpClient.execute(httpPost);
         logger.info(httpResponse.getStatusLine());
