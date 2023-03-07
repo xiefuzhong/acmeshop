@@ -12,6 +12,7 @@ import com.acme.acmemall.utils.ResourceUtil;
 import com.acme.acmemall.utils.XmlUtil;
 import com.acme.acmemall.utils.wechat.WechatRefundApiResult;
 import com.acme.acmemall.utils.wechat.WechatUtil;
+import com.google.common.collect.Maps;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +38,10 @@ public class PayController extends ApiBase {
 
     @Autowired
     IOrderService orderService;
+
+    public static String setXml(String return_code, String return_msg) {
+        return "<xml><return_code><![CDATA[" + return_code + "]]></return_code><return_msg><![CDATA[" + return_msg + "]]></return_msg></xml>";
+    }
 
     /**
      * 获取待支付订单的请求参数
@@ -82,9 +87,15 @@ public class PayController extends ApiBase {
             // 交易类型APP
             parame.put("trade_type", ResourceUtil.getConfigByName("wx.tradeType"));
             parame.put("spbill_create_ip", getClientIp());
+            parame.put("env_id", ResourceUtil.getConfigByName("wx.envId")); // 接收微信支付异步通知回调的云函数所在的环境 ID
             parame.put("openid", loginUser.getWeixin_openid());
+            parame.put("callback_type", 2); // 1 云函数 2 云托管
+            Map<String, String> containerMap = Maps.newHashMap();
+            containerMap.put("service", ResourceUtil.getConfigByName("wx.container-service"));
+            containerMap.put("path", ResourceUtil.getConfigByName("wx.container-path"));
+            parame.put("container", containerMap);
             String sign = WechatUtil.arraySign(parame, ResourceUtil.getConfigByName("wx.paySignKey"));
-            logger.info("["+sign+"]");
+            logger.info("[" + sign + "]");
             // 数字签证
             parame.put("sign", sign);
 
@@ -172,7 +183,7 @@ public class PayController extends ApiBase {
 //                return;
 //            }
             OrderVo orderVo = orderService.findOrder(result.getOut_trade_no());
-            if (!orderVo.getPay_status().equals(1)){
+            if (!orderVo.getPay_status().equals(1)) {
                 response.getWriter().write(setXml("SUCCESS", "OK"));
                 return;
             }
@@ -186,7 +197,7 @@ public class PayController extends ApiBase {
             } else if (result_code.equalsIgnoreCase("SUCCESS")) {
                 Map<Object, Object> retMap = XmlUtil.xmlStrToTreeMap(reponseXml);
                 String sign = WechatUtil.arraySign(retMap, ResourceUtil.getConfigByName("wx.paySignKey"));
-                if(!sign.equals(result.getSign())) {//判断签名
+                if (!sign.equals(result.getSign())) {//判断签名
                     return;
                 }
 
@@ -218,12 +229,7 @@ public class PayController extends ApiBase {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            return;
         }
-    }
-
-    public static String setXml(String return_code, String return_msg) {
-        return "<xml><return_code><![CDATA[" + return_code + "]]></return_code><return_msg><![CDATA[" + return_msg + "]]></return_msg></xml>";
     }
 
 }
