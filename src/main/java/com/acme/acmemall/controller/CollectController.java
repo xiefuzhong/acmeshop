@@ -75,7 +75,7 @@ public class CollectController extends ApiBase {
             collectEntity = collectEntities.stream().findFirst().get();
             collectEntity.deleteCollect(loginUser.getUserId(), valueId);
         }
-        Integer collectRes = collectService.save(collectEntity);
+        Integer collectRes = collectService.saveOrUpdate(collectEntity);
 
         if (collectRes > 0) {
             Map data = Maps.newHashMap();
