@@ -23,7 +23,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -31,6 +30,10 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/goods")
 public class GoodsController extends ApiBase {
+
+    @Autowired
+    IAdService adService;
+
     @Autowired
     IBrandService brandService;
     @Autowired
@@ -405,11 +408,15 @@ public class GoodsController extends ApiBase {
     @GetMapping(value = "hot")
     public Object hot() {
         Map<String, Object> resultObj = Maps.newHashMap();
-        Map bannerInfo = new HashMap();
+        Map bannerInfo = Maps.newHashMap();
         bannerInfo.put("url", "");
-        bannerInfo.put("name", "大家都在买的严选好物");
+        bannerInfo.put("name", "阿可美专业电推剪");
         bannerInfo.put("img_url", "https://platform-wxmall.oss-cn-beijing.aliyuncs.com/upload/20180727/1504208321fef4.png");
         resultObj.put("bannerInfo", bannerInfo);
+        Map<String, Object> param = Maps.newHashMap();
+        param.put("adPositionId", 1);
+        AdVo banner = adService.queryAdList(param).get(0);
+
         return ResultMap.ok(resultObj);
     }
 }

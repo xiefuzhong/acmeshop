@@ -17,6 +17,7 @@ public class ResultMap extends HashMap<String, Object> {
 
     public ResultMap() {
         put("errno", 0);
+        put("errmsg","操作成功");
     }
 
     public static ResultMap error() {
