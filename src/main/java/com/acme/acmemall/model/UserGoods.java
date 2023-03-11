@@ -21,4 +21,13 @@ public class UserGoods implements Serializable {
     private BigDecimal marketPrice;
     private String primaryPicUrl;
 
+    @Override
+    public String toString() {
+        final StringBuffer sb = new StringBuffer("UserGoods{");
+        sb.append("userGoodsId=").append(userGoodsId);
+        sb.append(", userId=").append(userId);
+        sb.append(", goodsId=").append(goodsId);
+        sb.append('}');
+        return sb.toString();
+    }
 }

@@ -74,6 +74,7 @@ public class UserController extends ApiBase {
         UserGoods shareGoods = userService.queryShareGoods(userGoods);
         int result = 0;
         if (shareGoods != null) {
+            logger.info(">>" + shareGoods);
             result = userService.delShareGoods(userGoods);
         }
         return result > 0 ? ResultMap.ok() : ResultMap.error();
