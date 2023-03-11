@@ -49,7 +49,7 @@ public class UserController extends ApiBase {
      * @return
      */
     @ApiOperation(value = "分享历史")
-    @RequestMapping("insShareGoods")
+    @RequestMapping("addShareGoods")
     public Object addShareGoods(@LoginUser LoginUserVo loginUser, UserGoods userGoods) {
         userGoods.setUserId(loginUser.getUserId());
         Map<String, Object> param = Maps.newHashMap();
