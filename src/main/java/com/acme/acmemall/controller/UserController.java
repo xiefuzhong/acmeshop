@@ -30,6 +30,7 @@ public class UserController extends ApiBase {
 
     /**
      * 取当前用户分享历史
+     *
      * @param loginUser
      * @return
      */
@@ -39,7 +40,7 @@ public class UserController extends ApiBase {
         UserGoods userGoods = new UserGoods();
         userGoods.setUserId(loginUser.getUserId());
         userGoods = userService.queryShareGoods(userGoods);
-        return ResultMap.response(ResultCodeEnum.SUCCESS,userGoods);
+        return ResultMap.response(ResultCodeEnum.SUCCESS, userGoods);
     }
 
     /**

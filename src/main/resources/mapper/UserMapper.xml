@@ -153,7 +153,12 @@
             `market_price` as marketPrice,
             `primary_pic_url` as primaryPicUrl
         FROM  `t_acme_mall_user_goods`
-        WHERE user_id= #{userId}  and  goods_id=#{goodsId}
+        <where>
+            AND user_id= #{userId}
+            <if test="goodsId!='' and goodsId != null">
+                and  goods_id=#{goodsId}
+            </if>
+        </where>
     </select>
 
     <insert id="saveUserGoods" >
