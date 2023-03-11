@@ -69,6 +69,6 @@ public class UserService implements IUserService {
      */
     @Override
     public int delShareGoods(UserGoods userGoods) {
-        return userDao.delete(userGoods);
+        return userDao.deleteShareGoods(userGoods);
     }
 }
