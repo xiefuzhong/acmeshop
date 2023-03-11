@@ -1,5 +1,6 @@
 package com.acme.acmemall.model;
 
+import com.acme.acmemall.utils.GsonUtil;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -34,11 +35,6 @@ public class UserGoods implements Serializable {
 
     @Override
     public String toString() {
-        final StringBuffer sb = new StringBuffer("UserGoods{");
-        sb.append("userGoodsId=").append(userGoodsId);
-        sb.append(", userId=").append(userId);
-        sb.append(", goodsId=").append(goodsId);
-        sb.append('}');
-        return sb.toString();
+        return GsonUtil.toJson(this);
     }
 }

@@ -51,6 +51,7 @@ public class UserController extends ApiBase {
     @ApiOperation(value = "分享历史")
     @RequestMapping("addShareGoods")
     public Object addShareGoods(@LoginUser LoginUserVo loginUser, UserGoods userGoods) {
+        logger.info("add>>" + userGoods);
         userGoods.bindQueryParam(loginUser.getUserId(), userGoods.getGoodsId());
         UserGoods shareGoods = userService.queryShareGoods(userGoods);
         if (shareGoods == null) {
