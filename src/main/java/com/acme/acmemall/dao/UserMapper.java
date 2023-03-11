@@ -5,6 +5,8 @@ import com.acme.acmemall.model.UserGoods;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 /**
  * 用户
  */
@@ -27,6 +29,8 @@ public interface UserMapper extends BaseDao<LoginUserVo> {
     int updatefx(LoginUserVo vo);
 
     UserGoods queryShareGoods(UserGoods userGoods);
+
+    List<UserGoods> queryUserShareGoods(UserGoods userGoods);
 
     void saveUserGoods(UserGoods  userGoods);
 }

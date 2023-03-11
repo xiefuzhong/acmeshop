@@ -155,6 +155,26 @@
         FROM  `t_acme_mall_user_goods`
         <where>
             AND user_id= #{userId}
+            AND  goods_id=#{goodsId}
+<!--            <if test="goodsId!='' and goodsId != null">-->
+<!--                and  goods_id=#{goodsId}-->
+<!--            </if>-->
+        </where>
+    </select>
+
+    <select id="queryUserShareGoods" resultType="com.acme.acmemall.model.UserGoods">
+        SELECT
+        `user_goods_id` as userGoodsId,
+        `user_id` as userId,
+        `goods_id` as goodsId,
+        `name`,
+        `goods_brief` as goodsBrief,
+        `retail_price` as retailPrice,
+        `market_price` as marketPrice,
+        `primary_pic_url` as primaryPicUrl
+        FROM  `t_acme_mall_user_goods`
+        <where>
+            AND user_id= #{userId}
             <if test="goodsId!='' and goodsId != null">
                 and  goods_id=#{goodsId}
             </if>

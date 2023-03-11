@@ -7,6 +7,8 @@ import com.acme.acmemall.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class UserService implements IUserService {
 
@@ -42,6 +44,15 @@ public class UserService implements IUserService {
     @Override
     public UserGoods queryShareGoods(UserGoods userGoods) {
         return userDao.queryShareGoods(userGoods);
+    }
+
+    /**
+     * @param userGoods
+     * @return
+     */
+    @Override
+    public List<UserGoods> queryShareList(UserGoods userGoods) {
+        return userDao.queryUserShareGoods(userGoods);
     }
 
     /**
