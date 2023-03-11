@@ -70,10 +70,10 @@ public class UserController extends ApiBase {
     public Object delShareGoods(@LoginUser LoginUserVo loginUser, UserGoods userGoods) {
         logger.info("delShareGoods>>" + userGoods);
         userGoods.setUserId(loginUser.getUserId());
-        JSONObject request = this.getJsonRequest();
+        JSONObject request = getJsonRequest();
         Map<String, Object> param = Maps.newHashMap();
         param.put("userId", userGoods.getUserId());
-        param.put("goodsId", request.getString("goodsId"));
+        param.put("goodsId", request.getString("valueId"));
         UserGoods shareGoods = userService.queryShareGoods(userGoods);
         int result = 0;
         if (shareGoods != null) {
