@@ -6,6 +6,7 @@ import com.acme.acmemall.exception.ResultCodeEnum;
 import com.acme.acmemall.model.LoginUserVo;
 import com.acme.acmemall.model.UserGoods;
 import com.acme.acmemall.service.IUserService;
+import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Maps;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -68,9 +69,10 @@ public class UserController extends ApiBase {
     @RequestMapping("delShareGoods")
     public Object delShareGoods(@LoginUser LoginUserVo loginUser, UserGoods userGoods) {
         userGoods.setUserId(loginUser.getUserId());
+        JSONObject request = this.getJsonRequest();
         Map<String, Object> param = Maps.newHashMap();
-        param.put("userId", loginUser.getUserId());
-        param.put("goodsId", userGoods.getGoodsId());
+        param.put("userId", userGoods.getUserId());
+        param.put("goodsId", request.getString("goodsId"));
         UserGoods shareGoods = userService.queryShareGoods(userGoods);
         int result = 0;
         if (shareGoods != null) {
