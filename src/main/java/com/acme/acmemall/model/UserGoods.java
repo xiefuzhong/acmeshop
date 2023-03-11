@@ -1,6 +1,7 @@
 package com.acme.acmemall.model;
 
 import com.acme.acmemall.utils.GsonUtil;
+import com.alibaba.fastjson.JSONObject;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -31,6 +32,15 @@ public class UserGoods implements Serializable {
     public void bindQueryParam(Long userId, Integer goodsId) {
         this.userId = userId;
         this.goodsId = goodsId;
+    }
+
+    public void add(JSONObject object) {
+        this.goodsId = object.getInteger("goodsId");
+        this.name = object.getString("name");
+        this.goodsBrief = object.getString("goodsBrief");
+        this.retailPrice = object.getBigDecimal("retailPrice");
+        this.marketPrice = object.getBigDecimal("marketPrice");
+        this.primaryPicUrl = object.getString("primaryPicUrl");
     }
 
     @Override

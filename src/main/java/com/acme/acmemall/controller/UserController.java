@@ -51,11 +51,13 @@ public class UserController extends ApiBase {
     @ApiOperation(value = "分享历史")
     @RequestMapping("addShareGoods")
     public Object addShareGoods(@LoginUser LoginUserVo loginUser, UserGoods userGoods) {
-        logger.info("add>>" + userGoods);
-        userGoods.bindQueryParam(loginUser.getUserId(), userGoods.getGoodsId());
+        JSONObject request = getJsonRequest();
+        userGoods.bindQueryParam(loginUser.getUserId(), request.getInteger("goodsId"));
         UserGoods shareGoods = userService.queryShareGoods(userGoods);
         if (shareGoods == null) {
-            userService.saveShareGoods(userGoods);
+            UserGoods uGoods = UserGoods.builder().userId(loginUser.getUserId()).build();
+            uGoods.add(request);
+            userService.saveShareGoods(uGoods);
         }
         return ResultMap.response(ResultCodeEnum.SUCCESS, userGoods);
     }
@@ -63,7 +65,6 @@ public class UserController extends ApiBase {
     @ApiOperation(value = "删除分享记录")
     @RequestMapping("delShareGoods")
     public Object delShareGoods(@LoginUser LoginUserVo loginUser, UserGoods userGoods) {
-        logger.info("delShareGoods>>" + userGoods);
         JSONObject request = getJsonRequest();
         userGoods.bindQueryParam(loginUser.getUserId(), request.getInteger("valueId"));
         UserGoods shareGoods = userService.queryShareGoods(userGoods);
