@@ -140,4 +140,42 @@
         </set>
         where id = #{userId}
     </update>
+
+
+    <select id="queryShareGoods" resultType="com.acme.acmemall.model.UserGoods">
+        SELECT
+            `user_goods_id` as userGoodsId,
+            `user_id` as userId,
+            `goods_id` as goodsId,
+            `name`,
+            `goods_brief` as goodsBrief,
+            `retail_price` as retailPrice,
+            `market_price` as marketPrice,
+            `primary_pic_url` as primaryPicUrl
+        FROM  `t_acme_mall_user_goods`
+        WHERE user_id= #{userId}  and  goods_id=#{goodsId}
+    </select>
+
+    <insert id="saveUserGoods" >
+        INSERT INTO `t_acme_mall_user_goods`
+        (
+            `user_id`,
+            `goods_id`,
+            `name`,
+            `goods_brief`,
+            `retail_price`,
+            `market_price`,
+            `primary_pic_url`
+        )
+        VALUES
+        (
+            #{userId} ,
+            #{goodsId} ,
+            #{name} ,
+            #{goodsBrief} ,
+            #{retailPrice} ,
+            #{marketPrice} ,
+            #{primaryPicUrl}
+        )
+    </insert>
 </mapper>

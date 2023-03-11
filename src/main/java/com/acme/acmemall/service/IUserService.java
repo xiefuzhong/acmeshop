@@ -1,6 +1,7 @@
 package com.acme.acmemall.service;
 
 import com.acme.acmemall.model.LoginUserVo;
+import com.acme.acmemall.model.UserGoods;
 
 /**
  * @author HP
@@ -13,4 +14,8 @@ public interface IUserService {
     LoginUserVo queryObject(long id);
 
     void save(LoginUserVo user);
+
+    UserGoods queryShareGoods(UserGoods userGoods);
+
+    void saveShareGoods(UserGoods userGoods);
 }

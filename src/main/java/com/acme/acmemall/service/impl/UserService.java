@@ -2,6 +2,7 @@ package com.acme.acmemall.service.impl;
 
 import com.acme.acmemall.dao.UserMapper;
 import com.acme.acmemall.model.LoginUserVo;
+import com.acme.acmemall.model.UserGoods;
 import com.acme.acmemall.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,6 +12,7 @@ public class UserService implements IUserService {
 
     @Autowired
     private UserMapper userDao;
+
     /**
      * @param openId
      * @return
@@ -35,5 +37,19 @@ public class UserService implements IUserService {
     @Override
     public void save(LoginUserVo user) {
         userDao.save(user);
+    }
+
+    @Override
+    public UserGoods queryShareGoods(UserGoods userGoods) {
+        return userDao.queryShareGoods(userGoods);
+    }
+
+    /**
+     * @param userGoods
+     * @return
+     */
+    @Override
+    public void saveShareGoods(UserGoods userGoods) {
+        userDao.saveUserGoods(userGoods);
     }
 }
