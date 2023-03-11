@@ -141,7 +141,6 @@
         where id = #{userId}
     </update>
 
-
     <select id="queryShareGoods" resultType="com.acme.acmemall.model.UserGoods">
         SELECT
             `user_goods_id` as userGoodsId,
@@ -155,10 +154,7 @@
         FROM  `t_acme_mall_user_goods`
         <where>
             AND user_id= #{userId}
-            AND  goods_id=#{goodsId}
-<!--            <if test="goodsId!='' and goodsId != null">-->
-<!--                and  goods_id=#{goodsId}-->
-<!--            </if>-->
+            AND goods_id=#{goodsId}
         </where>
     </select>
 
