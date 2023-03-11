@@ -57,9 +57,9 @@ public class UserController extends ApiBase {
         userGoods.bindQueryParam(loginUser.getUserId(), request.getInteger("goodsId"));
         UserGoods shareGoods = userService.queryShareGoods(userGoods);
         if (shareGoods == null) {
-            UserGoods uGoods = UserGoods.builder().userId(loginUser.getUserId()).build();
-            uGoods.add(request);
-            userService.saveShareGoods(uGoods);
+            userGoods = UserGoods.builder().userId(loginUser.getUserId()).build();
+            userGoods.add(request);
+            userService.saveShareGoods(userGoods);
         }
         return ResultMap.response(ResultCodeEnum.SUCCESS, userGoods);
     }
