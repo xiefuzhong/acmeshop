@@ -63,4 +63,12 @@ public class UserService implements IUserService {
     public void saveShareGoods(UserGoods userGoods) {
         userDao.saveUserGoods(userGoods);
     }
+
+    /**
+     * @param userGoods
+     */
+    @Override
+    public int delShareGoods(UserGoods userGoods) {
+        return userDao.delete(userGoods);
+    }
 }

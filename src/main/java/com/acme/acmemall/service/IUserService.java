@@ -22,4 +22,6 @@ public interface IUserService {
     List<UserGoods> queryShareList(UserGoods userGoods);
 
     void saveShareGoods(UserGoods userGoods);
+
+    int delShareGoods(UserGoods userGoods);
 }

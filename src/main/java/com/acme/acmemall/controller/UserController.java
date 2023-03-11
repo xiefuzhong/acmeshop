@@ -63,4 +63,20 @@ public class UserController extends ApiBase {
         }
         return ResultMap.response(ResultCodeEnum.SUCCESS, userGoods);
     }
+
+    @ApiOperation(value = "删除分享记录")
+    @RequestMapping("delShareGoods")
+    public Object delShareGoods(@LoginUser LoginUserVo loginUser, UserGoods userGoods) {
+        userGoods.setUserId(loginUser.getUserId());
+        Map<String, Object> param = Maps.newHashMap();
+        param.put("userId", loginUser.getUserId());
+        param.put("goodsId", userGoods.getGoodsId());
+        UserGoods shareGoods = userService.queryShareGoods(userGoods);
+        int result = 0;
+        if (shareGoods != null) {
+            result = userService.delShareGoods(userGoods);
+        }
+        return result > 0 ? ResultMap.ok() : ResultMap.error();
+    }
+
 }
