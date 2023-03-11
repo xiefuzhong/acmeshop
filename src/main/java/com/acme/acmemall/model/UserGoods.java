@@ -1,6 +1,7 @@
 package com.acme.acmemall.model;
 
-import lombok.Data;
+import lombok.Builder;
+import lombok.Getter;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -10,7 +11,8 @@ import java.math.BigDecimal;
  * @author: ihpangzi
  * @time: 2023/3/10 17:25
  */
-@Data
+@Getter
+@Builder
 public class UserGoods implements Serializable {
     private Integer userGoodsId;
     private Long userId;
@@ -20,6 +22,11 @@ public class UserGoods implements Serializable {
     private BigDecimal retailPrice;
     private BigDecimal marketPrice;
     private String primaryPicUrl;
+
+    public void bindQueryParam(Long userId, Integer goodsId) {
+        this.userId = userId;
+        this.goodsId = goodsId;
+    }
 
     @Override
     public String toString() {

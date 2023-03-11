@@ -7,7 +7,6 @@ import com.acme.acmemall.model.LoginUserVo;
 import com.acme.acmemall.model.UserGoods;
 import com.acme.acmemall.service.IUserService;
 import com.alibaba.fastjson.JSONObject;
-import com.google.common.collect.Maps;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * @description:商城客户
@@ -39,8 +37,7 @@ public class UserController extends ApiBase {
     @ApiOperation(value = "取当前用户分享历史")
     @RequestMapping("getShareGoods")
     public Object getShareGoods(@LoginUser LoginUserVo loginUser) {
-        UserGoods userGoods = new UserGoods();
-        userGoods.setUserId(loginUser.getUserId());
+        UserGoods userGoods = UserGoods.builder().userId(loginUser.getUserId()).build();
         List<UserGoods> userGoodsList = userService.queryShareList(userGoods);
         return ResultMap.response(ResultCodeEnum.SUCCESS, userGoodsList);
     }
@@ -54,10 +51,7 @@ public class UserController extends ApiBase {
     @ApiOperation(value = "分享历史")
     @RequestMapping("addShareGoods")
     public Object addShareGoods(@LoginUser LoginUserVo loginUser, UserGoods userGoods) {
-        userGoods.setUserId(loginUser.getUserId());
-        Map<String, Object> param = Maps.newHashMap();
-        param.put("userId", loginUser.getUserId());
-        param.put("goodsId", userGoods.getGoodsId());
+        userGoods.bindQueryParam(loginUser.getUserId(), userGoods.getGoodsId());
         UserGoods shareGoods = userService.queryShareGoods(userGoods);
         if (shareGoods == null) {
             userService.saveShareGoods(userGoods);
@@ -69,11 +63,8 @@ public class UserController extends ApiBase {
     @RequestMapping("delShareGoods")
     public Object delShareGoods(@LoginUser LoginUserVo loginUser, UserGoods userGoods) {
         logger.info("delShareGoods>>" + userGoods);
-        userGoods.setUserId(loginUser.getUserId());
         JSONObject request = getJsonRequest();
-        Map<String, Object> param = Maps.newHashMap();
-        param.put("userId", userGoods.getUserId());
-        param.put("goodsId", request.getString("valueId"));
+        userGoods.bindQueryParam(loginUser.getUserId(), request.getInteger("valueId"));
         UserGoods shareGoods = userService.queryShareGoods(userGoods);
         int result = 0;
         if (shareGoods != null) {
