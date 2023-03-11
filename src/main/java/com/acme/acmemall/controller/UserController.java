@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -39,8 +40,8 @@ public class UserController extends ApiBase {
     public Object getShareGoods(@LoginUser LoginUserVo loginUser) {
         UserGoods userGoods = new UserGoods();
         userGoods.setUserId(loginUser.getUserId());
-        userGoods = userService.queryShareGoods(userGoods);
-        return ResultMap.response(ResultCodeEnum.SUCCESS, userGoods);
+        List<UserGoods> userGoodsList = userService.queryShareList(userGoods);
+        return ResultMap.response(ResultCodeEnum.SUCCESS, userGoodsList);
     }
 
     /**
