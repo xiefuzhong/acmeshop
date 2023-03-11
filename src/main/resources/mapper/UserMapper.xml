@@ -194,13 +194,17 @@
         )
         VALUES
         (
-            #{userId} ,
-            #{goodsId} ,
-            #{name} ,
-            #{goodsBrief} ,
-            #{retailPrice} ,
-            #{marketPrice} ,
-            #{primaryPicUrl}
+        #{userId} ,
+        #{goodsId} ,
+        #{name} ,
+        #{goodsBrief} ,
+        #{retailPrice} ,
+        #{marketPrice} ,
+        #{primaryPicUrl}
         )
     </insert>
+
+    <delete id="deleteShareGoods">
+        delete from t_acme_mall_user_goods where user_id= #{userId} AND goods_id=#{goodsId}
+    </delete>
 </mapper>

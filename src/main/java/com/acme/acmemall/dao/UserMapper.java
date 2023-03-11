@@ -32,6 +32,8 @@ public interface UserMapper extends BaseDao<LoginUserVo> {
 
     List<UserGoods> queryUserShareGoods(UserGoods userGoods);
 
-    void saveUserGoods(UserGoods  userGoods);
+    void saveUserGoods(UserGoods userGoods);
+
+    int deleteShareGoods(UserGoods userGoods);
 }
 
