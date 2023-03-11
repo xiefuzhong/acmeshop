@@ -68,6 +68,7 @@ public class UserController extends ApiBase {
     @ApiOperation(value = "删除分享记录")
     @RequestMapping("delShareGoods")
     public Object delShareGoods(@LoginUser LoginUserVo loginUser, UserGoods userGoods) {
+        logger.info("delShareGoods>>" + userGoods);
         userGoods.setUserId(loginUser.getUserId());
         JSONObject request = this.getJsonRequest();
         Map<String, Object> param = Maps.newHashMap();
