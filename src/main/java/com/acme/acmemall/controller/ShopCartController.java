@@ -177,7 +177,6 @@ public class ShopCartController extends ApiBase {
         cartParam.put("user_id", loginUser.getUserId());
         List<ShopCartVo> cartInfoList = cartService.queryCartList(cartParam);
         ShopCartVo cartInfo = null != cartInfoList && cartInfoList.size() > 0 ? cartInfoList.get(0) : null;
-        cartInfo = Optional.ofNullable(cartInfoList).orElse(Lists.newArrayList()).stream().findAny().get();
         if (null == cartInfo) {
             //添加操作
             //添加规格名和值
