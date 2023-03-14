@@ -9,6 +9,7 @@
 package com.acme.acmemall.controller;
 
 import com.acme.acmemall.annotation.LoginUser;
+import com.acme.acmemall.common.ResultMap;
 import com.acme.acmemall.dto.CouponInfoVo;
 import com.acme.acmemall.model.*;
 import com.acme.acmemall.service.*;
@@ -18,14 +19,14 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @description:购物车功能
@@ -160,12 +161,12 @@ public class ShopCartController extends ApiBase {
         Integer number = jsonParam.getInteger("number");
         //判断商品是否可以购买
         GoodsVo goodsInfo = goodsService.queryObject(goodsId);
-        if (null == goodsInfo || goodsInfo.getIs_delete() == 1 || goodsInfo.getIs_on_sale() != 1) {
+        if (null == goodsInfo || goodsInfo.checkOff()) {
             return this.toResponsObject(400, "商品已下架", "");
         }
         //取得规格的信息,判断规格库存
         ProductVo productInfo = productService.queryObject(productId);
-        if (null == productInfo || productInfo.getGoods_number() < number) {
+        if (null == productInfo || !productInfo.verifyInventory(number)) {
             return this.toResponsObject(400, "库存不足", "");
         }
 
@@ -176,45 +177,32 @@ public class ShopCartController extends ApiBase {
         cartParam.put("user_id", loginUser.getUserId());
         List<ShopCartVo> cartInfoList = cartService.queryCartList(cartParam);
         ShopCartVo cartInfo = null != cartInfoList && cartInfoList.size() > 0 ? cartInfoList.get(0) : null;
+        cartInfo = Optional.ofNullable(cartInfoList).orElse(Lists.newArrayList()).stream().findAny().get();
         if (null == cartInfo) {
             //添加操作
             //添加规格名和值
-            String[] goodsSepcifitionValue = null;
-            if (null != productInfo.getGoods_specification_ids() && productInfo.getGoods_specification_ids().length() > 0) {
+            String sepcifitionValue = null;
+            if (StringUtils.isNotEmpty(productInfo.getGoods_specification_ids())) {
                 Map specificationParam = Maps.newHashMap();
-                String[] idsArray = getSpecificationIdsArray(productInfo.getGoods_specification_ids());
-                specificationParam.put("ids", idsArray);
+                List<String> ids = Arrays.stream(productInfo.getGoods_specification_ids().split("_")).collect(Collectors.toList());
+                specificationParam.put("ids", ids);
                 specificationParam.put("goods_id", goodsId);
                 List<GoodsSpecificationVo> specificationEntities = goodsSpecService.queryGoodsSpecList(specificationParam);
-                goodsSepcifitionValue = new String[specificationEntities.size()];
-                for (int i = 0; i < specificationEntities.size(); i++) {
-                    goodsSepcifitionValue[i] = specificationEntities.get(i).getValue();
-                }
+                sepcifitionValue = specificationEntities.stream().map(GoodsSpecificationVo::getValue).collect(Collectors.joining(";"));
             }
-            cartInfo = new ShopCartVo();
-            cartInfo.setGoods_id(goodsId);
-            cartInfo.setProduct_id(productId);
-            cartInfo.setGoods_sn(productInfo.getGoods_sn());
-            cartInfo.setGoods_name(goodsInfo.getName());
-            cartInfo.setList_pic_url(goodsInfo.getList_pic_url());
-            cartInfo.setNumber(number);
-            cartInfo.setSession_id("1");
-            cartInfo.setUser_id(loginUser.getUserId());
-            cartInfo.setRetail_price(productInfo.getRetail_price());
-            cartInfo.setMarket_price(productInfo.getMarket_price());
-            if (null != goodsSepcifitionValue) {
-                cartInfo.setGoods_specifition_name_value(org.apache.commons.lang.StringUtils.join(goodsSepcifitionValue, ";"));
+            cartInfo = ShopCartVo.builder().user_id(loginUser.getUserId()).build();
+
+            if (null != sepcifitionValue) {
+                productInfo.setGoods_specifition_name_value(sepcifitionValue);
             }
-            cartInfo.setGoods_specifition_ids(productInfo.getGoods_specification_ids());
-            cartInfo.setChecked(1);
-            cartInfo.setMerchant_id(goodsInfo.getMerchantId());
+            cartInfo.addToCart(goodsInfo, productInfo, number);
             cartService.save(cartInfo);
         } else {
             //如果已经存在购物车中，则数量增加
-            if (productInfo.getGoods_number() < (number + cartInfo.getNumber())) {
+            if (!productInfo.verifyInventory(number + cartInfo.getNumber())) {
                 return this.toResponsObject(400, "库存不足", "");
             }
-            cartInfo.setNumber(cartInfo.getNumber() + number);
+            cartInfo.addToCart(null, null, cartInfo.getNumber() + number);
             cartService.update(cartInfo);
         }
         return toResponsSuccess(getCart(loginUser));
@@ -240,7 +228,7 @@ public class ShopCartController extends ApiBase {
         ShopCartVo cartInfo = cartService.queryObject(id);
         //只是更新number
         if (cartInfo.getProduct_id().equals(productId)) {
-            cartInfo.setNumber(number);
+            cartInfo.addToCart(null, null, number);
             cartService.update(cartInfo);
             return toResponsSuccess(getCart(loginUser));
         }
@@ -253,26 +241,8 @@ public class ShopCartController extends ApiBase {
         if (null == newcartInfo) {
             //添加操作
             //添加规格名和值
-            String[] goodsSepcifitionValue = null;
-            if (null != productInfo.getGoods_specification_ids()) {
-                Map specificationParam = Maps.newHashMap();
-                specificationParam.put("ids", productInfo.getGoods_specification_ids());
-                specificationParam.put("goodsId", goodsId);
-                List<GoodsSpecificationVo> specificationEntities = goodsSpecService.queryGoodsSpecList(specificationParam);
-                goodsSepcifitionValue = new String[specificationEntities.size()];
-                for (int i = 0; i < specificationEntities.size(); i++) {
-                    goodsSepcifitionValue[i] = specificationEntities.get(i).getValue();
-                }
-            }
-            cartInfo.setProduct_id(productId);
-            cartInfo.setGoods_sn(productInfo.getGoods_sn());
-            cartInfo.setNumber(number);
-            cartInfo.setRetail_price(productInfo.getRetail_price());
-            cartInfo.setMarket_price(productInfo.getRetail_price());
-            if (null != goodsSepcifitionValue) {
-                cartInfo.setGoods_specifition_name_value(org.apache.commons.lang.StringUtils.join(goodsSepcifitionValue, ";"));
-            }
-            cartInfo.setGoods_specifition_ids(productInfo.getGoods_specification_ids());
+            this.setSepcifitionValue(goodsId, productInfo);
+            cartInfo.addToCart(null, productInfo, number);
             cartService.update(cartInfo);
         } else {
             //合并购物车已有的product信息，删除已有的数据
@@ -282,29 +252,25 @@ public class ShopCartController extends ApiBase {
             }
             cartService.delete(newcartInfo.getId());
             //添加规格名和值
-            String[] goodsSepcifitionValue = null;
-            if (null != productInfo.getGoods_specification_ids()) {
-                Map specificationParam = Maps.newHashMap();
-                specificationParam.put("ids", productInfo.getGoods_specification_ids());
-                specificationParam.put("goodsId", goodsId);
-                List<GoodsSpecificationVo> specificationEntities = goodsSpecService.queryGoodsSpecList(specificationParam);
-                goodsSepcifitionValue = new String[specificationEntities.size()];
-                for (int i = 0; i < specificationEntities.size(); i++) {
-                    goodsSepcifitionValue[i] = specificationEntities.get(i).getValue();
-                }
-            }
-            cartInfo.setProduct_id(productId);
-            cartInfo.setGoods_sn(productInfo.getGoods_sn());
-            cartInfo.setNumber(number);
-            cartInfo.setRetail_price(productInfo.getRetail_price());
-            cartInfo.setMarket_price(productInfo.getRetail_price());
-            if (null != goodsSepcifitionValue) {
-                cartInfo.setGoods_specifition_name_value(org.apache.commons.lang.StringUtils.join(goodsSepcifitionValue, ";"));
-            }
-            cartInfo.setGoods_specifition_ids(productInfo.getGoods_specification_ids());
+            this.setSepcifitionValue(goodsId, productInfo);
+            cartInfo.addToCart(null, productInfo, number);
             cartService.update(cartInfo);
         }
         return toResponsSuccess(getCart(loginUser));
+    }
+
+    private void setSepcifitionValue(Integer goodsId, ProductVo productInfo) {
+        String sepcifitionValue = null;
+        if (null != productInfo.getGoods_specification_ids()) {
+            Map specificationParam = Maps.newHashMap();
+            specificationParam.put("ids", productInfo.getGoods_specification_ids());
+            specificationParam.put("goodsId", goodsId);
+            List<GoodsSpecificationVo> specificationEntities = goodsSpecService.queryGoodsSpecList(specificationParam);
+            sepcifitionValue = specificationEntities.stream().map(GoodsSpecificationVo::getValue).collect(Collectors.joining(";"));
+        }
+        if (StringUtils.isNotEmpty(sepcifitionValue)) {
+            productInfo.setGoods_specifition_name_value(sepcifitionValue);
+        }
     }
 
     /**
@@ -426,11 +392,12 @@ public class ShopCartController extends ApiBase {
             }
             goodsTotalPrice = productInfo.getRetail_price().multiply(new BigDecimal(goodsVO.getNumber()));
 
-            ShopCartVo cartVo = new ShopCartVo();
-            cartVo.setGoods_name(productInfo.getGoods_name());
-            cartVo.setNumber(goodsVO.getNumber());
-            cartVo.setRetail_price(productInfo.getRetail_price());
-            cartVo.setList_pic_url(productInfo.getList_pic_url());
+            ShopCartVo cartVo = ShopCartVo.builder()
+                    .goods_name(productInfo.getGoods_name())
+                    .number(goodsVO.getNumber())
+                    .retail_price(productInfo.getRetail_price())
+                    .list_pic_url(productInfo.getList_pic_url())
+                    .build();
             checkedGoodsList.add(cartVo);
 
             //计算运费
@@ -498,6 +465,48 @@ public class ShopCartController extends ApiBase {
         String[] productIdArray = productIds.split(",");
         cartService.updateCheck(productIdArray, isChecked, loginUser.getUserId());
         return toResponsSuccess(getCart(loginUser));
+    }
+
+    @ApiOperation(value = "直接购买")
+    @PostMapping("/buy")
+    public ResultMap directPurchase(@LoginUser LoginUserVo loginUser) {
+        JSONObject reqParam = super.getJsonRequest();
+        Integer goodsId = reqParam.getInteger("goodsId");
+        Integer productId = reqParam.getInteger("productId");
+        Integer number = reqParam.getInteger("number");
+
+        GoodsVo goodsInfo = goodsService.queryObject(goodsId);
+        if (goodsInfo == null || goodsInfo.checkOff()) {
+            return ResultMap.error(400, "商品已下架");
+        }
+        //取得规格的信息,判断规格库存
+        ProductVo productInfo = productService.queryObject(productId);
+        if (null == productInfo || !productInfo.verifyInventory(number)) {
+            return ResultMap.error(400, "库存不足");
+        }
+
+        //判断购物车中是否存在此规格商品
+        Map cartParam = Maps.newHashMap();
+        cartParam.put("goods_id", goodsId);
+        cartParam.put("product_id", productId);
+        cartParam.put("user_id", loginUser.getUserId());
+        List<ShopCartVo> cartInfoList = cartService.queryCartList(cartParam);
+        ShopCartVo cartInfo = null;
+        if (CollectionUtils.isNotEmpty(cartInfoList)) {
+            cartInfo = cartInfoList.stream().findFirst().get();
+        }
+        if (cartInfo == null) {
+
+
+        } else {
+            //如果已经存在购物车中，则数量增加
+            if (!productInfo.verifyInventory(number + cartInfo.getNumber())) {
+                return ResultMap.error(400, "库存不足");
+            }
+            cartInfo.addToCart(null, null, cartInfo.getNumber() + number);
+            cartService.update(cartInfo);
+        }
+        return ResultMap.ok();
     }
 
     private String[] getSpecificationIdsArray(String ids) {

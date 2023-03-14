@@ -100,4 +100,13 @@ public class GoodsVo implements Serializable {
     private Integer success_time;//成团时间 单位分钟
     private Integer success_people;//成团人数
     private BigDecimal group_price;//团购价格(元)
+
+    /**
+     * 是否下架
+     *
+     * @return
+     */
+    public boolean checkOff() {
+        return this.is_delete.equals(1) || !this.is_on_sale.equals(1);
+    }
 }

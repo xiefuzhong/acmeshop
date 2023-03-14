@@ -75,7 +75,7 @@ public class ShopCartService implements IShopCartService {
      */
     @Override
     public void deleteByUserAndProductIds(Long userId, String[] productIdsArray) {
-        mapper.deleteByUserAndProductIds(userId,productIdsArray);
+        mapper.deleteByUserAndProductIds(userId, productIdsArray);
     }
 
     /**
@@ -126,11 +126,10 @@ public class ShopCartService implements IShopCartService {
         if (CollectionUtils.isEmpty(cartInfoList)) {
             return;
         }
-        cartUpdateList = cartInfoList.stream().filter(item->!item.getRetail_price().equals(item.getRetail_product_price())).map(item->{
-            item.setRetail_price(item.getRetail_price());
+        cartUpdateList = cartInfoList.stream().filter(item -> !item.getRetail_price().equals(item.getRetail_product_price())).map(item -> {
+            item.updateRetailPrice();
             return item;
         }).collect(Collectors.toList());
-
 //        for (ShopCartVo cartItem : cartInfoList) {
 //            // 存在原始的
 //            if (null != cartItem.getChecked() && 1 == cartItem.getChecked()) {

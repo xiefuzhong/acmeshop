@@ -20,6 +20,8 @@ public class ProductVo implements Serializable {
     private Integer product_id;
     //商品规格ids
     private String goods_specification_ids;
+
+    private String goods_specifition_name_value;
     //商品序列号
     private String goods_sn;
     //商品库存
@@ -36,4 +38,8 @@ public class ProductVo implements Serializable {
     private Long merchant_id;
     //活动价格
     private BigDecimal group_price;
+
+    public boolean verifyInventory(Integer goods_number) {
+        return this.goods_number > goods_number;
+    }
 }

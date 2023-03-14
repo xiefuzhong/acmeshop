@@ -1,9 +1,12 @@
 package com.acme.acmemall.model;
 
-import lombok.Data;
+import com.acme.acmemall.utils.StringUtils;
+import lombok.Builder;
+import lombok.Getter;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.UUID;
 
 /**
  * 购物车模型
@@ -11,7 +14,8 @@ import java.math.BigDecimal;
  * @author ihpangzi
  * @date 2017-08-15 08:03:39
  */
-@Data
+@Getter
+@Builder
 public class ShopCartVo implements Serializable {
     private static final long serialVersionUID = 1L;
 
@@ -41,7 +45,7 @@ public class ShopCartVo implements Serializable {
     private String goods_specifition_name_value;
     //product表对应的goods_specifition_ids
     private String goods_specifition_ids;
-    //
+    // 1-选中
     private Integer checked;
     // 节省金额
     private BigDecimal crash_save_price;
@@ -69,6 +73,7 @@ public class ShopCartVo implements Serializable {
 
     /**
      * 商品总额=商品价格*数量
+     *
      * @return
      */
     public BigDecimal getGoodsTotalAmount() {
@@ -79,11 +84,40 @@ public class ShopCartVo implements Serializable {
     }
 
     // 计算运费
-    public BigDecimal getExtraPrice(){
+    public BigDecimal getExtraPrice() {
         if (extra_price != null && number != null) {
             return extra_price.multiply(new BigDecimal(number));
         }
         return BigDecimal.ZERO;
+    }
+
+    // 添加到购物车
+    public void addToCart(GoodsVo goods, ProductVo product, Integer number) {
+        if (goods == null || product == null) {
+            this.checked = 1;
+            this.session_id = UUID.randomUUID().toString();
+        }
+        if (goods != null) {
+            this.merchant_id = goods.getMerchantId();
+            this.goods_id = goods.getId();
+            this.goods_name = goods.getName();
+            this.goods_sn = goods.getGoods_sn();
+            this.list_pic_url = goods.getList_pic_url();
+        }
+        if (product != null) {
+            this.product_id = product.getProduct_id();
+            this.retail_price = product.getRetail_price();
+            this.market_price = product.getMarket_price();
+            this.goods_specifition_ids = product.getGoods_specification_ids();
+            if (!StringUtils.isNullOrEmpty(product.getGoods_specifition_name_value())) {
+                this.goods_specifition_name_value = product.getGoods_specifition_name_value();
+            }
+        }
+        this.number = number;
+    }
+
+    public void updateRetailPrice() {
+        this.retail_price = this.retail_product_price;
     }
 
 }
