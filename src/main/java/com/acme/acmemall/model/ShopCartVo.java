@@ -110,7 +110,7 @@ public class ShopCartVo implements Serializable {
             }
         }
         this.checked = 1;
-        this.session_id = UUID.randomUUID().toString();
+        this.session_id = UUID.randomUUID().toString().replaceAll("-", "");
         this.number = number;
     }
 
