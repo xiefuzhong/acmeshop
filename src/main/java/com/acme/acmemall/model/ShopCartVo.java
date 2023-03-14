@@ -6,6 +6,7 @@ import lombok.Getter;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.UUID;
 
 /**
  * 购物车模型
@@ -92,10 +93,6 @@ public class ShopCartVo implements Serializable {
 
     // 添加到购物车
     public void addToCart(GoodsVo goods, ProductVo product, Integer number) {
-        if (goods == null || product == null) {
-            this.checked = 1;
-            this.session_id = "1";
-        }
         if (goods != null) {
             this.merchant_id = goods.getMerchantId();
             this.goods_id = goods.getId();
@@ -112,6 +109,8 @@ public class ShopCartVo implements Serializable {
                 this.goods_specifition_name_value = product.getGoods_specifition_name_value();
             }
         }
+        this.checked = 1;
+        this.session_id = UUID.randomUUID().toString();
         this.number = number;
     }
 
