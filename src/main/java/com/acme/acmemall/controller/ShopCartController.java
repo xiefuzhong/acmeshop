@@ -25,7 +25,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -162,12 +165,12 @@ public class ShopCartController extends ApiBase {
         //判断商品是否可以购买
         GoodsVo goodsInfo = goodsService.queryObject(goodsId);
         if (null == goodsInfo || goodsInfo.checkOff()) {
-            return this.toResponsObject(400, "商品已下架", "");
+            return ResultMap.error(400, "商品已下架");
         }
         //取得规格的信息,判断规格库存
         ProductVo productInfo = productService.queryObject(productId);
         if (null == productInfo || !productInfo.verifyInventory(number)) {
-            return this.toResponsObject(400, "库存不足", "");
+            return ResultMap.error(400, "库存不足");
         }
 
         //判断购物车中是否存在此规格商品
@@ -176,7 +179,7 @@ public class ShopCartController extends ApiBase {
         cartParam.put("product_id", productId);
         cartParam.put("user_id", loginUser.getUserId());
         List<ShopCartVo> cartInfoList = cartService.queryCartList(cartParam);
-        ShopCartVo cartInfo = null != cartInfoList && cartInfoList.size() > 0 ? cartInfoList.get(0) : null;
+        ShopCartVo cartInfo = CollectionUtils.isNotEmpty(cartInfoList) ? cartInfoList.get(0) : null;
         if (null == cartInfo) {
             //添加操作
             //添加规格名和值
@@ -199,7 +202,7 @@ public class ShopCartController extends ApiBase {
         } else {
             //如果已经存在购物车中，则数量增加
             if (!productInfo.verifyInventory(number + cartInfo.getNumber())) {
-                return this.toResponsObject(400, "库存不足", "");
+                return ResultMap.error(400, "库存不足");
             }
             cartInfo.addToCart(null, null, cartInfo.getNumber() + number);
             cartService.update(cartInfo);
