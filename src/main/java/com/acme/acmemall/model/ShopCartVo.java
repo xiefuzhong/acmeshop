@@ -101,7 +101,7 @@ public class ShopCartVo implements Serializable {
             this.list_pic_url = goods.getList_pic_url();
         }
         if (product != null) {
-            this.product_id = product.getProduct_id();
+            this.product_id = product.getId();
             this.retail_price = product.getRetail_price();
             this.market_price = product.getMarket_price();
             this.goods_specifition_ids = product.getGoods_specification_ids();
