@@ -6,7 +6,6 @@ import lombok.Getter;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.UUID;
 
 /**
  * 购物车模型
@@ -95,7 +94,7 @@ public class ShopCartVo implements Serializable {
     public void addToCart(GoodsVo goods, ProductVo product, Integer number) {
         if (goods == null || product == null) {
             this.checked = 1;
-            this.session_id = UUID.randomUUID().toString();
+            this.session_id = "1";
         }
         if (goods != null) {
             this.merchant_id = goods.getMerchantId();
