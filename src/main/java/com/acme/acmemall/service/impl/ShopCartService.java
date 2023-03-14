@@ -4,7 +4,6 @@ import com.acme.acmemall.dao.ShopCartMapper;
 import com.acme.acmemall.model.MerCartVo;
 import com.acme.acmemall.model.ShopCartVo;
 import com.acme.acmemall.service.IShopCartService;
-import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -120,27 +119,14 @@ public class ShopCartService implements IShopCartService {
         cartParam.put("checked", 1);
 
         List<ShopCartVo> cartInfoList = mapper.queryList(cartParam);
-        List<ShopCartVo> cartUpdateList = Lists.newArrayList();
         // 获取已选择的商品ID
-//        List<Integer> goods_ids = cartInfoList.stream().map(shopCartVo -> shopCartVo.getGoods_id()).collect(Collectors.toList());
         if (CollectionUtils.isEmpty(cartInfoList)) {
             return;
         }
-        cartUpdateList = cartInfoList.stream().filter(item -> !item.getRetail_price().equals(item.getRetail_product_price())).map(item -> {
+        List<ShopCartVo> cartUpdateList = cartInfoList.stream().filter(item -> !item.getRetail_price().equals(item.getRetail_product_price())).map(item -> {
             item.updateRetailPrice();
             return item;
         }).collect(Collectors.toList());
-//        for (ShopCartVo cartItem : cartInfoList) {
-//            // 存在原始的
-//            if (null != cartItem.getChecked() && 1 == cartItem.getChecked()) {
-//                for (ShopCartVo cartCrash : cartInfoList) {
-//                    if (null != cartItem.getChecked() && 1 == cartItem.getChecked() && !cartCrash.getId().equals(cartItem.getId())) {
-//                        cartUpdateList.add(cartCrash);
-//                        break;
-//                    }
-//                }
-//            }
-//        }
         if (CollectionUtils.isEmpty(cartUpdateList)) {
             return;
         }
