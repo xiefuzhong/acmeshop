@@ -1,8 +1,8 @@
 package com.acme.acmemall.model;
 
-import com.acme.acmemall.utils.StringUtils;
 import lombok.Builder;
 import lombok.Getter;
+import org.apache.commons.lang.StringUtils;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -105,7 +105,7 @@ public class ShopCartVo implements Serializable {
             this.retail_price = product.getRetail_price();
             this.market_price = product.getMarket_price();
             this.goods_specifition_ids = product.getGoods_specification_ids();
-            if (!StringUtils.isNullOrEmpty(product.getGoods_specifition_name_value())) {
+            if (StringUtils.isNotEmpty(product.getGoods_specifition_name_value())) {
                 this.goods_specifition_name_value = product.getGoods_specifition_name_value();
             }
         }

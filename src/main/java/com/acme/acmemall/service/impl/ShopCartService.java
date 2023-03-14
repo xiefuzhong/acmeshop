@@ -32,7 +32,7 @@ public class ShopCartService implements IShopCartService {
      */
     @Override
     public List<ShopCartVo> queryCartList(Map<String, Object> map) {
-        return this.mapper.queryList(map);
+        return mapper.queryList(map);
     }
 
     /**
