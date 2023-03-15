@@ -1,7 +1,9 @@
 package com.acme.acmemall.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.apache.commons.lang.StringUtils;
 
 import java.io.Serializable;
@@ -14,6 +16,8 @@ import java.util.UUID;
  * @author ihpangzi
  * @date 2017-08-15 08:03:39
  */
+@NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Builder
 public class ShopCartVo implements Serializable {
