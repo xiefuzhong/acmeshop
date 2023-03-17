@@ -1,6 +1,5 @@
 package com.acme.acmemall.model;
 
-import com.acme.acmemall.utils.Base64;
 import com.alibaba.fastjson.JSONObject;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -54,6 +53,6 @@ public class CommentVo implements Serializable {
 
     public void resetShow(LoginUserVo userVo) {
         this.user_info = userVo;
-        this.content = Base64.encode(this.content);
+//        this.content = Base64.encode(this.content);
     }
 }
