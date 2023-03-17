@@ -314,7 +314,7 @@ public class GoodsController extends ApiBase {
         if (CollectionUtils.isNotEmpty(hotComment)) {
             LoginUserVo commentUser = userService.queryObject(hotComment.get(0).getUser_id());
             commentInfo.put("content", hotComment.get(0).getContent());
-            commentInfo.put("add_time", DateUtils.timeToStr(hotComment.get(0).getAdd_time(), DateUtils.DATE_PATTERN));
+            commentInfo.put("add_time", DateUtils.timeToStr(hotComment.get(0).getAdd_time(), DateUtils.DATE_TIME_PATTERN));
             commentInfo.put("nickname", commentUser.getNickname());
             commentInfo.put("avatar", commentUser.getAvatar());
             Map paramPicture = Maps.newHashMap();

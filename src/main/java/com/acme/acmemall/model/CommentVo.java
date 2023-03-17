@@ -57,6 +57,6 @@ public class CommentVo implements Serializable {
     public void resetShow(LoginUserVo userVo) {
         this.user_info = userVo;
 //        this.content = Base64.encode(this.content);
-        this.fmt_add_time = DateUtils.timeToStr(this.add_time, DateUtils.DATE_PATTERN);
+        this.fmt_add_time = DateUtils.timeToStr(this.add_time, DateUtils.DATE_TIME_PATTERN);
     }
 }
