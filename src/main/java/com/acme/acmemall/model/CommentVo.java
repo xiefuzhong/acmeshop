@@ -1,5 +1,6 @@
 package com.acme.acmemall.model;
 
+import com.acme.acmemall.utils.DateUtils;
 import com.alibaba.fastjson.JSONObject;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -29,6 +30,8 @@ public class CommentVo implements Serializable {
     private String content;
     //记录时间
     private Long add_time;
+
+    private String fmt_add_time;
     //状态 是否被管理员批准显示;1是;0未批准显示
     private Integer status;
     //会员Id
@@ -54,5 +57,6 @@ public class CommentVo implements Serializable {
     public void resetShow(LoginUserVo userVo) {
         this.user_info = userVo;
 //        this.content = Base64.encode(this.content);
+        this.fmt_add_time = DateUtils.timeToStr(this.add_time, DateUtils.DATE_PATTERN);
     }
 }

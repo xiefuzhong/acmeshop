@@ -5,7 +5,6 @@ import com.acme.acmemall.annotation.LoginUser;
 import com.acme.acmemall.common.ResultMap;
 import com.acme.acmemall.model.*;
 import com.acme.acmemall.service.*;
-import com.acme.acmemall.utils.Base64;
 import com.acme.acmemall.utils.DateUtils;
 import com.acme.acmemall.utils.PageUtils;
 import com.acme.acmemall.utils.StringUtils;
@@ -17,6 +16,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -311,9 +311,9 @@ public class GoodsController extends ApiBase {
         Integer commentCount = commentService.queryTotal(paramMap);
         List<CommentVo> hotComment = commentService.queryCommentList(paramMap);
         Map commentInfo = Maps.newHashMap();
-        if (null != hotComment && hotComment.size() > 0) {
+        if (CollectionUtils.isNotEmpty(hotComment)) {
             LoginUserVo commentUser = userService.queryObject(hotComment.get(0).getUser_id());
-            commentInfo.put("content", Base64.decode(hotComment.get(0).getContent()));
+            commentInfo.put("content", hotComment.get(0).getContent());
             commentInfo.put("add_time", DateUtils.timeToStr(hotComment.get(0).getAdd_time(), DateUtils.DATE_PATTERN));
             commentInfo.put("nickname", commentUser.getNickname());
             commentInfo.put("avatar", commentUser.getAvatar());
@@ -326,15 +326,15 @@ public class GoodsController extends ApiBase {
         comment.put("count", commentCount);
         comment.put("data", commentInfo);
         //当前用户是否收藏
-//        Map collectParam = Maps.newHashMap();
-//        collectParam.put("user_id", getUserId());
-//        collectParam.put("value_id", id);
-//        collectParam.put("type_id", 0);
-//        Integer userHasCollect = collectService.queryTotal(collectParam);
-//        if (userHasCollect > 0) {
-//            userHasCollect = 1;
-//        }
-        Integer userHasCollect = 1;
+        Map collectParam = Maps.newHashMap();
+        collectParam.put("user_id", getUserId());
+        collectParam.put("value_id", id);
+        collectParam.put("type_id", 0);
+        Integer userHasCollect = collectService.queryTotal(collectParam);
+        if (userHasCollect > 0) {
+            userHasCollect = 1;
+        }
+//        Integer userHasCollect = 1;
         //记录用户的足迹
         FootprintVo footprintEntity = new FootprintVo();
         footprintEntity.setAdd_time(System.currentTimeMillis() / 1000);
