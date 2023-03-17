@@ -6,6 +6,7 @@ import org.springframework.util.StringUtils;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -66,6 +67,21 @@ public class DateUtils {
         Date date = new Date(time);
         String value = dateFormat.format(date);
         return value;
+    }
+
+    public static String timeToUtcDate(Long time, String pattern) {
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat dateFormat = new SimpleDateFormat(pattern);
+        String dateStr = timeToStr(time, pattern);
+        try {
+            Date date1 = dateFormat.parse(dateStr);
+            calendar.setTime(date1);
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
+        calendar.set(Calendar.HOUR, calendar.get(Calendar.HOUR) + 8);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        return sdf.format(calendar.getTime());
     }
 
     public static long strToTime(String timeStr) {

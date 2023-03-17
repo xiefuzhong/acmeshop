@@ -219,6 +219,11 @@ public class GoodsController extends ApiBase {
 
     /**
      * 商品详情页数据
+     *
+     * @param userVo   登录账号信息
+     * @param id       商品ID
+     * @param referrer 商品referrer
+     * @return
      */
     @ApiOperation(value = " 商品详情页数据")
     @IgnoreAuth
