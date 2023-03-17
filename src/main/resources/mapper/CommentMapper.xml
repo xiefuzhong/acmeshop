@@ -86,7 +86,7 @@
         `content`,
         `add_time`,
         `status`,
-        `user_id`,end_date
+        `user_id`
         )
         values
         (
@@ -95,7 +95,7 @@
         #{content},
         #{add_time},
         #{status},
-        #{user_id},now()
+        #{user_id}
         )
     </insert>
 

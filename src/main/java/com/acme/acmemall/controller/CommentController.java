@@ -87,7 +87,6 @@ public class CommentController extends ApiBase {
                        @RequestParam(value = "size", defaultValue = "10") Integer size,
                        String sort,
                        String order) {
-//        Map<String, Object> resultObj = Maps.newHashMap();
         Map param = Maps.newHashMap();
         param.put("type_id", typeId);
         param.put("value_id", valueId);
