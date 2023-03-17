@@ -469,6 +469,12 @@ public class ShopCartController extends ApiBase {
         return toResponsSuccess(getCart(loginUser));
     }
 
+    /**
+     * 直接购买：添加到购物车-跳转到确认订单页面
+     *
+     * @param loginUser
+     * @return
+     */
     @ApiOperation(value = "直接购买")
     @PostMapping("/buy")
     public ResultMap directPurchase(@LoginUser LoginUserVo loginUser) {
