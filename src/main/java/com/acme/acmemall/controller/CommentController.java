@@ -98,6 +98,7 @@ public class CommentController extends ApiBase {
         //查询列表数据
         PageHelper.startPage(page, size);
         List<CommentVo> commentList = commentService.queryCommentList(param);
+
         PageInfo pageInfo = new PageInfo<>(commentList);
         PageUtils commenData = new PageUtils(pageInfo);
 //        for (CommentVo commentItem : commentList) {
