@@ -1,7 +1,9 @@
 package com.acme.acmemall.service.impl;
 
+import com.acme.acmemall.dao.CommentMapper;
 import com.acme.acmemall.model.CommentVo;
 import com.acme.acmemall.service.ICommentService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,13 +16,17 @@ import java.util.Map;
  */
 @Service
 public class CommentService implements ICommentService {
+
+    @Autowired
+    CommentMapper mapper;
+
     /**
      * @param map
      * @return
      */
     @Override
     public Integer queryTotal(Map<String, Object> map) {
-        return null;
+        return mapper.queryTotal(map);
     }
 
     /**
@@ -29,6 +35,14 @@ public class CommentService implements ICommentService {
      */
     @Override
     public List<CommentVo> queryCommentList(Map<String, Object> map) {
-        return null;
+        return mapper.queryList(map);
+    }
+
+    /**
+     * @param commentVo
+     */
+    @Override
+    public int doSave(CommentVo commentVo) {
+        return mapper.save(commentVo);
     }
 }

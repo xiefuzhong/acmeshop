@@ -149,4 +149,21 @@ public class OrderController extends ApiBase {
         return ResultMap.error("操作失败");
     }
 
+    /**
+     * 确认收货
+     */
+    @ApiOperation(value = "确认收货")
+    @RequestMapping("confirmOrder")
+    public Object confirmOrder(@LoginUser LoginUserVo loginUserVo, String orderId) {
+        try {
+            OrderVo orderVo = orderService.findOrder(orderId);
+            orderVo.confirm();
+            orderService.updateStatus(orderVo);
+            return ResultMap.ok("确认收货成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return ResultMap.error("提交失败");
+    }
+
 }

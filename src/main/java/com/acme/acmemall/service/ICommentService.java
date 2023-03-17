@@ -7,7 +7,9 @@ import java.util.Map;
 
 public interface ICommentService {
 
-    Integer queryTotal(Map<String,Object> map);
+    Integer queryTotal(Map<String, Object> map);
 
-    List<CommentVo> queryCommentList(Map<String,Object> map);
+    List<CommentVo> queryCommentList(Map<String, Object> map);
+
+    int doSave(CommentVo commentVo);
 }

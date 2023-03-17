@@ -286,6 +286,16 @@ public class OrderVo implements Serializable {
     }
 
     /**
+     * 确认收货
+     */
+    public void confirm() {
+        this.order_status = OrderStatus.COMPLETED.code;
+        this.order_status_text = OrderStatus.COMPLETED.getDescription();
+        this.confirm_time = new Date();
+        this.shipping_status = 2;
+    }
+
+    /**
      * 评价
      *
      * @return

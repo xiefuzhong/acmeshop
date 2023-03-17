@@ -1,6 +1,10 @@
 package com.acme.acmemall.model;
 
-import lombok.Data;
+import com.alibaba.fastjson.JSONObject;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.util.List;
@@ -10,7 +14,10 @@ import java.util.List;
  * @author: ihpangzi
  * @time: 2023/2/14 9:00
  */
-@Data
+@Builder
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
 public class CommentVo implements Serializable {
     //主键
     private Integer id;
@@ -30,4 +37,17 @@ public class CommentVo implements Serializable {
     //会员Id
     private LoginUserVo user_info;
     private List<CommentPictureVo> pic_list;
+
+    /**
+     * 发表评论
+     *
+     * @param object
+     */
+    public void post(JSONObject object) {
+        this.add_time = System.currentTimeMillis() / 1000;
+        this.status = 0;
+        this.type_id = object.getInteger("type_id");
+        this.value_id = object.getInteger("value_id");
+        this.content = object.getString("content");
+    }
 }
