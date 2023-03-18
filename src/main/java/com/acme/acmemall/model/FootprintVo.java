@@ -61,7 +61,7 @@ public class FootprintVo implements Serializable {
         if (this.goods_id == null) {
             return false;
         }
-        return user != null && this.user_id == user.getUserId();
+        return user != null && this.user_id.equals(user.getUserId());
     }
 
     /**
