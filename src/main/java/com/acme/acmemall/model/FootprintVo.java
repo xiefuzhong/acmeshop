@@ -43,6 +43,8 @@ public class FootprintVo implements Serializable {
 
     private String fmt_add_time;
 
+    private String sort_add_time;
+
     public void record(GoodsVo goodsVo, Long referrer) {
         if (null != referrer) {
             this.referrer = referrer;
@@ -62,7 +64,11 @@ public class FootprintVo implements Serializable {
         return user != null && this.user_id == user.getUserId();
     }
 
+    /**
+     * 时间格式化
+     */
     public void fmtAddTime() {
         this.fmt_add_time = DateUtils.timeToUtcDate(this.add_time, DateUtils.DATE_TIME_PATTERN);
+        this.sort_add_time = DateUtils.timeToStr(this.add_time, DateUtils.DATE_PATTERN);
     }
 }

@@ -89,7 +89,10 @@ public class FootMarkController extends ApiBase {
         List<FootprintVo> footprintVos = footprintService.queryListFootprint(loginUser.getUserId() + "");
         footprintVos.stream().forEach(foot -> foot.fmtAddTime());
         footprintVos.stream().sorted(Comparator.comparing(FootprintVo::getAdd_time).reversed()).collect(Collectors.toList());
+        Map<String, List<FootprintVo>> footMap = footprintVos.stream().collect(Collectors.groupingBy(FootprintVo::getSort_add_time));
+        List<List<FootprintVo>> footprintVoList = footMap.values().stream().collect(Collectors.toList());
         PageInfo pageInfo = new PageInfo(footprintVos);
+        pageInfo.setList(footprintVoList);
         PageUtils pageUtil = new PageUtils(pageInfo);
         return ResultMap.response(ResultCodeEnum.SUCCESS, pageUtil);
     }
