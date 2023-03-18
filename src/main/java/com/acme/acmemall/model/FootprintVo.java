@@ -71,4 +71,24 @@ public class FootprintVo implements Serializable {
         this.fmt_add_time = DateUtils.timeToUtcDate(this.add_time, DateUtils.DATE_TIME_PATTERN);
         this.sort_add_time = DateUtils.timeToStr(this.add_time, DateUtils.DATE_PATTERN);
     }
+
+    @Override
+    public String toString() {
+        final StringBuffer sb = new StringBuffer("FootprintVo{");
+        sb.append("id=").append(id);
+        sb.append(", user_id=").append(user_id);
+        sb.append(", goods_id=").append(goods_id);
+        sb.append(", add_time=").append(add_time);
+        sb.append(", referrer=").append(referrer);
+        sb.append(", name='").append(name).append('\'');
+        sb.append(", list_pic_url='").append(list_pic_url).append('\'');
+        sb.append(", goods_brief='").append(goods_brief).append('\'');
+        sb.append(", retail_price=").append(retail_price);
+        sb.append(", nickname='").append(nickname).append('\'');
+        sb.append(", avatar='").append(avatar).append('\'');
+        sb.append(", fmt_add_time='").append(fmt_add_time).append('\'');
+        sb.append(", sort_add_time='").append(sort_add_time).append('\'');
+        sb.append('}');
+        return sb.toString();
+    }
 }

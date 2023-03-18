@@ -53,11 +53,12 @@ public class FootMarkController extends ApiBase {
     @ApiImplicitParams({@ApiImplicitParam(name = "footprintId", value = "足迹id", paramType = "path", required = true)})
     @GetMapping("delete")
     public Object delete(@LoginUser LoginUserVo loginUser, Integer footprintId) {
+        logger.info("foot.del>>" + footprintId);
         if (footprintId == null) {
             return ResultMap.error("请求参数错误");
         }
         FootprintVo foot = footprintService.queryObject(footprintId);
-
+        logger.info(foot);
         if (foot == null || !foot.operationCheck(loginUser)) {
             logger.info("foot.delete");
             return ResultMap.error("用户删除失败");
