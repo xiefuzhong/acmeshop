@@ -1,5 +1,6 @@
 package com.acme.acmemall.model;
 
+import com.acme.acmemall.utils.DateUtils;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -40,6 +41,8 @@ public class FootprintVo implements Serializable {
     private String nickname;
     private String avatar;
 
+    private String fmt_add_time;
+
     public void record(GoodsVo goodsVo, Long referrer) {
         if (null != referrer) {
             this.referrer = referrer;
@@ -50,5 +53,16 @@ public class FootprintVo implements Serializable {
         this.goods_id = goodsVo.getId();
         this.name = goodsVo.getName();
         this.retail_price = goodsVo.getRetail_price();
+    }
+
+    public boolean operationCheck(LoginUserVo user) {
+        if (this.goods_id == null) {
+            return false;
+        }
+        return user != null && this.user_id == user.getUserId();
+    }
+
+    public void fmtAddTime() {
+        this.fmt_add_time = DateUtils.timeToUtcDate(this.add_time, DateUtils.DATE_TIME_PATTERN);
     }
 }

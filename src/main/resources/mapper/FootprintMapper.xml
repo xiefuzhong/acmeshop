@@ -77,9 +77,7 @@
     <select id="queryTotal" resultType="int">
         select count(*) from t_acme_mall_footprint f
         <where>
-            <if test="user_id != null">
-                and f.user_id = #{user_id}
-            </if>
+            and f.user_id = #{user_id}
             <if test="goods_id != null">
                 and f.goods_id = #{goods_id}
             </if>
@@ -123,9 +121,10 @@
 
     <delete id="deleteByParam">
         delete from t_acme_mall_footprint
-        where 1 = 1
-        <if test="userId != null">and `user_id` = #{userId}</if>
-        <if test="goodsId != null">and `goods_id` = #{goodsId}</if>
+        <where>
+            and `user_id` = #{userId}
+            <if test="goodsId != null">and `goods_id` = #{goodsId}</if>
+        </where>
     </delete>
 
     <delete id="deleteBatch">
