@@ -295,6 +295,7 @@ public class GoodsController extends ApiBase {
         paramMap.put("goods_id", id);
         List<ProductVo> productList = productService.queryProductList(paramMap);
 
+        paramMap.clear();
         paramMap.put("sidx", "id");
         paramMap.put("order", "asc");
         List<GoodsGalleryVo> gallery = galleryService.queryGoodsGalleryList(paramMap);
@@ -311,19 +312,21 @@ public class GoodsController extends ApiBase {
         //
         BrandVo brand = brandService.queryObject(info.getBrand_id());
         //
+        paramMap.clear();
         paramMap.put("value_id", id);
         paramMap.put("type_id", 0);
         Integer commentCount = commentService.queryTotal(paramMap);
-        List<CommentVo> hotComment = commentService.queryCommentList(paramMap);
+        List<CommentVo> commentList = commentService.queryCommentList(paramMap);
+        CommentVo commentVo = commentList.stream().findFirst().orElse(CommentVo.builder().build());
         Map commentInfo = Maps.newHashMap();
-        if (CollectionUtils.isNotEmpty(hotComment)) {
-            LoginUserVo commentUser = userService.queryObject(hotComment.get(0).getUser_id());
-            commentInfo.put("content", hotComment.get(0).getContent());
-            commentInfo.put("add_time", DateUtils.timeToUtcDate(hotComment.get(0).getAdd_time(), DateUtils.DATE_TIME_PATTERN));
+        if (CollectionUtils.isNotEmpty(commentList)) {
+            LoginUserVo commentUser = userService.queryObject(commentVo.getUser_id());
+            commentInfo.put("content", commentVo.getContent());
+            commentInfo.put("add_time", DateUtils.timeToUtcDate(commentVo.getAdd_time(), DateUtils.DATE_TIME_PATTERN));
             commentInfo.put("nickname", commentUser.getNickname());
             commentInfo.put("avatar", commentUser.getAvatar());
             Map paramPicture = Maps.newHashMap();
-            paramPicture.put("comment_id", hotComment.get(0).getId());
+            paramPicture.put("comment_id", commentVo.getId());
             List<CommentPictureVo> picList = pictureService.queryCommentPicList(paramPicture);
             commentInfo.put("pic_list", picList);
         }
@@ -341,20 +344,9 @@ public class GoodsController extends ApiBase {
         }
 //        Integer userHasCollect = 1;
         //记录用户的足迹
-        FootprintVo footprintEntity = new FootprintVo();
-        footprintEntity.setAdd_time(System.currentTimeMillis() / 1000);
-        footprintEntity.setGoods_brief(info.getGoods_brief());
-        footprintEntity.setList_pic_url(info.getList_pic_url());
-        footprintEntity.setGoods_id(info.getId());
-        footprintEntity.setName(info.getName());
-        footprintEntity.setRetail_price(info.getRetail_price());
-        footprintEntity.setUser_id(userId);
-        if (null != referrer) {
-            footprintEntity.setReferrer(referrer);
-        } else {
-            footprintEntity.setReferrer(0L);
-        }
-        footprintService.save(footprintEntity);
+        FootprintVo foot = FootprintVo.builder().user_id(userId).build();
+        foot.record(info, referrer);
+        footprintService.save(foot);
         //
         resultObj.put("info", info);
         resultObj.put("gallery", gallery);
