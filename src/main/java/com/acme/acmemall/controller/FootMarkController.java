@@ -54,17 +54,18 @@ public class FootMarkController extends ApiBase {
     @GetMapping("delete")
     public Object delete(@LoginUser LoginUserVo loginUser, Integer footprintId) {
         if (footprintId == null) {
-            return ResultMap.error("删除出错");
+            return ResultMap.error("请求参数错误");
+        }
+        FootprintVo foot = footprintService.queryObject(footprintId);
+
+        if (foot == null || !foot.operationCheck(loginUser)) {
+            logger.info("foot.delete");
+            return ResultMap.error("用户删除失败");
         }
         //删除当天的同一个商品的足迹
-        FootprintVo footprintEntity = footprintService.queryObject(footprintId);
-        //
-        if (!footprintEntity.operationCheck(loginUser)) {
-            return ResultMap.error("删除出错");
-        }
         Map<String, Object> param = Maps.newHashMap();
         param.put("userId", loginUser.getUserId());
-        param.put("goodsId", footprintEntity.getGoods_id());
+        param.put("goodsId", foot.getGoods_id());
         footprintService.deleteByParam(param);
 
         return ResultMap.ok("删除成功");
