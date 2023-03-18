@@ -31,45 +31,57 @@ import java.util.Map;
 @RequestMapping("/api/goods")
 public class GoodsController extends ApiBase {
 
-    @Autowired
-    IAdService adService;
+    private final IAdService adService;
+    private final IBrandService brandService;
+    private final IGoodsService goodsService;
+    private final ICategoryService categoryService;
+    private final IUserService userService;
+    private final IGoodsSpecService goodsSpecService;
+    private final IProductService productService;
+    private final IGoodsGalleryService galleryService;
+    private final ICouponService couponService;
+    private final IAttributeService attributeService;
+    private final IGoodsIssueService issueService;
+    private final ICommentService commentService;
+    private final ICommentPictureService pictureService;
+    private final ICollectService collectService;
+    private final IFootprintService footprintService;
+    private final ISearchHistoryService searchHistoryService;
 
     @Autowired
-    IBrandService brandService;
-    @Autowired
-    IGoodsService goodsService;
-    @Autowired
-    ICategoryService categoryService;
-    @Autowired
-    IUserService userService;
-    @Autowired
-    IGoodsSpecService goodsSpecService;
-    @Autowired
-    IProductService productService;
-    @Autowired
-    IGoodsGalleryService galleryService;
-    @Autowired
-    ICouponService couponService;
-    @Autowired
-    IAttributeService attributeService;
-
-    @Autowired
-    IGoodsIssueService issueService;
-
-    @Autowired
-    ICommentService commentService;
-
-    @Autowired
-    ICommentPictureService pictureService;
-
-    @Autowired
-    ICollectService collectService;
-
-    @Autowired
-    IFootprintService footprintService;
-
-    @Autowired
-    ISearchHistoryService searchHistoryService;
+    public GoodsController(ISearchHistoryService searchHistoryService,
+                           IUserService userService,
+                           IBrandService brandService,
+                           IGoodsService goodsService,
+                           ICategoryService categoryService,
+                           IAdService adService,
+                           IGoodsSpecService goodsSpecService,
+                           IProductService productService,
+                           IFootprintService footprintService,
+                           ICollectService collectService,
+                           IGoodsIssueService issueService,
+                           IAttributeService attributeService,
+                           ICouponService couponService,
+                           IGoodsGalleryService galleryService,
+                           ICommentPictureService pictureService,
+                           ICommentService commentService) {
+        this.pictureService = pictureService;
+        this.categoryService = categoryService;
+        this.goodsService = goodsService;
+        this.brandService = brandService;
+        this.adService = adService;
+        this.userService = userService;
+        this.goodsSpecService = goodsSpecService;
+        this.productService = productService;
+        this.searchHistoryService = searchHistoryService;
+        this.footprintService = footprintService;
+        this.collectService = collectService;
+        this.commentService = commentService;
+        this.issueService = issueService;
+        this.attributeService = attributeService;
+        this.couponService = couponService;
+        this.galleryService = galleryService;
+    }
 
     /**
      * 　　在售的商品总数
