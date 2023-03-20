@@ -69,7 +69,8 @@
         WHERE
         f.user_id = #{0}
         AND f.id
-        IN(SELECT MAX(id) FROM t_acme_mall_footprint WHERE user_id = #{0} GROUP BY goods_id)
+        IN(SELECT MAX(id) FROM t_acme_mall_footprint WHERE user_id = #{0} GROUP BY DATE_FORMAT(from_unixtime(add_time),
+        '%Y-%m-%d'),goods_id)
         ORDER BY
         id DESC
     </select>
