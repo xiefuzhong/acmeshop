@@ -217,9 +217,9 @@
 
     <select id="queryByMobile" resultMap="loginUserMap">
         SELECT
-        u.user_id
-        u.username
-        u.mobile
+        u.user_id,
+        u.username,
+        u.mobile,
         u.password
         FROM sys_user u
         <where>
