@@ -97,12 +97,12 @@ public class AuthController extends ApiBase {
     @IgnoreAuth
     @PostMapping("login")
     @ApiOperation(value = "登录接口")
-    public ResultMap login(String mobile, String password) {
-        Assert.isBlank(mobile, "手机号不能为空!");
-        Assert.isBlank(password, "密码不能为空!");
-
+    public ResultMap login() {
+        JSONObject request = this.getJsonRequest();
+        Assert.isBlank(request.getString("mobile"), "手机号不能为空!");
+        Assert.isBlank(request.getString("password"), "密码不能为空!");
         //用户登录
-        long userId = userService.login(mobile, password);
+        long userId = userService.login(request.getString("mobile"), request.getString("password"));
         //生成token
         Map<String, Object> map = tokenService.createToken(userId);
         return ResultMap.ok(map);
