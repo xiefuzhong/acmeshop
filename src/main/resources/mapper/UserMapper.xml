@@ -205,12 +205,23 @@
     </delete>
 
 
-    <select id="queryByMobile" resultMap="com.acme.acmemall.model.LoginUserVo">
-        select
-        u.user_id as userId,
-        u.mobile as mobile,
-        u.password as password
-        from sys_user u
+    <resultMap type="com.acme.acmemall.model.LoginUserVo" id="loginUserMap">
+        <result property="userId" column="user_id"/>
+        <result property="username" column="username"/>
+        <result property="password" column="password"/>
+        <result property="mobile" column="mobile"/>
+        <result property="avatar" column="avatar"/>
+        <result property="idCard" column="id_card"/>
+        <result property="isReal" column="is_real"/>
+    </resultMap>
+
+    <select id="queryByMobile" resultMap="loginUserMap">
+        SELECT
+        u.user_id
+        u.username
+        u.mobile
+        u.password
+        FROM sys_user u
         <where>
             AND u.mobile = #{mobile} AND u.password=#{password}
         </where>
