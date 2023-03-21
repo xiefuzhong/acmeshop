@@ -1,6 +1,7 @@
 package com.acme.acmemall.service.impl;
 
 import com.acme.acmemall.dao.UserMapper;
+import com.acme.acmemall.exception.ApiCusException;
 import com.acme.acmemall.model.LoginUserVo;
 import com.acme.acmemall.model.UserGoods;
 import com.acme.acmemall.service.IUserService;
@@ -75,14 +76,20 @@ public class UserService implements IUserService {
     }
 
     /**
+     * 账号登录校验
+     *
      * @param mobile
      * @param password
      * @return
      */
     @Override
     public long login(String mobile, String password) {
-        LoginUserVo loginUserVo = userDao.queryByMobile(mobile, DigestUtils.sha256Hex(password));
-
-        return 0;
+        String pwd = DigestUtils.sha256Hex(password);
+        LoginUserVo loginUserVo = userDao.queryByMobile(mobile, pwd);
+        if (!loginUserVo.checkLogin(pwd)) {
+            throw new ApiCusException("登录失败!");
+        }
+        return loginUserVo.getUserId();
     }
+
 }

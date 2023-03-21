@@ -1,10 +1,6 @@
 package com.acme.acmemall.utils;
 
-import com.google.gson.ExclusionStrategy;
-import com.google.gson.FieldAttributes;
-import com.google.gson.FieldNamingPolicy;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import com.google.gson.*;
 import com.google.gson.annotations.Expose;
 
 /**
@@ -58,5 +54,9 @@ public class GsonUtil {
 
     public static String toJson(Object object) {
         return gson.toJson(object);
+    }
+
+    public static void main(String[] args) {
+//        System.out.println(DigestUtils.sha256Hex("test"));
     }
 }

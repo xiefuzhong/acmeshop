@@ -50,7 +50,7 @@ public class LoginUserVo implements Serializable {
     //身份证号
     private String idCard;
     //推广人id
-    private int promoterId=0;
+    private int promoterId = 0;
     //推广人姓名
     private String promoterName;
     //是否实名认证 1：是 2：否
@@ -75,5 +75,9 @@ public class LoginUserVo implements Serializable {
         this.gender = loginInfo.getGender();
         this.promoterId = loginInfo.getPromoterId();
         this.nickname = Base64.encode(loginInfo.getNickName());
+    }
+
+    public boolean checkLogin(String pwd) {
+        return this.password.equals(pwd);
     }
 }
