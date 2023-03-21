@@ -205,7 +205,14 @@
     </delete>
 
 
-    <select id="queryByMobile" resultMap="userMap">
-        select * from sys_user where mobile = #{mobile} AND password=#{password}
+    <select id="queryByMobile" resultMap="com.acme.acmemall.model.LoginUserVo">
+        select
+        u.user_id as userId,
+        u.mobile as mobile,
+        u.password as password
+        from sys_user u
+        <where>
+            AND u.mobile = #{mobile} AND u.password=#{password}
+        </where>
     </select>
 </mapper>
