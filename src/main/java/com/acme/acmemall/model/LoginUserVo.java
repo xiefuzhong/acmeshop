@@ -1,12 +1,20 @@
 package com.acme.acmemall.model;
 
-import lombok.Data;
+import com.acme.acmemall.utils.Base64;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
-@Data
+
+@Builder
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
 public class LoginUserVo implements Serializable {
     private static final long serialVersionUID = 1L;
 
@@ -55,4 +63,17 @@ public class LoginUserVo implements Serializable {
     private String qrCode;
     //真实姓名
     private String realName;
+
+    public void loginByWeixin(LoginInfo loginInfo, String requestIp) {
+        this.username = Base64.encode(loginInfo.getNickName());
+        this.password = this.weixin_openid;
+        this.register_time = new Date();
+        this.register_ip = requestIp;
+        this.last_login_ip = requestIp;
+        this.last_login_time = new Date();
+        this.avatar = loginInfo.getAvatarUrl();
+        this.gender = loginInfo.getGender();
+        this.promoterId = loginInfo.getPromoterId();
+        this.nickname = Base64.encode(loginInfo.getNickName());
+    }
 }

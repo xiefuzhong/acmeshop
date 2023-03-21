@@ -4,16 +4,18 @@ import com.acme.acmemall.dao.UserMapper;
 import com.acme.acmemall.model.LoginUserVo;
 import com.acme.acmemall.model.UserGoods;
 import com.acme.acmemall.service.IUserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 @Service
 public class UserService implements IUserService {
 
-    @Autowired
+    @Resource
     private UserMapper userDao;
+
 
     /**
      * @param openId
@@ -70,5 +72,17 @@ public class UserService implements IUserService {
     @Override
     public int delShareGoods(UserGoods userGoods) {
         return userDao.deleteShareGoods(userGoods);
+    }
+
+    /**
+     * @param mobile
+     * @param password
+     * @return
+     */
+    @Override
+    public long login(String mobile, String password) {
+        LoginUserVo loginUserVo = userDao.queryByMobile(mobile, DigestUtils.sha256Hex(password));
+
+        return 0;
     }
 }

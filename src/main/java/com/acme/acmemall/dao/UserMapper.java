@@ -12,7 +12,7 @@ import java.util.List;
  */
 @Mapper
 public interface UserMapper extends BaseDao<LoginUserVo> {
-    LoginUserVo queryByMobile(String mobile);
+    LoginUserVo queryByMobile(@Param("mobile") String mobile, @Param("password") String password);
 
     /**
      * w微信用户查询

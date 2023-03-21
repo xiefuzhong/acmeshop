@@ -1,11 +1,12 @@
 package com.acme.acmemall.controller;
 
 import com.acme.acmemall.annotation.IgnoreAuth;
+import com.acme.acmemall.common.ResultMap;
+import com.acme.acmemall.exception.Assert;
 import com.acme.acmemall.model.LoginInfo;
 import com.acme.acmemall.model.LoginUserVo;
 import com.acme.acmemall.service.ITokenService;
 import com.acme.acmemall.service.IUserService;
-import com.acme.acmemall.utils.Base64;
 import com.acme.acmemall.utils.StringUtils;
 import com.acme.acmemall.utils.UserUtils;
 import com.alibaba.fastjson.JSON;
@@ -22,7 +23,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Date;
 import java.util.Map;
 
 /**
@@ -48,7 +48,7 @@ public class AuthController extends ApiBase {
     @IgnoreAuth
     @PostMapping("login_by_weixin")
     public Object loginByWeixin(@RequestBody LoginInfo loginInfo, HttpServletRequest request) {
-        logger.info("loginByWeixin.loginInfo>>"+JSONObject.toJSON(loginInfo));
+        logger.info("loginByWeixin.loginInfo>>" + JSONObject.toJSON(loginInfo));
         //获取openid
         String requestUrl = UserUtils.getWebAccess(loginInfo.getCode());//通过自定义工具类组合出小程序需要的登录凭证 code
         logger.info("》》》requestUrl为：" + requestUrl);
@@ -70,27 +70,16 @@ public class AuthController extends ApiBase {
 //        	 logger.info("登录失败---验证用户信息完整性 sha1"+sha1);
 //            return toResponsFail("登录失败");
 //        }
-        Date nowTime = new Date();
         LoginUserVo userVo = userService.queryByOpenId(openid);
-        logger.info("LoginUserVo>>" +JSONObject.toJSON(userVo));
+        logger.info("LoginUserVo>>" + JSONObject.toJSON(userVo));
         if (null == userVo) {
-            userVo = new LoginUserVo();
-            userVo.setUsername(Base64.encode(loginInfo.getNickName()));
-            userVo.setPassword(openid);
-            userVo.setRegister_time(nowTime);
-            userVo.setRegister_ip(this.getClientIp());
-            userVo.setLast_login_ip(userVo.getRegister_ip());
-            userVo.setLast_login_time(userVo.getRegister_time());
-            userVo.setWeixin_openid(openid);
-            userVo.setAvatar(loginInfo.getAvatarUrl());
-            userVo.setGender(loginInfo.getGender()); // //性别 0：未知、1：男、2：女
-            userVo.setNickname(Base64.encode(loginInfo.getNickName()));
-            userVo.setPromoterId(loginInfo.getPromoterId());
+            userVo = LoginUserVo.builder().weixin_openid(openid).build();
+            userVo.loginByWeixin(loginInfo, this.getClientIp());
             // 保存授权登录信息
             userService.save(userVo);
-            logger.info("userId>>"+userVo.getUserId());
+            logger.info("userId>>" + userVo.getUserId());
         }
-        logger.info("save.after.userVo>>"+JSONObject.toJSON(userVo));
+        logger.info("save.after.userVo>>" + JSONObject.toJSON(userVo));
         Map<String, Object> tokenMap = tokenService.createToken(userVo.getUserId());
         String token = MapUtils.getString(tokenMap, "token");
 
@@ -101,7 +90,21 @@ public class AuthController extends ApiBase {
         Map<String, Object> resultObj = Maps.newHashMap();
         resultObj.put("openid", openid);
         resultObj.put("userVo", userVo);
-        resultObj.put("session_key",session_key);
+        resultObj.put("session_key", session_key);
         return toResponsSuccess(resultObj);
+    }
+
+    @IgnoreAuth
+    @PostMapping("login")
+    @ApiOperation(value = "登录接口")
+    public ResultMap login(String mobile, String password) {
+        Assert.isBlank(mobile, "手机号不能为空!");
+        Assert.isBlank(password, "密码不能为空!");
+
+        //用户登录
+        long userId = userService.login(mobile, password);
+        //生成token
+        Map<String, Object> map = tokenService.createToken(userId);
+        return ResultMap.ok(map);
     }
 }

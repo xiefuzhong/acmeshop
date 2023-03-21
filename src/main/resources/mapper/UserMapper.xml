@@ -203,4 +203,9 @@
     <delete id="deleteShareGoods">
         delete from t_acme_mall_user_goods where user_id= #{userId} AND goods_id=#{goodsId}
     </delete>
+
+
+    <select id="queryByMobile" resultMap="userMap">
+        select * from sys_user where mobile = #{mobile} AND password=#{password}
+    </select>
 </mapper>

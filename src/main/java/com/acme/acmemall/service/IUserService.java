@@ -24,4 +24,6 @@ public interface IUserService {
     void saveShareGoods(UserGoods userGoods);
 
     int delShareGoods(UserGoods userGoods);
+
+    long login(String mobile, String password);
 }
