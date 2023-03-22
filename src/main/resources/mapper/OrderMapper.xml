@@ -57,58 +57,58 @@
     </resultMap>
 
     <select id="queryObject" resultMap="orderMap">
-		select a.*,b.code as  shipping_code,b.name as shipping_name
-		from t_acme_mall_order a
-		left join t_acme_mall_shipping b on a.shipping_id = b.id
+        select a.*,b.code as shipping_code,b.name as shipping_name
+        from t_acme_mall_order a
+        left join t_acme_mall_shipping b on a.shipping_id = b.id
         <where>
             AND a.id = #{value}
             AND a.order_status != 102
         </where>
 
-	</select>
-	
-	<select id="queryByAllOrderId" resultMap="orderMap">
-		select *
-		from t_acme_mall_order
-		where all_order_id = #{allOrderId}
-	</select>
-	
-	<select id="queryWaitList" resultMap="orderMap">
-		SELECT * FROM t_acme_mall_order where order_status = 300
+    </select>
+
+    <select id="queryByAllOrderId" resultMap="orderMap">
+        select *
+        from t_acme_mall_order
+        where all_order_id = #{allOrderId}
+    </select>
+
+    <select id="queryWaitList" resultMap="orderMap">
+        SELECT * FROM t_acme_mall_order where order_status = 300
     </select>
 
     <select id="queryFxList" resultMap="orderMap">
-    	select * from  t_acme_mall_order
-    	where 
-    	<![CDATA[ DATE_ADD(confirm_time,INTERVAL 1 WEEK) < now() ]]>
-    	and order_status=301 and fx_status=0
-	</select>
+        select * from t_acme_mall_order
+        where
+        <![CDATA[ DATE_ADD(confirm_time,INTERVAL 1 WEEK) < now() ]]>
+        and order_status=301 and fx_status=0
+    </select>
 
     <select id="queryList" resultMap="orderMap">
         SELECT DISTINCT o.*, g.goods_name, g.list_pic_url, g.goods_id FROM t_acme_mall_order o
         LEFT JOIN t_acme_mall_order_goods g ON o.id = g.order_id
         <where>
             AND o.order_status!=102
-           	<if test="user_id != null">
+            <if test="user_id != null">
                 and o.user_id = #{user_id}
             </if>
-            
-	        <if test="order_status != null and order_status >= 0 and order_status != 4 and order_status != 201 and order_status != 101">
-	            AND o.order_status = #{order_status}
-	        </if>
-	        
-	        <if test="order_status != null and order_status == 101">
-	            AND (o.order_status = 101 or o.order_status = 401 or o.order_status = 402)
-	        </if>
-	        
-	        <if test="order_status != null and order_status == 201">
-	            AND (o.order_status = 201 or o.order_status = 300)
-	        </if>
-	        
-	        <if test="order_status != null and order_status == 4">
-	            AND (o.order_status = 401 or o.order_status = 402)
-	        </if>
-	        <if test="all_order_id != null and all_order_id != ''">
+
+            <if test="order_status != null and order_status >= 0 and order_status != 4 and order_status != 201 and order_status != 101">
+                AND o.order_status = #{order_status}
+            </if>
+
+            <if test="order_status != null and order_status == 101">
+                AND (o.order_status = 101 or o.order_status = 401 or o.order_status = 402)
+            </if>
+
+            <if test="order_status != null and order_status == 201">
+                AND (o.order_status = 201 or o.order_status = 300)
+            </if>
+
+            <if test="order_status != null and order_status == 4">
+                AND (o.order_status = 401 or o.order_status = 402)
+            </if>
+            <if test="all_order_id != null and all_order_id != ''">
                 and o.all_order_id = #{all_order_id}
             </if>
             <if test="promoter_id != null and promoter_id != 0">
@@ -161,101 +161,101 @@
                 and o.promoter_id = #{promoter_id}
             </if>
         </where>
-	</select>
+    </select>
 
     <insert id="save" parameterType="com.acme.acmemall.model.OrderVo" useGeneratedKeys="true" keyProperty="id">
-		insert into t_acme_mall_order
-		(
-            `id`,
-			`order_sn`,
-			`user_id`,
-			`order_status`,
-			`shipping_status`,
-			`pay_status`,
-			`consignee`,
-			`country`,
-			`province`,
-			`city`,
-			`district`,
-			`address`,
-			`mobile`,
-			`postscript`,
-			`shipping_id`,
-			`shipping_name`,
-			`pay_id`,
-			`pay_name`,
-			`shipping_fee`,
-			`actual_price`,
-			`integral`,
-			`integral_money`,
-			`order_price`,
-			`goods_price`,
-			`add_time`,
-			`confirm_time`,
-			`pay_time`,
-			`freight_price`,
-			`coupon_id`,
-			`parent_id`,
-			`coupon_price`,
-			`callback_status`,
-			`full_cut_price`,
-			`order_type`,
-			`all_price`,
-			`all_order_id`,
-			`promoter_id`,
-			`brokerage`,
-			`merchant_id`,
-			`group_buying_id`,
-            `address_id`,
-            `goods_count`
+        insert into t_acme_mall_order
+        (
+        `id`,
+        `order_sn`,
+        `user_id`,
+        `order_status`,
+        `shipping_status`,
+        `pay_status`,
+        `consignee`,
+        `country`,
+        `province`,
+        `city`,
+        `district`,
+        `address`,
+        `mobile`,
+        `postscript`,
+        `shipping_id`,
+        `shipping_name`,
+        `pay_id`,
+        `pay_name`,
+        `shipping_fee`,
+        `actual_price`,
+        `integral`,
+        `integral_money`,
+        `order_price`,
+        `goods_price`,
+        `add_time`,
+        `confirm_time`,
+        `pay_time`,
+        `freight_price`,
+        `coupon_id`,
+        `parent_id`,
+        `coupon_price`,
+        `callback_status`,
+        `full_cut_price`,
+        `order_type`,
+        `all_price`,
+        `all_order_id`,
+        `promoter_id`,
+        `brokerage`,
+        `merchant_id`,
+        `group_buying_id`,
+        `address_id`,
+        `goods_count`
 
-		)
-		values
-		(
-			#{id},
-            #{order_sn},
-			#{user_id},
-			#{order_status},
-			#{shipping_status},
-			#{pay_status},
-			#{consignee},
-			#{country},
-			#{province},
-			#{city},
-			#{district},
-			#{address},
-			#{mobile},
-			#{postscript},
-			#{shipping_id},
-			#{shipping_name},
-			#{pay_id},
-			#{pay_name},
-			#{shipping_fee},
-			#{actual_price},
-			#{integral},
-			#{integral_money},
-			#{order_price},
-			#{goods_price},
-			#{add_time},
-			#{confirm_time},
-			#{pay_time},
-			#{freight_price},
-			#{coupon_id},
-			#{parent_id},
-			#{coupon_price},
-			#{callback_status},
-			#{full_cut_price},
-			#{order_type},
-			#{all_price},
-			#{all_order_id},
-			#{promoter_id},
-			#{brokerage},
-			#{merchant_id},
-			#{group_buying_id},
-            #{addressId},
-            #{goodsCount}
-		)
-	</insert>
+        )
+        values
+        (
+        #{id},
+        #{order_sn},
+        #{user_id},
+        #{order_status},
+        #{shipping_status},
+        #{pay_status},
+        #{consignee},
+        #{country},
+        #{province},
+        #{city},
+        #{district},
+        #{address},
+        #{mobile},
+        #{postscript},
+        #{shipping_id},
+        #{shipping_name},
+        #{pay_id},
+        #{pay_name},
+        #{shipping_fee},
+        #{actual_price},
+        #{integral},
+        #{integral_money},
+        #{order_price},
+        #{goods_price},
+        #{add_time},
+        #{confirm_time},
+        #{pay_time},
+        #{freight_price},
+        #{coupon_id},
+        #{parent_id},
+        #{coupon_price},
+        #{callback_status},
+        #{full_cut_price},
+        #{order_type},
+        #{all_price},
+        #{all_order_id},
+        #{promoter_id},
+        #{brokerage},
+        #{merchant_id},
+        #{group_buying_id},
+        #{addressId},
+        #{goodsCount}
+        )
+    </insert>
 
     <update id="update" parameterType="com.acme.acmemall.model.OrderVo">
         update t_acme_mall_order
@@ -302,7 +302,7 @@
         </set>
         where id = #{id}
     </update>
-    
+
     <update id="updateStatus" parameterType="com.acme.acmemall.model.OrderVo">
         update t_acme_mall_order
         <set>
@@ -316,8 +316,8 @@
     </update>
 
     <delete id="delete">
-		delete from t_acme_mall_order where id = #{value}
-	</delete>
+        delete from t_acme_mall_order where id = #{value}
+    </delete>
 
     <delete id="deleteBatch">
         delete from t_acme_mall_order where id in
@@ -326,7 +326,7 @@
         </foreach>
     </delete>
     <select id="queryGroupBuyRefundList" resultMap="orderMap">
-      select * from order
+        select * from order
         <where>
             <if test="order_status != null and order_status != 0">
                 and order_status = #{order_status}
@@ -337,5 +337,26 @@
         </where>
     </select>
 
+
+    <!--    工作台统计-->
+    <select id="statistics" resultType="com.acme.acmemall.model.StatisticsVo">
+        SELECT
+        'toShipped' as type,
+        count(1) as num
+        FROM
+        t_acme_mall_order o
+        WHERE
+        o.merchant_id = #{merchant_id}
+        AND o.order_status IN (201, 300)
+        UNION ALL
+        SELECT
+        'topay' as type,
+        count(1) as num
+        FROM
+        t_acme_mall_order o
+        WHERE
+        o.merchant_id = #{merchant_id}
+        AND o.order_status =0
+    </select>
 
 </mapper>

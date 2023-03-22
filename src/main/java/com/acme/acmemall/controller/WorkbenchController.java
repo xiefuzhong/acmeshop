@@ -1,0 +1,46 @@
+package com.acme.acmemall.controller;
+
+import com.acme.acmemall.common.ResultMap;
+import com.acme.acmemall.exception.ResultCodeEnum;
+import com.acme.acmemall.model.StatisticsVo;
+import com.acme.acmemall.service.IWorkbenchService;
+import com.alibaba.fastjson.JSONObject;
+import com.google.common.collect.Maps;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+/**
+ * @description:商城工作台
+ * @author: ihpangzi
+ * @time: 2023/3/22 14:01
+ */
+@Api(tags = "商城工作台")
+@RestController
+@RequestMapping("/api/workbench")
+public class WorkbenchController extends ApiBase {
+
+    private static IWorkbenchService workbenchService;
+
+    @Autowired
+    public WorkbenchController(IWorkbenchService workbenchService) {
+        WorkbenchController.workbenchService = workbenchService;
+    }
+
+    @ApiOperation(value = "工作台订单统计")
+    @RequestMapping("statistics")
+    public Object statistics() {
+        JSONObject object = super.getJsonRequest();
+        Map<String, Object> params = Maps.newHashMap();
+        params.put("merchant_id", object.getString("merchant_id"));
+        List<StatisticsVo> statistics = workbenchService.statistics(params);
+        Map<String, Integer> statisticsMap = statistics.stream().collect(Collectors.toMap(StatisticsVo::getType, StatisticsVo::getNum, (ke1, ke2) -> ke1));
+        return ResultMap.response(ResultCodeEnum.SUCCESS, statisticsMap);
+    }
+}
