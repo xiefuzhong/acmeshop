@@ -102,9 +102,10 @@ public class AuthController extends ApiBase {
         Assert.isBlank(request.getString("mobile"), "手机号不能为空!");
         Assert.isBlank(request.getString("password"), "密码不能为空!");
         //用户登录
-        long userId = userService.login(request.getString("mobile"), request.getString("password"));
+        LoginUserVo userVo = userService.login(request.getString("mobile"), request.getString("password"));
         //生成token
-        Map<String, Object> map = tokenService.createToken(userId);
+        Map<String, Object> map = tokenService.createToken(userVo.getUserId());
+        map.put("merchantId", userVo.getMerchantId());
         return ResultMap.ok(map);
     }
 }

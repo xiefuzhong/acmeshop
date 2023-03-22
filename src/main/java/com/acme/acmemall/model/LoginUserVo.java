@@ -64,6 +64,8 @@ public class LoginUserVo implements Serializable {
     //真实姓名
     private String realName;
 
+    private Long merchantId; // 商户ID
+
     public void loginByWeixin(LoginInfo loginInfo, String requestIp) {
         this.username = Base64.encode(loginInfo.getNickName());
         this.password = this.weixin_openid;

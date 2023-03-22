@@ -83,13 +83,13 @@ public class UserService implements IUserService {
      * @return
      */
     @Override
-    public long login(String mobile, String password) {
+    public LoginUserVo login(String mobile, String password) {
         String pwd = DigestUtils.sha256Hex(password);
         LoginUserVo loginUserVo = userDao.queryByMobile(mobile, pwd);
         if (loginUserVo == null || !loginUserVo.checkLogin(pwd)) {
             throw new ApiCusException("登录失败!");
         }
-        return loginUserVo.getUserId();
+        return loginUserVo;
     }
 
 }
