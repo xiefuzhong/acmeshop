@@ -145,7 +145,7 @@ public class OrderVo implements Serializable {
     //fx状态 默认为0是没有分润金额，已分润状态变成1
     private Integer fx_status;
     //商户id
-    private Integer merchant_id;
+    private Long merchant_id;
     //团购ID
     private String group_buying_id;
 
@@ -218,6 +218,7 @@ public class OrderVo implements Serializable {
         // 总付款金额
         this.all_price = actual_price;
         this.handleOption = OrderHandleOption.builder().build().canOption(this.order_status);
+        this.merchant_id = cartList.stream().findFirst().get().getMerchant_id();
 
         // 订单明细
         cartList.stream().forEach(cartVo -> this.items.add(OrderFactory.buildOrderItem(cartVo, id)));
