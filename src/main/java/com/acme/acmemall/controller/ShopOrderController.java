@@ -51,14 +51,13 @@ public class ShopOrderController extends ApiBase {
         params.put("order", "desc");
         params.put("member_id", member_id); // 商户ID
         if (order_status != null) {
-            List<Integer> statusList = Lists.newArrayList();
+            List<Integer> statusList;
             if (order_status == 301) {
                 // 已发货 300-订单已发货， 301-用户确认收货
                 statusList = Lists.newArrayList(300, 301);
             } else {
                 statusList = Lists.newArrayList(order_status);
             }
-
             params.put("statusList", statusList);
         }
         params.put("timeRange", timeRange);
