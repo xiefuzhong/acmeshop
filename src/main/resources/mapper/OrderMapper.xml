@@ -137,7 +137,7 @@
         <where>
             AND o.order_status!=102
             AND o.order_status IN
-            <foreach collection="list" item="status" separator="," open="(" close=")">
+            <foreach collection="query.statusList" item="status" separator="," open="(" close=")">
                 #{status}
             </foreach>
             AND o.merchant_id=#{merchant_id}
