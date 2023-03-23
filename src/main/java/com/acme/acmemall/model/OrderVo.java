@@ -36,6 +36,7 @@ public class OrderVo implements Serializable {
     private String order_sn;
     //会员Id
     private Long user_id;
+
     /*
     订单状态
     1xx 表示订单取消和删除等状态 0订单创建成功等待付款，　101订单已取消，　102订单已删除 . 103 订单已失效不可再次付款
@@ -43,6 +44,8 @@ public class OrderVo implements Serializable {
     3xx 表示订单物流相关状态　300订单已发货， 301用户确认收货
     4xx 表示订单退换货相关的状态　401 没有发货，退款　402 已收货，退款退货
     */
+
+    // 未成交订单101,401,402,103
     private Integer order_status;
     //发货状态 商品配送情况;0未发货,1已发货,2已收货,4退货
     private Integer shipping_status;

@@ -113,6 +113,10 @@ public class OrderService implements IOrderService {
      */
     @Override
     public List<OrderVo> queryOrderList(Map params) {
+        // 根据商户查
+        if (params.containsKey("member_id")) {
+            return orderMapper.queryMerOrders(params);
+        }
         return orderMapper.queryList(params);
     }
 
