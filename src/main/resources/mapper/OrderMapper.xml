@@ -131,14 +131,14 @@
         </if>
     </select>
 
-    <select id="queryMerOrders" resultMap="orderMap" parameterType="map">
+    <select id="queryMerOrders" resultMap="orderMap" parameterType="hashmap">
         SELECT DISTINCT o.*, g.goods_name, g.list_pic_url, g.goods_id FROM t_acme_mall_order o
         LEFT JOIN t_acme_mall_order_goods g ON o.id = g.order_id
         <where>
             AND o.order_status!=102
             AND o.order_status IN
-            <foreach collection="query.statusList" item="status" separator="," open="(" close=")">
-                #{status}
+            <foreach collection="statusList" item="item" separator="," open="(" close=")">
+                #{item}
             </foreach>
             AND o.merchant_id=#{merchant_id}
         </where>
