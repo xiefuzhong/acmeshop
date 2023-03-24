@@ -3,6 +3,7 @@ package com.acme.acmemall.model;
 import com.acme.acmemall.exception.ApiCusException;
 import com.acme.acmemall.exception.ResultCodeEnum;
 import com.acme.acmemall.factory.OrderFactory;
+import com.acme.acmemall.utils.DateUtils;
 import com.alibaba.fastjson.JSON;
 import com.google.common.collect.Lists;
 import lombok.AllArgsConstructor;
@@ -100,6 +101,7 @@ public class OrderVo implements Serializable {
     private BigDecimal goods_price = BigDecimal.ZERO;
     //新增时间-下单时间
     private Date add_time;
+    private String fmt_add_time;
 
     // 订单删除时间
     private Date delete_time;
@@ -244,10 +246,11 @@ public class OrderVo implements Serializable {
 
     /**
      * 付款成功
+     *
      * @param orderVo
      * @return
      */
-    public OrderVo paid(OrderVo orderVo){
+    public OrderVo paid(OrderVo orderVo) {
         this.pay_status = 2;
         this.order_status = OrderStatus.TO_BE_SHIPPED.getCode();
         this.order_status_text = OrderStatus.TO_BE_SHIPPED.getDescription();
@@ -372,6 +375,10 @@ public class OrderVo implements Serializable {
         List<String> names = items.stream().map(OrderGoodsVo::getGoods_name).collect(Collectors.toList());
         return names.stream().collect(Collectors.joining(",")) + " and so on";
 
+    }
+
+    public String getFmt_add_time() {
+        return DateUtils.timeToUtcDate(this.add_time.getTime(), DateUtils.DATE_TIME_PATTERN);
     }
 
     /**

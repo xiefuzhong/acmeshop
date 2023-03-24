@@ -66,6 +66,15 @@ public class OrderHandleOption {
      */
     @Builder.Default
     boolean updateAddress = Boolean.FALSE;
+    @Builder.Default
+    Boolean print = Boolean.FALSE;
+    @Builder.Default
+    Boolean mark = Boolean.FALSE;
+    @Builder.Default
+    Boolean closed = Boolean.FALSE;
+    @Builder.Default
+    Boolean toShipping = Boolean.FALSE;
+
 
     /**
      * 根据订单状态，设置订单可操作按钮
@@ -79,6 +88,7 @@ public class OrderHandleOption {
                 this.pay = Boolean.TRUE;
                 this.cancel = Boolean.TRUE;
                 this.updateAddress = Boolean.TRUE;
+                this.mark = Boolean.TRUE;
                 break;
             }
             case CANCELED: {
@@ -101,8 +111,15 @@ public class OrderHandleOption {
                 this.buy = Boolean.TRUE;
                 break;
             }
+            case PAID: {
+                this.mark = Boolean.TRUE;
+                this.print = Boolean.TRUE;
+                this.updateAddress = Boolean.TRUE;
+                this.toShipping = Boolean.TRUE;
+                break;
+            }
         }
-        System.out.println("option-->"+JSON.toJSONString(this));
+        System.out.println("option-->" + JSON.toJSONString(this));
         return JSON.parseObject(JSON.toJSONString(this), new TypeReference<Map<String, Boolean>>() {
         });
     }
