@@ -9,7 +9,7 @@ public enum OrderStatus {
     DELETED(102, "已删除"),
     CANCELED_RETURNED(401, "已取消"),
     RETURNED(402, "已退货"),
-    TO_BE_SHIPPED(201, "待发货");
+    TO_BE_SHIPPED(201, "待发货"); // 打单之后就是待发货，可以去填充快递信息发货，状态-待用户收货，物流状态：已发货
 
     int code;
     String description;
