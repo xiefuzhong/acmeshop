@@ -37,9 +37,9 @@ public class ShopOrderController extends ApiBase {
     @RequestMapping("list")
     public Object listMerchantOrder(
             @LoginUser LoginUserVo loginUser,
-            Integer order_status,
-            Long member_id,
-            Integer timeRange,
+            @RequestParam(value = "order_status", defaultValue = "-1") Integer order_status,
+            @RequestParam(value = "member_id", defaultValue = "0") Long member_id,
+            @RequestParam(value = "timeRange", defaultValue = "1") Integer timeRange,
             @RequestParam(value = "page", defaultValue = "1") Integer page,
             @RequestParam(value = "size", defaultValue = "10") Integer size) {
         Map params = Maps.newHashMap();
