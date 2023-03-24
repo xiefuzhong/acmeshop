@@ -9,7 +9,6 @@ import com.acme.acmemall.service.IOrderService;
 import com.acme.acmemall.utils.PageUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -51,12 +50,7 @@ public class ShopOrderController extends ApiBase {
         params.put("order", "desc");
         params.put("member_id", member_id); // 商户ID
         if (order_status != null) {
-            List<Integer> statusList = Lists.newArrayList(order_status);
-            if (order_status == 301) {
-                // 已发货 300-订单已发货， 301-用户确认收货
-                statusList = Lists.newArrayList(300, 301);
-            }
-            params.put("statusList", statusList);
+            params.put("order_status", order_status);
         }
         params.put("timeRange", timeRange);
         //查询列表数据
