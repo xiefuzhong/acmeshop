@@ -99,6 +99,7 @@ public class OrderHandleOption {
             case TO_BE_SHIPPED: {
                 this.cancel = Boolean.TRUE;
                 this.updateAddress = Boolean.TRUE;
+                this.mark = Boolean.TRUE;
                 break;
             }
             case TO_BE_RECEIVED: {
