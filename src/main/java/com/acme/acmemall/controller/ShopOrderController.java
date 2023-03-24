@@ -38,7 +38,7 @@ public class ShopOrderController extends ApiBase {
     public Object listMerchantOrder(
             @LoginUser LoginUserVo loginUser,
             @RequestParam(value = "order_status", defaultValue = "-1") Integer order_status,
-            @RequestParam(value = "merchant_id", defaultValue = "0") Long member_id,
+            @RequestParam(value = "merchant_id", defaultValue = "0") Long merchant_id,
             @RequestParam(value = "timeRange", defaultValue = "1") Integer timeRange,
             @RequestParam(value = "page", defaultValue = "1") Integer page,
             @RequestParam(value = "size", defaultValue = "10") Integer size) {
@@ -48,7 +48,7 @@ public class ShopOrderController extends ApiBase {
         params.put("limit", size);
         params.put("sidx", "o.order_status,o.add_time"); // 待付款，下单时间
         params.put("order", "desc");
-        params.put("member_id", member_id); // 商户ID
+        params.put("merchant_id", merchant_id); // 商户ID
         if (order_status != null) {
             params.put("order_status", order_status);
         }
