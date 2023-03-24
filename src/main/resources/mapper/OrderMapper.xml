@@ -136,11 +136,14 @@
         LEFT JOIN t_acme_mall_order_goods g ON o.id = g.order_id
         <where>
             AND o.order_status!=102
-            AND o.order_status IN
-            <foreach collection="statusList" item="item" separator="," open="(" close=")">
-                #{item}
-            </foreach>
             AND o.merchant_id=#{merchant_id}
+            <if test="list != null and list.size()>0">
+                AND o.order_status IN
+                <foreach collection="list" item="item" open="(" close=")" separator=",">
+                    #{item}
+                </foreach>
+            </if>
+
         </where>
 
         <choose>
