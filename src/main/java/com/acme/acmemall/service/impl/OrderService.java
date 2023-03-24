@@ -115,9 +115,7 @@ public class OrderService implements IOrderService {
     public List<OrderVo> queryOrderList(Map params) {
         // 根据商户查
         if (params.containsKey("member_id")) {
-            List<Integer> statusList = (List<Integer>) params.get("statusList");
-            params.remove("statusList");
-            return orderMapper.queryMerOrders(params, statusList);
+            return orderMapper.queryMerOrders(params);
         }
         return orderMapper.queryList(params);
     }

@@ -137,9 +137,9 @@
         <where>
             AND o.order_status!=102
             AND o.merchant_id=#{merchant_id}
-            <if test="statusList != null and statusList.size()>0">
+            <if test="params.statusList != null and params.statusList.size()>0">
                 AND o.order_status IN
-                <foreach collection="statusList" item="item" open="(" close=")" separator=",">
+                <foreach collection="params.statusList" item="item" open="(" close=")" separator=",">
                     #{item}
                 </foreach>
             </if>
