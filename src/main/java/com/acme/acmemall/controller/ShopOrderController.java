@@ -12,6 +12,7 @@ import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Maps;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -58,6 +59,9 @@ public class ShopOrderController extends ApiBase {
         //查询列表数据
         PageHelper.startPage(page, size);
         List<OrderVo> orders = orderService.queryOrderList(params);
+        if (CollectionUtils.isEmpty(orders)) {
+            return ResultMap.ok();
+        }
         PageInfo pageInfo = new PageInfo<>(orders);
         PageUtils ordersPage = new PageUtils(pageInfo);
         return ResultMap.response(ResultCodeEnum.SUCCESS, ordersPage);
