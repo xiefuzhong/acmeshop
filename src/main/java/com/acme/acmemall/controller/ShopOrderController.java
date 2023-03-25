@@ -37,6 +37,7 @@ public class ShopOrderController extends ApiBase {
     @RequestMapping("list")
     public Object listMerchantOrder(
             @LoginUser LoginUserVo loginUser,
+            @RequestParam(value = "timeType", defaultValue = "order") String timeType,
             @RequestParam(value = "order_status", defaultValue = "-1") Integer order_status,
             @RequestParam(value = "merchant_id", defaultValue = "0") Long merchant_id,
             @RequestParam(value = "timeRange", defaultValue = "1") Integer timeRange,
@@ -53,6 +54,7 @@ public class ShopOrderController extends ApiBase {
             params.put("order_status", order_status);
         }
         params.put("timeRange", timeRange);
+        params.put("timeType", timeType);
         //查询列表数据
         PageHelper.startPage(page, size);
         List<OrderVo> orders = orderService.queryOrderList(params);

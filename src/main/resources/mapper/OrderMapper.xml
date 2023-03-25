@@ -148,19 +148,16 @@
                     AND o.order_status = #{order_status}
                 </otherwise>
             </choose>
+            <if test="timeType == 'order'">
+
+            </if>
             <choose>
-                <when test="timeRange ==3">
-                    AND o.add_time > DATE_SUB(NOW(), INTERVAL 90 DAY)
+                <when test="timeType == 'order'">
+                    AND o.add_time > DATE_SUB(NOW(), INTERVAL ${timeRange} DAY)
                 </when>
-                <when test="timeRange ==6">
-                    AND o.add_time > DATE_SUB(NOW(), INTERVAL 180 DAY)
+                <when test="timeType=='pay'">
+                    AND o.pay_time > DATE_SUB(NOW(), INTERVAL ${timeRange} DAY)
                 </when>
-                <when test="timeRange ==12">
-                    AND o.add_time > DATE_SUB(NOW(), INTERVAL 365 DAY)
-                </when>
-                <otherwise>
-                    AND o.add_time > DATE_SUB(NOW(), INTERVAL 30 DAY)
-                </otherwise>
             </choose>
 
         </where>
