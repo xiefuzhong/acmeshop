@@ -158,6 +158,9 @@
                 <when test="timeType=='pay'">
                     AND o.pay_time > DATE_SUB(NOW(), INTERVAL ${timeRange} DAY)
                 </when>
+                <otherwise>
+                    AND o.add_time > DATE_SUB(NOW(), INTERVAL ${timeRange} DAY)
+                </otherwise>
             </choose>
 
         </where>
