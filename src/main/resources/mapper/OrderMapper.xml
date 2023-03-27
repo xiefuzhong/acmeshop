@@ -375,7 +375,7 @@
         </foreach>
     </delete>
     <select id="queryGroupBuyRefundList" resultMap="orderMap">
-        select * from order
+        select * from t_acme_mall_order
         <where>
             <if test="order_status != null and order_status != 0">
                 and order_status = #{order_status}
