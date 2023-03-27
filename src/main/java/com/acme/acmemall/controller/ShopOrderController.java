@@ -12,12 +12,12 @@ import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Maps;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.RequiredArgsConstructor;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.annotation.Resource;
 import java.util.List;
 import java.util.Map;
 
@@ -29,9 +29,9 @@ import java.util.Map;
 @Api(tags = "订单相关")
 @RestController
 @RequestMapping("/api/mer-order")
+@RequiredArgsConstructor
 public class ShopOrderController extends ApiBase {
 
-    @Resource
     IOrderService orderService;
 
     @ApiOperation(value = "商户订单列表")
@@ -65,5 +65,14 @@ public class ShopOrderController extends ApiBase {
         PageInfo pageInfo = new PageInfo<>(orders);
         PageUtils ordersPage = new PageUtils(pageInfo);
         return ResultMap.response(ResultCodeEnum.SUCCESS, ordersPage);
+    }
+
+    @ApiOperation(value = "商户备注订单")
+    @RequestMapping("remark")
+    public Object remarkOrder(@LoginUser LoginUserVo loginUserVo,
+                              @RequestParam(value = "orderId", defaultValue = "0") Integer orderId,
+                              @RequestParam(value = "remarkText") String remarkText) {
+
+        return ResultMap.ok();
     }
 }

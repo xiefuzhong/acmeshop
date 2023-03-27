@@ -9,10 +9,10 @@ import com.acme.acmemall.model.*;
 import com.acme.acmemall.service.IOrderService;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import lombok.RequiredArgsConstructor;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,6 +29,7 @@ import java.util.stream.Collectors;
  * @time: 2023/2/17 15:58
  */
 @Service
+@RequiredArgsConstructor
 public class OrderService implements IOrderService {
     private final UserCouponMapper userCouponMapper;
     private final AddressMapper addressMapper;
@@ -39,19 +40,6 @@ public class OrderService implements IOrderService {
     private final OrderGoodsMapper orderItemMapper;
 
     protected Logger logger = Logger.getLogger(getClass());
-
-    @Autowired
-    public OrderService(UserCouponMapper userCouponMapper,
-                        AddressMapper addressMapper,
-                        ShopCartMapper cartMapper,
-                        OrderMapper orderMapper,
-                        OrderGoodsMapper orderItemMapper) {
-        this.userCouponMapper = userCouponMapper;
-        this.addressMapper = addressMapper;
-        this.cartMapper = cartMapper;
-        this.orderMapper = orderMapper;
-        this.orderItemMapper = orderItemMapper;
-    }
 
     /**
      * 订单提交

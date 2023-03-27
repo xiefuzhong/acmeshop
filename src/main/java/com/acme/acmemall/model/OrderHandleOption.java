@@ -100,6 +100,7 @@ public class OrderHandleOption {
                 this.cancel = Boolean.TRUE;
                 this.updateAddress = Boolean.TRUE;
                 this.mark = Boolean.TRUE;
+                this.print = Boolean.TRUE;
                 break;
             }
             case TO_BE_RECEIVED: {
