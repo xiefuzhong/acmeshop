@@ -1,5 +1,6 @@
 package com.acme.acmemall.model;
 
+import com.acme.acmemall.utils.DateUtils;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -35,6 +36,8 @@ public class GoodsVo implements Serializable {
 
     //添加时间
     private Date add_time;
+
+    private String fmt_add_time;
     //排序
     private Integer sort_order;
     //删除状态
@@ -109,5 +112,9 @@ public class GoodsVo implements Serializable {
      */
     public boolean checkOff() {
         return this.is_delete.equals(1) || !this.is_on_sale.equals(1);
+    }
+
+    public String getFmt_add_time() {
+        return DateUtils.timeToUtcDate(this.add_time.getTime(), DateUtils.DATE_TIME_PATTERN);
     }
 }
