@@ -3,6 +3,7 @@ package com.acme.acmemall.controller;
 import com.acme.acmemall.annotation.IgnoreAuth;
 import com.acme.acmemall.annotation.LoginUser;
 import com.acme.acmemall.common.ResultMap;
+import com.acme.acmemall.exception.ResultCodeEnum;
 import com.acme.acmemall.model.*;
 import com.acme.acmemall.service.*;
 import com.acme.acmemall.utils.DateUtils;
@@ -427,5 +428,30 @@ public class GoodsController extends ApiBase {
         AdVo banner = adService.queryAdList(param).get(0);
 
         return ResultMap.ok(resultObj);
+    }
+
+    @ApiOperation(value = "商家商品查询")
+    @GetMapping(value = "list-mer")
+    public Object listMerGoods(@LoginUser LoginUserVo loginUserVo,
+                               Integer on_sale,
+                               Integer merchant_id,
+                               String keyword,
+                               Integer page,
+                               Integer size) {
+        Map params = Maps.newHashMap();
+        params.put("is_delete", 0);
+        params.put("is_on_sale", on_sale);
+        params.put("keyword", keyword);
+        params.put("merchant_id", merchant_id);
+        params.put("page", page);
+        params.put("limit", size);
+        // 根据上架时间排序
+        params.put("order", "desc");
+        params.put("sidx", "add_time");
+        PageHelper.startPage(page, size, true);
+        List<GoodsVo> goods = goodsService.queryGoodsList(params);
+        PageInfo pageInfo = new PageInfo(goods);
+        PageUtils pager = new PageUtils(pageInfo);
+        return ResultMap.response(ResultCodeEnum.SUCCESS, pager);
     }
 }

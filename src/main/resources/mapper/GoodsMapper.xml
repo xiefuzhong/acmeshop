@@ -135,13 +135,8 @@
 
 
     <select id="queryHotGoodsList" resultMap="goodsMap">
-        /* select a.*,b.id as product_id
-        from t_acme_mall_goods a
-        left join t_acme_mall_product b on a.id = b.goods_id
-        left join t_acme_mall_product c on a.id = c.goods_id and c.retail_price > b.retail_price and b.id != c.id
-        where 1 = 1 and b.id is not null and c.id is null and a.is_delete = 0 and a.is_on_sale = 1*/
 
-        select a.* from t_acme_mall_goods a where 1 = 1 and a.is_delete = 0 and a.is_on_sale = 1
+        select a.* from t_acme_mall_goods a where a.is_delete = 0
         <if test="is_new != null and is_new != ''">
             and a.is_new = #{is_new}
         </if>

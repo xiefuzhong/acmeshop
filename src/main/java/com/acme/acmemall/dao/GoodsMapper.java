@@ -8,17 +8,22 @@ import java.util.Map;
 
 /**
  * @author admin
- *
  * @date 2017-08-11 09:16:45
  */
 public interface GoodsMapper extends BaseDao<GoodsVo> {
 
+    List<GoodsVo> queryMerGoodsList(Map<String, Object> params);
+
     List<GoodsVo> queryHotGoodsList(Map<String, Object> params);
 
     List<GoodsVo> queryCatalogProductList(Map<String, Object> params);
+
     List<GoodsVo> queryKillList();
+
     Integer queryMaxId();
+
     List<GoodsVo> queryTop4(Integer brand_id);
+
     List<GoodsVo> queryFxList(Map<String, Object> map);
 
     int queryFxTotal(QueryParam query);
