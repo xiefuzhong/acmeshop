@@ -346,6 +346,8 @@
             <if test="fx_status != null">`fx_status` = #{fx_status},</if>
             <if test="addressId != null">`address_id` = #{addressId},</if>
             <if test="goodsCount != null">`goods_count` = #{goodsCount},</if>
+            <if test="merRemark != null">`mer_remark` = #{merRemark},</if>
+            <if test="cusRemark != null">`cus_remark` = #{cusRemark},</if>
         </set>
         where id = #{id}
     </update>

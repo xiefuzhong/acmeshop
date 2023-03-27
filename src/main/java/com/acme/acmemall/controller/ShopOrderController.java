@@ -70,9 +70,13 @@ public class ShopOrderController extends ApiBase {
     @ApiOperation(value = "商户备注订单")
     @RequestMapping("remark")
     public Object remarkOrder(@LoginUser LoginUserVo loginUserVo,
-                              @RequestParam(value = "orderId", defaultValue = "0") Integer orderId,
+                              @RequestParam(value = "orderId", defaultValue = "0") String orderId,
+                              @RequestParam(value = "handleType") String type,
                               @RequestParam(value = "remarkText") String remarkText) {
-
+        OrderVo orderVo = orderService.findOrder(orderId);
+        OrderVo updateOrderVo = OrderVo.builder().handleType(type).merRemark(remarkText).build();
+        orderVo.handle(updateOrderVo);
+        orderService.handleOrderByMer(orderVo);
         return ResultMap.ok();
     }
 }

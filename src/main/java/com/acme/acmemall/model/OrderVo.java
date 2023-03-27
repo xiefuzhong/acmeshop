@@ -157,6 +157,14 @@ public class OrderVo implements Serializable {
     // 收货人地址ID
     private long addressId;
 
+    // 商家备注
+    private String merRemark;
+
+    //    客户备注
+    private String cusRemark;
+
+    private String handleType;
+
     @Builder.Default
     private List<OrderGoodsVo> items = Lists.newArrayList();
 
@@ -389,5 +397,11 @@ public class OrderVo implements Serializable {
     @Override
     public String toString() {
         return JSON.toJSONString(this);
+    }
+
+    public void handle(OrderVo orderVo) {
+        if ("remark".equals(orderVo.getHandleType())) {
+            this.merRemark = orderVo.getMerRemark();
+        }
     }
 }

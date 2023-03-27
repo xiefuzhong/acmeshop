@@ -36,4 +36,11 @@ public interface IOrderService {
     void updateOrder(OrderVo orderVo);
 
     void updateStatus(OrderVo newOrder);
+
+    /**
+     * 商户管理订单
+     *
+     * @param orderVo
+     */
+    void handleOrderByMer(OrderVo orderVo);
 }
