@@ -15,7 +15,6 @@ import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Maps;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import lombok.RequiredArgsConstructor;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.web.bind.annotation.*;
@@ -31,12 +30,16 @@ import java.util.Map;
 @Api(tags = "订单相关")
 @RestController
 @RequestMapping("/api/order")
-@RequiredArgsConstructor
 public class OrderController extends ApiBase {
 
     IOrderService orderService;
 
     IOrderGoodsService orderGoodsService;
+
+    public OrderController(IOrderService orderService, IOrderGoodsService orderGoodsService) {
+        this.orderService = orderService;
+        this.orderGoodsService = orderGoodsService;
+    }
 
     @ApiOperation(value = "订单提交")
     @PostMapping("submit")
