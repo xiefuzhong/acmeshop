@@ -9,6 +9,8 @@ import com.acme.acmemall.model.OrderVo;
 import com.acme.acmemall.service.IOrderGoodsService;
 import com.acme.acmemall.service.IOrderService;
 import com.acme.acmemall.utils.PageUtils;
+import com.acme.acmemall.utils.wechat.WechatRefundApiResult;
+import com.acme.acmemall.utils.wechat.WechatUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -124,6 +126,16 @@ public class OrderController extends ApiBase {
     public Object cancelOrder(@LoginUser LoginUserVo loginUserVo, String orderId) {
         try {
             OrderVo orderVo = orderService.findOrder(orderId);
+            // 可
+            if (!orderVo.validCancle()) {
+                return ResultMap.error(400, "当前状态下不能取消操作");
+            }
+            // 需要退款
+            if (orderVo.getPay_status() == 2) {
+                WechatRefundApiResult result = WechatUtil.wxRefund(orderId,
+                        orderVo.getActual_price().doubleValue(),
+                        orderVo.getActual_price().doubleValue());
+            }
             orderVo.cancle(orderVo, loginUserVo.getUserId());
             // 退款场景待@todo
             orderService.updateOrder(orderVo);

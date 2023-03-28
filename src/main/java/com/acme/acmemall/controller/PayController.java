@@ -332,7 +332,7 @@ public class PayController extends ApiBase {
         if (!orderVo.paidCheck()) {
             return ResultMap.error(400, "订单未付款，不能退款");
         }
-        WechatRefundApiResult result = WechatUtil.wxRefund(orderId, orderVo.getAll_price().doubleValue(), orderVo.getAll_price().doubleValue());
+        WechatRefundApiResult result = WechatUtil.wxRefund(orderId, orderVo.getActual_price().doubleValue(), orderVo.getActual_price().doubleValue());
         if (StringUtils.equalsIgnoreCase("SUCCESS", result.getResult_code())) {
 
         }
