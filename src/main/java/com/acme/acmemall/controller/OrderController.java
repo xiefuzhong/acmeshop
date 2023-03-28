@@ -126,7 +126,7 @@ public class OrderController extends ApiBase {
     public Object cancelOrder(@LoginUser LoginUserVo loginUserVo, String orderId) {
         try {
             OrderVo orderVo = orderService.findOrder(orderId);
-            // 可
+            // 可取消-待付款-已付款、未发货
             if (!orderVo.validCancle()) {
                 return ResultMap.error(400, "当前状态下不能取消操作");
             }
@@ -135,15 +135,20 @@ public class OrderController extends ApiBase {
                 WechatRefundApiResult result = WechatUtil.wxRefund(orderId,
                         orderVo.getActual_price().doubleValue(),
                         orderVo.getActual_price().doubleValue());
+                if (StringUtils.equalsIgnoreCase("SUCCESS", result.getResult_code())) {
+                    orderVo.refund();
+                    // todo:优惠券回退。如有分润，分润退还
+                } else {
+                    return ResultMap.error(400, "取消失败");
+                }
             }
             orderVo.cancle(orderVo, loginUserVo.getUserId());
-            // 退款场景待@todo
             orderService.updateOrder(orderVo);
-            return ResultMap.ok("操作成功");
+            return ResultMap.ok("取消成功");
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return ResultMap.error("操作失败");
+        return ResultMap.error("取消失败");
     }
 
     /**

@@ -38,7 +38,9 @@ import java.util.TreeMap;
 @RequestMapping("/api/pay")
 public class PayController extends ApiBase {
 
-    private static int REQ_NUM = 0;
+    private static final String SUCCESS = "SUCCESS";
+    private static final String OK = "OK";
+
     IOrderService orderService;
 
     public PayController(IOrderService orderService) {
@@ -144,7 +146,6 @@ public class PayController extends ApiBase {
     /**
      * 微信订单回调接口
      *
-     * @return
      */
     @ApiOperation(value = "微信订单回调接口")
     @RequestMapping(value = "/notify", method = RequestMethod.POST, produces = "text/html;charset=UTF-8")
@@ -176,12 +177,12 @@ public class PayController extends ApiBase {
                 J2EcacheUtil.getInstance().delete(J2EcacheUtil.SHOP_CACHE_NAME, result.getOut_trade_no());
             } else {
                 //查询支付已结操作过
-                response.getWriter().write(setXml("SUCCESS", "OK"));
+                response.getWriter().write(setXml(SUCCESS, OK));
                 return;
             }
             OrderVo orderVo = orderService.findOrder(result.getOut_trade_no());
             if (!orderVo.getPay_status().equals(1)) {
-                response.getWriter().write(setXml("SUCCESS", "OK"));
+                response.getWriter().write(setXml(SUCCESS, OK));
                 return;
             }
 
@@ -190,8 +191,8 @@ public class PayController extends ApiBase {
                 //订单编号
                 String out_trade_no = result.getOut_trade_no();
                 logger.error("订单" + out_trade_no + "支付失败");
-                response.getWriter().write(setXml("SUCCESS", "OK"));
-            } else if (result_code.equalsIgnoreCase("SUCCESS")) {
+                response.getWriter().write(setXml(SUCCESS, OK));
+            } else if (result_code.equalsIgnoreCase(SUCCESS)) {
                 Map<Object, Object> retMap = XmlUtil.xmlStrToTreeMap(reponseXml);
                 String sign = WechatUtil.arraySign(retMap, ResourceUtil.getConfigByName("wx.paySignKey"));
                 if (!sign.equals(result.getSign())) {//判断签名
@@ -222,7 +223,7 @@ public class PayController extends ApiBase {
 //                }
 
 
-                response.getWriter().write(setXml("SUCCESS", "OK"));
+                response.getWriter().write(setXml(SUCCESS, OK));
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -274,13 +275,13 @@ public class PayController extends ApiBase {
         // 响应报文
         String resCode = MapUtils.getString("return_code", queryResult);
         String resMsg = MapUtils.getString("return_msg", queryResult);
-        if (!StringUtils.equalsIgnoreCase("SUCCESS", resCode)) {
+        if (!StringUtils.equalsIgnoreCase(SUCCESS, resCode)) {
             String msg = MessageFormat.format("查询失败,error_code={0},msg={1}", resCode, resMsg);
             return ResultMap.error(msg);
         }
         // @todo 支付订单查询成功后，可以通过事件触发做订单的状态更新以及后续的事情实现解耦。
         String tradeState = MapUtils.getString("trade_state", queryResult);
-        if (StringUtils.equalsIgnoreCase("SUCCESS", tradeState)) {
+        if (StringUtils.equalsIgnoreCase(SUCCESS, tradeState)) {
             // 支付成功,业务处理
             orderVo.paid();
             orderService.updateStatus(orderVo);
@@ -333,10 +334,12 @@ public class PayController extends ApiBase {
             return ResultMap.error(400, "订单未付款，不能退款");
         }
         WechatRefundApiResult result = WechatUtil.wxRefund(orderId, orderVo.getActual_price().doubleValue(), orderVo.getActual_price().doubleValue());
-        if (StringUtils.equalsIgnoreCase("SUCCESS", result.getResult_code())) {
-
+        if (StringUtils.equalsIgnoreCase(SUCCESS, result.getResult_code())) {
+            orderVo.refund();
+            orderService.updateOrder(orderVo);
+            return ResultMap.ok("操作成功，请查看账户");
         }
-        return ResultMap.ok();
+        return ResultMap.error("操作失败，请重试");
     }
 
 }
