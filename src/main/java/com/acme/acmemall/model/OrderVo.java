@@ -255,10 +255,9 @@ public class OrderVo implements Serializable {
     /**
      * 付款成功
      *
-     * @param orderVo
      * @return
      */
-    public OrderVo paid(OrderVo orderVo) {
+    public OrderVo paid() {
         this.pay_status = 2;
         this.order_status = OrderStatus.TO_BE_SHIPPED.getCode();
         this.order_status_text = OrderStatus.TO_BE_SHIPPED.getDescription();
@@ -387,6 +386,15 @@ public class OrderVo implements Serializable {
 
     public String getFmt_add_time() {
         return DateUtils.timeToUtcDate(this.add_time.getTime(), DateUtils.DATE_TIME_PATTERN);
+    }
+
+
+    public Boolean paidCheck() {
+        return pay_status.intValue() == 2;
+    }
+
+    public void resetPayStatus() {
+        this.pay_status = 0;
     }
 
     /**

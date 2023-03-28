@@ -9,12 +9,14 @@ import com.acme.acmemall.service.IOrderService;
 import com.acme.acmemall.utils.MapUtils;
 import com.acme.acmemall.utils.ResourceUtil;
 import com.acme.acmemall.utils.XmlUtil;
+import com.acme.acmemall.utils.cache.J2EcacheUtil;
 import com.acme.acmemall.utils.wechat.NonceUtil;
 import com.acme.acmemall.utils.wechat.WechatRefundApiResult;
 import com.acme.acmemall.utils.wechat.WechatUtil;
+import com.google.common.collect.Maps;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -22,6 +24,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.math.BigDecimal;
+import java.text.MessageFormat;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -35,8 +38,12 @@ import java.util.TreeMap;
 @RequestMapping("/api/pay")
 public class PayController extends ApiBase {
 
-    @Autowired
+    private static int REQ_NUM = 0;
     IOrderService orderService;
+
+    public PayController(IOrderService orderService) {
+        this.orderService = orderService;
+    }
 
     public static String setXml(String return_code, String return_msg) {
         return "<xml><return_code><![CDATA[" + return_code + "]]></return_code><return_msg><![CDATA[" + return_msg + "]]></return_msg></xml>";
@@ -72,7 +79,7 @@ public class PayController extends ApiBase {
             // 商户订单编号
             parame.put("out_trade_no", orderId);
             // 商品描述
-            parame.put("body", new String(orderVo.getPayBody_title()));
+            parame.put("body", orderVo.getPayBody_title());
             //支付金额
             parame.put("total_fee", orderVo.getActual_price().multiply(new BigDecimal(100)).intValue());
             logger.info("***************" + parame.get("total_fee") + "***************");
@@ -123,6 +130,7 @@ public class PayController extends ApiBase {
 
                     //redis设置订单状态@todo
 //                    RedisUtils.set(allOrderId.toString(), "51", 60*60*24);
+                    J2EcacheUtil.getInstance().put(J2EcacheUtil.SHOP_CACHE_NAME, orderId, "51");
                     return toResponsObject(0, "微信统一订单下单成功", resultObj);
                 }
             }
@@ -163,14 +171,14 @@ public class PayController extends ApiBase {
             WechatRefundApiResult result = (WechatRefundApiResult) XmlUtil.xmlStrToBean(reponseXml, WechatRefundApiResult.class);
 
             //处理订单的redis状态
-//            String value = RedisUtils.get(result.getOut_trade_no().toString());
-//            if(value != null && "51".equals(value)) {
-//                RedisUtils.del(result.getOut_trade_no().toString());
-//            }else {
-//                //查询支付已结操作过
-//                response.getWriter().write(setXml("SUCCESS", "OK"));
-//                return;
-//            }
+            String value = J2EcacheUtil.getInstance().get(J2EcacheUtil.SHOP_CACHE_NAME, result.getOut_trade_no()).toString();
+            if (value != null && "51".equals(value)) {
+                J2EcacheUtil.getInstance().delete(J2EcacheUtil.SHOP_CACHE_NAME, result.getOut_trade_no());
+            } else {
+                //查询支付已结操作过
+                response.getWriter().write(setXml("SUCCESS", "OK"));
+                return;
+            }
             OrderVo orderVo = orderService.findOrder(result.getOut_trade_no());
             if (!orderVo.getPay_status().equals(1)) {
                 response.getWriter().write(setXml("SUCCESS", "OK"));
@@ -193,7 +201,7 @@ public class PayController extends ApiBase {
                 // 更改订单状态
                 // 业务处理
                 OrderVo orderInfo = orderService.findOrder(result.getOut_trade_no());
-                orderInfo.paid(orderInfo);
+                orderInfo.paid();
 
                 orderService.updateStatus(orderInfo);
 
@@ -219,6 +227,86 @@ public class PayController extends ApiBase {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+
+    /**
+     * 微信查询订单状态
+     */
+    @ApiOperation(value = "查询订单状态")
+    @GetMapping("query")
+    public Object queryPayStatus(@LoginUser LoginUserVo loginUser, String orderId) {
+        OrderVo orderVo = orderService.findOrder(orderId);
+        if (orderVo == null) {
+            return ResultMap.error(400, "订单不存在");
+        }
+        if (!orderVo.checkOwner(loginUser.getUserId())) {
+            return ResultMap.error(400, "用户不存在");
+        }
+
+        // 已付款
+        if (orderVo.paidCheck()) {
+            return ResultMap.ok("支付成");
+        }
+        Map<Object, Object> query = Maps.newHashMap();
+        query.put("appid", ResourceUtil.getConfigByName("wx.appId"));
+        // 商家账号。
+        query.put("mch_id", ResourceUtil.getConfigByName("wx.mchId"));
+        String randomStr = NonceUtil.createNonce(18);
+        // 随机字符串
+        query.put("nonce_str", randomStr);
+        // 商户订单编号
+        query.put("out_trade_no", orderId);
+
+        String sign = WechatUtil.arraySign(query, ResourceUtil.getConfigByName("wx.paySignKey"));
+        // 数字签证
+        query.put("sign", sign);
+        String xml = MapUtils.convertMap2Xml(query);
+        logger.info("xml:" + xml);
+        Map<String, Object> queryResult = null;
+        try {
+            String result = WechatUtil.requestOnce(ResourceUtil.getConfigByName("wx.orderquery"), xml);
+            queryResult = XmlUtil.xmlStrToMap(result);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResultMap.error("查询失败,error=" + e.getMessage());
+        }
+        // 响应报文
+        String resCode = MapUtils.getString("return_code", queryResult);
+        String resMsg = MapUtils.getString("return_msg", queryResult);
+        if (!StringUtils.equalsIgnoreCase("SUCCESS", resCode)) {
+            String msg = MessageFormat.format("查询失败,error_code={0},msg={1}", resCode, resMsg);
+            return ResultMap.error(msg);
+        }
+        // @todo 支付订单查询成功后，可以通过事件触发做订单的状态更新以及后续的事情实现解耦。
+        String tradeState = MapUtils.getString("trade_state", queryResult);
+        if (StringUtils.equalsIgnoreCase("SUCCESS", tradeState)) {
+            // 支付成功,业务处理
+            orderVo.paid();
+            orderService.updateStatus(orderVo);
+            return ResultMap.ok("支付成功");
+        } else if (StringUtils.equalsIgnoreCase("USERPAYING", tradeState)) {
+            // 重新查询 支付中
+            String key = "queryRepeatNum" + orderId;
+            Integer num = (Integer) J2EcacheUtil.getInstance().get(J2EcacheUtil.SHOP_CACHE_NAME, key);
+            if (num == null) {
+                J2EcacheUtil.getInstance().put(J2EcacheUtil.SHOP_CACHE_NAME, key, 1);
+                this.queryPayStatus(loginUser, orderId);
+            } else if (num <= 3) {
+                J2EcacheUtil.getInstance().delete(J2EcacheUtil.SHOP_CACHE_NAME, key);
+                this.queryPayStatus(loginUser, orderId);
+            } else {
+                return ResultMap.error("查询失败,error=" + tradeState);
+            }
+            orderVo.resetPayStatus();
+            orderService.updateStatus(orderVo);
+        } else {
+            orderVo.resetPayStatus();
+            orderService.updateStatus(orderVo);
+            return ResultMap.error("查询失败,error=" + tradeState);
+        }
+
+        return ResultMap.error("查询失败，未知错误");
     }
 
 }
