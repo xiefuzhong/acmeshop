@@ -37,6 +37,20 @@ public enum OrderStatus {
         return TO_BE_PAID;
     }
 
+    public static Boolean validCancle(int code) {
+        OrderStatus status = parse(code);
+        switch (status) {
+            case PAID:
+            case TO_BE_SHIPPED:
+            case TO_BE_PAID: {
+                return Boolean.TRUE;
+            }
+            default: {
+                return Boolean.FALSE;
+            }
+        }
+    }
+
     public int getCode() {
         return code;
     }

@@ -273,9 +273,8 @@ public class OrderVo implements Serializable {
      */
     public void cancle(OrderVo orderVo, long userId) {
         check(orderVo, userId);
-        OrderStatus status = OrderStatus.parse(orderVo.order_status);
         // 待付款、已付款、已付款未发货可取消
-        if (status != OrderStatus.TO_BE_PAID || status != OrderStatus.PAID || status != OrderStatus.TO_BE_SHIPPED) {
+        if (!OrderStatus.validCancle(orderVo.getOrder_status())) {
             throw new ApiCusException("当前订单状态不支持取消订单");
         }
         this.order_status = OrderStatus.CANCELED.code;
