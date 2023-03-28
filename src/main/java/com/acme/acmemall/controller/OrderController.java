@@ -139,7 +139,12 @@ public class OrderController extends ApiBase {
                     orderVo.refund();
                     // todo:优惠券回退。如有分润，分润退还
                 } else {
-                    return ResultMap.error(400, "取消失败");
+                    if (StringUtils.equals("订单已全额退款", result.getErr_code_des())) {
+                        orderVo.refund();
+                    } else {
+                        return ResultMap.error(400, "取消失败");
+                    }
+
                 }
             }
             orderVo.cancle(orderVo, loginUserVo.getUserId());
