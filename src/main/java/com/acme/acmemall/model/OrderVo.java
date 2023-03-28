@@ -397,6 +397,22 @@ public class OrderVo implements Serializable {
         this.pay_status = 0;
     }
 
+    public Boolean refund_status() {
+        return this.order_status == 401 || this.order_status == 402;
+    }
+
+    /**
+     * 退款操作，未发货-退款
+     */
+    public void refund() {
+        if (order_status == 201) {
+            this.order_status = 401;
+        } else if (order_status == 300) {
+            this.order_status = 402;
+        }
+        this.pay_status = 4;
+    }
+
     /**
      * JSON转化
      *

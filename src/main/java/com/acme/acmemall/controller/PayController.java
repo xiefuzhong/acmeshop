@@ -309,4 +309,34 @@ public class PayController extends ApiBase {
         return ResultMap.error("查询失败，未知错误");
     }
 
+    /**
+     * 订单退款请求
+     *
+     * @param loginUserVo
+     * @param orderId
+     * @return
+     */
+    @ApiOperation(value = "订单退款请求")
+    @PostMapping("refund")
+    public Object refund(@LoginUser LoginUserVo loginUserVo, String orderId) {
+        OrderVo orderVo = orderService.findOrder(orderId);
+        if (orderVo == null) {
+            return ResultMap.error(400, "订单不存在");
+        }
+        if (orderVo.checkOwner(loginUserVo.getUserId())) {
+            return ResultMap.error(400, "非有效用户操作");
+        }
+        if (orderVo.refund_status()) {
+            return ResultMap.error(400, "订单已退款");
+        }
+        if (!orderVo.paidCheck()) {
+            return ResultMap.error(400, "订单未付款，不能退款");
+        }
+        WechatRefundApiResult result = WechatUtil.wxRefund(orderId, orderVo.getAll_price().doubleValue(), orderVo.getAll_price().doubleValue());
+        if (StringUtils.equalsIgnoreCase("SUCCESS", result.getResult_code())) {
+
+        }
+        return ResultMap.ok();
+    }
+
 }
