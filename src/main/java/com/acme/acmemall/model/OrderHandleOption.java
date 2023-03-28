@@ -118,6 +118,7 @@ public class OrderHandleOption {
                 this.print = Boolean.TRUE;
                 this.updateAddress = Boolean.TRUE;
                 this.toShipping = Boolean.TRUE;
+                this.cancel = Boolean.TRUE;
                 break;
             }
         }
