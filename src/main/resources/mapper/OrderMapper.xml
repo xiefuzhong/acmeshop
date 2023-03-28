@@ -102,7 +102,8 @@
             </if>
 
             <if test="order_status != null and order_status == 201">
-                AND (o.order_status = 201 or o.order_status = 300)
+                <!-- 用户-待收货 -->
+                AND o.order_status in (200,201,300)
             </if>
 
             <if test="order_status != null and order_status == 4">
