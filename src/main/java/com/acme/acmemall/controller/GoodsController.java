@@ -7,6 +7,7 @@ import com.acme.acmemall.exception.ResultCodeEnum;
 import com.acme.acmemall.model.*;
 import com.acme.acmemall.service.*;
 import com.acme.acmemall.utils.DateUtils;
+import com.acme.acmemall.utils.GsonUtil;
 import com.acme.acmemall.utils.PageUtils;
 import com.acme.acmemall.utils.StringUtils;
 import com.github.pagehelper.PageHelper;
@@ -448,6 +449,7 @@ public class GoodsController extends ApiBase {
         // 根据上架时间排序
         params.put("order", "desc");
         params.put("sidx", "add_time");
+        logger.info("listMerGoods ==>" + GsonUtil.toJson(params));
         PageHelper.startPage(page, size, true);
         List<GoodsVo> goods = goodsService.queryGoodsList(params);
         PageInfo pageInfo = new PageInfo(goods);
