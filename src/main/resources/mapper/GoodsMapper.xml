@@ -65,7 +65,7 @@
         from t_acme_mall_goods
         <where>
             AND is_delete = 0
-            AND is_on_sale = #{on_sale}
+            AND is_on_sale = #{is_on_sale}
             <if test="is_new != null and is_new != ''">
                 AND is_new = #{is_new}
             </if>
