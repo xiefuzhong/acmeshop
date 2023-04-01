@@ -55,7 +55,7 @@
 
     <select id="queryList" resultMap="goodsMap">
         select
-<!--        自定义字段-->
+        <!--        自定义字段-->
         <if test="fields != null and fields != ''">
             ${fields}
         </if>
@@ -63,45 +63,40 @@
             *
         </if>
         from t_acme_mall_goods
-        where 1 = 1
-        and is_delete = 0
-        and is_on_sale = 1
-        <if test="is_new != null and is_new != ''">
-            and is_new = #{is_new}
-        </if>
-        <if test="is_hot != null and is_hot != ''">
-            and is_hot = #{is_hot}
-        </if>
-        <if test="brand_id != null and brand_id != ''">
-            and brand_id = #{brand_id}
-        </if>
-        <if test="name != null and name != ''">
-            and 'name' like concat('%',#{keyword},'%')
-        </if>
-        <if test="category_id != null and category_id != ''">
-            and category_id = #{category_id}
-        </if>
-        <if test="keyword != null">
-            and keywords like concat('%',#{keyword},'%')
-        </if>
-        <!--<if test="is_delete != null">
-            and is_delete = #{is_delete}
-        </if>
-        <if test="is_on_sale != null and is_on_sale != ''">
-            and is_on_sale = #{is_on_sale}
-        </if>-->
-        <if test="categoryIds != null">
-            and category_id in
-            <foreach item="item" collection="categoryIds" open="(" separator="," close=")">
-                #{item}
-            </foreach>
-        </if>
-        <if test="goods_ids != null">
-            and id in
-            <foreach item="item" collection="goods_ids" open="(" separator="," close=")">
-                #{item}
-            </foreach>
-        </if>
+        <where>
+            AND is_delete = 0
+            AND is_on_sale = #{on_sale}
+            <if test="is_new != null and is_new != ''">
+                AND is_new = #{is_new}
+            </if>
+            <if test="is_hot != null and is_hot != ''">
+                AND is_hot = #{is_hot}
+            </if>
+            <if test="brand_id != null and brand_id != ''">
+                AND brand_id = #{brand_id}
+            </if>
+            <if test="name != null and name != ''">
+                AND 'name' like concat('%',#{keyword},'%')
+            </if>
+            <if test="category_id != null and category_id != ''">
+                AND category_id = #{category_id}
+            </if>
+            <if test="keyword != null">
+                AND keywords like concat('%',#{keyword},'%')
+            </if>
+            <if test="categoryIds != null">
+                and category_id in
+                <foreach item="item" collection="categoryIds" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="goods_ids != null">
+                and id in
+                <foreach item="item" collection="goods_ids" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
         <choose>
             <when test="sidx != null and sidx.trim() != ''">
                 order by ${sidx} ${order}

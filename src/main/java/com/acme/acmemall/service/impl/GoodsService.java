@@ -35,7 +35,7 @@ public class GoodsService implements IGoodsService {
     public List<GoodsVo> queryGoodsList(Map<String, Object> map) {
         if ("1".equals(MapUtils.getString(map, "is_hot"))) {
             // 热门商品查询
-            goodsDao.queryHotGoodsList(map);
+            return goodsDao.queryHotGoodsList(map);
         } else if ("1".equals(MapUtils.getString(map, "is_new"))) {
             // 新品收发查询
             return goodsDao.queryList(map);
