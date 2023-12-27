@@ -166,43 +166,6 @@ public class GoodsController extends ApiBase {
 
         }
 
-        //筛选的分类
-        List<CategoryVo> filterCategory = Lists.newArrayList();
-        CategoryVo rootCategory = new CategoryVo();
-        rootCategory.setId(0);
-        rootCategory.setName("全部");
-        rootCategory.setChecked(false);
-        filterCategory.add(rootCategory);
-        //
-        params.put("fields", "category_id");
-        List<GoodsVo> categoryEntityList = goodsService.queryGoodsList(params);
-        params.remove("fields");
-        if (null != categoryEntityList && categoryEntityList.size() > 0) {
-            List<Integer> categoryIds = Lists.newArrayList();
-            for (GoodsVo goodsVo : categoryEntityList) {
-                categoryIds.add(goodsVo.getCategory_id());
-            }
-            //查找二级分类的parent_id
-            Map categoryParam = Maps.newHashMap();
-            categoryParam.put("ids", categoryIds);
-            categoryParam.put("fields", "parent_id"); // 查询字段=数据库字段名
-            List<CategoryVo> parentCategoryList = categoryService.queryCategoryList(categoryParam);
-            //
-            List<Integer> parentIds = Lists.newArrayList();
-            for (CategoryVo categoryEntity : parentCategoryList) {
-                parentIds.add(categoryEntity.getParentId());
-            }
-            //一级分类
-            categoryParam = Maps.newHashMap();
-            categoryParam.put("fields", "id,name");
-            categoryParam.put("order", "asc");
-            categoryParam.put("sidx", "sort_order");
-            categoryParam.put("ids", parentIds);
-            List<CategoryVo> parentCategory = categoryService.queryCategoryList(categoryParam);
-            if (null != parentCategory) {
-                filterCategory.addAll(parentCategory);
-            }
-        }
         //加入分类条件
         if (null != categoryId && categoryId > 0) {
             List<Integer> categoryIds = Lists.newArrayList();
@@ -223,10 +186,6 @@ public class GoodsController extends ApiBase {
         List<GoodsVo> goodsList = goodsService.queryGoodsList(params);
         PageUtils goodsData = new PageUtils(new PageInfo(goodsList));
         //搜索到的商品
-        for (CategoryVo categoryEntity : filterCategory) {
-            categoryEntity.setChecked(null != categoryId && categoryEntity.getId() == 0 || categoryEntity.getId() == categoryId);
-        }
-        goodsData.setFilterCategory(filterCategory);
         goodsData.setGoodsList(goodsList);
         return toResponsSuccess(goodsData);
     }
