@@ -86,12 +86,14 @@ public class IndexController extends ApiBase {
     @ApiOperation(value = "category")
     @IgnoreAuth
     @GetMapping(value = "category")
-    public Object category() {
+    public Object category(Integer showIndex) {
         Map<String, Object> resultMap = Maps.newHashMap();
         Map<String, Object> param = Maps.newHashMap();
         param.put("parentId", 0);
-        param.put("showIndex", 1); // 首页
-        param.put("type", 0); // 类型 0为产品，1-配件
+        if (showIndex != null) {
+            param.put("showIndex", 1); // 首页
+            param.put("type", 0); // 类型 0为产品，1-配件
+        }
         // 首页展示的产品 分左右
         List<CategoryVo> categoryList = categoryService.queryCategoryList(param);
 //        List<Map<String, Object>> newCategoryList = Lists.newArrayList();
