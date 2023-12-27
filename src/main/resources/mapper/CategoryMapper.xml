@@ -39,6 +39,14 @@
         <if test="parentId != null and parentId != null">
             and parent_id = #{parentId}
         </if>
+        <!--        showIndex-->
+        <if test="showIndex != null and showIndex != null">
+            and show_index = #{showIndex}
+        </if>
+
+        <if test="type != null and type != null">
+            and type = #{type}
+        </if>
         <if test="notName != null and notName != null">
             and 'name' != #{notName}
         </if>

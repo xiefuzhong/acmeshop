@@ -84,7 +84,7 @@ public class IndexController extends ApiBase {
         Map<String, Object> resultMap = Maps.newHashMap();
         Map<String, Object> param = Maps.newHashMap();
         param.put("parentId", 0);
-        param.put("notName", "推荐");
+        param.put("showIndex", "1"); // 首页
         List<CategoryVo> categoryList = categoryService.queryCategoryList(param);
         List<Map<String, Object>> newCategoryList = Lists.newArrayList();
 
