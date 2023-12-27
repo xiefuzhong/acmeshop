@@ -47,7 +47,7 @@ public class CatalogController extends ApiBase {
         params.put("order", "asc");
         params.put("parentId", 0);
         // 0为产品，1-配件
-        params.put("type", 0);
+        //params.put("type", 0);
         //查询列表数据
         List<CategoryVo> data = categoryService.queryCategoryList(params);
         //
