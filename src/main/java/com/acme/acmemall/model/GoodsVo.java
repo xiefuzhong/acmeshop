@@ -115,6 +115,8 @@ public class GoodsVo implements Serializable {
     }
 
     public String getFmt_add_time() {
+        if (this.add_time == null)
+            return null;
         return DateUtils.timeToUtcDate(this.add_time.getTime(), DateUtils.DATE_TIME_PATTERN);
     }
 }

@@ -46,4 +46,6 @@ public class CategoryVo implements Serializable {
     private Boolean checked;
 
     private List<CategoryVo> subCategoryList;
+
+    private List<GoodsVo> goods;
 }
