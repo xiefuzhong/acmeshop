@@ -38,7 +38,7 @@ public class CategoryVo implements Serializable {
     private String wapBannerUrl;
     //级别
     private String level;
-    //类型
+    //类型 0为产品，1-配件
     private Integer type;
     //
     private String frontName;
