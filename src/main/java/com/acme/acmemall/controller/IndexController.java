@@ -4,11 +4,9 @@ import com.acme.acmemall.annotation.IgnoreAuth;
 import com.acme.acmemall.model.*;
 import com.acme.acmemall.service.*;
 import com.github.pagehelper.PageHelper;
-import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -91,38 +89,39 @@ public class IndexController extends ApiBase {
         param.put("parentId", 0);
         param.put("showIndex", 1); // 首页
         param.put("type", 0); // 类型 0为产品，1-配件
+        // 首页展示的产品 分左右
         List<CategoryVo> categoryList = categoryService.queryCategoryList(param);
-        List<Map<String, Object>> newCategoryList = Lists.newArrayList();
-
-        for (CategoryVo categoryItem : categoryList) {
-            param.remove("fields");
-            param.put("parentId", categoryItem.getId());
-            List<CategoryVo> categoryEntityList = categoryService.queryCategoryList(param);
-            List<Integer> childCategoryIds = null;
-            if (categoryEntityList != null && categoryEntityList.size() > 0) {
-                childCategoryIds = Lists.newArrayList();
-                for (CategoryVo categoryEntity : categoryEntityList) {
-                    childCategoryIds.add(categoryEntity.getId());
-                }
-            }
-            if (CollectionUtils.isEmpty(childCategoryIds)) {
-                logger.info("parentId：" + categoryItem.getId() + " sub ids is null");
-                continue;
-            }
-            param = Maps.newHashMap();
-            param.put("categoryIds", childCategoryIds);
-            param.put("fields", "id as id, name as name, list_pic_url as list_pic_url, retail_price as retail_price");
-            param.put("is_delete", 0);
-            param.put("is_on_sale", 1);
-            PageHelper.startPage(0, 7, false);
-            List<GoodsVo> categoryGoods = goodsService.queryGoodsList(param);
-            Map<String, Object> newCategory = Maps.newHashMap();
-            newCategory.put("id", categoryItem.getId());
-            newCategory.put("name", categoryItem.getName());
-            newCategory.put("goodsList", categoryGoods);
-            newCategoryList.add(newCategory);
-        }
-        resultMap.put("categoryList", newCategoryList);
+//        List<Map<String, Object>> newCategoryList = Lists.newArrayList();
+//
+//        for (CategoryVo categoryItem : categoryList) {
+//            param.remove("fields");
+//            param.put("parentId", categoryItem.getId());
+//            List<CategoryVo> categoryEntityList = categoryService.queryCategoryList(param);
+//            List<Integer> childCategoryIds = null;
+//            if (categoryEntityList != null && categoryEntityList.size() > 0) {
+//                childCategoryIds = Lists.newArrayList();
+//                for (CategoryVo categoryEntity : categoryEntityList) {
+//                    childCategoryIds.add(categoryEntity.getId());
+//                }
+//            }
+//            if (CollectionUtils.isEmpty(childCategoryIds)) {
+//                logger.info("parentId：" + categoryItem.getId() + " sub ids is null");
+//                continue;
+//            }
+//            param = Maps.newHashMap();
+//            param.put("categoryIds", childCategoryIds);
+//            param.put("fields", "id as id, name as name, list_pic_url as list_pic_url, retail_price as retail_price");
+//            param.put("is_delete", 0);
+//            param.put("is_on_sale", 1);
+//            PageHelper.startPage(0, 7, false);
+//            List<GoodsVo> categoryGoods = goodsService.queryGoodsList(param);
+//            Map<String, Object> newCategory = Maps.newHashMap();
+//            newCategory.put("id", categoryItem.getId());
+//            newCategory.put("name", categoryItem.getName());
+//            newCategory.put("goodsList", categoryGoods);
+//            newCategoryList.add(newCategory);
+//        }
+        resultMap.put("categoryList", categoryList);
         return toResponsSuccess(resultMap);
     }
 
