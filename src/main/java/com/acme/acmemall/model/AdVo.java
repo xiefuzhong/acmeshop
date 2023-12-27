@@ -21,7 +21,7 @@ public class AdVo implements Serializable {
     private Integer id;
     //广告位置Id
     private Integer adPositionId;
-    //形式
+    //形式 0-图，1-视频
     private Integer mediaType;
     //广告名称
     private String name;
@@ -33,6 +33,6 @@ public class AdVo implements Serializable {
     private String content;
     //结束时间
     private Date endTime;
-    //状态
+    //状态 1-启用
     private Integer enabled;
 }

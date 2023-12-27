@@ -27,6 +27,11 @@
         <if test="adPositionId != null and adPositionId != null">
             and ad_position_id = #{adPositionId}
         </if>
+
+        <if test="mediaType != null and mediaType != null">
+            and media_type = #{mediaType}
+        </if>
+
         <choose>
             <when test="sidx != null and sidx.trim() != ''">
                 order by ${sidx} ${order}

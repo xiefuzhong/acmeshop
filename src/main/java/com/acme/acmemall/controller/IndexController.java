@@ -10,6 +10,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -53,10 +54,12 @@ public class IndexController extends ApiBase {
     @ApiOperation(value = "banner")
     @IgnoreAuth
     @GetMapping(value = "banner")
-    public Object banner() {
+    public Object banner(@RequestParam(value = "adPositionId", defaultValue = "1") Integer adPositionId,
+                         @RequestParam(value = "mediaType", defaultValue = "1") Integer mediaType) {
         Map<String, Object> resultObj = Maps.newHashMap();
         Map<String, Object> param = Maps.newHashMap();
-        param.put("adPositionId", 1);
+        param.put("adPositionId", adPositionId); //首页广告
+        param.put("mediaType", mediaType); // 首页视频
         List<AdVo> banner = adService.queryAdList(param);
         resultObj.put("banner", banner);
         return toResponsSuccess(resultObj);
