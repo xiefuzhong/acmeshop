@@ -105,6 +105,9 @@ public class GoodsVo implements Serializable {
     private Integer success_people;//成团人数
     private BigDecimal group_price;//团购价格(元)
 
+    //产品小程序链接
+    private String short_link;
+
     /**
      * 是否下架
      *

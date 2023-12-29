@@ -47,6 +47,7 @@
         <result property="success_time" column="success_time"/>
         <result property="success_people" column="success_people"/>
         <result property="group_price" column="group_price"/>
+        <result property="short_link" column="short_link"/>
     </resultMap>
 
     <select id="queryObject" resultMap="goodsMap">

@@ -180,7 +180,7 @@ public class GoodsController extends ApiBase {
             params.put("categoryIds", categoryIds);
         }
         //查询列表数据
-        params.put("fields", "id, name, list_pic_url, market_price, retail_price, goods_brief,is_service");
+        params.put("fields", "id, name, list_pic_url, market_price, retail_price, goods_brief,is_service,short_link");
 //        QueryParam query = new QueryParam(params);
         PageHelper.startPage(page, size);
         List<GoodsVo> goodsList = goodsService.queryGoodsList(params);
