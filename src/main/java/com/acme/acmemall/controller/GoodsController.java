@@ -271,6 +271,7 @@ public class GoodsController extends ApiBase {
         paramMap.clear();
         paramMap.put("sidx", "id");
         paramMap.put("order", "asc");
+        paramMap.put("goods_id", id);
         List<GoodsGalleryVo> gallery = galleryService.queryGoodsGalleryList(paramMap);
         Map ngaParam = Maps.newHashMap();
         ngaParam.put("fields", "nga.value, na.name");
