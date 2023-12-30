@@ -282,12 +282,14 @@ public class GoodsController extends ApiBase {
         List<RelatedGoodsVo> relatedGoods = relatedGoodsService.queryList(paramMap);
         List<Integer> relatedGoodIds = relatedGoods.stream().map(RelatedGoodsVo::getRelated_goods_id).collect(Collectors.toList());
 
-        // 配件列表信息
-        paramMap.clear();
-        paramMap.put("fields", "id, name, list_pic_url, market_price, retail_price, goods_brief,is_service,short_link");
-        paramMap.put("goods_ids", relatedGoodIds);
-        List<GoodsVo> relatedGoodsList = goodsService.queryGoodsList(paramMap);
-
+        List<GoodsVo> relatedGoodsList = Lists.newArrayList();
+        if (!relatedGoodIds.isEmpty()) {
+            // 配件列表信息
+            paramMap.clear();
+            paramMap.put("fields", "id, name, list_pic_url, market_price, retail_price, goods_brief,is_service,short_link");
+            paramMap.put("goods_ids", relatedGoodIds);
+            relatedGoodsList = goodsService.queryGoodsList(paramMap);
+        }
         // 产品主图
         paramMap.clear();
         paramMap.put("sidx", "id");
