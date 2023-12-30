@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Api(tags = "商品管理")
 @RestController
@@ -49,6 +50,8 @@ public class GoodsController extends ApiBase {
     private final ICollectService collectService;
     private final IFootprintService footprintService;
     private final ISearchHistoryService searchHistoryService;
+
+    private IRelatedGoodsService relatedGoodsService;
 
     @Autowired
     public GoodsController(ISearchHistoryService searchHistoryService,
@@ -268,11 +271,29 @@ public class GoodsController extends ApiBase {
         paramMap.put("goods_id", id);
         List<ProductVo> productList = productService.queryProductList(paramMap);
 
+        // 关联产品查询
+        paramMap.clear();
+        paramMap.put("sidx", "id");
+        paramMap.put("order", "asc");
+        paramMap.put("goods_id", id);
+        paramMap.put("type", 2);
+        List<RelatedGoodsVo> relatedGoods = relatedGoodsService.queryList(paramMap);
+        List<Integer> relatedGoodIds = relatedGoods.stream().map(RelatedGoodsVo::getRelated_goods_id).collect(Collectors.toList());
+
+        // 配件列表信息
+        paramMap.clear();
+        paramMap.put("fields", "id, name, list_pic_url, market_price, retail_price, goods_brief,is_service,short_link");
+        paramMap.put("goods_ids", relatedGoodIds);
+        List<GoodsVo> relatedGoodsList = goodsService.queryGoodsList(paramMap);
+
+        // 产品主图
         paramMap.clear();
         paramMap.put("sidx", "id");
         paramMap.put("order", "asc");
         paramMap.put("goods_id", id);
         List<GoodsGalleryVo> gallery = galleryService.queryGoodsGalleryList(paramMap);
+
+        // 产品规格
         Map ngaParam = Maps.newHashMap();
         ngaParam.put("fields", "nga.value, na.name");
         ngaParam.put("sidx", "nga.id");
@@ -331,6 +352,7 @@ public class GoodsController extends ApiBase {
         resultObj.put("brand", brand);
         resultObj.put("specificationList", specList);
         resultObj.put("productList", productList);
+        resultObj.put("relatedGoodsList", relatedGoodsList);
         // 记录推荐人是否可以领取红包，用户登录时校验
 //        try {
 //            // 是否已经有可用的转发红包

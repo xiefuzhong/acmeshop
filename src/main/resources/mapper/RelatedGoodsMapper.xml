@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.acme.acmemall.dao.RelatedGoodsMapper">
+    <resultMap id="relatedGoodsMap" type="com.acme.acmemall.model.RelatedGoodsVo">
+        <result property="id" column="id"/>
+        <result property="goods_id" column="goods_id"/>
+        <result property="related_goods_id" column="related_goods_id"/>
+        <result property="type" column="type"/>
+    </resultMap>
+
+    <select id="queryObject" resultMap="relatedGoodsMap">
+        select * from t_acme_mall_related_goods where id = #{value}
+    </select>
+
+    <select id="queryList" resultMap="relatedGoodsMap">
+        select
+        <if test="fields != null and fields != ''">
+            ${fields}
+        </if>
+        <if test="fields == null or fields == ''">
+            *
+        </if>
+        from t_acme_mall_related_goods
+        <where>
+            <if test="goods_id != null and goods_id != null">
+                AND goods_id = #{goods_id}
+            </if>
+
+            <if test="type != null and type != null">
+                AND type = #{type}
+            </if>
+
+            <if test="ids != null">
+                and id in
+                <foreach item="item" collection="ids" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
+
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+            <otherwise>
+                order by id asc
+            </otherwise>
+        </choose>
+        <if test="offset != null and limit != null">
+            limit #{offset}, #{limit}
+        </if>
+    </select>
+
+    <select id="queryTotal" resultType="int">
+        select count(*) from t_acme_mall_related_goods
+    </select>
+</mapper>
