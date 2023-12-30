@@ -69,6 +69,7 @@ public class GoodsController extends ApiBase {
                            ICouponService couponService,
                            IGoodsGalleryService galleryService,
                            ICommentPictureService pictureService,
+                           IRelatedGoodsService relatedGoodsService,
                            ICommentService commentService) {
         this.pictureService = pictureService;
         this.categoryService = categoryService;
@@ -86,6 +87,7 @@ public class GoodsController extends ApiBase {
         this.attributeService = attributeService;
         this.couponService = couponService;
         this.galleryService = galleryService;
+        this.relatedGoodsService = relatedGoodsService;
     }
 
     /**
