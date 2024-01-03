@@ -296,6 +296,7 @@ public class GoodsController extends ApiBase {
         paramMap.put("sidx", "id");
         paramMap.put("order", "asc");
         paramMap.put("goods_id", id);
+        paramMap.put("enabled", 1);
         List<GoodsGalleryVo> gallery = galleryService.queryGoodsGalleryList(paramMap);
 
         // 产品规格

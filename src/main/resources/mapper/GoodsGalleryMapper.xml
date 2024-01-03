@@ -10,6 +10,7 @@
         <result property="img_url" column="img_url"/>
         <result property="img_desc" column="img_desc"/>
         <result property="sort_order" column="sort_order"/>
+        <result property="enabled" column="enabled"/>
     </resultMap>
 
     <select id="queryObject" resultMap="goodsGalleryMap">
@@ -26,6 +27,9 @@
         </if>
         from t_acme_mall_goods_gallery
         <where>
+            <if test="enabled != null">
+                AND enabled = #{enabled}
+            </if>
             <if test="goods_id != null">
                 and goods_id = #{goods_id}
             </if>
