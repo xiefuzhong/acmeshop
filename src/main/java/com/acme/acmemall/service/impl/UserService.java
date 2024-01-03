@@ -5,7 +5,9 @@ import com.acme.acmemall.exception.ApiCusException;
 import com.acme.acmemall.model.LoginUserVo;
 import com.acme.acmemall.model.UserGoods;
 import com.acme.acmemall.service.IUserService;
+import com.acme.acmemall.utils.GsonUtil;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -16,6 +18,9 @@ public class UserService implements IUserService {
 
     @Resource
     private UserMapper userDao;
+
+    protected Logger logger = Logger.getLogger(getClass());
+
 
 
     /**
@@ -86,6 +91,7 @@ public class UserService implements IUserService {
     public LoginUserVo login(String mobile, String password) {
         String pwd = DigestUtils.sha256Hex(password);
         LoginUserVo loginUserVo = userDao.queryByMobile(mobile, pwd);
+        logger.info(GsonUtil.getGson().toJson(loginUserVo));
         if (loginUserVo == null || !loginUserVo.checkLogin(pwd)) {
             throw new ApiCusException("登录失败!");
         }
