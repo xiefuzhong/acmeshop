@@ -30,6 +30,10 @@
             inner join t_acme_mall_specification s on gs.specification_id= s.id
         </if>
         <where>
+            <if test="enabled != null">
+                AND gs.enabled = #{enabled}
+            </if>
+
             <if test="goods_id != null">
                 and gs.goods_id = #{goods_id}
             </if>

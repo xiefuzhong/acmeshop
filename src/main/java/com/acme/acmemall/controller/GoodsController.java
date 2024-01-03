@@ -230,6 +230,7 @@ public class GoodsController extends ApiBase {
         Map specParamMap = Maps.newHashMap();
         specParamMap.put("fields", "gs.*, s.name");
         specParamMap.put("goods_id", id);
+        specParamMap.put("enabled", 1);
         specParamMap.put("specification", true);
 //        specificationParam.put("sidx", "s.sort_order");
         specParamMap.put("order", "asc");

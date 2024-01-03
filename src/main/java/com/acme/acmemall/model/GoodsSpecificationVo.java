@@ -22,4 +22,7 @@ public class GoodsSpecificationVo implements Serializable {
     private String name;
     //规范图片
     private String pic_url;
+
+    // 1-启用 0-停用
+    private Integer enabled;
 }
