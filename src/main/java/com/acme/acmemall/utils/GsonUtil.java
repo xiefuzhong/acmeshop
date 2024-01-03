@@ -57,6 +57,6 @@ public class GsonUtil {
     }
 
     public static void main(String[] args) {
-//        System.out.println(DigestUtils.sha256Hex("test"));
+//        System.out.println(DigestUtils.sha256Hex("admin"));
     }
 }
