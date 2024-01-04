@@ -51,6 +51,7 @@ public class InvoiceTitleController extends ApiBase {
             entity.setBankAccount(request.getString("bankAccount"));
             entity.setEmail(request.getString("email"));
             entity.setCompanyTel(request.getString("companyTel"));
+            entity.setIs_default(request.getInteger("is_default"));
         }
 
         Map<String, Object> param = new HashMap<String, Object>();
