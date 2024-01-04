@@ -69,7 +69,7 @@
         #{companyAddress},
         #{telephone},
         #{bankName},
-        #{bankAccount}
+        #{bankAccount},
         #{invoiceType},
         #{email},
         #{companyTel},
