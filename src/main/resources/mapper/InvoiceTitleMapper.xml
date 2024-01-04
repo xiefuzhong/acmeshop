@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.acme.acmemall.dao.InvoiceTitleMapper">
+
+    <!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.acme.acmemall.model.InvoiceTitleVo" id="invoiceTitleMap">
+        <result property="id" column="id"/>
+        <result property="userId" column="user_id"/>
+        <result property="type" column="type"/>
+        <result property="title" column="title"/>
+        <result property="taxNumber" column="taxNumber"/>
+        <result property="companyAddress" column="companyAddress"/>
+        <result property="telephone" column="telephone"/>
+        <result property="bankName" column="bankName"/>
+        <result property="bankAccount" column="bankAccount"/>
+        <result property="invoiceType" column="invoice_type"/>
+        <result property="email" column="email"/>
+        <result property="companyTel" column="companyTel"/>
+        <result property="is_default" column="is_default"/>
+    </resultMap>
+
+    <select id="queryObject" resultMap="invoiceTitleMap">
+        select * from t_acme_mall_user_invoice_title where id = #{value}
+    </select>
+
+    <select id="queryList" resultMap="invoiceTitleMap">
+        select * from t_acme_mall_user_invoice_title
+        <where>
+            <if test="user_id != null">
+                and user_id = #{user_id}
+            </if>
+        </where>
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+            <otherwise>
+                order by id desc
+            </otherwise>
+        </choose>
+        <if test="offset != null and limit != null">
+            limit #{offset}, #{limit}
+        </if>
+    </select>
+
+    <select id="queryTotal" resultType="int">
+        select count(*) from t_acme_mall_user_invoice_title
+    </select>
+    <insert id="save" parameterType="com.acme.acmemall.model.InvoiceTitleVo" useGeneratedKeys="true" keyProperty="id">
+        insert into t_acme_mall_user_invoice_title(
+        `user_id`,
+        `type`,
+        `title`,
+        `taxNumber`,
+        `companyAddress`,
+        `telephone`,
+        `bankName`,
+        `bankAccount`,
+        `invoice_type`,
+        `email`,
+        `companyTel`,
+        `is_default`)
+        values(
+        #{userId},
+        #{type},
+        #{title},
+        #{taxNumber},
+        #{companyAddress},
+        #{telephone},
+        #{bankName},
+        #{bankAccount}
+        #{invoiceType},
+        #{email},
+        #{companyTel},
+        #{is_default})
+    </insert>
+
+    <update id="update" parameterType="com.acme.acmemall.model.InvoiceTitleVo">
+        update t_acme_mall_user_invoice_title
+        <set>
+            <if test="taxNumber != null">`taxNumber` = #{taxNumber},</if>
+            <if test="title != null">`title` = #{title},</if>
+            <if test="companyAddress != null">`companyAddress` = #{companyAddress},</if>
+            <if test="telephone != null">`telephone` = #{telephone},</if>
+            <if test="bankName != null">`bankName` = #{bankName},</if>
+            <if test="bankAccount != null">`bankAccount` = #{bankAccount},</if>
+            <if test="email != null">`email` = #{email},</if>
+            <if test="companyTel != null">`companyTel` = #{companyTel},</if>
+            <if test="is_default != null">`is_default` = #{is_default}</if>
+        </set>
+        where id = #{id} and user_id = #{userId}
+    </update>
+    <update id="updateIsDefault" parameterType="com.acme.acmemall.model.InvoiceTitleVo">
+        update t_acme_mall_user_invoice_title set is_default = #{is_default}
+        where user_id = #{userId} and id=#{id}
+    </update>
+    <delete id="delete">
+        delete from t_acme_mall_user_invoice_title where id = #{value} and user_id = #{userId}
+    </delete>
+
+    <delete id="deleteBatch">
+        delete from t_acme_mall_user_invoice_title where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
