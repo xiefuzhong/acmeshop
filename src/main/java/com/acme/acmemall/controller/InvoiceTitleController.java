@@ -61,7 +61,7 @@ public class InvoiceTitleController extends ApiBase {
         if (addressEntities.size() == 0) {//第一次添加设置为默认开票抬头
             entity.setIs_default(1);
         }
-        if (entity.getIs_default() == 1) {
+        if (entity.getIs_default() == 1 && entity.getId() > 0) {
             entity = new InvoiceTitleVo();
             entity.setUserId(loginUser.getUserId());
             entity.setIs_default(0);
