@@ -40,6 +40,7 @@ public class InvoiceTitleController extends ApiBase {
         JSONObject request = this.getJsonRequest();
         InvoiceTitleVo entity = new InvoiceTitleVo();
         if (request != null) {
+            entity.setId(0l);
             entity.setUserId(loginUser.getUserId());
             entity.setType(request.getInteger("type"));
             entity.setInvoiceType(request.getInteger("invoiceType"));
@@ -53,7 +54,7 @@ public class InvoiceTitleController extends ApiBase {
             entity.setCompanyTel(request.getString("companyTel"));
             entity.setIs_default(request.getInteger("is_default"));
         }
-        String str = GsonUtil.getGson().toJson(entity);
+
         Map<String, Object> param = Maps.newHashMap();
         param.put("userId", loginUser.getUserId());
 
@@ -61,11 +62,11 @@ public class InvoiceTitleController extends ApiBase {
         if (addressEntities.size() == 0) {//第一次添加设置为默认开票抬头
             entity.setIs_default(1);
         }
-        if (entity.getIs_default() == 1 && entity.getId() > 0) {
-            entity = new InvoiceTitleVo();
-            entity.setUserId(loginUser.getUserId());
-            entity.setIs_default(0);
-            invoiceTitleService.updateIsDefault(entity);
+        if (entity.getIs_default() == 1) {
+            InvoiceTitleVo entityUpdate = new InvoiceTitleVo();
+            entityUpdate.setUserId(loginUser.getUserId());
+            entityUpdate.setIs_default(0);
+            invoiceTitleService.updateIsDefault(entityUpdate);
         }
         if (null == entity.getId() || entity.getId() == 0) {
             entity.setId(null);
