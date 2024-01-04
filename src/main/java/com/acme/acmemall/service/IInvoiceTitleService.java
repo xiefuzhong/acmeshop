@@ -15,4 +15,6 @@ public interface IInvoiceTitleService {
     void update(InvoiceTitleVo entity);
 
     void delete(Integer id);
+
+    void updateIsDefault(InvoiceTitleVo entity);
 }

@@ -56,4 +56,12 @@ public class InvoiceTitleService implements IInvoiceTitleService {
     public void delete(Integer id) {
         InvoiceTitleDao.delete(id);
     }
+
+    /**
+     * @param entity
+     */
+    @Override
+    public void updateIsDefault(InvoiceTitleVo entity) {
+        InvoiceTitleDao.updateIsDefault(entity);
+    }
 }

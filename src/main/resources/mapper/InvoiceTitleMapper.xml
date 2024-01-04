@@ -91,9 +91,10 @@
         </set>
         where id = #{id} and user_id = #{userId}
     </update>
+
     <update id="updateIsDefault" parameterType="com.acme.acmemall.model.InvoiceTitleVo">
         update t_acme_mall_user_invoice_title set is_default = #{is_default}
-        where user_id = #{userId} and id=#{id}
+        where user_id = #{userId}
     </update>
     <delete id="delete">
         delete from t_acme_mall_user_invoice_title where id = #{value} and user_id = #{userId}
