@@ -60,8 +60,10 @@
         `invoice_type`,
         `email`,
         `companyTel`,
-        `is_default`)
-        values(
+        `is_default`
+        )
+        values
+        (
         #{userId},
         #{type},
         #{title},
@@ -73,7 +75,8 @@
         #{invoiceType},
         #{email},
         #{companyTel},
-        #{is_default})
+        #{is_default}
+        )
     </insert>
 
     <update id="update" parameterType="com.acme.acmemall.model.InvoiceTitleVo">

@@ -54,7 +54,6 @@ public class InvoiceTitleController extends ApiBase {
             entity.setIs_default(request.getInteger("is_default"));
         }
         String str = GsonUtil.getGson().toJson(entity);
-        logger.info("s=>" + str);
         Map<String, Object> param = Maps.newHashMap();
         param.put("userId", loginUser.getUserId());
 
@@ -70,7 +69,8 @@ public class InvoiceTitleController extends ApiBase {
         }
         if (null == entity.getId() || entity.getId() == 0) {
             entity.setId(null);
-            logger.info("save=>");
+            String json = GsonUtil.getGson().toJson(entity);
+            logger.info("save=>" + json);
             invoiceTitleService.save(entity);
         } else {
             invoiceTitleService.update(entity);
