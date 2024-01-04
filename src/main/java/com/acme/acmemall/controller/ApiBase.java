@@ -140,7 +140,7 @@ public class ApiBase {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
+        logger.info(result.toString());
         return result;
     }
 
