@@ -41,6 +41,7 @@ public class InvoiceTitleController extends ApiBase {
         InvoiceTitleVo entity = new InvoiceTitleVo();
         if (request != null) {
             entity.setUserId(loginUser.getUserId());
+            entity.setType(Integer.parseInt(request.getString("type")));
             entity.setInvoiceType(request.getInteger("invoiceType"));
             entity.setTitle(request.getString("title"));
             entity.setTaxNumber(request.getString("taxNumber"));
