@@ -17,7 +17,7 @@ public class InvoiceTitleVo implements Serializable {
     //会员ID
     private Long userId;
     // 抬头类型 0-单位,1-个人
-    private Integer type;
+    private Integer type = 0;
     //  抬头名称
     private String title;
 
@@ -32,7 +32,7 @@ public class InvoiceTitleVo implements Serializable {
 
     private String bankAccount; // 银行账号
 
-    private Integer invoiceType; // 发票类型，企业有增值税电子专用发票，个人只有电子普通发票，1-电子专用，0-普票
+    private Integer invoiceType = 0; // 发票类型，企业有增值税电子专用发票，个人只有电子普通发票，1-电子专用，0-普票
 
     private String email; // 邮箱
 
