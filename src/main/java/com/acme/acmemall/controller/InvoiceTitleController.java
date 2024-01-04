@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -54,7 +53,7 @@ public class InvoiceTitleController extends ApiBase {
             entity.setIs_default(request.getInteger("is_default"));
         }
 
-        Map<String, Object> param = new HashMap<String, Object>();
+        Map<String, Object> param = Maps.newHashMap();
         param.put("userId", loginUser.getUserId());
 
         List<InvoiceTitleVo> addressEntities = invoiceTitleService.queryInvoiceTitleList(param);
