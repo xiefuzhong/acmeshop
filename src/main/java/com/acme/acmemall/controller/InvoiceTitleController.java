@@ -4,6 +4,7 @@ import com.acme.acmemall.annotation.LoginUser;
 import com.acme.acmemall.model.InvoiceTitleVo;
 import com.acme.acmemall.model.LoginUserVo;
 import com.acme.acmemall.service.IInvoiceTitleService;
+import com.acme.acmemall.utils.GsonUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Maps;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,7 +53,8 @@ public class InvoiceTitleController extends ApiBase {
             entity.setCompanyTel(request.getString("companyTel"));
             entity.setIs_default(request.getInteger("is_default"));
         }
-
+        String str = GsonUtil.getGson().toJson(entity);
+        logger.info("s=>" + str);
         Map<String, Object> param = Maps.newHashMap();
         param.put("userId", loginUser.getUserId());
 
@@ -68,6 +70,7 @@ public class InvoiceTitleController extends ApiBase {
         }
         if (null == entity.getId() || entity.getId() == 0) {
             entity.setId(null);
+            logger.info("save=>");
             invoiceTitleService.save(entity);
         } else {
             invoiceTitleService.update(entity);
