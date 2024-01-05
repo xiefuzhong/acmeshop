@@ -257,7 +257,7 @@
         `group_buying_id`,
         `address_id`,
         `goods_count`,
-        `invoice_header_id`,
+        `invoice_header_id`
 
         )
         values
