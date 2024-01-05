@@ -27,8 +27,8 @@
     <select id="queryList" resultMap="invoiceTitleMap">
         select * from t_acme_mall_user_invoice_title
         <where>
-            <if test="user_id != null">
-                and user_id = #{user_id}
+            <if test="userId != null">
+                and user_id = #{userId}
             </if>
         </where>
         <choose>
