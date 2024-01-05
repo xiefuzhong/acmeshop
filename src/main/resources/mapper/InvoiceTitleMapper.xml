@@ -100,7 +100,7 @@
         where user_id = #{userId}
     </update>
     <delete id="delete">
-        delete from t_acme_mall_user_invoice_title where id = #{value} and user_id = #{userId}
+        delete from t_acme_mall_user_invoice_title where id = #{value}
     </delete>
 
     <delete id="deleteBatch">
