@@ -54,6 +54,7 @@
         <result property="order_type" column="order_type"/>
         <result property="addressId" column="address_id"/>
         <result property="goodsCount" column="goods_count"/>
+        <result property="invoiceHeaderId" column="invoice_header_id"/>
     </resultMap>
 
     <select id="queryObject" resultMap="orderMap">
@@ -255,7 +256,8 @@
         `merchant_id`,
         `group_buying_id`,
         `address_id`,
-        `goods_count`
+        `goods_count`,
+        `invoice_header_id`,
 
         )
         values
@@ -301,7 +303,8 @@
         #{merchant_id},
         #{group_buying_id},
         #{addressId},
-        #{goodsCount}
+        #{goodsCount},
+        #{invoiceHeaderId}
         )
     </insert>
 
@@ -349,6 +352,7 @@
             <if test="goodsCount != null">`goods_count` = #{goodsCount},</if>
             <if test="merRemark != null">`mer_remark` = #{merRemark},</if>
             <if test="cusRemark != null">`cus_remark` = #{cusRemark},</if>
+            <if test="invoiceHeaderId != null">`invoice_header_id` = #{invoiceHeaderId},</if>
         </set>
         where id = #{id}
     </update>

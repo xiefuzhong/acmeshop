@@ -16,6 +16,9 @@ public class OrderSubmitRequest implements Serializable {
     // 收件人地址ID
     private long addressId;
 
+    // 发票抬头ID
+    private long headerId;
+
     // 用户已选择的优惠券
     private String userCouponId;
 

@@ -157,6 +157,9 @@ public class OrderVo implements Serializable {
     // 收货人地址ID
     private long addressId;
 
+    // 发票抬头ID
+    private long invoiceHeaderId;
+
     // 商家备注
     private String merRemark;
 
@@ -206,9 +209,10 @@ public class OrderVo implements Serializable {
      * @param userCouponList 用户优惠优惠
      * @param cartList       购物车明细
      * @param address        收件人地址
+     * @param invoiceTitleVo  发票信息
      * @return
      */
-    public OrderVo submit(List<UserCouponVo> userCouponList, List<ShopCartVo> cartList, AddressVo address) {
+    public OrderVo submit(List<UserCouponVo> userCouponList, List<ShopCartVo> cartList, AddressVo address, InvoiceTitleVo invoiceTitleVo) {
         // 订单收件人信息
         setAddressInfo(address);
         // 优惠信息
@@ -346,6 +350,10 @@ public class OrderVo implements Serializable {
         this.country = address.getNationalCode();
         this.consignee = address.getUserName();
         this.mobile = address.getTelNumber();
+    }
+
+    private void setInvoiceTitleVo(InvoiceTitleVo invoiceTitleVo) {
+        this.invoiceHeaderId = invoiceTitleVo.getId();
     }
 
     /**

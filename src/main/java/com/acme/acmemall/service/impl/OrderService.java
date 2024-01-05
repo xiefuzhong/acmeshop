@@ -37,17 +37,20 @@ public class OrderService implements IOrderService {
 
     private final OrderGoodsMapper orderItemMapper;
 
+    private final InvoiceTitleMapper invoiceHeaderMapper;
+
     public OrderService(UserCouponMapper userCouponMapper,
                         AddressMapper addressMapper,
                         ShopCartMapper cartMapper,
                         OrderMapper orderMapper,
+                        InvoiceTitleMapper invoiceHeaderMapper,
                         OrderGoodsMapper orderItemMapper) {
         this.userCouponMapper = userCouponMapper;
         this.addressMapper = addressMapper;
         this.cartMapper = cartMapper;
         this.orderMapper = orderMapper;
         this.orderItemMapper = orderItemMapper;
-
+        this.invoiceHeaderMapper = invoiceHeaderMapper;
     }
 
     protected Logger logger = Logger.getLogger(getClass());
@@ -71,6 +74,12 @@ public class OrderService implements IOrderService {
         if (addressVo == null || !addressVo.getUserId().equals(loginUser.getUserId())) {
             return ResultMap.error(102, "请选择联系地址");
         }
+        // 查询发票抬头
+        InvoiceTitleVo invoiceHeaderVo = null;
+        if (request.getHeaderId() > 0) {
+            invoiceHeaderVo = invoiceHeaderMapper.queryObject(request.getHeaderId());
+        }
+
         // 用户选择的优惠券信息
         List<UserCouponVo> userCouponList = getUserCouponVos(request.getUserCouponId(), request.getGoodsTotalPrice(), loginUser);
 
@@ -88,7 +97,7 @@ public class OrderService implements IOrderService {
             return ResultMap.response(ResultCodeEnum.FAILED);
         }
         OrderVo order = OrderFactory.buildNewOrder(loginUser.getUserId(), request.getType());
-        order.submit(userCouponList, cartList, addressVo);
+        order.submit(userCouponList, cartList, addressVo, invoiceHeaderVo);
         order.checkSubmit();
         logger.info("order.submit >> " + order);
         // 保存order以及明细表
