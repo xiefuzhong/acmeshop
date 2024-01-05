@@ -162,6 +162,7 @@ public class ShopCartController extends ApiBase {
         Integer goodsId = jsonParam.getInteger("goodsId");
         Integer productId = jsonParam.getInteger("productId");
         Integer number = jsonParam.getInteger("number");
+        String type = jsonParam.getString("ntype");
         //判断商品是否可以购买
         GoodsVo goodsInfo = goodsService.queryObject(goodsId);
         if (null == goodsInfo || goodsInfo.checkOff()) {
@@ -204,7 +205,9 @@ public class ShopCartController extends ApiBase {
             if (!productInfo.verifyInventory(number + cartInfo.getNumber())) {
                 return ResultMap.error(400, "库存不足");
             }
-            cartInfo.addToCart(null, null, cartInfo.getNumber() + number);
+            // 直接购买无购物车替换数量
+            cartInfo.addToCart(null, null, number);
+//            cartInfo.addToCart(null, null, cartInfo.getNumber() + number);
             cartService.update(cartInfo);
         }
         return toResponsSuccess(getCart(loginUser));
@@ -353,6 +356,9 @@ public class ShopCartController extends ApiBase {
             checkedAddress = addressService.queryObject(addressId);
         }
         resultObj.put("checkedAddress", checkedAddress);
+
+        // 获得发票抬头@todo
+
         // * 获取要购买的商品和总价
         ArrayList checkedGoodsList = Lists.newArrayList();
 
