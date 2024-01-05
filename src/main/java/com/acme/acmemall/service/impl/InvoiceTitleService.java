@@ -46,7 +46,7 @@ public class InvoiceTitleService implements IInvoiceTitleService {
      * @return
      */
     @Override
-    public InvoiceTitleVo queryDefaultByUserId(Integer userId) {
+    public InvoiceTitleVo queryDefaultByUserId(long userId) {
         return InvoiceTitleDao.queryDefaultByUserId(userId);
     }
 

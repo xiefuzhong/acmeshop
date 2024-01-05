@@ -12,7 +12,7 @@ public interface IInvoiceTitleService {
 
     InvoiceTitleVo queryObject(Integer id);
 
-    InvoiceTitleVo queryDefaultByUserId(Integer userId);
+    InvoiceTitleVo queryDefaultByUserId(long userId);
 
     void update(InvoiceTitleVo entity);
 

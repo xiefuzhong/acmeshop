@@ -364,7 +364,7 @@ public class ShopCartController extends ApiBase {
         // 获得发票抬头@todo
         InvoiceTitleVo checkedInvoiceTitle = null;
         if (StringUtils.isNullOrEmpty(invoiceTitleId) || invoiceTitleId == 0) {
-
+            checkedInvoiceTitle = invoiceTitleService.queryDefaultByUserId(loginUser.getUserId());
         } else {
             checkedInvoiceTitle = invoiceTitleService.queryObject(invoiceTitleId);
         }
