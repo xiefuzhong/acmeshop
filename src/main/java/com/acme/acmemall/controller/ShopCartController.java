@@ -341,7 +341,7 @@ public class ShopCartController extends ApiBase {
     public Object checkout(@LoginUser LoginUserVo loginUser, Integer couponId,
                            @RequestParam(defaultValue = "cart") String type,
                            Integer addressId,
-                           Integer invoiceTitleId,
+                           Integer headerId,
                            String activityType) {
         //activityType="2";
         Map<String, Object> resultObj = Maps.newHashMap();
@@ -363,10 +363,10 @@ public class ShopCartController extends ApiBase {
 
         // 获得发票抬头@todo
         InvoiceTitleVo checkedInvoiceTitle = null;
-        if (StringUtils.isNullOrEmpty(invoiceTitleId) || invoiceTitleId == 0) {
+        if (StringUtils.isNullOrEmpty(headerId) || headerId == 0) {
             checkedInvoiceTitle = invoiceTitleService.queryDefaultByUserId(loginUser.getUserId());
         } else {
-            checkedInvoiceTitle = invoiceTitleService.queryObject(invoiceTitleId);
+            checkedInvoiceTitle = invoiceTitleService.queryObject(headerId);
         }
         resultObj.put("checkedInvoiceTitle", checkedInvoiceTitle);
 
