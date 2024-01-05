@@ -12,6 +12,8 @@ public interface IInvoiceTitleService {
 
     InvoiceTitleVo queryObject(Integer id);
 
+    InvoiceTitleVo queryDefaultByUserId(Integer userId);
+
     void update(InvoiceTitleVo entity);
 
     void delete(Integer id);

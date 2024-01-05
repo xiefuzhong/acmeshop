@@ -7,4 +7,6 @@ import org.apache.ibatis.annotations.Mapper;
 public interface InvoiceTitleMapper extends BaseDao<InvoiceTitleVo> {
 
     void updateIsDefault(InvoiceTitleVo invoiceTitleVo);
+
+    InvoiceTitleVo queryDefaultByUserId(long userId);
 }

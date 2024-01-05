@@ -99,6 +99,13 @@
         update t_acme_mall_user_invoice_title set is_default = #{is_default}
         where user_id = #{userId}
     </update>
+    <select id="queryDefaultByUserId" resultMap="invoiceTitleMap">
+        SELECT * FROM t_acme_mall_user_invoice_title
+        <where>
+            AND is_default = 1
+            AND user_id = #{userId}
+        </where>
+    </select>
     <delete id="delete">
         delete from t_acme_mall_user_invoice_title where id = #{value}
     </delete>

@@ -59,6 +59,9 @@ public class ShopCartController extends ApiBase {
     @Autowired
     IAddressService addressService;
 
+    @Autowired
+    IInvoiceTitleService invoiceTitleService;
+
 
     /**
      * 获取购物车信息，所有对购物车的增删改操作，都要重新返回购物车的信息
@@ -338,6 +341,7 @@ public class ShopCartController extends ApiBase {
     public Object checkout(@LoginUser LoginUserVo loginUser, Integer couponId,
                            @RequestParam(defaultValue = "cart") String type,
                            Integer addressId,
+                           Integer invoiceTitleId,
                            String activityType) {
         //activityType="2";
         Map<String, Object> resultObj = Maps.newHashMap();
@@ -358,6 +362,13 @@ public class ShopCartController extends ApiBase {
         resultObj.put("checkedAddress", checkedAddress);
 
         // 获得发票抬头@todo
+        InvoiceTitleVo checkedInvoiceTitle = null;
+        if (StringUtils.isNullOrEmpty(invoiceTitleId) || invoiceTitleId == 0) {
+
+        } else {
+            checkedInvoiceTitle = invoiceTitleService.queryObject(invoiceTitleId);
+        }
+        resultObj.put("checkedInvoiceTitle", checkedInvoiceTitle);
 
         // * 获取要购买的商品和总价
         ArrayList checkedGoodsList = Lists.newArrayList();
