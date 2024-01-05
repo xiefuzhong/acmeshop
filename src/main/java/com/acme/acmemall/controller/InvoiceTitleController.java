@@ -92,4 +92,19 @@ public class InvoiceTitleController extends ApiBase {
         }
         return toResponsSuccess(entity);
     }
+
+
+    @PostMapping("delete")
+    public Object delete(@LoginUser LoginUserVo loginUser) {
+        JSONObject jsonParam = this.getJsonRequest();
+        Integer id = jsonParam.getIntValue("id");
+
+        InvoiceTitleVo entity = invoiceTitleService.queryObject(id);
+        //判断越权行为
+        if (!entity.getUserId().equals(loginUser.getUserId())) {
+            return toResponsObject(403, "您无权删除", "");
+        }
+        invoiceTitleService.delete(id);
+        return toResponsSuccess("");
+    }
 }
