@@ -99,7 +99,7 @@
         update t_acme_mall_user_invoice_title set is_default = #{is_default}
         where user_id = #{userId}
     </update>
-    <select id="queryDefaultByUserId" resultMap="invoiceTitleMap">
+    <select id="queryDefaultByUserId" parameterType="java.lang.Long" resultMap="invoiceTitleMap">
         SELECT * FROM t_acme_mall_user_invoice_title
         <where>
             AND is_default = 1
