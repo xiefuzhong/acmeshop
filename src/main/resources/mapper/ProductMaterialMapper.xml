@@ -118,7 +118,7 @@
             #{item.uploadType},
             #{item.uploadTime},
             #{item.remark},
-            #{groupType}
+            #{item.groupType}
             )
         </foreach>
     </insert>
