@@ -16,6 +16,7 @@
         <result property="uploadType" column="upload_type"/>
         <result property="uploadTime" column="upload_time"/>
         <result property="remark" column="remark"/>
+        <result property="groupType" column="group_type"/>
     </resultMap>
 
     <select id="queryObject" resultMap="materialMap">
@@ -35,6 +36,9 @@
         <where>
             <if test="fileName != null ">
                 and file_name=#{fileName}
+            </if>
+            <if test="groupType != null">
+                AND group_type=#{groupType}
             </if>
         </where>
         <choose>
@@ -64,7 +68,8 @@
         `userId`,
         `upload_type`,
         `upload_time`,
-        `remark`
+        `remark`,
+        `group_type`
         )
         VALUES
         (
@@ -78,7 +83,8 @@
         #{userId},
         #{uploadType},
         #{uploadTime},
-        #{remark}
+        #{remark},
+        #{groupType}
         )
     </insert>
 
@@ -95,7 +101,8 @@
         `userId`,
         `upload_type`,
         `upload_time`,
-        `remark`
+        `remark`,
+        `group_type`
         )
         values
         <foreach collection="list" item="item" separator=",">
@@ -110,7 +117,8 @@
             #{item.userId},
             #{item.uploadType},
             #{item.uploadTime},
-            #{item.remark}
+            #{item.remark},
+            #{groupType}
             )
         </foreach>
     </insert>

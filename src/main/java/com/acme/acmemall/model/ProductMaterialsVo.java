@@ -24,4 +24,5 @@ public class ProductMaterialsVo implements Serializable {
     private Integer uploadType; // 文件来源：相册/文件系统
     private Date uploadTime = new Date();  // 上传时间
     private String remark; // 用途描述，关联商品ID,格式1,2,3
+    private Integer groupType;
 }
