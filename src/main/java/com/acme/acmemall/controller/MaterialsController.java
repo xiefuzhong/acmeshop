@@ -53,6 +53,7 @@ public class MaterialsController extends ApiBase {
             JSONArray array = requestObj.getJSONArray("fileList");
             List<ProductMaterialsVo> fileList = JSONArray.parseArray(array.toJSONString(), ProductMaterialsVo.class);
             if (CollectionUtils.isNotEmpty(fileList)) {
+                logger.info("fileList.size = " + fileList.size());
                 productMaterialsService.batchSave(fileList);
             }
 
