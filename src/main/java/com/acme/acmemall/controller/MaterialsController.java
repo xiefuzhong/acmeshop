@@ -7,6 +7,7 @@ import com.acme.acmemall.model.LoginUserVo;
 import com.acme.acmemall.model.ProductMaterialsVo;
 import com.acme.acmemall.service.IProductMaterialService;
 import com.acme.acmemall.utils.PageUtils;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -44,12 +45,13 @@ public class MaterialsController extends ApiBase {
         return ResultMap.response(ResultCodeEnum.SUCCESS, pageUtil);
     }
 
-
     @PostMapping("save")
     public Object save(@LoginUser LoginUserVo userVo) {
         JSONObject requestObj = super.getJsonRequest();
         if (null != requestObj) {
-//            ProductMaterialsVo productMaterialsVo = requestObj.toJavaObject(requestObj,ProductMaterialsVo.class);
+            JSONArray array = requestObj.getJSONArray("fileList");
+            List<ProductMaterialsVo> fileList = JSONArray.parseArray(array.toJSONString(), ProductMaterialsVo.class);
+            productMaterialsService.batchSave(fileList);
         }
         return ResultMap.response(ResultCodeEnum.SUCCESS);
     }
