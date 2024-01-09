@@ -68,7 +68,7 @@
         )
         VALUES
         (
-        #{fileID},
+        #{FileID},
         #{fileName},
         #{filePath},
         #{fileType},
