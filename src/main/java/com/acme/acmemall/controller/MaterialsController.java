@@ -37,7 +37,7 @@ public class MaterialsController extends ApiBase {
         param.put("limit", size);
         param.put("sidx", "id");
         param.put("order", "desc");
-        param.put("fields", "id, title, price_info, scene_pic_url,subtitle");
+//        param.put("fields", "id, title, price_info, scene_pic_url,subtitle");
         //查询列表数据
         PageHelper.startPage(page, size);
         List<ProductMaterialsVo> topicList = productMaterialsService.queryMaterialsList(param);
