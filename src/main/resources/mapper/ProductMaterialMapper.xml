@@ -10,7 +10,7 @@
         <result property="filePath" column="file_path"/>
         <result property="fileType" column="file_type"/>
         <result property="fileUrl" column="file_url"/>
-        <result property="fileSize" column="file_size"/>
+        <result property="size" column="file_size"/>
         <result property="tempFilePath" column="temp_file_path"/>
         <result property="userId" column="userId"/>
         <result property="uploadType" column="upload_type"/>
@@ -73,7 +73,7 @@
         #{filePath},
         #{fileType},
         #{fileUrl},
-        #{fileSize},
+        #{size},
         #{tempFilePath},
         #{userId},
         #{uploadType},
@@ -105,7 +105,7 @@
             #{item.filePath},
             #{item.fileType},
             #{item.fileUrl},
-            #{item.fileSize},
+            #{item.size},
             #{item.tempFilePath},
             #{item.userId},
             #{item.uploadType},
