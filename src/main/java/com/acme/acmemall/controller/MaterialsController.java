@@ -23,7 +23,7 @@ import java.util.Map;
  * @time: 2024/1/9 14:21
  */
 @RestController
-@RequestMapping("/api/store/manage/materials")
+@RequestMapping("/api/manage/materials")
 public class MaterialsController extends ApiBase {
     @Autowired
     IProductMaterialService productMaterialsService;
