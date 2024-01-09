@@ -100,7 +100,7 @@
         values
         <foreach collection="list" item="item" separator=",">
             (
-            #{fileID},
+            #{FileID},
             #{fileName},
             #{filePath},
             #{fileType},
