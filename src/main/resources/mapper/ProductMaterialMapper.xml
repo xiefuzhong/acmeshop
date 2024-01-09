@@ -100,17 +100,17 @@
         values
         <foreach collection="list" item="item" separator=",">
             (
-            #{FileID},
-            #{fileName},
-            #{filePath},
-            #{fileType},
-            #{fileUrl},
-            #{fileSize},
-            #{tempFilePath},
-            #{userId},
-            #{uploadType},
-            #{uploadTime},
-            #{remark}
+            #{item.FileID},
+            #{item.fileName},
+            #{item.filePath},
+            #{item.fileType},
+            #{item.fileUrl},
+            #{item.fileSize},
+            #{item.tempFilePath},
+            #{item.userId},
+            #{item.uploadType},
+            #{item.uploadTime},
+            #{item.remark}
             )
         </foreach>
     </insert>
