@@ -11,6 +11,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -51,7 +52,10 @@ public class MaterialsController extends ApiBase {
         if (null != requestObj) {
             JSONArray array = requestObj.getJSONArray("fileList");
             List<ProductMaterialsVo> fileList = JSONArray.parseArray(array.toJSONString(), ProductMaterialsVo.class);
-            productMaterialsService.batchSave(fileList);
+            if (CollectionUtils.isNotEmpty(fileList)) {
+                productMaterialsService.batchSave(fileList);
+            }
+
         }
         return ResultMap.response(ResultCodeEnum.SUCCESS);
     }
