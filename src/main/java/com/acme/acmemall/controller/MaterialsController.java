@@ -11,11 +11,12 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -33,7 +34,7 @@ public class MaterialsController extends ApiBase {
     @GetMapping("list")
     public Object list(@LoginUser LoginUserVo userVo, @RequestParam(value = "page", defaultValue = "1") Integer page,
                        @RequestParam(value = "size", defaultValue = "10") Integer size) {
-        Map param = new HashMap();
+        Map param = Maps.newHashMap();
         param.put("page", page);
         param.put("limit", size);
         param.put("sidx", "id");
@@ -56,9 +57,25 @@ public class MaterialsController extends ApiBase {
                 logger.info("fileList.size = " + fileList.size());
                 productMaterialsService.batchSave(fileList);
             }
-
+            return ResultMap.response(ResultCodeEnum.SUCCESS);
         }
-        return ResultMap.response(ResultCodeEnum.SUCCESS);
+        return ResultMap.response(ResultCodeEnum.FAILED);
+    }
+
+    @PostMapping("delete")
+    public Object delete(@LoginUser LoginUserVo loginUser) {
+        JSONObject requestObj = super.getJsonRequest();
+        if (null != requestObj) {
+            JSONArray array = requestObj.getJSONArray("checkedIds");
+            List<Long> checkedIds = JSONArray.parseArray(array.toJSONString(), Long.class);
+            if (CollectionUtils.isNotEmpty(checkedIds)) {
+                Long[] ids = Lists.newArrayList(checkedIds).toArray(new Long[0]);
+                logger.info("ids.size = " + ids.length);
+                productMaterialsService.batchDelete(ids);
+            }
+            return ResultMap.response(ResultCodeEnum.SUCCESS);
+        }
+        return ResultMap.response(ResultCodeEnum.FAILED);
     }
 
 }
