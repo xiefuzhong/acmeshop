@@ -58,7 +58,7 @@ public class MaterialsController extends ApiBase {
 
         Map param = Maps.newHashMap();
         if (CollectionUtils.isNotEmpty(ids)) {
-            param.put("materialIds", ids.toArray(new Long[0]));
+            param.put("materialIds", ids);
         }
 
         param.put("sidx", "id");

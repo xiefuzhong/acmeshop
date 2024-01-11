@@ -42,7 +42,7 @@
             </if>
             <if test="materialIds != null">
                 AND id in
-                <foreach item="id" collection="array" open="(" separator="," close=")">
+                <foreach item="id" collection="materialIds" open="(" separator="," close=")">
                     #{id}
                 </foreach>
             </if>
