@@ -40,7 +40,7 @@
             <if test="groupType != null and groupType != ''">
                 AND group_type=#{groupType}
             </if>
-            <if test="list != null and list.length>0">
+            <if test="materialIds != null and materialIds.length>0">
                 AND id in
                 <foreach item="id" collection="array" open="(" separator="," close=")">
                     #{id}
