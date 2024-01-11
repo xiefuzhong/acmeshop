@@ -40,12 +40,10 @@
             <if test="groupType != null and groupType != ''">
                 AND group_type=#{groupType}
             </if>
-            <if test="materialIds != null and materialIds.length>0">
-                AND id in
-                <foreach item="id" collection="array" open="(" separator="," close=")">
-                    #{id}
-                </foreach>
-            </if>
+            AND id in
+            <foreach item="id" collection="array" open="(" separator="," close=")">
+                #{id}
+            </foreach>
 
         </where>
         <choose>
