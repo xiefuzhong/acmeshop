@@ -47,6 +47,29 @@ public class MaterialsController extends ApiBase {
         return ResultMap.response(ResultCodeEnum.SUCCESS, pageUtil);
     }
 
+    @PostMapping("list")
+    public Object list(@LoginUser LoginUserVo userVo) {
+        JSONObject requestObj = super.getJsonRequest();
+        JSONArray array = requestObj.getJSONArray("materialIds");
+        List<Long> ids = array.toJavaList(Long.class);
+        if (requestObj == null) {
+            return ResultMap.response(ResultCodeEnum.FAILED);
+        }
+
+        Map param = Maps.newHashMap();
+        if (CollectionUtils.isNotEmpty(ids)) {
+            param.put("materialIds", ids.toArray(new Long[0]));
+        }
+
+        param.put("sidx", "id");
+        param.put("order", "desc");
+//        param.put("fields", "id, file_url");
+
+        //查询列表数据
+        List<ProductMaterialsVo> materialsList = productMaterialsService.queryMaterialsList(param);
+        return ResultMap.response(ResultCodeEnum.SUCCESS, materialsList);
+    }
+
     @PostMapping("save")
     public Object save(@LoginUser LoginUserVo userVo) {
         JSONObject requestObj = super.getJsonRequest();
