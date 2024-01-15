@@ -66,8 +66,7 @@ public class GoodsService implements IGoodsService {
      */
     @Override
     public GoodsVo loadGoodsDetail(LoginUserVo userVo, Long goodsId) {
-        GoodsVo goodsVo = goodsDao.queryObject(goodsId);
-        return null;
+        return goodsDao.queryObject(goodsId);
     }
 
     /**

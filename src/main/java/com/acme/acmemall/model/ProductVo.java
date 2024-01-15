@@ -20,8 +20,9 @@ public class ProductVo implements Serializable {
     private Integer product_id;
     //商品规格ids
     private String goods_specification_ids;
-
+    // 规格名称
     private String goods_specifition_name_value;
+
     //商品序列号
     private String goods_sn;
     //商品库存

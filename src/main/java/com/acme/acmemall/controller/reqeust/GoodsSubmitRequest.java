@@ -22,7 +22,7 @@ import java.util.List;
 public class GoodsSubmitRequest implements Serializable {
 
     private GoodsVo goods; // 商品信息
-    private List<GoodsGalleryVo> bannerList = Lists.newArrayList(); // 产品轮播信息
+    private List<GoodsGalleryVo> galleryList = Lists.newArrayList(); // 产品轮播信息
     private List<GoodsSpecificationVo> specList = Lists.newArrayList(); // 规格信息
     private List<ProductVo> products = Lists.newArrayList(); // SKU信息
 
@@ -30,7 +30,7 @@ public class GoodsSubmitRequest implements Serializable {
         if (StringUtils.isNullOrEmpty(this.goods.getName())) {
             throw new ApiCusException("名称不能为空");
         }
-        if (CollectionUtils.isEmpty(bannerList)) {
+        if (CollectionUtils.isEmpty(galleryList)) {
             throw new ApiCusException("轮播信息不能为空");
         }
         if (CollectionUtils.isEmpty(specList)) {
