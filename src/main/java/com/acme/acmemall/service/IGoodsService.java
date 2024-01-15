@@ -1,5 +1,7 @@
 package com.acme.acmemall.service;
 
+import com.acme.acmemall.common.ResultMap;
+import com.acme.acmemall.controller.reqeust.GoodsSubmitRequest;
 import com.acme.acmemall.model.GoodsVo;
 import com.acme.acmemall.model.LoginUserVo;
 
@@ -34,4 +36,6 @@ public interface IGoodsService {
      * @return
      */
     GoodsVo loadGoodsDetail(LoginUserVo userVo, Long goodsId);
+
+    ResultMap submit(GoodsSubmitRequest request, LoginUserVo loginUser);
 }

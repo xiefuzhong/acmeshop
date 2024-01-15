@@ -9,7 +9,6 @@ import java.util.Map;
  * 返回数据
  *
  * @author IHPANGZI
- *
  * @date 2023-02-07
  */
 public class ResultMap extends HashMap<String, Object> {
@@ -17,7 +16,7 @@ public class ResultMap extends HashMap<String, Object> {
 
     public ResultMap() {
         put("errno", 0);
-        put("errmsg","操作成功");
+        put("errmsg", "操作成功");
     }
 
     public static ResultMap error() {
@@ -28,16 +27,16 @@ public class ResultMap extends HashMap<String, Object> {
         return error(500, msg);
     }
 
-    public static ResultMap response(ResultCodeEnum resultCode){
+    public static ResultMap response(ResultCodeEnum resultCode) {
         ResultMap resultMap = new ResultMap();
         resultMap.put("errno", resultCode.getCode());
         resultMap.put("errmsg", resultCode.getMessage());
         return resultMap;
     }
 
-    public static ResultMap response(ResultCodeEnum resultCode,Object data){
+    public static ResultMap response(ResultCodeEnum resultCode, Object data) {
         ResultMap resultMap = response(resultCode);
-        resultMap.put("data",data);
+        resultMap.put("data", data);
         return resultMap;
     }
 
@@ -62,6 +61,10 @@ public class ResultMap extends HashMap<String, Object> {
 
     public static ResultMap ok() {
         return new ResultMap();
+    }
+
+    public static ResultMap badArgument() {
+        return error(1001, "参数不对");
     }
 
     public ResultMap put(String key, Object value) {

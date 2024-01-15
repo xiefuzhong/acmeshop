@@ -1,7 +1,7 @@
 package com.acme.acmemall.model;
 
 import com.acme.acmemall.utils.DateUtils;
-import lombok.Data;
+import lombok.*;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -11,7 +11,10 @@ import java.util.Date;
 /**
  * spu
  */
-@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+@Getter
 public class GoodsVo implements Serializable {
     //主键
     private Integer id;
@@ -19,7 +22,7 @@ public class GoodsVo implements Serializable {
     private Integer category_id;
     //商品序列号
     private String goods_sn;
-    //名称
+    //商品名称
     private String name;
     //品牌Id
     private Integer brand_id;

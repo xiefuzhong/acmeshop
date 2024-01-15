@@ -3,6 +3,7 @@ package com.acme.acmemall.controller;
 import com.acme.acmemall.annotation.IgnoreAuth;
 import com.acme.acmemall.annotation.LoginUser;
 import com.acme.acmemall.common.ResultMap;
+import com.acme.acmemall.controller.reqeust.GoodsSubmitRequest;
 import com.acme.acmemall.exception.ResultCodeEnum;
 import com.acme.acmemall.model.*;
 import com.acme.acmemall.service.*;
@@ -10,6 +11,7 @@ import com.acme.acmemall.utils.DateUtils;
 import com.acme.acmemall.utils.GsonUtil;
 import com.acme.acmemall.utils.PageUtils;
 import com.acme.acmemall.utils.StringUtils;
+import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
@@ -20,10 +22,7 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
@@ -51,7 +50,7 @@ public class GoodsController extends ApiBase {
     private final IFootprintService footprintService;
     private final ISearchHistoryService searchHistoryService;
 
-    private IRelatedGoodsService relatedGoodsService;
+    private final IRelatedGoodsService relatedGoodsService;
 
     @Autowired
     public GoodsController(ISearchHistoryService searchHistoryService,
@@ -443,5 +442,17 @@ public class GoodsController extends ApiBase {
         PageInfo pageInfo = new PageInfo(goods);
         PageUtils pager = new PageUtils(pageInfo);
         return ResultMap.response(ResultCodeEnum.SUCCESS, pager);
+    }
+
+    @PostMapping("/add")
+    public Object addGoods(@LoginUser LoginUserVo loginUserVo) {
+        JSONObject jsonRequest = super.getJsonRequest();
+        logger.info("【请求开始】商品管理->添加商品->提交,请求参数:" + jsonRequest.toJSONString());
+        if (jsonRequest == null) {
+            return ResultMap.error();
+        }
+        GoodsSubmitRequest submitRequest = JSONObject.toJavaObject(jsonRequest, GoodsSubmitRequest.class);
+        submitRequest.validate();
+        return goodsService.submit(submitRequest, loginUserVo);
     }
 }

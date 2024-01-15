@@ -1,11 +1,14 @@
 package com.acme.acmemall.service.impl;
 
+import com.acme.acmemall.common.ResultMap;
+import com.acme.acmemall.controller.reqeust.GoodsSubmitRequest;
 import com.acme.acmemall.dao.GoodsMapper;
 import com.acme.acmemall.model.GoodsVo;
 import com.acme.acmemall.model.LoginUserVo;
 import com.acme.acmemall.service.IGoodsService;
 import org.apache.commons.collections.MapUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -64,6 +67,18 @@ public class GoodsService implements IGoodsService {
     @Override
     public GoodsVo loadGoodsDetail(LoginUserVo userVo, Long goodsId) {
         GoodsVo goodsVo = goodsDao.queryObject(goodsId);
+        return null;
+    }
+
+    /**
+     * @param request
+     * @param loginUser
+     * @return
+     */
+    @Transactional
+    @Override
+    public ResultMap submit(GoodsSubmitRequest request, LoginUserVo loginUser) {
+
         return null;
     }
 }
