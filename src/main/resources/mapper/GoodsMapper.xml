@@ -256,15 +256,39 @@
     <insert id="save" parameterType="com.acme.acmemall.model.GoodsVo" useGeneratedKeys="true" keyProperty="id">
         insert into t_acme_mall_goods
         (
+        `category_id`,
+        `goods_sn`,
         `name`,
+        `brand_id`,
+        `goods_number`,
+        `keywords`,
+        `goods_brief`,
+        `goods_desc`,
+        `goods_unit`,
         `primary_pic_url`,
-        `list_pic_url`
+        `list_pic_url`,
+        `retail_price`,
+        `create_user_id`,
+        `merchant_id`,
+        `is_delete`
         )
         values
         (
+        #{category_id},
+        #{goods_sn},
         #{name},
+        #{brand_id},
+        #{goods_number},
+        #{keywords},
+        #{goods_brief},
+        #{goods_desc},
+        #{goods_unit},
         #{primary_pic_url},
-        #{list_pic_url}
+        #{list_pic_url},
+        #{retail_price},
+        #{user_id},
+        #{merchantId},
+        #{is_delete}
         )
     </insert>
 

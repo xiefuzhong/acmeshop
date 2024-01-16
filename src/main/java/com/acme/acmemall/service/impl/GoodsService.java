@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class GoodsService implements IGoodsService {
@@ -101,6 +102,10 @@ public class GoodsService implements IGoodsService {
             return ResultMap.error(1001, "请先登录管理系统再操作!");
         }
         GoodsVo goodsVo = GoodsFactory.createGoods(goodsRequest);
+        Optional<ProductVo> optionalProductVo = request.getProducts().stream().filter(product -> product.getGoods_number() > 0).findFirst();
+        if (optionalProductVo.isPresent()) {
+            goodsVo.updateStock(optionalProductVo.get());
+        }
         goodsDao.save(goodsVo);
         logger.info(goodsVo.toString());
         List<GoodsGalleryVo> galleryVoList = request.getGalleryList();
@@ -114,13 +119,14 @@ public class GoodsService implements IGoodsService {
         specifications.stream().forEach(spec -> {
             spec.setGoods_id(goodsVo.getId());
         });
-
+        goodsVo.relatedDetails("spec", specifications);
         specificationMapper.saveBatch(specifications);
 
         List<ProductVo> products = request.getProducts();
         products.stream().forEach(productVo -> {
             productVo.setGoods_id(goodsVo.getId());
         });
+        goodsVo.relatedDetails("product", products);
         productMapper.saveBatch(products);
 
         return ResultMap.response(ResultCodeEnum.SUCCESS, goodsVo);

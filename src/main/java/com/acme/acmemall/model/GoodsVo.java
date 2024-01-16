@@ -50,7 +50,7 @@ public class GoodsVo implements Serializable {
     private String fmt_add_time;
     //排序
     private Integer sort_order;
-    //删除状态
+    //删除状态(草稿)
     private Integer is_delete;
     //属性类别
     private Integer attribute_category;
@@ -143,6 +143,11 @@ public class GoodsVo implements Serializable {
             return Boolean.FALSE;
         }
         return Boolean.TRUE;
+    }
+
+    public void updateStock(ProductVo product) {
+        this.goods_number = product.getGoods_number();
+        this.goods_sn = product.getGoods_sn();
     }
 
     public void relatedDetails(String type, List<?> items) {
