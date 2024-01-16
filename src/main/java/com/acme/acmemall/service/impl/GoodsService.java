@@ -2,12 +2,15 @@ package com.acme.acmemall.service.impl;
 
 import com.acme.acmemall.common.ResultMap;
 import com.acme.acmemall.controller.reqeust.GoodsSubmitRequest;
+import com.acme.acmemall.dao.GoodsGalleryMapper;
 import com.acme.acmemall.dao.GoodsMapper;
 import com.acme.acmemall.dao.UserMapper;
 import com.acme.acmemall.exception.ResultCodeEnum;
+import com.acme.acmemall.model.GoodsGalleryVo;
 import com.acme.acmemall.model.GoodsVo;
 import com.acme.acmemall.model.LoginUserVo;
 import com.acme.acmemall.service.IGoodsService;
+import com.acme.acmemall.utils.GsonUtil;
 import org.apache.commons.collections.MapUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
@@ -25,6 +28,9 @@ public class GoodsService implements IGoodsService {
 
     @Resource
     private UserMapper userMapper;
+
+    @Resource
+    private GoodsGalleryMapper galleryMapper;
 
     /**
      * 统计在售商品数量
@@ -95,6 +101,13 @@ public class GoodsService implements IGoodsService {
         goodsDao.save(goodsVo);
 //        long goodsId = goodsVo.getId();
         logger.info(goodsVo.toString());
+        List<GoodsGalleryVo> galleryVoList = request.getGalleryList();
+        galleryVoList.stream().forEach(galleryVo -> {
+            galleryVo.setGoods_id(goodsVo.getId());
+        });
+        logger.info(GsonUtil.getGson().toJson(galleryVoList));
+        galleryMapper.saveBatch(request.getGalleryList());
+
         return ResultMap.response(ResultCodeEnum.SUCCESS, goodsVo);
     }
 }

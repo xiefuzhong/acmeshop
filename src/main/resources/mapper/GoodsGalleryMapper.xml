@@ -68,6 +68,25 @@
 		)
 	</insert>
 
+    <insert id="saveBatch" parameterType="list">
+        insert into t_acme_mall_goods_gallery
+        (
+        `goods_id`,
+        `img_url`,
+        `img_desc`,
+        `sort_order`
+        )
+        values
+        <foreach collection="list" item="item" separator=",">
+            (
+            #{item.goods_id},
+            #{item.img_url},
+            #{item.img_desc},
+            #{item.sort_order}
+            )
+        </foreach>
+    </insert>
+
     <update id="update" parameterType="com.acme.acmemall.model.GoodsGalleryVo">
         update t_acme_mall_goods_gallery
         <set>
