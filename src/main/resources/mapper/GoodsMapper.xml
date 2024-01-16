@@ -286,7 +286,7 @@
         #{primary_pic_url},
         #{list_pic_url},
         #{retail_price},
-        #{user_id},
+        #{operator.userId},
         #{merchantId},
         #{is_delete}
         )

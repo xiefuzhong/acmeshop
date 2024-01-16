@@ -2,6 +2,7 @@ package com.acme.acmemall.factory;
 
 import com.acme.acmemall.controller.reqeust.GoodsRequest;
 import com.acme.acmemall.model.GoodsVo;
+import com.acme.acmemall.model.LoginUserVo;
 
 import java.math.BigDecimal;
 
@@ -13,8 +14,9 @@ import java.math.BigDecimal;
 
 public class GoodsFactory {
 
-    public static GoodsVo createGoods(GoodsRequest request) {
+    public static GoodsVo createGoods(GoodsRequest request, LoginUserVo userVo) {
         return GoodsVo.builder()
+                .operator(userVo)
                 .name(request.getName())
                 .goods_brief(request.getGoods_brief())
                 .goods_unit(request.getGoods_unit())

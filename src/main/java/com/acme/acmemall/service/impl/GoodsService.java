@@ -101,7 +101,7 @@ public class GoodsService implements IGoodsService {
         if (userVo == null || userVo.getUserId() == 0) {
             return ResultMap.error(1001, "请先登录管理系统再操作!");
         }
-        GoodsVo goodsVo = GoodsFactory.createGoods(goodsRequest);
+        GoodsVo goodsVo = GoodsFactory.createGoods(goodsRequest, userVo);
         Optional<ProductVo> optionalProductVo = request.getProducts().stream().filter(product -> product.getGoods_number() > 0).findFirst();
         if (optionalProductVo.isPresent()) {
             goodsVo.updateStock(optionalProductVo.get());

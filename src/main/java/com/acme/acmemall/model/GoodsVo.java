@@ -117,6 +117,7 @@ public class GoodsVo implements Serializable {
 
     //产品小程序链接
     private String short_link;
+    private LoginUserVo operator;
 
     private List<GoodsGalleryVo> galleryList = Lists.newArrayList();
     private List<GoodsSpecificationVo> specList = Lists.newArrayList();
