@@ -27,13 +27,13 @@
         <result property="first_buy_money" column="first_buy_money"/>
         <result property="qrCode" column="qr_code"/>
         <result property="fid" column="fid"/>
-		<result property="fx1" column="fx1"/>
-		<result property="fx2" column="fx2"/>
+        <result property="fx1" column="fx1"/>
+        <result property="fx2" column="fx2"/>
     </resultMap>
 
     <select id="queryObject" resultMap="userMap">
-		select * from t_acme_mall_user where id = #{value}
-	</select>
+        select * from t_acme_mall_user where id = #{value}
+    </select>
 
     <select id="queryByOpenId" resultMap="userMap">
         select * from t_acme_mall_user
@@ -59,49 +59,49 @@
     </select>
 
     <select id="queryTotal" resultType="int">
-		select count(*) from t_acme_mall_user
-	</select>
+        select count(*) from t_acme_mall_user
+    </select>
 
     <insert id="save" parameterType="com.acme.acmemall.model.LoginUserVo" useGeneratedKeys="true" keyProperty="userId">
-		insert into t_acme_mall_user
-		(
-			`username`, 
-			`password`, 
-			`gender`, 
-			`birthday`, 
-			`register_time`, 
-			`last_login_time`, 
-			`last_login_ip`, 
-			`user_level_id`, 
-			`nickname`, 
-			`mobile`, 
-			`register_ip`, 
-			`avatar`, 
-			`weixin_openid`,
-			`promoter_id`,
-			`promoter_name`,
-			`qr_code`
-		)
-		values
-		(
-			#{username}, 
-			#{password}, 
-			#{gender}, 
-			#{birthday}, 
-			#{register_time},
-			#{last_login_time},
-			#{last_login_ip},
-			#{user_level_id},
-			#{nickname},
-			#{mobile},
-			#{register_ip},
-			#{avatar},
-			#{weixin_openid},
-			#{promoterId},
-			#{promoterName},
-			#{qrCode}
-		)
-	</insert>
+        insert into t_acme_mall_user
+        (
+        `username`,
+        `password`,
+        `gender`,
+        `birthday`,
+        `register_time`,
+        `last_login_time`,
+        `last_login_ip`,
+        `user_level_id`,
+        `nickname`,
+        `mobile`,
+        `register_ip`,
+        `avatar`,
+        `weixin_openid`,
+        `promoter_id`,
+        `promoter_name`,
+        `qr_code`
+        )
+        values
+        (
+        #{username},
+        #{password},
+        #{gender},
+        #{birthday},
+        #{register_time},
+        #{last_login_time},
+        #{last_login_ip},
+        #{user_level_id},
+        #{nickname},
+        #{mobile},
+        #{register_ip},
+        #{avatar},
+        #{weixin_openid},
+        #{promoterId},
+        #{promoterName},
+        #{qrCode}
+        )
+    </insert>
 
     <update id="update" parameterType="com.acme.acmemall.model.LoginUserVo">
         update t_acme_mall_user
@@ -131,7 +131,7 @@
         </set>
         where id = #{userId}
     </update>
-    
+
     <update id="updatefx" parameterType="com.acme.acmemall.model.LoginUserVo">
         update t_acme_mall_user
         <set>
@@ -143,15 +143,15 @@
 
     <select id="queryShareGoods" resultType="com.acme.acmemall.model.UserGoods">
         SELECT
-            `user_goods_id` as userGoodsId,
-            `user_id` as userId,
-            `goods_id` as goodsId,
-            `name`,
-            `goods_brief` as goodsBrief,
-            `retail_price` as retailPrice,
-            `market_price` as marketPrice,
-            `primary_pic_url` as primaryPicUrl
-        FROM  `t_acme_mall_user_goods`
+        `user_goods_id` as userGoodsId,
+        `user_id` as userId,
+        `goods_id` as goodsId,
+        `name`,
+        `goods_brief` as goodsBrief,
+        `retail_price` as retailPrice,
+        `market_price` as marketPrice,
+        `primary_pic_url` as primaryPicUrl
+        FROM `t_acme_mall_user_goods`
         <where>
             AND user_id= #{userId}
             AND goods_id=#{goodsId}
@@ -168,25 +168,25 @@
         `retail_price` as retailPrice,
         `market_price` as marketPrice,
         `primary_pic_url` as primaryPicUrl
-        FROM  `t_acme_mall_user_goods`
+        FROM `t_acme_mall_user_goods`
         <where>
             AND user_id= #{userId}
             <if test="goodsId!='' and goodsId != null">
-                and  goods_id=#{goodsId}
+                and goods_id=#{goodsId}
             </if>
         </where>
     </select>
 
-    <insert id="saveUserGoods" >
+    <insert id="saveUserGoods">
         INSERT INTO `t_acme_mall_user_goods`
         (
-            `user_id`,
-            `goods_id`,
-            `name`,
-            `goods_brief`,
-            `retail_price`,
-            `market_price`,
-            `primary_pic_url`
+        `user_id`,
+        `goods_id`,
+        `name`,
+        `goods_brief`,
+        `retail_price`,
+        `market_price`,
+        `primary_pic_url`
         )
         VALUES
         (
@@ -226,6 +226,20 @@
         FROM sys_user u
         <where>
             AND u.mobile = #{mobile} AND u.password=#{password}
+        </where>
+    </select>
+
+    <select id="queryByUserId" resultMap="loginUserMap">
+        SELECT
+        u.user_id,
+        u.username,
+        u.mobile,
+        u.password,
+        u.merchant_id
+        FROM sys_user u
+        <where>
+            AND u.user_id = #{userId}
+            AND u.merchant_id=#{merchantId}
         </where>
     </select>
 </mapper>

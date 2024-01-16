@@ -21,6 +21,8 @@ public interface UserMapper extends BaseDao<LoginUserVo> {
      */
     LoginUserVo queryByOpenId(@Param("openId") String openId);
 
+    LoginUserVo queryByUserId(@Param("userId") Long userId, @Param("merchantId") Long merchantId);
+
     /**
      * 更新分销比例
      * @param vo

@@ -3,6 +3,8 @@ package com.acme.acmemall.service.impl;
 import com.acme.acmemall.common.ResultMap;
 import com.acme.acmemall.controller.reqeust.GoodsSubmitRequest;
 import com.acme.acmemall.dao.GoodsMapper;
+import com.acme.acmemall.dao.UserMapper;
+import com.acme.acmemall.exception.ResultCodeEnum;
 import com.acme.acmemall.model.GoodsVo;
 import com.acme.acmemall.model.LoginUserVo;
 import com.acme.acmemall.service.IGoodsService;
@@ -18,6 +20,9 @@ import java.util.Map;
 public class GoodsService implements IGoodsService {
     @Resource
     private GoodsMapper goodsDao;
+
+    @Resource
+    private UserMapper userMapper;
 
     /**
      * 统计在售商品数量
@@ -77,7 +82,13 @@ public class GoodsService implements IGoodsService {
     @Transactional
     @Override
     public ResultMap submit(GoodsSubmitRequest request, LoginUserVo loginUser) {
-
-        return null;
+        // 检查账号是不是管理员账号,非管理员账号拒绝操作
+        LoginUserVo userVo = userMapper.queryByUserId(loginUser.getUserId(), loginUser.getMerchantId());
+        if (userVo == null || userVo.getUserId() == 0) {
+            return ResultMap.error(1001, "请先登录管理系统再操作!");
+        }
+        GoodsVo goodsVo = request.getGoods();
+        goodsDao.save(goodsVo);
+        return ResultMap.response(ResultCodeEnum.SUCCESS, goodsVo);
     }
 }
