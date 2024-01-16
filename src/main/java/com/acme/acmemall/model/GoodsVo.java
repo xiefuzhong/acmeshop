@@ -13,10 +13,7 @@ import java.util.Date;
 /**
  * spu
  */
-@AllArgsConstructor
-@NoArgsConstructor
-@Builder
-@Getter
+@Data
 public class GoodsVo implements Serializable {
     //主键
     private Integer id;
