@@ -8,6 +8,7 @@ import com.acme.acmemall.exception.ResultCodeEnum;
 import com.acme.acmemall.factory.GoodsFactory;
 import com.acme.acmemall.model.*;
 import com.acme.acmemall.service.IGoodsService;
+import com.acme.acmemall.utils.GsonUtil;
 import org.apache.commons.collections.MapUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
@@ -112,6 +113,9 @@ public class GoodsService implements IGoodsService {
         galleryVoList.stream().forEach(galleryVo -> {
             galleryVo.setGoods_id(goodsVo.getId());
         });
+        if (logger.isDebugEnabled()) {
+            logger.info(GsonUtil.getGson().toJson(galleryVoList));
+        }
         goodsVo.relatedDetails("gallery", galleryVoList);
         galleryMapper.saveBatch(request.getGalleryList());
 
