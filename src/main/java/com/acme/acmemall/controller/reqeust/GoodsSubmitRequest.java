@@ -1,13 +1,11 @@
 package com.acme.acmemall.controller.reqeust;
 
-import com.acme.acmemall.exception.ApiCusException;
 import com.acme.acmemall.model.GoodsGalleryVo;
 import com.acme.acmemall.model.GoodsSpecificationVo;
 import com.acme.acmemall.model.GoodsVo;
 import com.acme.acmemall.model.ProductVo;
 import com.google.common.collect.Lists;
 import lombok.Data;
-import org.apache.commons.collections.CollectionUtils;
 
 import java.io.Serializable;
 import java.util.List;
@@ -25,18 +23,4 @@ public class GoodsSubmitRequest implements Serializable {
     private List<GoodsSpecificationVo> specList = Lists.newArrayList(); // 规格信息
     private List<ProductVo> products = Lists.newArrayList(); // SKU信息
 
-    public void validate() {
-        if (!getGoods().check()) {
-            throw new ApiCusException("名称不能为空");
-        }
-        if (CollectionUtils.isEmpty(galleryList)) {
-            throw new ApiCusException("轮播信息不能为空");
-        }
-        if (CollectionUtils.isEmpty(specList)) {
-            throw new ApiCusException("规格信息不能为空");
-        }
-        if (CollectionUtils.isEmpty(products)) {
-            throw new ApiCusException("产品库存信息不能为空");
-        }
-    }
 }
