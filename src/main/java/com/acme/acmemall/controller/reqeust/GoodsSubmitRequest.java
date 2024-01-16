@@ -4,6 +4,7 @@ import com.acme.acmemall.model.GoodsGalleryVo;
 import com.acme.acmemall.model.GoodsSpecificationVo;
 import com.acme.acmemall.model.GoodsVo;
 import com.acme.acmemall.model.ProductVo;
+import com.acme.acmemall.utils.GsonUtil;
 import com.google.common.collect.Lists;
 import lombok.Data;
 
@@ -23,4 +24,8 @@ public class GoodsSubmitRequest implements Serializable {
     private List<GoodsSpecificationVo> specList = Lists.newArrayList(); // 规格信息
     private List<ProductVo> products = Lists.newArrayList(); // SKU信息
 
+    @Override
+    public String toString() {
+        return GsonUtil.getGson().toJson(this);
+    }
 }
