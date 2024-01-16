@@ -154,24 +154,15 @@ public class GoodsVo implements Serializable {
     public void relatedDetails(String type, List<?> items) {
         switch (type) {
             case "gallery": {
-                for (Object object : items) {
-                    GoodsGalleryVo galleryVo = (GoodsGalleryVo) object;
-                    this.galleryList.add(galleryVo);
-                }
+                items.stream().map(object -> (GoodsGalleryVo) object).forEach(galleryVo -> this.galleryList.add(galleryVo));
                 break;
             }
             case "spec": {
-                for (Object object : items) {
-                    GoodsSpecificationVo specificationVo = (GoodsSpecificationVo) object;
-                    this.specList.add(specificationVo);
-                }
+                items.stream().map(object -> (GoodsSpecificationVo) object).forEachOrdered(specificationVo -> this.specList.add(specificationVo));
                 break;
             }
             case "product": {
-                for (Object object : items) {
-                    ProductVo productVo = (ProductVo) object;
-                    this.products.add(productVo);
-                }
+                items.stream().map(object -> (ProductVo) object).forEach(productVo -> this.products.add(productVo));
                 break;
             }
         }

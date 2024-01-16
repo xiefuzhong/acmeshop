@@ -268,7 +268,6 @@
         `primary_pic_url`,
         `list_pic_url`,
         `retail_price`,
-        `create_user_id`,
         `merchant_id`,
         `is_delete`
         )
@@ -286,7 +285,6 @@
         #{primary_pic_url},
         #{list_pic_url},
         #{retail_price},
-        #{operator.userId},
         #{merchantId},
         #{is_delete}
         )
