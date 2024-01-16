@@ -2,7 +2,6 @@ package com.acme.acmemall.controller.reqeust;
 
 import com.acme.acmemall.model.GoodsGalleryVo;
 import com.acme.acmemall.model.GoodsSpecificationVo;
-import com.acme.acmemall.model.GoodsVo;
 import com.acme.acmemall.model.ProductVo;
 import com.acme.acmemall.utils.GsonUtil;
 import com.google.common.collect.Lists;
@@ -19,7 +18,7 @@ import java.util.List;
 @Data
 public class GoodsSubmitRequest implements Serializable {
 
-    private GoodsVo goods; // 商品信息
+    private GoodsRequest goods; // 商品信息
     private List<GoodsGalleryVo> galleryList = Lists.newArrayList(); // 产品轮播信息
     private List<GoodsSpecificationVo> specList = Lists.newArrayList(); // 规格信息
     private List<ProductVo> products = Lists.newArrayList(); // SKU信息

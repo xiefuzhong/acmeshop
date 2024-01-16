@@ -79,6 +79,25 @@
 		)
 	</insert>
 
+    <insert id="saveBatch" parameterType="list">
+        insert into t_acme_mall_goods_specification
+        (
+        `goods_id`,
+        `specification_id`,
+        `value`,
+        `pic_url`
+        )
+        values
+        <foreach collection="list" item="item" separator=",">
+            (
+            #{item.goods_id},
+            #{item.specification_id},
+            #{item.value},
+            #{item.pic_url}
+            )
+        </foreach>
+    </insert>
+
     <update id="update" parameterType="com.acme.acmemall.model.GoodsSpecificationVo">
         update t_acme_mall_goods_specification
         <set>

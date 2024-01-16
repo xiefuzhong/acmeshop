@@ -3,17 +3,25 @@ package com.acme.acmemall.model;
 import com.acme.acmemall.utils.DateUtils;
 import com.acme.acmemall.utils.GsonUtil;
 import com.acme.acmemall.utils.StringUtils;
-import lombok.*;
+import com.google.common.collect.Lists;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.List;
 
 /**
  * spu
  */
-@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+@Getter
 public class GoodsVo implements Serializable {
     //主键
     private Integer id;
@@ -110,6 +118,11 @@ public class GoodsVo implements Serializable {
     //产品小程序链接
     private String short_link;
 
+    private List<GoodsGalleryVo> galleryList = Lists.newArrayList();
+    private List<GoodsSpecificationVo> specList = Lists.newArrayList();
+    private List<ProductVo> products = Lists.newArrayList();
+
+
     /**
      * 是否下架
      *
@@ -132,6 +145,31 @@ public class GoodsVo implements Serializable {
         return Boolean.TRUE;
     }
 
+    public void relatedDetails(String type, List<?> items) {
+        switch (type) {
+            case "gallery": {
+                for (Object object : items) {
+                    GoodsGalleryVo galleryVo = (GoodsGalleryVo) object;
+                    this.galleryList.add(galleryVo);
+                }
+                break;
+            }
+            case "spec": {
+                for (Object object : items) {
+                    GoodsSpecificationVo specificationVo = (GoodsSpecificationVo) object;
+                    this.specList.add(specificationVo);
+                }
+                break;
+            }
+            case "product": {
+                for (Object object : items) {
+                    ProductVo productVo = (ProductVo) object;
+                    this.products.add(productVo);
+                }
+                break;
+            }
+        }
+    }
     @Override
     public String toString() {
         return GsonUtil.getGson().toJson(this);

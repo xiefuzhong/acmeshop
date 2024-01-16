@@ -1,16 +1,13 @@
 package com.acme.acmemall.service.impl;
 
 import com.acme.acmemall.common.ResultMap;
+import com.acme.acmemall.controller.reqeust.GoodsRequest;
 import com.acme.acmemall.controller.reqeust.GoodsSubmitRequest;
-import com.acme.acmemall.dao.GoodsGalleryMapper;
-import com.acme.acmemall.dao.GoodsMapper;
-import com.acme.acmemall.dao.UserMapper;
+import com.acme.acmemall.dao.*;
 import com.acme.acmemall.exception.ResultCodeEnum;
-import com.acme.acmemall.model.GoodsGalleryVo;
-import com.acme.acmemall.model.GoodsVo;
-import com.acme.acmemall.model.LoginUserVo;
+import com.acme.acmemall.factory.GoodsFactory;
+import com.acme.acmemall.model.*;
 import com.acme.acmemall.service.IGoodsService;
-import com.acme.acmemall.utils.GsonUtil;
 import org.apache.commons.collections.MapUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
@@ -31,6 +28,12 @@ public class GoodsService implements IGoodsService {
 
     @Resource
     private GoodsGalleryMapper galleryMapper;
+
+    @Resource
+    private GoodsSpecificationMapper specificationMapper;
+
+    @Resource
+    private ProductMapper productMapper;
 
     /**
      * 统计在售商品数量
@@ -90,23 +93,35 @@ public class GoodsService implements IGoodsService {
     @Transactional
     @Override
     public ResultMap submit(GoodsSubmitRequest request, LoginUserVo loginUser) {
-        GoodsVo goodsVo = request.getGoods();
-        logger.info(goodsVo.toString());
+        GoodsRequest goodsRequest = request.getGoods();
+        logger.info(goodsRequest.toString());
         // 检查账号是不是管理员账号,非管理员账号拒绝操作
-        LoginUserVo userVo = userMapper.queryByUserId(loginUser.getUserId(), goodsVo.getMerchantId());
+        LoginUserVo userVo = userMapper.queryByUserId(loginUser.getUserId(), goodsRequest.getMerchantId());
         if (userVo == null || userVo.getUserId() == 0) {
             return ResultMap.error(1001, "请先登录管理系统再操作!");
         }
-
+        GoodsVo goodsVo = GoodsFactory.createGoods(goodsRequest);
         goodsDao.save(goodsVo);
-//        long goodsId = goodsVo.getId();
         logger.info(goodsVo.toString());
         List<GoodsGalleryVo> galleryVoList = request.getGalleryList();
         galleryVoList.stream().forEach(galleryVo -> {
             galleryVo.setGoods_id(goodsVo.getId());
         });
-        logger.info(GsonUtil.getGson().toJson(galleryVoList));
+        goodsVo.relatedDetails("gallery", galleryVoList);
         galleryMapper.saveBatch(request.getGalleryList());
+
+        List<GoodsSpecificationVo> specifications = request.getSpecList();
+        specifications.stream().forEach(spec -> {
+            spec.setGoods_id(goodsVo.getId());
+        });
+
+        specificationMapper.saveBatch(specifications);
+
+        List<ProductVo> products = request.getProducts();
+        products.stream().forEach(productVo -> {
+            productVo.setGoods_id(goodsVo.getId());
+        });
+        productMapper.saveBatch(products);
 
         return ResultMap.response(ResultCodeEnum.SUCCESS, goodsVo);
     }

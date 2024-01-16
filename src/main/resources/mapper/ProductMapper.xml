@@ -20,10 +20,10 @@
     </resultMap>
 
     <select id="queryObject" resultMap="productMap">
-		select a.*, b.name as goods_name, b.list_pic_url as list_pic_url
-		from t_acme_mall_product a left join t_acme_mall_goods b on a.goods_id = b.id
-		where a.id = #{value}
-	</select>
+        select a.*, b.name as goods_name, b.list_pic_url as list_pic_url
+        from t_acme_mall_product a left join t_acme_mall_goods b on a.goods_id = b.id
+        where a.id = #{value}
+    </select>
 
     <select id="queryList" resultMap="productMap">
         select a.*,
@@ -50,10 +50,54 @@
     </select>
 
     <select id="queryTotal" resultType="int">
-		select count(*) from t_acme_mall_product 
-	</select>
-	
-	<update id="update" parameterType="com.acme.acmemall.model.ProductVo">
+        select count(*) from t_acme_mall_product
+    </select>
+
+    <insert id="save" parameterType="com.acme.acmemall.model.ProductVo" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO t_acme_mall_product
+        (
+        `goods_id`,
+        `goods_specification_ids`,
+        `goods_sn`,
+        `goods_number`,
+        `retail_price`,
+        `market_price`
+        )
+        VALUES
+        (
+        #{goods_id},
+        #{goods_specification_ids},
+        #{goods_sn},
+        #{goods_number},
+        #{retail_price},
+        #{market_price}
+        )
+    </insert>
+
+    <insert id="saveBatch" parameterType="list">
+        INSERT INTO t_acme_mall_product
+        (
+        `goods_id`,
+        `goods_specification_ids`,
+        `goods_sn`,
+        `goods_number`,
+        `retail_price`,
+        `market_price`
+        )
+        VALUES
+        <foreach collection="list" item="item" separator=",">
+            (
+            #{goods_id},
+            #{goods_specification_ids},
+            #{goods_sn},
+            #{goods_number},
+            #{retail_price},
+            #{market_price}
+            )
+        </foreach>
+    </insert>
+
+    <update id="update" parameterType="com.acme.acmemall.model.ProductVo">
         update t_acme_mall_product set goods_number = #{goods_number} where id = #{id}
     </update>
 </mapper>
