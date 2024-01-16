@@ -256,14 +256,12 @@
     <insert id="save" parameterType="com.acme.acmemall.model.GoodsVo" useGeneratedKeys="true" keyProperty="id">
         insert into t_acme_mall_goods
         (
-        `id`,
         `name`,
         `primary_pic_url`,
         `list_pic_url`
         )
         values
         (
-        #{id},
         #{name},
         #{primary_pic_url},
         #{list_pic_url}
