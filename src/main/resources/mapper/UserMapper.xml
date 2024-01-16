@@ -228,7 +228,7 @@
             AND u.mobile = #{mobile} AND u.password=#{password}
         </where>
     </select>
-    ```
+
     <select id="queryByUserId" resultMap="loginUserMap">
         SELECT
         u.user_id,
