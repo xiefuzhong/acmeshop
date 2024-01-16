@@ -5,7 +5,6 @@ import com.acme.acmemall.model.GoodsGalleryVo;
 import com.acme.acmemall.model.GoodsSpecificationVo;
 import com.acme.acmemall.model.GoodsVo;
 import com.acme.acmemall.model.ProductVo;
-import com.acme.acmemall.utils.StringUtils;
 import com.google.common.collect.Lists;
 import lombok.Data;
 import org.apache.commons.collections.CollectionUtils;
@@ -27,7 +26,7 @@ public class GoodsSubmitRequest implements Serializable {
     private List<ProductVo> products = Lists.newArrayList(); // SKU信息
 
     public void validate() {
-        if (StringUtils.isNullOrEmpty(this.goods.getName())) {
+        if (!getGoods().check()) {
             throw new ApiCusException("名称不能为空");
         }
         if (CollectionUtils.isEmpty(galleryList)) {

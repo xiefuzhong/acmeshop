@@ -1,6 +1,7 @@
 package com.acme.acmemall.model;
 
 import com.acme.acmemall.utils.DateUtils;
+import com.acme.acmemall.utils.StringUtils;
 import lombok.*;
 
 import java.io.Serializable;
@@ -124,5 +125,12 @@ public class GoodsVo implements Serializable {
         if (this.add_time == null)
             return null;
         return DateUtils.timeToUtcDate(this.add_time.getTime(), DateUtils.DATE_TIME_PATTERN);
+    }
+
+    public boolean check() {
+        if (StringUtils.isNullOrEmpty(name)) {
+            return Boolean.FALSE;
+        }
+        return Boolean.TRUE;
     }
 }
