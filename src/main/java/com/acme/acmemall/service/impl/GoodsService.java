@@ -9,6 +9,7 @@ import com.acme.acmemall.model.GoodsVo;
 import com.acme.acmemall.model.LoginUserVo;
 import com.acme.acmemall.service.IGoodsService;
 import org.apache.commons.collections.MapUtils;
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,6 +19,7 @@ import java.util.Map;
 
 @Service
 public class GoodsService implements IGoodsService {
+    protected Logger logger = Logger.getLogger(getClass());
     @Resource
     private GoodsMapper goodsDao;
 
@@ -83,6 +85,7 @@ public class GoodsService implements IGoodsService {
     @Override
     public ResultMap submit(GoodsSubmitRequest request, LoginUserVo loginUser) {
         GoodsVo goodsVo = request.getGoods();
+        logger.info(goodsVo.toString());
         // 检查账号是不是管理员账号,非管理员账号拒绝操作
         LoginUserVo userVo = userMapper.queryByUserId(loginUser.getUserId(), goodsVo.getMerchantId());
         if (userVo == null || userVo.getUserId() == 0) {
@@ -90,6 +93,8 @@ public class GoodsService implements IGoodsService {
         }
 
         goodsDao.save(goodsVo);
+//        long goodsId = goodsVo.getId();
+        logger.info(goodsVo.toString());
         return ResultMap.response(ResultCodeEnum.SUCCESS, goodsVo);
     }
 }

@@ -1,6 +1,7 @@
 package com.acme.acmemall.model;
 
 import com.acme.acmemall.utils.DateUtils;
+import com.acme.acmemall.utils.GsonUtil;
 import com.acme.acmemall.utils.StringUtils;
 import lombok.*;
 
@@ -132,5 +133,10 @@ public class GoodsVo implements Serializable {
             return Boolean.FALSE;
         }
         return Boolean.TRUE;
+    }
+
+    @Override
+    public String toString() {
+        return GsonUtil.getGson().toJson(this);
     }
 }
