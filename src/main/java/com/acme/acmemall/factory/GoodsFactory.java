@@ -9,6 +9,6 @@ import com.acme.acmemall.model.GoodsVo;
  */
 public class GoodsFactory {
     public static GoodsVo createGoods() {
-        return GoodsVo.builder().build();
+        return null;
     }
 }
