@@ -82,12 +82,13 @@ public class GoodsService implements IGoodsService {
     @Transactional
     @Override
     public ResultMap submit(GoodsSubmitRequest request, LoginUserVo loginUser) {
+        GoodsVo goodsVo = request.getGoods();
         // 检查账号是不是管理员账号,非管理员账号拒绝操作
-        LoginUserVo userVo = userMapper.queryByUserId(loginUser.getUserId(), loginUser.getMerchantId());
+        LoginUserVo userVo = userMapper.queryByUserId(loginUser.getUserId(), goodsVo.getMerchantId());
         if (userVo == null || userVo.getUserId() == 0) {
             return ResultMap.error(1001, "请先登录管理系统再操作!");
         }
-        GoodsVo goodsVo = request.getGoods();
+
         goodsDao.save(goodsVo);
         return ResultMap.response(ResultCodeEnum.SUCCESS, goodsVo);
     }
