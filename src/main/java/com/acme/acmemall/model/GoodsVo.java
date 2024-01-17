@@ -1,5 +1,8 @@
 package com.acme.acmemall.model;
 
+import com.acme.acmemall.common.GoodsHandleType;
+import com.acme.acmemall.common.GoodsStatus;
+import com.acme.acmemall.controller.reqeust.GoodsManageRequest;
 import com.acme.acmemall.utils.DateUtils;
 import com.acme.acmemall.utils.GsonUtil;
 import com.acme.acmemall.utils.StringUtils;
@@ -123,6 +126,39 @@ public class GoodsVo implements Serializable {
     private List<GoodsSpecificationVo> specList = Lists.newArrayList();
     private List<ProductVo> products = Lists.newArrayList();
 
+    /**
+     * 更新商品
+     *
+     * @param handle  操作
+     * @param request 待修改数据
+     */
+    public void update(GoodsHandleType handle, GoodsManageRequest request) {
+        switch (handle) {
+            case OFF: {
+                this.notOnSale();
+                break;
+            }
+            case ON: {
+                this.onSale();
+                break;
+            }
+
+        }
+    }
+
+    /**
+     * 商品上架
+     */
+    private void onSale() {
+        this.is_on_sale = GoodsStatus.ON_SALE.getStatusCode();
+    }
+
+    /**
+     * 商品下架
+     */
+    private void notOnSale() {
+        this.is_on_sale = GoodsStatus.NOT_ON_SALE.getStatusCode();
+    }
 
     /**
      * 是否下架
@@ -155,19 +191,20 @@ public class GoodsVo implements Serializable {
     public void relatedDetails(String type, List<?> items) {
         switch (type) {
             case "gallery": {
-//                items.stream().map(object -> (GoodsGalleryVo) object).forEach(galleryVo -> this.galleryList.add(galleryVo));
+                items.stream().map(object -> (GoodsGalleryVo) object).forEach(galleryVo -> this.galleryList.add(galleryVo));
                 break;
             }
             case "spec": {
-//                items.stream().map(object -> (GoodsSpecificationVo) object).forEachOrdered(specificationVo -> this.specList.add(specificationVo));
+                items.stream().map(object -> (GoodsSpecificationVo) object).forEachOrdered(specificationVo -> this.specList.add(specificationVo));
                 break;
             }
             case "product": {
-//                items.stream().map(object -> (ProductVo) object).forEach(productVo -> this.products.add(productVo));
+                items.stream().map(object -> (ProductVo) object).forEach(productVo -> this.products.add(productVo));
                 break;
             }
         }
     }
+
     @Override
     public String toString() {
         return GsonUtil.getGson().toJson(this);

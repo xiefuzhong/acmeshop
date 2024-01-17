@@ -35,4 +35,10 @@ public interface GoodsMapper extends BaseDao<GoodsVo> {
     int queryKillTotal(QueryParam query);
 
     List<GoodsVo> queryKillPage(QueryParam query);
+
+    GoodsVo queryGoodsDetail(Long id);
+
+    List<GoodsVo> queryByIds(Long[] ids);
+
+    void batchUpdate(List<GoodsVo> goodsList);
 }

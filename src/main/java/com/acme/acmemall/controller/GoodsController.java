@@ -3,6 +3,7 @@ package com.acme.acmemall.controller;
 import com.acme.acmemall.annotation.IgnoreAuth;
 import com.acme.acmemall.annotation.LoginUser;
 import com.acme.acmemall.common.ResultMap;
+import com.acme.acmemall.controller.reqeust.GoodsManageRequest;
 import com.acme.acmemall.controller.reqeust.GoodsSubmitRequest;
 import com.acme.acmemall.exception.ResultCodeEnum;
 import com.acme.acmemall.model.*;
@@ -452,7 +453,23 @@ public class GoodsController extends ApiBase {
             return ResultMap.error();
         }
         GoodsSubmitRequest submitRequest = JSONObject.toJavaObject(jsonRequest, GoodsSubmitRequest.class);
-//        logger.info("submitRequest:" + submitRequest.toString());
         return goodsService.submit(submitRequest, loginUserVo);
+    }
+
+    /**
+     * 商品管理功能：上架/下架/草稿编辑更新/修改价格/修改数量
+     *
+     * @param loginUserVo
+     * @return
+     */
+    @PostMapping("/manage")
+    public Object updateGoods(@LoginUser LoginUserVo loginUserVo) {
+        JSONObject jsonRequest = super.getJsonRequest();
+        logger.info("【请求开始】商品管理->商品管理->提交,请求参数:" + jsonRequest.toJSONString());
+        if (jsonRequest == null) {
+            return ResultMap.error();
+        }
+        GoodsManageRequest manageRequest = JSONObject.toJavaObject(jsonRequest, GoodsManageRequest.class);
+        return goodsService.updateGoods(manageRequest, loginUserVo);
     }
 }

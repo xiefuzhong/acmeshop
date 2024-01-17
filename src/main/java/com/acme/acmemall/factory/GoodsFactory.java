@@ -22,7 +22,7 @@ public class GoodsFactory {
                 .goods_unit(request.getGoods_unit())
                 .brand_id(request.getBrand_id())
                 .category_id(request.getCategory_id())
-                .is_delete(request.getStatus())
+                .is_on_sale(request.getStatus())
                 .extra_price(BigDecimal.valueOf(request.getExtra_price()))
                 .merchantId(request.getMerchantId())
                 .primary_pic_url(request.getPrimary_pic_url())

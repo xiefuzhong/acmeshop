@@ -1,6 +1,8 @@
 package com.acme.acmemall.service.impl;
 
+import com.acme.acmemall.common.GoodsHandleType;
 import com.acme.acmemall.common.ResultMap;
+import com.acme.acmemall.controller.reqeust.GoodsManageRequest;
 import com.acme.acmemall.controller.reqeust.GoodsRequest;
 import com.acme.acmemall.controller.reqeust.GoodsSubmitRequest;
 import com.acme.acmemall.dao.*;
@@ -9,12 +11,15 @@ import com.acme.acmemall.factory.GoodsFactory;
 import com.acme.acmemall.model.*;
 import com.acme.acmemall.service.IGoodsService;
 import com.acme.acmemall.utils.GsonUtil;
+import com.acme.acmemall.utils.StringUtils;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.MapUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -142,5 +147,26 @@ public class GoodsServiceImpl implements IGoodsService {
         productMapper.saveBatch(products);
 
         return ResultMap.response(ResultCodeEnum.SUCCESS, goodsVo);
+    }
+
+    @Transactional(rollbackFor = {RuntimeException.class, Exception.class})
+    @Override
+    public ResultMap updateGoods(GoodsManageRequest request, LoginUserVo loginUserVo) {
+        if (StringUtils.isNullOrEmpty(request.getGoodsIds())) {
+            return ResultMap.badArgument();
+        }
+        Long[] goodsIds = (Long[]) Arrays.stream(request.getGoodsIds().split(",")).toArray();
+        // 操作
+        String handle = request.getHandle();
+        List<GoodsVo> goodsList = goodsDao.queryByIds(goodsIds);
+        if (CollectionUtils.isEmpty(goodsList)) {
+            return ResultMap.badArgument();
+        }
+        if (!GoodsHandleType.validate(handle)) {
+            return ResultMap.badArgument();
+        }
+        goodsList.stream().forEach(goodsVo -> goodsVo.update(GoodsHandleType.parse(handle), request));
+
+        return ResultMap.response(ResultCodeEnum.SUCCESS);
     }
 }
