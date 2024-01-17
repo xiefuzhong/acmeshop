@@ -1,6 +1,5 @@
 package com.acme.acmemall.acpect;
 
-import com.acme.acmemall.utils.GsonUtil;
 import com.google.common.base.Throwables;
 import org.apache.log4j.Logger;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -9,6 +8,8 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.stereotype.Component;
+
+import java.util.Arrays;
 
 
 /**
@@ -41,7 +42,7 @@ public class ControllerAspect {
         }
         long end = System.nanoTime();
         long cost = end - begin;
-        logger.info("Controller method：" + pjp.getSignature().getName() + "，prams：" + (pjp.getArgs().length > 0 ? GsonUtil.getGson().toJson(pjp.getArgs()) : "void") + "，cost time：" + cost + " ns");
+        logger.info("Controller method：" + pjp.getSignature().getName() + "，prams：" + (pjp.getArgs().length > 0 ? Arrays.toString(pjp.getArgs()) : "void") + "，cost time：" + cost + " ns");
         return returnValue;
     }
 
