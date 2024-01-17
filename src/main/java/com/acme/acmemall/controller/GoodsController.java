@@ -452,7 +452,7 @@ public class GoodsController extends ApiBase {
             return ResultMap.error();
         }
         GoodsSubmitRequest submitRequest = JSONObject.toJavaObject(jsonRequest, GoodsSubmitRequest.class);
-        logger.info("submitRequest:" + submitRequest.toString());
+//        logger.info("submitRequest:" + submitRequest.toString());
         return goodsService.submit(submitRequest, loginUserVo);
     }
 }

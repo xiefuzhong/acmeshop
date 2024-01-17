@@ -96,7 +96,7 @@ public class GoodsService implements IGoodsService {
     @Override
     public ResultMap submit(GoodsSubmitRequest request, LoginUserVo loginUser) {
         GoodsRequest goodsRequest = request.getGoods();
-        logger.info(goodsRequest.toString());
+//        logger.info(goodsRequest.toString());
         // 检查账号是不是管理员账号,非管理员账号拒绝操作
         LoginUserVo userVo = userMapper.queryByUserId(loginUser.getUserId(), goodsRequest.getMerchantId());
         if (userVo == null || userVo.getUserId() == 0) {
@@ -108,13 +108,13 @@ public class GoodsService implements IGoodsService {
             goodsVo.updateStock(optionalProductVo.get());
         }
         goodsDao.save(goodsVo);
-        logger.info(goodsVo.toString());
+        logger.info("save goodsVo after ==>" + goodsVo.toString());
         List<GoodsGalleryVo> galleryVoList = request.getGalleryList();
         galleryVoList.stream().forEach(galleryVo -> {
             galleryVo.setGoods_id(goodsVo.getId());
         });
         if (logger.isDebugEnabled()) {
-            logger.info(GsonUtil.getGson().toJson(galleryVoList));
+            logger.info("galleryVoList==>" + GsonUtil.getGson().toJson(galleryVoList));
         }
         goodsVo.relatedDetails("gallery", galleryVoList);
         galleryMapper.saveBatch(request.getGalleryList());
@@ -123,6 +123,9 @@ public class GoodsService implements IGoodsService {
         specifications.stream().forEach(spec -> {
             spec.setGoods_id(goodsVo.getId());
         });
+        if (logger.isDebugEnabled()) {
+            logger.info("specifications==>" + GsonUtil.getGson().toJson(specifications));
+        }
         goodsVo.relatedDetails("spec", specifications);
         specificationMapper.saveBatch(specifications);
 
@@ -130,6 +133,9 @@ public class GoodsService implements IGoodsService {
         products.stream().forEach(productVo -> {
             productVo.setGoods_id(goodsVo.getId());
         });
+        if (logger.isDebugEnabled()) {
+            logger.info("products==>" + GsonUtil.getGson().toJson(products));
+        }
         goodsVo.relatedDetails("product", products);
         productMapper.saveBatch(products);
 
