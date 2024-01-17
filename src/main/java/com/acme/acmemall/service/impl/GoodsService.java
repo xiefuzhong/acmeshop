@@ -113,9 +113,7 @@ public class GoodsService implements IGoodsService {
         galleryVoList.stream().forEach(galleryVo -> {
             galleryVo.setGoods_id(goodsVo.getId());
         });
-        if (logger.isDebugEnabled()) {
-            logger.info("galleryVoList==>" + GsonUtil.getGson().toJson(galleryVoList));
-        }
+        logger.info("galleryVoList==>" + GsonUtil.getGson().toJson(galleryVoList));
         goodsVo.relatedDetails("gallery", galleryVoList);
         galleryMapper.saveBatch(request.getGalleryList());
 
@@ -123,9 +121,7 @@ public class GoodsService implements IGoodsService {
         specifications.stream().forEach(spec -> {
             spec.setGoods_id(goodsVo.getId());
         });
-        if (logger.isDebugEnabled()) {
-            logger.info("specifications==>" + GsonUtil.getGson().toJson(specifications));
-        }
+        logger.info("specifications==>" + GsonUtil.getGson().toJson(specifications));
         goodsVo.relatedDetails("spec", specifications);
         specificationMapper.saveBatch(specifications);
 
@@ -133,9 +129,7 @@ public class GoodsService implements IGoodsService {
         products.stream().forEach(productVo -> {
             productVo.setGoods_id(goodsVo.getId());
         });
-        if (logger.isDebugEnabled()) {
-            logger.info("products==>" + GsonUtil.getGson().toJson(products));
-        }
+        logger.info("products==>" + GsonUtil.getGson().toJson(products));
         goodsVo.relatedDetails("product", products);
         productMapper.saveBatch(products);
 
