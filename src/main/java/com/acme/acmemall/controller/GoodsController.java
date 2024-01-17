@@ -470,6 +470,7 @@ public class GoodsController extends ApiBase {
             return ResultMap.error();
         }
         GoodsManageRequest manageRequest = JSONObject.toJavaObject(jsonRequest, GoodsManageRequest.class);
+
         return goodsService.updateGoods(manageRequest, loginUserVo);
     }
 }

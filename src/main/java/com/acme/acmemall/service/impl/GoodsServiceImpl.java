@@ -152,21 +152,28 @@ public class GoodsServiceImpl implements IGoodsService {
     @Transactional(rollbackFor = {RuntimeException.class, Exception.class})
     @Override
     public ResultMap updateGoods(GoodsManageRequest request, LoginUserVo loginUserVo) {
+        logger.info("updateGoods=>" + GsonUtil.toJson(request));
         if (StringUtils.isNullOrEmpty(request.getGoodsIds())) {
             return ResultMap.badArgument();
         }
         Long[] goodsIds = (Long[]) Arrays.stream(request.getGoodsIds().split(",")).toArray();
+        if (goodsIds.length == 0) {
+            logger.info("updateGoods.goodsIds=>" + goodsIds.length);
+            return ResultMap.badArgument();
+        }
         // 操作
         String handle = request.getHandle();
         List<GoodsVo> goodsList = goodsDao.queryByIds(goodsIds);
         if (CollectionUtils.isEmpty(goodsList)) {
+            logger.info("updateGoods.queryByIds=>" + goodsList.size());
             return ResultMap.badArgument();
         }
         if (!GoodsHandleType.validate(handle)) {
+            logger.info("updateGoods.validate=>" + handle);
             return ResultMap.badArgument();
         }
         goodsList.stream().forEach(goodsVo -> goodsVo.update(GoodsHandleType.parse(handle), request));
-
+        goodsDao.batchUpdate(goodsList);
         return ResultMap.response(ResultCodeEnum.SUCCESS);
     }
 }
