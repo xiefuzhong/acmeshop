@@ -19,8 +19,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+/**
+ * @author xfz
+ */
 @Service
-public class GoodsService implements IGoodsService {
+public class GoodsServiceImpl implements IGoodsService {
     protected Logger logger = Logger.getLogger(getClass());
     @Resource
     private GoodsMapper goodsDao;
@@ -36,6 +39,11 @@ public class GoodsService implements IGoodsService {
 
     @Resource
     private ProductMapper productMapper;
+
+    private static final String HOT_KEY = "is_hot";
+    private static final String HOT_VALUE = "1";
+    private static final String NEW_KEY = "is_new";
+    private static final String NEW_VALUE = "1";
 
     /**
      * 统计在售商品数量
@@ -54,10 +62,10 @@ public class GoodsService implements IGoodsService {
      */
     @Override
     public List<GoodsVo> queryGoodsList(Map<String, Object> map) {
-        if ("1".equals(MapUtils.getString(map, "is_hot"))) {
+        if (HOT_VALUE.equals(MapUtils.getString(map, HOT_KEY))) {
             // 热门商品查询
             return goodsDao.queryHotGoodsList(map);
-        } else if ("1".equals(MapUtils.getString(map, "is_new"))) {
+        } else if (NEW_VALUE.equals(MapUtils.getString(map, NEW_KEY))) {
             // 新品收发查询
             return goodsDao.queryList(map);
         }
@@ -92,11 +100,11 @@ public class GoodsService implements IGoodsService {
      * @param loginUser
      * @return
      */
-    @Transactional
+    @Transactional(rollbackFor = {RuntimeException.class, Exception.class})
     @Override
     public ResultMap submit(GoodsSubmitRequest request, LoginUserVo loginUser) {
         GoodsRequest goodsRequest = request.getGoods();
-//        logger.info(goodsRequest.toString());
+
         // 检查账号是不是管理员账号,非管理员账号拒绝操作
         LoginUserVo userVo = userMapper.queryByUserId(loginUser.getUserId(), goodsRequest.getMerchantId());
         if (userVo == null || userVo.getUserId() == 0) {

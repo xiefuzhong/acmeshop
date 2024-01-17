@@ -40,7 +40,7 @@ public class InvoiceTitleController extends ApiBase {
         JSONObject request = this.getJsonRequest();
         InvoiceTitleVo entity = new InvoiceTitleVo();
         if (request != null) {
-            entity.setId(0l);
+            entity.setId(0L);
             entity.setUserId(loginUser.getUserId());
             entity.setType(request.getInteger("type"));
             entity.setInvoiceType(request.getInteger("invoiceType"));

@@ -28,7 +28,7 @@ import java.util.stream.Collectors;
  * @time: 2023/2/17 15:58
  */
 @Service
-public class OrderService implements IOrderService {
+public class OrderServiceImpl implements IOrderService {
     private final UserCouponMapper userCouponMapper;
     private final AddressMapper addressMapper;
     private final ShopCartMapper cartMapper;
@@ -39,12 +39,12 @@ public class OrderService implements IOrderService {
 
     private final InvoiceTitleMapper invoiceHeaderMapper;
 
-    public OrderService(UserCouponMapper userCouponMapper,
-                        AddressMapper addressMapper,
-                        ShopCartMapper cartMapper,
-                        OrderMapper orderMapper,
-                        InvoiceTitleMapper invoiceHeaderMapper,
-                        OrderGoodsMapper orderItemMapper) {
+    public OrderServiceImpl(UserCouponMapper userCouponMapper,
+                            AddressMapper addressMapper,
+                            ShopCartMapper cartMapper,
+                            OrderMapper orderMapper,
+                            InvoiceTitleMapper invoiceHeaderMapper,
+                            OrderGoodsMapper orderItemMapper) {
         this.userCouponMapper = userCouponMapper;
         this.addressMapper = addressMapper;
         this.cartMapper = cartMapper;
@@ -62,7 +62,7 @@ public class OrderService implements IOrderService {
      * @param loginUser 登录用户信息
      * @return 订单提交结果
      */
-    @Transactional
+    @Transactional(rollbackFor = {RuntimeException.class, Exception.class})
     @Override
     public ResultMap submit(OrderSubmitRequest request, LoginUserVo loginUser) {
         // 提交方式:cart-购物车提交 2-直接购买;其他-团购购买
@@ -186,7 +186,8 @@ public class OrderService implements IOrderService {
             }
             Map paramMap = Maps.newHashMap();
             paramMap.put("user_id", loginUser.getUserId());
-            paramMap.put("coupon_status", 1); // 可用
+            // 可用
+            paramMap.put("coupon_status", 1);
             paramMap.put("couponIds", couponIds);
             paramMap.put("selected", true);
             // 商品总额

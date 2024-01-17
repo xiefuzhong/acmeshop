@@ -20,33 +20,53 @@ import java.util.Set;
 public class MapUtils {
 
     public static String getString(String key, Map<String, Object> map) {
-        if (map == null || key == null)
+        if (map == null || key == null) {
             throw new IllegalArgumentException();
-        if (!map.containsKey(key))
+        }
+
+        if (!map.containsKey(key)) {
             return null;
+        }
+
         Object value = map.get(key);
-        if (value == null)
+        if (value == null) {
             return null;
+        }
+
         return value.toString();
     }
 
     public static Integer getInteger(String key, Map<String, Object> map) {
-        if (map == null || key == null)
+        if (map == null || key == null) {
             throw new IllegalArgumentException();
-        if (!map.containsKey(key))
+        }
+
+        if (!map.containsKey(key)) {
             return null;
+        }
+
         Object value = map.get(key);
-        if (value == null)
+        if (value == null) {
             return null;
-        if (value instanceof Integer)
+        }
+
+        if (value instanceof Integer) {
             return (Integer) value;
-        if (value instanceof String)
+        }
+
+        if (value instanceof String) {
             return Integer.valueOf((String) value);
+        }
+
         //Date 不支持变成为date类型
-        if (value instanceof Date)
+        if (value instanceof Date) {
             throw new ClassCastException();
-        if (value instanceof Number)
+        }
+
+        if (value instanceof Number) {
             return ((Number) value).intValue();
+        }
+
         throw new ClassCastException();
     }
 
@@ -113,9 +133,9 @@ public class MapUtils {
         if (value instanceof Long)
             return new BigDecimal((Long) value);
         if (value instanceof Float)
-            return new BigDecimal((Float) value);
+            return BigDecimal.valueOf((Float) value);
         if (value instanceof Double)
-            return new BigDecimal((Double) value);
+            return BigDecimal.valueOf((Double) value);
         if (value instanceof Date) {
             return new BigDecimal(((Date) value).getTime());
         }
@@ -126,7 +146,7 @@ public class MapUtils {
             return new BigDecimal(((Timestamp) value).getTime());
         }
         if (value instanceof String) {
-            if (!StringUtils.isNullOrEmpty((String) value))
+            if (!StringUtils.isNullOrEmpty(value))
                 return new BigDecimal((String) value);
             else
                 return null;
@@ -209,8 +229,6 @@ public class MapUtils {
         }
         return null;
     }
-
-
 
 
     /**

@@ -53,6 +53,6 @@ public class SysRegionService implements ISysRegionService {
             param.put("parentId", parentId);
             return mapper.queryList(param);
         }
-        return regionList.stream().filter(regionVo -> (regionVo.getParentId() != null && regionVo.getParentId() == parentId)).collect(Collectors.toList());
+        return regionList.stream().filter(regionVo -> (regionVo.getParentId() != null && regionVo.getParentId().equals(parentId))).collect(Collectors.toList());
     }
 }
