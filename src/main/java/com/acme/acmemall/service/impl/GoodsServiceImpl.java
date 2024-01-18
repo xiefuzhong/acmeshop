@@ -156,7 +156,7 @@ public class GoodsServiceImpl implements IGoodsService {
         if (StringUtils.isNullOrEmpty(request.getGoodsIds())) {
             return ResultMap.badArgument();
         }
-        Long[] goodsIds = (Long[]) Arrays.stream(request.getGoodsIds().split(",")).toArray();
+        Long[] goodsIds = Arrays.stream(request.getGoodsIds().split(",")).map(Long::parseLong).toArray(Long[]::new);
         logger.info("updateGoods.goodsIds=>" + goodsIds.length);
         if (goodsIds.length == 0) {
             return ResultMap.badArgument();
