@@ -9,4 +9,6 @@ public interface IProductService {
     List<ProductVo> queryProductList(Map<String,Object> map);
 
     ProductVo queryObject(Integer productId);
+
+    void batchUpdate(List<ProductVo> entityList);
 }

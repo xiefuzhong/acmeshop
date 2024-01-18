@@ -105,4 +105,28 @@
     <update id="update" parameterType="com.acme.acmemall.model.ProductVo">
         update t_acme_mall_product set goods_number = #{goods_number} where id = #{id}
     </update>
+
+    <update id="batchUpdate" parameterType="list">
+        update t_acme_mall_product
+        <trim prefix="set" suffixOverrides=",">
+            <trim prefix="goods_number =case" suffix="end,">
+                <foreach collection="list" item="item" index="index">
+                    <if test="item.goods_number!=null">
+                        when id=#{item.id} then #{item.goods_number}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="retail_price =case" suffix="end,">
+                <foreach collection="list" item="item" index="index">
+                    <if test="item.retail_price!=null">
+                        when id=#{item.id} then #{item.retail_price}
+                    </if>
+                </foreach>
+            </trim>
+        </trim>
+        where id in
+        <foreach collection="list" item="item" index="index" separator="," open="(" close=")">
+            #{item.id}
+        </foreach>
+    </update>
 </mapper>

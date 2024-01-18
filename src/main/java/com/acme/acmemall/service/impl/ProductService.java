@@ -18,14 +18,14 @@ import java.util.Map;
 public class ProductService implements IProductService {
 
     @Autowired
-    ProductMapper mapper;
+    ProductMapper productMapper;
     /**
      * @param map
      * @return
      */
     @Override
     public List<ProductVo> queryProductList(Map<String, Object> map) {
-        return mapper.queryList(map);
+        return productMapper.queryList(map);
     }
 
     /**
@@ -34,6 +34,14 @@ public class ProductService implements IProductService {
      */
     @Override
     public ProductVo queryObject(Integer productId) {
-        return mapper.queryObject(productId);
+        return productMapper.queryObject(productId);
+    }
+
+    /**
+     * @param entityList
+     */
+    @Override
+    public void batchUpdate(List<ProductVo> entityList) {
+        productMapper.batchUpdate(entityList);
     }
 }
