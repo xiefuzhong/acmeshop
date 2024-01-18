@@ -496,7 +496,8 @@
             </trim>
         </trim>
         where id in
-        <foreach collection="list" item="item" index="index" separator="," open="(" close=")">#{item.id}
+        <foreach collection="list" item="item" index="index" separator="," open="(" close=")">
+            #{item.id}
         </foreach>
     </update>
 </mapper>

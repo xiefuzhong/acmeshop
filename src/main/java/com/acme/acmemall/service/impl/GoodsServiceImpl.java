@@ -157,22 +157,24 @@ public class GoodsServiceImpl implements IGoodsService {
             return ResultMap.badArgument();
         }
         Long[] goodsIds = (Long[]) Arrays.stream(request.getGoodsIds().split(",")).toArray();
+        logger.info("updateGoods.goodsIds=>" + goodsIds.length);
         if (goodsIds.length == 0) {
-            logger.info("updateGoods.goodsIds=>" + goodsIds.length);
             return ResultMap.badArgument();
         }
         // 操作
         String handle = request.getHandle();
         List<GoodsVo> goodsList = goodsDao.queryByIds(goodsIds);
+        logger.info("updateGoods.queryByIds.size=>" + goodsList == null ? 0 : goodsList.size());
         if (CollectionUtils.isEmpty(goodsList)) {
-            logger.info("updateGoods.queryByIds=>" + goodsList.size());
+
             return ResultMap.badArgument();
         }
+        logger.info("updateGoods.validate=>" + handle);
         if (!GoodsHandleType.validate(handle)) {
-            logger.info("updateGoods.validate=>" + handle);
             return ResultMap.badArgument();
         }
         goodsList.stream().forEach(goodsVo -> goodsVo.update(GoodsHandleType.parse(handle), request));
+        logger.info("batchUpdate.goodsList.size==" + goodsList.size());
         goodsDao.batchUpdate(goodsList);
         return ResultMap.response(ResultCodeEnum.SUCCESS);
     }
