@@ -129,7 +129,7 @@ public class GoodsVo implements Serializable {
     /**
      * 更新商品
      *
-     * @param handle  操作
+     * @param handle  操作 上/下架、删除(草稿中)
      * @param request 待修改数据
      */
     public void update(GoodsHandleType handle, GoodsManageRequest request) {
@@ -140,6 +140,10 @@ public class GoodsVo implements Serializable {
             }
             case ON: {
                 this.onSale();
+                break;
+            }
+            case DRAFT: {
+                this.draft();
                 break;
             }
 
@@ -158,6 +162,13 @@ public class GoodsVo implements Serializable {
      */
     private void notOnSale() {
         this.is_on_sale = GoodsStatus.NOT_ON_SALE.getStatusCode();
+    }
+
+    /**
+     * 删除/进入草稿中
+     */
+    private void draft() {
+        this.is_on_sale = GoodsStatus.IN_DRAFT.getStatusCode();
     }
 
     /**

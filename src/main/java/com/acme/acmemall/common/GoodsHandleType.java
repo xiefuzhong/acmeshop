@@ -3,7 +3,17 @@ package com.acme.acmemall.common;
 import com.acme.acmemall.utils.StringUtils;
 
 public enum GoodsHandleType {
+    /**
+     * off：下架
+     */
     OFF("off"),
+    /**
+     * draft:草稿
+     */
+    DRAFT("draft"),
+    /**
+     * on:上架
+     */
     ON("on");
 
 
