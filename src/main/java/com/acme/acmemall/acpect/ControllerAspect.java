@@ -36,8 +36,8 @@ public class ControllerAspect {
         try {
             returnValue = pjp.proceed();
         } catch (Throwable throwable) {
-            String errorMessage = String.format("请求异常：请求方法：{s%}, 异常信息：{s%}", methodName, Throwables.getStackTraceAsString(throwable));
-            logger.error(errorMessage);
+            String errorMessage = Throwables.getStackTraceAsString(throwable);
+            logger.error("请求异常：请求方法：[" + methodName + "], 异常信息：[" + errorMessage + "]");
             throw throwable;
         }
         long end = System.nanoTime();
