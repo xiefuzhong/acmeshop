@@ -8,6 +8,7 @@
         <result property="id" column="id"/>
         <result property="goods_id" column="goods_id"/>
         <result property="goods_specification_ids" column="goods_specification_ids"/>
+        <result property="goods_specifition_name_value" column="spec_value"/>
         <result property="goods_sn" column="goods_sn"/>
         <result property="goods_number" column="goods_number"/>
         <result property="retail_price" column="retail_price"/>
@@ -27,10 +28,12 @@
 
     <select id="queryList" resultMap="productMap">
         select a.*,
+        s.value as spec_value,
         b.name as goods_name,
         b.list_pic_url as list_pic_url
         from t_acme_mall_product a
         left join t_acme_mall_goods b on a.goods_id = b.id
+        left JOIN t_acme_mall_goods_specification s on s.id = a.goods_specification_ids
         <where>
             <if test="goods_id != null">
                 and a.goods_id = #{goods_id}
