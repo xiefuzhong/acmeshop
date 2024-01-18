@@ -15,6 +15,7 @@
         <result property="market_price" column="market_price"/>
         <result property="goods_name" column="goods_name"/>
         <result property="list_pic_url" column="list_pic_url"/>
+        <result property="spec_pic_url" column="spec_pic_url"/>
         <result property="product_id" column="product_id"/>
         <result property="merchant_id" column="merchant_id"/>
         <result property="group_price" column="group_price"/>
@@ -29,6 +30,7 @@
     <select id="queryList" resultMap="productMap">
         select a.*,
         s.value as spec_value,
+        s.pic_url as spec_pic_url,
         b.name as goods_name,
         b.list_pic_url as list_pic_url
         from t_acme_mall_product a

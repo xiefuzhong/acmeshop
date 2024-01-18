@@ -40,6 +40,9 @@ public class ProductVo implements Serializable {
     //活动价格
     private BigDecimal group_price;
 
+    // 规格图
+    private String spec_pic_url;
+
     public boolean verifyInventory(Integer goods_number) {
         return this.goods_number > goods_number;
     }
