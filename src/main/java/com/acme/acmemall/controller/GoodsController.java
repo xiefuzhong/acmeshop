@@ -153,7 +153,7 @@ public class GoodsController extends ApiBase {
         params.put("order", sort);
         params.put("sidx", order);
         //
-        if (null != sort && sort.equals("price")) {
+        if ("price".equals(sort)) {
             params.put("sidx", "retail_price");
             params.put("order", order);
         } else {

@@ -127,7 +127,7 @@ public class GoodsServiceImpl implements IGoodsService {
             galleryVo.setGoods_id(goodsVo.getId());
         });
         logger.info("galleryVoList==>" + GsonUtil.getGson().toJson(galleryVoList));
-        goodsVo.relatedDetails("gallery", galleryVoList);
+//        goodsVo.relatedDetails("gallery", galleryVoList);
         galleryMapper.saveBatch(request.getGalleryList());
 
         List<GoodsSpecificationVo> specifications = request.getSpecList();
@@ -135,7 +135,7 @@ public class GoodsServiceImpl implements IGoodsService {
             spec.setGoods_id(goodsVo.getId());
         });
         logger.info("specifications==>" + GsonUtil.getGson().toJson(specifications));
-        goodsVo.relatedDetails("spec", specifications);
+//        goodsVo.relatedDetails("spec", specifications);
         specificationMapper.saveBatch(specifications);
 
         List<ProductVo> products = request.getProducts();
@@ -143,7 +143,7 @@ public class GoodsServiceImpl implements IGoodsService {
             productVo.setGoods_id(goodsVo.getId());
         });
         logger.info("products==>" + GsonUtil.getGson().toJson(products));
-        goodsVo.relatedDetails("product", products);
+//        goodsVo.relatedDetails("product", products);
         productMapper.saveBatch(products);
 
         return ResultMap.response(ResultCodeEnum.SUCCESS, goodsVo);
