@@ -269,7 +269,8 @@
         `list_pic_url`,
         `retail_price`,
         `merchant_id`,
-        `is_delete`
+        `is_delete`,
+        `is_on_sale`
         )
         values
         (
@@ -286,7 +287,8 @@
         #{list_pic_url},
         #{retail_price},
         #{merchantId},
-        #{is_delete}
+        #{is_delete},
+        #{is_on_sale}
         )
     </insert>
 
