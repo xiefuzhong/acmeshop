@@ -5,6 +5,7 @@ import com.acme.acmemall.model.GoodsVo;
 import com.acme.acmemall.model.LoginUserVo;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 /**
  * @description:
@@ -28,6 +29,8 @@ public class GoodsFactory {
                 .primary_pic_url(request.getPrimary_pic_url())
                 .list_pic_url(request.getList_pic_url())
                 .keywords(request.getKeyword())
+                .add_time(new Date())
+                .is_delete(0)
                 .build();
     }
 }
