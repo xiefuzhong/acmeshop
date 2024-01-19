@@ -109,7 +109,6 @@ public class GoodsServiceImpl implements IGoodsService {
     @Override
     public ResultMap submit(GoodsSubmitRequest request, LoginUserVo loginUser) {
         GoodsRequest goodsRequest = request.getGoods();
-
         // 检查账号是不是管理员账号,非管理员账号拒绝操作
         LoginUserVo userVo = userMapper.queryByUserId(loginUser.getUserId(), goodsRequest.getMerchantId());
         if (userVo == null || userVo.getUserId() == 0) {

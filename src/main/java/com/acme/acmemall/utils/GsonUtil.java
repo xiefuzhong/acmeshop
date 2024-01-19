@@ -58,5 +58,7 @@ public class GsonUtil {
 
     public static void main(String[] args) {
 //        System.out.println(DigestUtils.sha256Hex("admin"));
+        String FMT_GOODS_DESC = "<p><img src=\"%s\" style=\"\" class=\"fr-fin\"></p>\n";
+        System.out.println(String.format(FMT_GOODS_DESC, "https"));
     }
 }
