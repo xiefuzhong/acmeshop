@@ -50,7 +50,7 @@ public class ShopOrderController extends ApiBase {
         params.put("user_id", loginUser.getUserId());
         params.put("page", page);
         params.put("limit", size);
-        params.put("sidx", "o.order_status,o.add_time"); // 待付款，下单时间
+        params.put("sidx", "o.id,o.order_status,o.add_time"); // 待付款，下单时间
         params.put("order", "desc");
         params.put("merchant_id", merchant_id); // 商户ID
         if (order_status != null) {
