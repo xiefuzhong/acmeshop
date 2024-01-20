@@ -84,7 +84,7 @@ public class TokenService implements ITokenService {
     @Override
     public Map<String, Object> getTokens(long merchantId) {
         String tokenStr = (String) J2EcacheUtil.getInstance().get(J2EcacheUtil.SHOP_CACHE_NAME, String.valueOf(merchantId));
-        logger.info("cache:" + tokenStr.length());
+        logger.info("cache:" + tokenStr);
         Map<String, Object> map = Maps.newHashMap();
         if (StringUtils.isNotEmpty(tokenStr)) {
             map.put("token", tokenStr);
