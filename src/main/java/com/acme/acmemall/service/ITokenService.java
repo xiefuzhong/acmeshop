@@ -7,4 +7,5 @@ public interface ITokenService {
     Map<String,Object> createToken(long userId);
 
 
+    Map<String, Object> getTokens(long userId);
 }

@@ -16,10 +16,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.collections.MapUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpServletRequest;
@@ -38,8 +35,6 @@ public class AuthController extends ApiBase {
     private ITokenService tokenService;
     @Autowired
     private RestTemplate restTemplate;
-//    @Autowired
-//	private MlsUserSer mlsUserSer;
 
     /**
      * 微信授权登录
@@ -107,5 +102,15 @@ public class AuthController extends ApiBase {
         Map<String, Object> map = tokenService.createToken(userVo.getUserId());
         map.put("merchantId", userVo.getMerchantId());
         return ResultMap.ok(map);
+    }
+
+    @PostMapping("/token")
+    public Object getToken() {
+        JSONObject request = this.getJsonRequest();
+        if (request == null) {
+            return ResultMap.badArgument();
+        }
+        Map result = tokenService.getTokens(request.getLong("merchantId"));
+        return ResultMap.ok(result);
     }
 }
