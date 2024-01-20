@@ -7,6 +7,7 @@ import com.acme.acmemall.model.LoginInfo;
 import com.acme.acmemall.model.LoginUserVo;
 import com.acme.acmemall.service.ITokenService;
 import com.acme.acmemall.service.IUserService;
+import com.acme.acmemall.utils.GsonUtil;
 import com.acme.acmemall.utils.StringUtils;
 import com.acme.acmemall.utils.UserUtils;
 import com.alibaba.fastjson.JSON;
@@ -111,6 +112,7 @@ public class AuthController extends ApiBase {
             return ResultMap.badArgument();
         }
         Map result = tokenService.getTokens(request.getLong("merchantId"));
-        return ResultMap.ok(result);
+        logger.info("getToken==" + GsonUtil.toJson(result));
+        return toResponsSuccess(result);
     }
 }
