@@ -79,7 +79,7 @@
         )
     </insert>
 
-    <insert id="saveBatch" parameterType="list">
+    <insert id="saveBatch" useGeneratedKeys="true" keyProperty="id" parameterType="list">
         INSERT INTO t_acme_mall_product
         (
         `goods_id`,
