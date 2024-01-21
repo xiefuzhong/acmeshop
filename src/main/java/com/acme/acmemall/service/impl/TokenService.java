@@ -109,6 +109,8 @@ public class TokenService implements ITokenService {
                 token.setExpireTime(expireTime);
                 //保存token
                 tokenDao.save(token);
+            } else {
+                map.put("token", token.getToken());
             }
         }
         return map;
