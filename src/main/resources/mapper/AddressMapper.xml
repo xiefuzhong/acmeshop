@@ -16,6 +16,7 @@
         <result property="countyName" column="county_Name"/>
         <result property="detailInfo" column="detail_Info"/>
         <result property="is_default" column="is_default"/>
+        <result property="type" column="user_type"/>
     </resultMap>
 
     <select id="queryObject" resultMap="addressMap">
@@ -118,6 +119,7 @@
 			`city_Name`,
 			`county_Name`,
 			`detail_Info`,
+        `user_type`,
 			`is_default`)
 		values(
 			#{userId},
@@ -129,6 +131,7 @@
 			#{cityName},
 			#{countyName},
 			#{detailInfo},
+        #{type},
 			#{is_default})
 	</insert>
 

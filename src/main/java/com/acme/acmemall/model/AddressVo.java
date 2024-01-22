@@ -38,6 +38,8 @@ public class AddressVo implements Serializable {
 
     private String full_region;
 
+    private Integer type = 0;
+
     /**
      * 地址拼接信息
      * @return
