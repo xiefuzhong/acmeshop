@@ -2,6 +2,7 @@ package com.acme.acmemall.common;
 
 import com.acme.acmemall.exception.ResultCodeEnum;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -63,8 +64,8 @@ public class ResultMap extends HashMap<String, Object> {
         return new ResultMap();
     }
 
-    public static ResultMap badArgument() {
-        return error(1001, "参数不对");
+    public static ResultMap badArgument(String... msg) {
+        return error(1001, msg.length == 0 ? "参数不对" : Arrays.toString(msg));
     }
 
     public ResultMap put(String key, Object value) {

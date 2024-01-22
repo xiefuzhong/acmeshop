@@ -1,5 +1,7 @@
 package com.acme.acmemall.model;
 
+import com.acme.acmemall.controller.reqeust.LogisticsInfo;
+import com.acme.acmemall.controller.reqeust.OrderShippedRequest;
 import com.acme.acmemall.exception.ApiCusException;
 import com.acme.acmemall.exception.ResultCodeEnum;
 import com.acme.acmemall.factory.OrderFactory;
@@ -168,6 +170,11 @@ public class OrderVo implements Serializable {
 
     private String handleType;
 
+    // 退货/售后地址
+    private AddressVo returnAddress;
+    // 发货（可默认为退货/售后地址)
+    private AddressVo shippingAddress;
+
     @Builder.Default
     private List<OrderGoodsVo> items = Lists.newArrayList();
 
@@ -209,7 +216,7 @@ public class OrderVo implements Serializable {
      * @param userCouponList 用户优惠优惠
      * @param cartList       购物车明细
      * @param address        收件人地址
-     * @param invoiceTitleVo  发票信息
+     * @param invoiceTitleVo 发票信息
      * @return
      */
     public OrderVo submit(List<UserCouponVo> userCouponList, List<ShopCartVo> cartList, AddressVo address, InvoiceTitleVo invoiceTitleVo) {
@@ -336,8 +343,19 @@ public class OrderVo implements Serializable {
      *
      * @return
      */
-    public OrderVo shipped() {
+    public OrderVo shipped(OrderShippedRequest shippedRequest) {
+        this.setLogistics(shippedRequest.getLogisticsInfo());
+        this.order_status = OrderStatus.TO_BE_SHIPPED.getCode();
+        this.order_status_text = OrderStatus.TO_BE_SHIPPED.getDescription();
+        this.shipping_status = 1;
+        this.shipping_fee = BigDecimal.ZERO;
         return this;
+    }
+
+    private void setLogistics(LogisticsInfo logisticsInfo) {
+        this.shipping_code = logisticsInfo.getDelivery_id();
+        this.shipping_no = logisticsInfo.getShipping_no();
+        this.shipping_name = logisticsInfo.getDelivery_name();
     }
 
     private void setAddressInfo(AddressVo address) {

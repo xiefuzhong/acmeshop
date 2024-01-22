@@ -2,16 +2,19 @@ package com.acme.acmemall.controller;
 
 import com.acme.acmemall.annotation.LoginUser;
 import com.acme.acmemall.common.ResultMap;
+import com.acme.acmemall.controller.reqeust.OrderShippedRequest;
 import com.acme.acmemall.exception.ResultCodeEnum;
 import com.acme.acmemall.model.LoginUserVo;
 import com.acme.acmemall.model.OrderVo;
 import com.acme.acmemall.service.IOrderService;
 import com.acme.acmemall.utils.PageUtils;
+import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Maps;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -78,6 +81,25 @@ public class ShopOrderController extends ApiBase {
         OrderVo updateOrderVo = OrderVo.builder().handleType(type).merRemark(remarkText).build();
         orderVo.handle(updateOrderVo);
         orderService.handleOrderByMer(orderVo);
+        return ResultMap.ok();
+    }
+
+    @PostMapping("/update")
+    public Object updateOrder(@LoginUser LoginUserVo userVo) {
+        JSONObject jsonRequest = super.getJsonRequest();
+        if (jsonRequest == null) {
+            return ResultMap.badArgument();
+        }
+        logger.info("updateOrder request:" + jsonRequest);
+        OrderShippedRequest shippedRequest = JSONObject.toJavaObject(jsonRequest, OrderShippedRequest.class);
+
+        String orderId = shippedRequest.getOrderId();
+        OrderVo orderVo = orderService.findOrder(orderId);
+        if (orderVo == null) {
+            return ResultMap.badArgument("查无此单:" + orderId);
+        }
+
+        orderVo.shipped(shippedRequest);
         return ResultMap.ok();
     }
 }
