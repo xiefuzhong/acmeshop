@@ -5,6 +5,7 @@ import com.acme.acmemall.annotation.LoginUser;
 import com.acme.acmemall.model.AddressVo;
 import com.acme.acmemall.model.LoginUserVo;
 import com.acme.acmemall.service.IAddressService;
+import com.acme.acmemall.utils.GsonUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Maps;
 import io.swagger.annotations.Api;
@@ -141,7 +142,7 @@ public class AddressController extends ApiBase {
         if (type != null) {
             param.put("type", type);
         }
-
+        logger.info("addressUserlist" + GsonUtil.toJson(param));
         List<AddressVo> addressEntities = addressService.queryaddressUserlist(param);
         return toResponsSuccess(addressEntities);
     }
