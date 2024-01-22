@@ -345,8 +345,10 @@ public class OrderVo implements Serializable {
      */
     public OrderVo shipped(OrderShippedRequest shippedRequest) {
         this.setLogistics(shippedRequest.getLogisticsInfo());
-        this.order_status = OrderStatus.TO_BE_SHIPPED.getCode();
-        this.order_status_text = OrderStatus.TO_BE_SHIPPED.getDescription();
+        // 客户待收货
+        this.order_status = OrderStatus.TO_BE_RECEIVED.getCode();
+        this.order_status_text = OrderStatus.TO_BE_RECEIVED.getDescription();
+        // 物流已发货
         this.shipping_status = 1;
         this.shipping_fee = BigDecimal.ZERO;
         return this;
