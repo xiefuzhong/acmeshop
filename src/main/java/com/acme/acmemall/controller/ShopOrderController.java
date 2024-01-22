@@ -98,8 +98,8 @@ public class ShopOrderController extends ApiBase {
         if (orderVo == null) {
             return ResultMap.badArgument("查无此单:" + orderId);
         }
-
         orderVo.shipped(shippedRequest);
+        orderService.handleOrderByMer(orderVo);
         return ResultMap.ok();
     }
 }
