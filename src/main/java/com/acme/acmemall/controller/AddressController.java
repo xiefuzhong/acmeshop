@@ -6,15 +6,13 @@ import com.acme.acmemall.model.AddressVo;
 import com.acme.acmemall.model.LoginUserVo;
 import com.acme.acmemall.service.IAddressService;
 import com.alibaba.fastjson.JSONObject;
+import com.google.common.collect.Maps;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -52,7 +50,7 @@ public class AddressController extends ApiBase {
     @GetMapping("detail")
     public Object detail(Integer id, @LoginUser LoginUserVo loginUser) {
         AddressVo entity = addressService.queryObject(id);
-        if (entity == null){
+        if (entity == null) {
             return toResponsSuccess(null);
         }
         //判断越权行为，智能删除用户自己的
@@ -87,11 +85,11 @@ public class AddressController extends ApiBase {
         Map<String, Object> param = new HashMap<String, Object>();
         param.put("user_id", loginUser.getUserId());
         List<AddressVo> addressEntities = addressService.queryAddressList(param);
-        if(addressEntities.size()==0){//第一次添加设置为默认地址
+        if (addressEntities.size() == 0) {//第一次添加设置为默认地址
             entity.setIs_default(1);
         }
         //设置默认地址
-        if(entity.getIs_default()==1){
+        if (entity.getIs_default() == 1) {
             AddressVo entity1 = new AddressVo();
             entity1.setUserId(loginUser.getUserId());
             entity1.setIs_default(0);
@@ -123,15 +121,27 @@ public class AddressController extends ApiBase {
         addressService.delete(id);
         return toResponsSuccess("");
     }
+
     /**
-     * 获取用户的收货地址
+     * 获取用户的收货地址(包含商家的发货/退货地址)
      */
     @IgnoreAuth
     @ApiOperation(value = "获取用户的收货地址接口", response = Map.class)
     @GetMapping("addressUserlist")
-    public Object addressUserlist(@LoginUser LoginUserVo loginUser) {
-        Map<String, Object> param = new HashMap<String, Object>();
-        param.put("user_id", this.getUserId().intValue());
+    public Object addressUserlist(@LoginUser LoginUserVo loginUser,
+                                  @RequestParam("user_id") Integer user_id,
+                                  @RequestParam("type") Integer type) {
+        Map<String, Object> param = Maps.newHashMap();
+        if (user_id != null) {
+            param.put("user_id", user_id);
+        } else {
+            param.put("user_id", this.getUserId().intValue());
+            param.put("type", 0);
+        }
+        if (type != null) {
+            param.put("type", type);
+        }
+
         List<AddressVo> addressEntities = addressService.queryaddressUserlist(param);
         return toResponsSuccess(addressEntities);
     }

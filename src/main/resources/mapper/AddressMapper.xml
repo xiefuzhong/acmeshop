@@ -45,13 +45,19 @@
     <select id="queryTotal" resultType="int">
 		select count(*) from t_acme_mall_address 
 	</select>
+
     <select id="queryaddressUserlist" resultMap="addressMap">
         SELECT
         *
         FROM
         t_acme_mall_address
-        WHERE
-        user_id = #{user_id}        
+        <where>
+            user_id = #{user_id}
+            <if test="type != null">
+                AND user_type =#{type}
+            </if>
+        </where>
+
         <choose>
             <when test="sidx != null and sidx.trim() != ''">
                 order by ${sidx} ${order}
