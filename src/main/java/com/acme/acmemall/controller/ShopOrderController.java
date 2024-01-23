@@ -100,6 +100,6 @@ public class ShopOrderController extends ApiBase {
         }
         orderVo.shipped(shippedRequest);
         orderService.handleOrderByMer(orderVo);
-        return ResultMap.ok();
+        return toResponsSuccess(orderVo);
     }
 }
