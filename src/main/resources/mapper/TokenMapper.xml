@@ -11,14 +11,14 @@
     </resultMap>
 
     <select id="queryObject" resultType="com.acme.acmemall.model.Token">
-		select
-			user_id,
-			token,
-			expire_time,
-			update_time
-		from tb_token
-		where user_id = #{id}
-	</select>
+        select
+        user_id,
+        token,
+        expire_time,
+        update_time
+        from tb_token
+        where user_id = #{id}
+    </select>
 
     <select id="queryByToken" resultType="com.acme.acmemall.model.Token">
         select
@@ -37,7 +37,10 @@
         expire_time,
         update_time
         from tb_token
-        where user_id = #{userId}
+        <where>
+            user_id = #{userId}
+            AND expire_time >=SYSDATE()
+        </where>
     </select>
 
     <select id="queryList" resultType="com.acme.acmemall.model.Token">
@@ -62,22 +65,22 @@
     </select>
 
     <select id="queryTotal" resultType="int">
-		select count(*) from tb_token
-		WHERE 1=1
-	</select>
+        select count(*) from tb_token
+        WHERE 1=1
+    </select>
 
     <insert id="save" parameterType="com.acme.acmemall.model.Token">
-		insert into tb_token(
-			`user_id`,
-			`token`,
-			`expire_time`,
-			`update_time`)
-		values(
-			#{userId},
-			#{token},
-			#{expireTime},
-			#{updateTime})
-	</insert>
+        insert into tb_token(
+        `user_id`,
+        `token`,
+        `expire_time`,
+        `update_time`)
+        values(
+        #{userId},
+        #{token},
+        #{expireTime},
+        #{updateTime})
+    </insert>
 
     <update id="update" parameterType="com.acme.acmemall.model.Token">
         update tb_token
@@ -90,8 +93,8 @@
     </update>
 
     <delete id="delete">
-		delete from tb_token where user_id = #{value}
-	</delete>
+        delete from tb_token where user_id = #{value}
+    </delete>
 
     <delete id="deleteBatch">
         delete from tb_token where user_id in
