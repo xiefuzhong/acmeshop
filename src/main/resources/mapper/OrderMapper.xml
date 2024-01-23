@@ -322,6 +322,7 @@
             <if test="mobile != null">`mobile` = #{mobile},</if>
             <if test="postscript != null">`postscript` = #{postscript},</if>
             <if test="shipping_id != null">`shipping_id` = #{shipping_id},</if>
+            <if test="shipping_no != null">`shipping_no` = #{shipping_no},</if>
             <if test="shipping_code != null">`shipping_code` = #{shipping_code},</if>
             <if test="shipping_name != null">`shipping_name` = #{shipping_name},</if>
             <if test="pay_id != null">`pay_id` = #{pay_id},</if>
