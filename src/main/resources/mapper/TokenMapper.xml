@@ -70,7 +70,7 @@
     </select>
 
     <insert id="save" parameterType="com.acme.acmemall.model.Token">
-        insert into tb_token(
+        REPLACE INTO tb_token(
         `user_id`,
         `token`,
         `expire_time`,
