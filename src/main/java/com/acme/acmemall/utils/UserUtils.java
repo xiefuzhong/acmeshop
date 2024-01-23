@@ -35,4 +35,8 @@ public class UserUtils {
         return String.format(ResourceUtil.getConfigByName("wx.getWXACodeUnlimit"), accessToken, scene);
     }
 
+    public static String getWxAddLogisticsOrder(String accessToken) {
+        return String.format(ResourceUtil.getConfigByName("wx.addLogisticsOrder"), accessToken);
+    }
+
 }
