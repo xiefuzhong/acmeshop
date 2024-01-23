@@ -190,4 +190,9 @@ public class OrderController extends ApiBase {
         return ResultMap.error("提交失败");
     }
 
+    @GetMapping("/delivery-trace")
+    public Object deliveryTrace(@LoginUser LoginUserVo loginUserVo, @RequestParam("orderId") String orderId) {
+        return ResultMap.ok();
+    }
+
 }

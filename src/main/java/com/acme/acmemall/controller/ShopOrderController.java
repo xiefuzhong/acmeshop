@@ -100,6 +100,7 @@ public class ShopOrderController extends ApiBase {
         }
         orderVo.shipped(shippedRequest);
         orderService.handleOrderByMer(orderVo);
+        // 下单
         return toResponsSuccess(orderVo);
     }
 }
