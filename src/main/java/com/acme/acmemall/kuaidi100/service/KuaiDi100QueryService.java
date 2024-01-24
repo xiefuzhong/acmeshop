@@ -32,7 +32,7 @@ public class KuaiDi100QueryService {
     private static final QueryTrackResp EMPTY_RESULT = new QueryTrackResp();
 
     public QueryTrackResp queryTrack(Map<String, Object> params) throws Exception {
-        logger.info("queryTrack:" + GsonUtil.toJson(params));
+        logger.info("queryTrack-request:" + GsonUtil.toJson(params));
         QueryTrackParam queryTrackParam = QueryTrackParam.builder()
                 .com(MapUtils.getString("com", params))
                 .num(MapUtils.getString("num", params))
@@ -44,6 +44,7 @@ public class KuaiDi100QueryService {
                 .sign(SignUtils.querySign(param, key, customer))
                 .build();
         HttpResult result = HttpUtils.doPost(queryTrackUrl, request, 3000, 3000);
+        logger.info("queryTrack-response:" + GsonUtil.toJson(result));
         if (result.getStatus() == HttpStatus.SC_OK && StringUtils.isNotBlank(result.getBody())) {
             return GsonUtil.getGson().fromJson(result.getBody(), QueryTrackResp.class);
         }
