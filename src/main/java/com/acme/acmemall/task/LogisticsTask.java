@@ -22,11 +22,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-/**
- * @description:
- * @author: ihpangzi
- * @time: 2024/1/24 13:41
- */
 @Component
 @Slf4j
 public class LogisticsTask {
