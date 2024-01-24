@@ -14,6 +14,7 @@ import com.google.common.collect.Maps;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -23,6 +24,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @Component
+@EnableScheduling
 public class LogisticsTask {
 
     @Resource
@@ -89,7 +91,10 @@ public class LogisticsTask {
         }
     }
 
-    @Scheduled(fixedRate = 1000)
+    /**
+     * 1分钟60s
+     */
+    @Scheduled(fixedRate = 60000)
     public void test() {
         logger.info(String.format("test-- 执行时间：%s", DateUtils.currentDate(DateUtils.DATE_TIME_PATTERN)));
     }
