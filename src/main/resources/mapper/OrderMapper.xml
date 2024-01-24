@@ -434,7 +434,7 @@
         AND o.order_status =301
     </sql>
 
-    <select id="queryListByIds">
+    <select id="queryListByIds" resultMap="orderMap">
         SELECT
         id,
         shipping_no,

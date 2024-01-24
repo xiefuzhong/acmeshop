@@ -43,4 +43,6 @@ public interface IOrderService {
      * @param orderVo
      */
     void handleOrderByMer(OrderVo orderVo);
+
+    List<OrderVo> queryByIds(List<String> ids);
 }

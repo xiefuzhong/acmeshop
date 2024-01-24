@@ -14,4 +14,6 @@ public interface OrderMapper extends BaseDao<OrderVo> {
     List<StatisticsVo> statistics(Map<String, Object> params);
 
     List<OrderVo> queryMerOrders(Map<String, Object> params);
+
+    List<OrderVo> queryListByIds(List<String> orderIds);
 }

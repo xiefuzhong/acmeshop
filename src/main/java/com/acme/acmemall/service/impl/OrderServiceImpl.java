@@ -175,6 +175,15 @@ public class OrderServiceImpl implements IOrderService {
         orderMapper.update(orderVo);
     }
 
+    /**
+     * @param ids
+     * @return
+     */
+    @Override
+    public List<OrderVo> queryByIds(List<String> ids) {
+        return orderMapper.queryListByIds(ids);
+    }
+
     private List<UserCouponVo> getUserCouponVos(String userCouponId, BigDecimal goodsTotalPrice, LoginUserVo loginUser) {
         List<UserCouponVo> userCouponList = Lists.newArrayList();
         if (StringUtils.isNotEmpty(userCouponId)) {

@@ -1,7 +1,10 @@
 package com.acme.acmemall.model;
 
 import com.acme.acmemall.utils.DateUtils;
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -11,8 +14,10 @@ import java.util.Date;
  * @author: ihpangzi
  * @time: 2024/1/24 14:57
  */
-
-@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+@Getter
 public class OrderDeliveryTrackVo implements Serializable {
     private long id;
     private String orderId;

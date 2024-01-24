@@ -1,6 +1,7 @@
 package com.acme.acmemall.service.impl;
 
 import com.acme.acmemall.dao.OrderDeliveryTrackMapper;
+import com.acme.acmemall.model.OrderDeliveryTrackVo;
 import com.acme.acmemall.service.IOrderDeliveryTrackService;
 import org.springframework.stereotype.Service;
 
@@ -26,5 +27,13 @@ public class OrderDeliveryTrackServiceImpl implements IOrderDeliveryTrackService
     @Override
     public List<Map> synDeliveryTrackList(Map params) {
         return deliveryTrackMapper.queryExistTrack(params);
+    }
+
+    /**
+     * @param deliveryTrackVo
+     */
+    @Override
+    public void saveDeliveryTrack(OrderDeliveryTrackVo deliveryTrackVo) {
+        deliveryTrackMapper.save(deliveryTrackVo);
     }
 }
