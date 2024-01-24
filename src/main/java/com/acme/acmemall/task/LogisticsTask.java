@@ -45,7 +45,6 @@ public class LogisticsTask {
      * 每45分钟：0 0/45 0 * * ?
      */
     @Async("asyncTaskExecutor")
-//    @Scheduled(cron = "0 0 0/1 * * ?")
     @Scheduled(cron = "0 0/33 0 * * ?")
     public void synDeliveryTrack() {
         //
@@ -92,5 +91,10 @@ public class LogisticsTask {
         } catch (Exception e) {
             log.error("同步物流信息出错了" + Throwables.getStackTraceAsString(e));
         }
+    }
+
+    @Scheduled(cron = "0 0/1 0 * * ?")
+    public void test() {
+        log.info(String.format("test-- 执行时间：%s", DateUtils.currentDate(DateUtils.DATE_TIME_PATTERN)));
     }
 }
