@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.acme.acmemall.dao.OrderDeliveryTrackMapper">
+    <resultMap id="deliveryTrackMap" type="com.acme.acmemall.model.OrderDeliveryTrackVo">
+        <result property="id" column="id"/>
+        <result property="orderId" column="order_id"/>
+        <result property="waybillId" column="waybill_id"/>
+        <result property="latestInfo" column="latest_info"/>
+        <result property="allInfo" column="all_info"/>
+        <result property="addTime" column="add_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <select id="queryObject" resultMap="deliveryTrackMap">
+        select * from t_acme_mall_order_delivery_track where id = #{value}
+    </select>
+
+    <select id="queryList" resultMap="deliveryTrackMap">
+        select
+        <if test="fields != null and fields != ''">
+            ${fields}
+        </if>
+        <if test="fields == null or fields == ''">
+            *
+        </if>
+        from t_acme_mall_order_delivery_track
+        <where>
+            <if test="orderId != null and orderId != null">
+                AND order_id = #{orderId}
+            </if>
+
+            <if test="waybillId != null and waybillId != null">
+                AND waybill_id = #{waybillId}
+            </if>
+
+            <if test="ids != null">
+                and id in
+                <foreach item="item" collection="ids" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
+
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+            <otherwise>
+                order by id asc
+            </otherwise>
+        </choose>
+        <if test="offset != null and limit != null">
+            limit #{offset}, #{limit}
+        </if>
+    </select>
+
+    <select id="queryTotal" resultType="int">
+        select count(*) from t_acme_mall_order_delivery_track
+    </select>
+
+    <insert id="save" parameterType="com.acme.acmemall.model.OrderDeliveryTrackVo" useGeneratedKeys="true"
+            keyProperty="id">
+        REPLACE INTO `t_acme_mall_order_delivery_track`
+        (
+        `order_id`,
+        `waybill_id`,
+        `latest_info`,
+        `all_info`,
+        `add_time`,
+        `update_time`
+        )
+        VALUES
+        (
+        #{orderId},
+        #{waybillId},
+        #{latestInfo},
+        #{allInfo},
+        sysdate(),
+        sysdate()
+        )
+    </insert>
+
+    <select id="queryExistTrack" resultType="map">
+        SELECT
+        o.id as order_id,
+        o.shipping_code as com,
+        o.shipping_no as num,
+        odt.latest_info as latest_info,
+        odt.waybill_id as waybill_id
+        from
+        t_acme_mall_order o
+        left JOIN t_acme_mall_order_delivery_track odt on o.id = odt.order_id
+        and o.shipping_no = odt.waybill_id
+        where o.shipping_status=#{shipping_status}
+    </select>
+</mapper>

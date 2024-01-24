@@ -434,4 +434,21 @@
         AND o.order_status =301
     </sql>
 
+    <select id="queryListByIds">
+        SELECT
+        id,
+        shipping_no,
+        shipping_code
+        from
+        t_acme_mall_order t
+        <where>
+            id in
+            <foreach item="id" collection="list" open="(" separator="," close=")">
+                #{id}
+            </foreach>
+        </where>
+        <!--        where-->
+        <!--        id in('20240123032534730406446')-->
+    </select>
+
 </mapper>
