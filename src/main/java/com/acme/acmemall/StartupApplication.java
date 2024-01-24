@@ -9,11 +9,18 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.web.client.RestTemplate;
 
+import javax.annotation.PostConstruct;
+
 @SpringBootApplication
 @EnableCaching
 @EnableScheduling
 @MapperScan(basePackages = {"com.acme.acmemall.dao"})
 public class StartupApplication {
+
+    @PostConstruct
+    void init() {
+//        TimeZone.setDefault(TimeZone.getTimeZone("Asia/Shanghai"));
+    }
 
     public static void main(String[] args) {
         SpringApplication.run(StartupApplication.class, args);

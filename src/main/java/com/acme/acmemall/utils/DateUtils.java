@@ -8,6 +8,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.TimeZone;
 
 /**
  * 日期处理
@@ -53,6 +54,7 @@ public class DateUtils {
     public static String format(Date date, String pattern) {
         if (date != null) {
             SimpleDateFormat df = new SimpleDateFormat(pattern);
+            df.setTimeZone(TimeZone.getTimeZone("Asia/Shanghai"));
             return df.format(date);
         }
         return null;
@@ -60,6 +62,7 @@ public class DateUtils {
 
     public static String timeToStr(Long time, String pattern) {
         SimpleDateFormat dateFormat = new SimpleDateFormat(pattern);
+        dateFormat.setTimeZone(TimeZone.getTimeZone("Asia/Shanghai"));
         if (time.toString().length() < 13) {
             time = time * 1000L;
         }
@@ -144,6 +147,7 @@ public class DateUtils {
         try {
             // 日期格式转换
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            sdf.setTimeZone(TimeZone.getTimeZone("Asia/Shanghai"));
             resultDate = sdf.parse(dateStr);
         } catch (ParseException e) {
             e.printStackTrace();
@@ -179,6 +183,7 @@ public class DateUtils {
      */
     public static String currentDate(String format) {
         SimpleDateFormat dateFormat = new SimpleDateFormat(format);
+        dateFormat.setTimeZone(TimeZone.getTimeZone("Asia/Shanghai"));
         return dateFormat.format(new Date());
     }
 
