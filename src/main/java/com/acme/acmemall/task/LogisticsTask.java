@@ -43,7 +43,7 @@ public class LogisticsTask {
      * 每45分钟：0 0/45 0 * * ?
      */
     @Async("asyncTaskExecutor")
-    @Scheduled(cron = "0 0/33 0 * * ?")
+    @Scheduled(fixedRate = 1980000)
     public void synDeliveryTrack() {
         //
         logger.info(String.format("同步物流踪迹，执行时间：%s", DateUtils.currentDate(DateUtils.DATE_TIME_PATTERN)));
@@ -93,8 +93,9 @@ public class LogisticsTask {
 
     /**
      * 1分钟60s
+     * fixedRate:毫秒
      */
-    @Scheduled(fixedRate = 60000)
+    @Scheduled(fixedRate = 300000)
     public void test() {
         logger.info(String.format("test-- 执行时间：%s", DateUtils.currentDate(DateUtils.DATE_TIME_PATTERN)));
     }
