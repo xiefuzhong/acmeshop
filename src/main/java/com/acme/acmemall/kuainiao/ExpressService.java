@@ -64,6 +64,7 @@ public class ExpressService {
         Map<String, String> map = new LinkedHashMap<>();
         map.put("ShipperCode", expressCode);
         map.put("LogisticCode", logisticCode);
+        map.put("Sort", "1"); // 倒序
         LinkedMultiValueMap<String, String> param = new LinkedMultiValueMap<>();
         String jsonStr = null;
         String DataSign = null;
