@@ -231,7 +231,7 @@ public class OrderController extends ApiBase {
         if (orderVo == null) {
             return ResultMap.badArgument("查无此单,请确认订单信息");
         }
-        String result = expressService.query(orderVo.getShipping_no(), "YD");
+        String result = expressService.query("YD", orderVo.getShipping_no());
         return toResponsSuccess(result);
     }
 

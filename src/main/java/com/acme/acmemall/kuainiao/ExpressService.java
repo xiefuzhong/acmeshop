@@ -41,6 +41,11 @@ public class ExpressService {
     @Resource
     RestTemplate restTemplate;
 
+    /**
+     * @param expressCode  快递公司代码
+     * @param logisticCode 单号
+     * @return
+     */
     public String query(String expressCode, String logisticCode) {
         LinkedMultiValueMap<String, String> param = parseParam(expressCode, logisticCode);
         HttpHeaders headers = new HttpHeaders();
