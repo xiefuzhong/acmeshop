@@ -70,15 +70,12 @@ public class LogisticsTask {
             logger.info(String.format("过滤数据，执行时间：%s,查无数据处理", DateUtils.currentDate(DateUtils.DATE_TIME_PATTERN)));
             return;
         }
-        resultList.clear();
         // 收集ORDER_ID
         List paddingList = list;
         if (list.size() > 50) {
             paddingList = list.subList(0, 50);
-            list.clear();
         }
         try {
-//            List<OrderDeliveryTrackVo> deliveryTrackVoList = Lists.newArrayList();
             for (Object item : paddingList) {
                 Map itemMap = (Map) item;
                 Map<String, Object> params = Maps.newHashMap();
@@ -91,7 +88,6 @@ public class LogisticsTask {
                         .latestInfo(GsonUtil.toJson(trackResp.getData().stream().findFirst().get()))
                         .allInfo(GsonUtil.toJson(trackResp.getData()))
                         .build();
-//                deliveryTrackVoList.add(deliveryTrackVo);
                 deliveryTrackService.saveDeliveryTrack(deliveryTrackVo);
             }
 
