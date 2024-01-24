@@ -3,6 +3,8 @@ package com.acme.acmemall.controller;
 import com.acme.acmemall.annotation.LoginUser;
 import com.acme.acmemall.common.ResultMap;
 import com.acme.acmemall.controller.reqeust.OrderSubmitRequest;
+import com.acme.acmemall.kuaidi100.response.QueryTrackResp;
+import com.acme.acmemall.kuaidi100.service.KuaiDi100QueryService;
 import com.acme.acmemall.model.LoginUserVo;
 import com.acme.acmemall.model.OrderGoodsVo;
 import com.acme.acmemall.model.OrderVo;
@@ -21,7 +23,9 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -37,6 +41,9 @@ public class OrderController extends ApiBase {
     IOrderService orderService;
 
     IOrderGoodsService orderGoodsService;
+
+    @Resource
+    KuaiDi100QueryService kuaiDi100QueryService;
 
     public OrderController(IOrderService orderService, IOrderGoodsService orderGoodsService) {
         this.orderService = orderService;
@@ -190,9 +197,25 @@ public class OrderController extends ApiBase {
         return ResultMap.error("提交失败");
     }
 
-    @GetMapping("/delivery-trace")
-    public Object deliveryTrace(@LoginUser LoginUserVo loginUserVo, @RequestParam("orderId") String orderId) {
-        return ResultMap.ok();
+    @GetMapping("/delivery-track")
+    public Object deliveryTrack(@LoginUser LoginUserVo loginUserVo, @RequestParam("orderId") String orderId) {
+        OrderVo orderVo = orderService.findOrder(orderId);
+        if (loginUserVo == null) {
+            return ResultMap.error(400, "非有效用户操作");
+        }
+        if (orderVo == null) {
+            return ResultMap.badArgument("查无此单,请确认订单信息");
+        }
+        Map<String, Object> paramMap = Maps.newHashMap();
+        paramMap.put("com", orderVo.getShipping_code().toLowerCase(Locale.ROOT));
+        paramMap.put("num", orderVo.getShipping_no());
+        try {
+            QueryTrackResp queryTrackResp = kuaiDi100QueryService.queryTrack(paramMap);
+            return toResponsSuccess(queryTrackResp);
+        } catch (Exception e) {
+            ResultMap.error(e.getMessage());
+        }
+        return toResponsSuccess(null);
     }
 
 }

@@ -44,6 +44,7 @@ public class HttpsUtil {
 
             URL url = new URL(requestUrl);
             HttpsURLConnection conn = (HttpsURLConnection) url.openConnection();
+            conn.setConnectTimeout(3000);
             conn.setSSLSocketFactory(ssf);
 
             conn.setDoOutput(true);
