@@ -5,6 +5,7 @@ import com.acme.acmemall.common.ResultMap;
 import com.acme.acmemall.controller.reqeust.OrderSubmitRequest;
 import com.acme.acmemall.kuaidi100.response.QueryTrackResp;
 import com.acme.acmemall.kuaidi100.service.KuaiDi100QueryService;
+import com.acme.acmemall.kuainiao.ExpressService;
 import com.acme.acmemall.model.LoginUserVo;
 import com.acme.acmemall.model.OrderGoodsVo;
 import com.acme.acmemall.model.OrderVo;
@@ -44,6 +45,9 @@ public class OrderController extends ApiBase {
 
     @Resource
     KuaiDi100QueryService kuaiDi100QueryService;
+
+    @Resource
+    ExpressService expressService;
 
     public OrderController(IOrderService orderService, IOrderGoodsService orderGoodsService) {
         this.orderService = orderService;
@@ -216,6 +220,19 @@ public class OrderController extends ApiBase {
             ResultMap.error(e.getMessage());
         }
         return toResponsSuccess(null);
+    }
+
+    @GetMapping("/express-track")
+    public Object expressTrack(@LoginUser LoginUserVo loginUserVo, @RequestParam("orderId") String orderId) {
+        OrderVo orderVo = orderService.findOrder(orderId);
+        if (loginUserVo == null) {
+            return ResultMap.error(400, "非有效用户操作");
+        }
+        if (orderVo == null) {
+            return ResultMap.badArgument("查无此单,请确认订单信息");
+        }
+        String result = expressService.query(orderVo.getShipping_no(), "YD");
+        return toResponsSuccess(result);
     }
 
 }
