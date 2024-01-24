@@ -46,9 +46,11 @@ public class LogisticsTask {
      */
     @Async("asyncTaskExecutor")
 //    @Scheduled(cron = "0 0 0/1 * * ?")
-    @Scheduled(cron = "0 0/39 0 * * ?")
+    @Scheduled(cron = "0 0/33 0 * * ?")
     public void synDeliveryTrack() {
         //
+        log.info(String.format("同步物流踪迹，执行时间：%s", DateUtils.currentDate(DateUtils.DATE_TIME_PATTERN)));
+
         Map<String, Object> paramMap = Maps.newHashMap();
         // 查询已发货的（shipping_status = 1）的订单
         paramMap.put("shipping_status", 1);
