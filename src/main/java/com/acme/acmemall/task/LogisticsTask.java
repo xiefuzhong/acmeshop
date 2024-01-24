@@ -11,8 +11,8 @@ import com.acme.acmemall.utils.MapUtils;
 import com.acme.acmemall.utils.StringUtils;
 import com.google.common.base.Throwables;
 import com.google.common.collect.Maps;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.log4j.Logger;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -23,7 +23,6 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @Component
-@Slf4j
 public class LogisticsTask {
 
     @Resource
@@ -35,6 +34,8 @@ public class LogisticsTask {
     @Resource
     KuaiDi100QueryService kuaiDi100QueryService;
 
+    protected org.apache.log4j.Logger logger = Logger.getLogger(getClass());
+
     /**
      * 每1小时拉一次： 0 0 0/1 * * ?
      * 每45分钟：0 0/45 0 * * ?
@@ -43,19 +44,19 @@ public class LogisticsTask {
     @Scheduled(cron = "0 0/33 0 * * ?")
     public void synDeliveryTrack() {
         //
-        log.info(String.format("同步物流踪迹，执行时间：%s", DateUtils.currentDate(DateUtils.DATE_TIME_PATTERN)));
+        logger.info(String.format("同步物流踪迹，执行时间：%s", DateUtils.currentDate(DateUtils.DATE_TIME_PATTERN)));
 
         Map<String, Object> paramMap = Maps.newHashMap();
         // 查询已发货的（shipping_status = 1）的订单
         paramMap.put("shipping_status", 1);
         List<Map> resultList = deliveryTrackService.synDeliveryTrackList(paramMap);
         if (CollectionUtils.isEmpty(resultList)) {
-            log.info(String.format("查询数据，执行时间：%s,查无数据处理", DateUtils.currentDate(DateUtils.DATE_TIME_PATTERN)));
+            logger.info(String.format("查询数据，执行时间：%s,查无数据处理", DateUtils.currentDate(DateUtils.DATE_TIME_PATTERN)));
             return;
         }
         List firstResultList = resultList.stream().filter(item -> StringUtils.isNullOrEmpty(item.get("waybill_id").toString())).collect(Collectors.toList());
         if (CollectionUtils.isEmpty(firstResultList)) {
-            log.info(String.format("过滤数据，执行时间：%s,查无数据处理", DateUtils.currentDate(DateUtils.DATE_TIME_PATTERN)));
+            logger.info(String.format("过滤数据，执行时间：%s,查无数据处理", DateUtils.currentDate(DateUtils.DATE_TIME_PATTERN)));
             return;
         }
         resultList.clear();
@@ -84,12 +85,12 @@ public class LogisticsTask {
             }
 
         } catch (Exception e) {
-            log.error("同步物流信息出错了" + Throwables.getStackTraceAsString(e));
+            logger.error("同步物流信息出错了" + Throwables.getStackTraceAsString(e));
         }
     }
 
-    @Scheduled(cron = "0 0/1 0 * * ?")
+    @Scheduled(fixedRate = 1000)
     public void test() {
-        log.info(String.format("test-- 执行时间：%s", DateUtils.currentDate(DateUtils.DATE_TIME_PATTERN)));
+        logger.info(String.format("test-- 执行时间：%s", DateUtils.currentDate(DateUtils.DATE_TIME_PATTERN)));
     }
 }
