@@ -204,9 +204,10 @@ public class GoodsVo implements Serializable {
      *
      * @param products
      */
-    public void calInventory(List<ProductVo> products) {
+    public void calSku(List<ProductVo> products) {
         this.goods_number = products.stream().mapToInt(product -> product.getGoods_number()).sum();
         this.goods_sn = products.stream().findFirst().get().getGoods_sn();
+        this.retail_price = BigDecimal.valueOf(products.stream().mapToDouble(product -> product.getRetail_price().doubleValue()).min().getAsDouble());
     }
 
     public void relatedDetails(String type, List<?> items) {

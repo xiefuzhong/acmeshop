@@ -120,7 +120,7 @@ public class GoodsServiceImpl implements IGoodsService {
             return ResultMap.error(1001, "请先登录管理系统再操作!");
         }
         GoodsVo goodsVo = GoodsFactory.createGoods(goodsRequest, userVo);
-        goodsVo.calInventory(request.getProducts());
+        goodsVo.calSku(request.getProducts());
         goodsDao.save(goodsVo);
         logger.info("save goodsVo after ==>" + goodsVo.toString());
         // 规格
