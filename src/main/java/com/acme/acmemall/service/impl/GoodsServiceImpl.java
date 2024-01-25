@@ -9,7 +9,6 @@ import com.acme.acmemall.dao.*;
 import com.acme.acmemall.exception.ResultCodeEnum;
 import com.acme.acmemall.factory.GoodsFactory;
 import com.acme.acmemall.model.*;
-import com.acme.acmemall.pojo.Sku;
 import com.acme.acmemall.service.IGoodsService;
 import com.acme.acmemall.utils.GsonUtil;
 import com.acme.acmemall.utils.StringUtils;
@@ -136,18 +135,14 @@ public class GoodsServiceImpl implements IGoodsService {
         logger.info("specifications==>" + GsonUtil.getGson().toJson(specifications));
         goodsSpecificationMapper.saveBatch(specifications);
 
-        Map<String, GoodsSpecificationVo> maps = specifications.stream().collect(Collectors.toMap(GoodsSpecificationVo::getContainsKey, Function.identity(), (v1, v2) -> v1));
-        List<Sku> skuList = request.getSkuList();
-        for (int i = 0; i < skuList.size(); i++) {
-            Sku sku = skuList.get(i);
-            GoodsSpecificationVo specificationVo = maps.get(sku.getContainsKey(goodsVo.getId()));
-            if (specificationVo != null) {
-                sku.setSpecId(specificationVo.getId());
-            }
-        }
+        Map<String, GoodsSpecificationVo> specMap = specifications.stream().collect(Collectors.toMap(GoodsSpecificationVo::getContainsKey, Function.identity(), (v1, v2) -> v1));
         List<ProductVo> products = request.getProducts();
         products.stream().forEach(productVo -> {
             productVo.setGoods_id(goodsVo.getId());
+            GoodsSpecificationVo specificationVo = specMap.get(productVo.getCheckedKey());
+            if (specificationVo != null) {
+                productVo.setGoods_specification_ids(String.valueOf(specificationVo.getId()));
+            }
         });
         logger.info("products==>" + GsonUtil.getGson().toJson(products));
         productMapper.saveBatch(products);
