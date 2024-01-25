@@ -33,12 +33,14 @@ public class MaterialsController extends ApiBase {
 
     @GetMapping("list")
     public Object list(@LoginUser LoginUserVo userVo, @RequestParam(value = "page", defaultValue = "1") Integer page,
-                       @RequestParam(value = "size", defaultValue = "10") Integer size) {
+                       @RequestParam(value = "size", defaultValue = "10") Integer size,
+                       @RequestParam("groupType") Integer groupType) {
         Map param = Maps.newHashMap();
         param.put("page", page);
         param.put("limit", size);
         param.put("sidx", "id");
         param.put("order", "desc");
+        param.put("groupType", groupType);
 //        param.put("fields", "id, title, price_info, scene_pic_url,subtitle");
         //查询列表数据
         PageHelper.startPage(page, size);
