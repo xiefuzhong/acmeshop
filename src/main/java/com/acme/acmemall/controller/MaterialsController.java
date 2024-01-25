@@ -40,7 +40,10 @@ public class MaterialsController extends ApiBase {
         param.put("limit", size);
         param.put("sidx", "id");
         param.put("order", "desc");
-        param.put("groupType", groupType);
+        if (groupType > 1) {
+            param.put("groupType", groupType);
+        }
+
 //        param.put("fields", "id, title, price_info, scene_pic_url,subtitle");
         //查询列表数据
         PageHelper.startPage(page, size);
