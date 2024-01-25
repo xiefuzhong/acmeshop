@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.acme.acmemall.dao.OrderDeliveryTrackMapper">
-    <resultMap id="deliveryTrackMap" type="com.acme.acmemall.model.OrderDeliveryTrackVo">
+    <resultMap type="com.acme.acmemall.model.OrderDeliveryTrackVo" id="deliveryTrackMap">
         <result property="id" column="id"/>
         <result property="orderId" column="order_id"/>
         <result property="waybillId" column="waybill_id"/>
@@ -58,8 +58,7 @@
         select count(*) from t_acme_mall_order_delivery_track
     </select>
 
-    <insert id="save" parameterType="com.acme.acmemall.model.OrderDeliveryTrackVo" useGeneratedKeys="true"
-            keyProperty="id">
+    <insert id="save" parameterType="com.acme.acmemall.model.OrderDeliveryTrackVo">
         REPLACE INTO `t_acme_mall_order_delivery_track`
         (
         `order_id`,
