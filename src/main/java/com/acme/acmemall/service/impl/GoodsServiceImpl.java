@@ -22,7 +22,6 @@ import javax.annotation.Resource;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -121,10 +120,7 @@ public class GoodsServiceImpl implements IGoodsService {
             return ResultMap.error(1001, "请先登录管理系统再操作!");
         }
         GoodsVo goodsVo = GoodsFactory.createGoods(goodsRequest, userVo);
-        Optional<ProductVo> optionalProductVo = request.getProducts().stream().filter(product -> product.getGoods_number() > 0).findFirst();
-        if (optionalProductVo.isPresent()) {
-            goodsVo.updateStock(optionalProductVo.get());
-        }
+        goodsVo.calInventory(request.getProducts());
         goodsDao.save(goodsVo);
         logger.info("save goodsVo after ==>" + goodsVo.toString());
         // 规格
@@ -144,7 +140,6 @@ public class GoodsServiceImpl implements IGoodsService {
                 productVo.setGoods_specification_ids(String.valueOf(specificationVo.getId()));
             }
         });
-        logger.info("products==>" + GsonUtil.getGson().toJson(products));
         productMapper.saveBatch(products);
         logger.info("save products after ==>" + GsonUtil.getGson().toJson(products));
 
@@ -152,8 +147,8 @@ public class GoodsServiceImpl implements IGoodsService {
         galleryVoList.stream().forEach(galleryVo -> {
             galleryVo.setGoods_id(goodsVo.getId());
         });
-        logger.info("galleryVoList==>" + GsonUtil.getGson().toJson(galleryVoList));
         galleryMapper.saveBatch(request.getGalleryList());
+        logger.info("save galleryVoList after ==>" + GsonUtil.getGson().toJson(galleryVoList));
         return ResultMap.response(ResultCodeEnum.SUCCESS, goodsVo);
     }
 

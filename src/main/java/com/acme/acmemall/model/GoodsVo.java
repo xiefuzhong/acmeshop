@@ -199,6 +199,16 @@ public class GoodsVo implements Serializable {
         this.goods_sn = product.getGoods_sn();
     }
 
+    /**
+     * 计算库存：各SKU累加
+     *
+     * @param products
+     */
+    public void calInventory(List<ProductVo> products) {
+        this.goods_number = products.stream().mapToInt(product -> product.getGoods_number()).sum();
+        this.goods_sn = products.stream().findFirst().get().getGoods_sn();
+    }
+
     public void relatedDetails(String type, List<?> items) {
         switch (type) {
             case "gallery": {
