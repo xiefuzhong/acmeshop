@@ -40,7 +40,7 @@ public class GoodsServiceImpl implements IGoodsService {
     private GoodsGalleryMapper galleryMapper;
 
     @Resource
-    private GoodsSpecificationMapper specificationMapper;
+    private GoodsSpecificationMapper goodsSpecificationMapper;
 
     @Resource
     private ProductMapper productMapper;
@@ -131,7 +131,7 @@ public class GoodsServiceImpl implements IGoodsService {
             spec.setGoods_id(goodsVo.getId());
         });
         logger.info("specifications==>" + GsonUtil.getGson().toJson(specifications));
-        specificationMapper.saveBatch(specifications);
+        goodsSpecificationMapper.saveBatch(specifications);
 
 
         List<GoodsGalleryVo> galleryVoList = request.getGalleryList();
