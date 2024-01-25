@@ -77,7 +77,8 @@
         `upload_type`,
         `upload_time`,
         `remark`,
-        `group_type`
+        `group_type`,
+        `product_name`
         )
         VALUES
         (
@@ -92,7 +93,8 @@
         #{uploadType},
         #{uploadTime},
         #{remark},
-        #{groupType}
+        #{groupType},
+        #{productName}
         )
     </insert>
 
@@ -110,7 +112,8 @@
         `upload_type`,
         `upload_time`,
         `remark`,
-        `group_type`
+        `group_type`,
+        `product_name`
         )
         values
         <foreach collection="list" item="item" separator=",">
@@ -126,7 +129,8 @@
             #{item.uploadType},
             #{item.uploadTime},
             #{item.remark},
-            #{item.groupType}
+            #{item.groupType},
+            #{item.productName}
             )
         </foreach>
     </insert>

@@ -80,9 +80,13 @@ public class MaterialsController extends ApiBase {
         JSONObject requestObj = super.getJsonRequest();
         if (null != requestObj) {
             JSONArray array = requestObj.getJSONArray("fileList");
+            String productName = requestObj.getString("productName");
             List<ProductMaterialsVo> fileList = JSONArray.parseArray(array.toJSONString(), ProductMaterialsVo.class);
             if (CollectionUtils.isNotEmpty(fileList)) {
                 logger.info("fileList.size = " + fileList.size());
+                fileList.stream().forEach(item -> {
+                    item.setProductName(productName);
+                });
                 productMaterialsService.batchSave(fileList);
             }
             return ResultMap.response(ResultCodeEnum.SUCCESS);

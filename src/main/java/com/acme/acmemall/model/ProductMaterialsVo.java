@@ -25,4 +25,5 @@ public class ProductMaterialsVo implements Serializable {
     private Date uploadTime = new Date();  // 上传时间
     private String remark; // 用途描述，关联商品ID,格式1,2,3
     private Integer groupType;
+    private String productName;
 }
