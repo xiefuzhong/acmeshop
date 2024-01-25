@@ -132,8 +132,8 @@ public class GoodsServiceImpl implements IGoodsService {
         specifications.stream().forEach(spec -> {
             spec.setGoods_id(goodsVo.getId());
         });
-        logger.info("specifications==>" + GsonUtil.getGson().toJson(specifications));
         goodsSpecificationMapper.saveBatch(specifications);
+        logger.info("save specifications after ==>" + GsonUtil.getGson().toJson(specifications));
 
         Map<String, GoodsSpecificationVo> specMap = specifications.stream().collect(Collectors.toMap(GoodsSpecificationVo::getContainsKey, Function.identity(), (v1, v2) -> v1));
         List<ProductVo> products = request.getProducts();
@@ -146,6 +146,7 @@ public class GoodsServiceImpl implements IGoodsService {
         });
         logger.info("products==>" + GsonUtil.getGson().toJson(products));
         productMapper.saveBatch(products);
+        logger.info("save products after ==>" + GsonUtil.getGson().toJson(products));
 
         List<GoodsGalleryVo> galleryVoList = request.getGalleryList();
         galleryVoList.stream().forEach(galleryVo -> {

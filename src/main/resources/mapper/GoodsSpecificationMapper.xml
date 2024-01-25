@@ -79,7 +79,7 @@
 		)
 	</insert>
 
-    <insert id="saveBatch" useGeneratedKeys="true" keyProperty="id" parameterType="list">
+    <insert id="saveBatch" useGeneratedKeys="true" keyProperty="id" parameterType="java.util.List">
         insert into t_acme_mall_goods_specification
         (
         `goods_id`,
