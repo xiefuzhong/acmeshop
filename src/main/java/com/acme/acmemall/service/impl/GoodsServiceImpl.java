@@ -45,6 +45,9 @@ public class GoodsServiceImpl implements IGoodsService {
     @Resource
     private ProductMapper productMapper;
 
+    @Resource
+    private IGoodsService goodsService;
+
     private static final String HOT_KEY = "is_hot";
     private static final String HOT_VALUE = "1";
     private static final String NEW_KEY = "is_new";
@@ -108,6 +111,7 @@ public class GoodsServiceImpl implements IGoodsService {
     @Transactional(rollbackFor = {RuntimeException.class, Exception.class})
     @Override
     public ResultMap submit(GoodsSubmitRequest request, LoginUserVo loginUser) {
+        // 待校验提交数据 @todo
         GoodsRequest goodsRequest = request.getGoods();
         // 检查账号是不是管理员账号,非管理员账号拒绝操作
         LoginUserVo userVo = userMapper.queryByUserId(loginUser.getUserId(), goodsRequest.getMerchantId());
@@ -121,6 +125,15 @@ public class GoodsServiceImpl implements IGoodsService {
         }
         goodsDao.save(goodsVo);
         logger.info("save goodsVo after ==>" + goodsVo.toString());
+        // 规格
+        List<GoodsSpecificationVo> specifications = request.getSpecList();
+        specifications.stream().forEach(spec -> {
+            spec.setGoods_id(goodsVo.getId());
+        });
+        logger.info("specifications==>" + GsonUtil.getGson().toJson(specifications));
+        specificationMapper.saveBatch(specifications);
+
+
         List<GoodsGalleryVo> galleryVoList = request.getGalleryList();
         galleryVoList.stream().forEach(galleryVo -> {
             galleryVo.setGoods_id(goodsVo.getId());
@@ -129,13 +142,6 @@ public class GoodsServiceImpl implements IGoodsService {
 //        goodsVo.relatedDetails("gallery", galleryVoList);
         galleryMapper.saveBatch(request.getGalleryList());
 
-        List<GoodsSpecificationVo> specifications = request.getSpecList();
-        specifications.stream().forEach(spec -> {
-            spec.setGoods_id(goodsVo.getId());
-        });
-        logger.info("specifications==>" + GsonUtil.getGson().toJson(specifications));
-//        goodsVo.relatedDetails("spec", specifications);
-        specificationMapper.saveBatch(specifications);
 
         List<ProductVo> products = request.getProducts();
         products.stream().forEach(productVo -> {

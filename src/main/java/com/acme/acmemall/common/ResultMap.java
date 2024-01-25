@@ -68,6 +68,10 @@ public class ResultMap extends HashMap<String, Object> {
         return error(1001, msg.length == 0 ? "参数不对" : Arrays.toString(msg));
     }
 
+    public static ResultMap badArgumentValue(String... msg) {
+        return error(1002, msg.length == 0 ? "参数值不对" : Arrays.toString(msg));
+    }
+
     public ResultMap put(String key, Object value) {
         super.put(key, value);
         return this;
