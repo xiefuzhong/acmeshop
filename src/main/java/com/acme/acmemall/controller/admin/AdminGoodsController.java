@@ -6,12 +6,10 @@ import com.acme.acmemall.controller.ApiBase;
 import com.acme.acmemall.model.LoginUserVo;
 import com.acme.acmemall.model.SpecificationVo;
 import com.acme.acmemall.service.ISpecificationService;
+import com.acme.acmemall.service.IUserService;
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Maps;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -29,13 +27,19 @@ public class AdminGoodsController extends ApiBase {
     @Resource
     private ISpecificationService specService;
 
+    private IUserService userService;
+
     @GetMapping("/spec-list")
     public Object queryByMerchantId(@LoginUser LoginUserVo userVo) {
-        if (userVo == null) {
+        if (userVo == null || userVo.getUserId() == null) {
             return ResultMap.badArgument("未登录用户操作");
         }
+        LoginUserVo loginUserVo = userService.queryByUserId(userVo.getUserId());
+        if (userVo == null || userVo.getUserId() == 0) {
+            return ResultMap.error(1001, "请先登录管理系统再操作!");
+        }
         Map paramMap = Maps.newHashMap();
-        paramMap.put("merchantId", userVo.getMerchantId());
+        paramMap.put("merchantId", loginUserVo.getMerchantId());
         List<SpecificationVo> specList = specService.querySpecifications(paramMap);
         return toResponsSuccess(specList);
     }

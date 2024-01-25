@@ -26,4 +26,6 @@ public interface IUserService {
     int delShareGoods(UserGoods userGoods);
 
     LoginUserVo login(String mobile, String password);
+
+    LoginUserVo queryByUserId(long userId);
 }

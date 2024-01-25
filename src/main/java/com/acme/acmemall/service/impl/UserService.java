@@ -98,4 +98,13 @@ public class UserService implements IUserService {
         return loginUserVo;
     }
 
+    /**
+     * @param userId
+     * @return
+     */
+    @Override
+    public LoginUserVo queryByUserId(long userId) {
+        return userDao.queryByUserId(userId, null);
+    }
+
 }
