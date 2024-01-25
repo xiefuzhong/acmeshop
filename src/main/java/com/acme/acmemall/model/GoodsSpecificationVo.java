@@ -29,7 +29,7 @@ public class GoodsSpecificationVo implements Serializable {
 
     public String getContainsKey() {
         StringBuffer buffer = new StringBuffer();
-        buffer.append(goods_id).append(specification_id).append(value);
+        buffer.append(goods_id).append(value);
         return buffer.toString();
     }
 }

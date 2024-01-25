@@ -48,7 +48,7 @@ public class ProductVo implements Serializable {
 
     public String getCheckedKey() {
         StringBuffer buffer = new StringBuffer();
-        buffer.append(goods_id).append(specTypeId).append(specValue);
+        buffer.append(goods_id).append(specValue);
         return buffer.toString();
     }
     public boolean verifyInventory(Integer goods_number) {
