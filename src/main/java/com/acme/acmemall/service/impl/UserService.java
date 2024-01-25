@@ -104,7 +104,7 @@ public class UserService implements IUserService {
      */
     @Override
     public LoginUserVo queryByUserId(long userId) {
-        return userDao.queryByUserId(userId, null);
+        return userDao.findByUserId(userId);
     }
 
 }

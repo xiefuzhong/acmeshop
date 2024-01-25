@@ -245,4 +245,18 @@
 
         </where>
     </select>
+
+    <select id="findByUserId" resultMap="loginUserMap">
+        SELECT
+        u.user_id,
+        u.username,
+        u.mobile,
+        u.password,
+        u.merchant_id
+        FROM sys_user u
+        <where>
+            AND u.user_id = #{userId}
+        </where>
+
+    </select>
 </mapper>
