@@ -27,6 +27,7 @@ public class AdminGoodsController extends ApiBase {
     @Resource
     private ISpecificationService specService;
 
+    @Resource
     private IUserService userService;
 
     @GetMapping("/spec-list")
@@ -35,7 +36,7 @@ public class AdminGoodsController extends ApiBase {
             return ResultMap.badArgument("未登录用户操作");
         }
         LoginUserVo loginUserVo = userService.queryByUserId(userVo.getUserId());
-        if (userVo == null || userVo.getUserId() == 0) {
+        if (loginUserVo == null || loginUserVo.getUserId() == 0) {
             return ResultMap.error(1001, "请先登录管理系统再操作!");
         }
         Map paramMap = Maps.newHashMap();
