@@ -25,4 +25,11 @@ public class GoodsSpecificationVo implements Serializable {
 
     // 1-启用 0-停用
     private Integer enabled;
+
+
+    public String getContainsKey() {
+        StringBuffer buffer = new StringBuffer();
+        buffer.append(goods_id).append(specification_id).append(value);
+        return buffer.toString();
+    }
 }

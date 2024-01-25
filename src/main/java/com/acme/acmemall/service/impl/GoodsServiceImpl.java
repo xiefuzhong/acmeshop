@@ -9,6 +9,7 @@ import com.acme.acmemall.dao.*;
 import com.acme.acmemall.exception.ResultCodeEnum;
 import com.acme.acmemall.factory.GoodsFactory;
 import com.acme.acmemall.model.*;
+import com.acme.acmemall.pojo.Sku;
 import com.acme.acmemall.service.IGoodsService;
 import com.acme.acmemall.utils.GsonUtil;
 import com.acme.acmemall.utils.StringUtils;
@@ -23,6 +24,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * @author xfz
@@ -133,24 +136,28 @@ public class GoodsServiceImpl implements IGoodsService {
         logger.info("specifications==>" + GsonUtil.getGson().toJson(specifications));
         goodsSpecificationMapper.saveBatch(specifications);
 
+        Map<String, GoodsSpecificationVo> maps = specifications.stream().collect(Collectors.toMap(GoodsSpecificationVo::getContainsKey, Function.identity(), (v1, v2) -> v1));
+        List<Sku> skuList = request.getSkuList();
+        for (int i = 0; i < skuList.size(); i++) {
+            Sku sku = skuList.get(i);
+            GoodsSpecificationVo specificationVo = maps.get(sku.getContainsKey(goodsVo.getId()));
+            if (specificationVo != null) {
+                sku.setSpecId(specificationVo.getId());
+            }
+        }
+        List<ProductVo> products = request.getProducts();
+        products.stream().forEach(productVo -> {
+            productVo.setGoods_id(goodsVo.getId());
+        });
+        logger.info("products==>" + GsonUtil.getGson().toJson(products));
+        productMapper.saveBatch(products);
 
         List<GoodsGalleryVo> galleryVoList = request.getGalleryList();
         galleryVoList.stream().forEach(galleryVo -> {
             galleryVo.setGoods_id(goodsVo.getId());
         });
         logger.info("galleryVoList==>" + GsonUtil.getGson().toJson(galleryVoList));
-//        goodsVo.relatedDetails("gallery", galleryVoList);
         galleryMapper.saveBatch(request.getGalleryList());
-
-
-        List<ProductVo> products = request.getProducts();
-        products.stream().forEach(productVo -> {
-            productVo.setGoods_id(goodsVo.getId());
-        });
-        logger.info("products==>" + GsonUtil.getGson().toJson(products));
-//        goodsVo.relatedDetails("product", products);
-        productMapper.saveBatch(products);
-
         return ResultMap.response(ResultCodeEnum.SUCCESS, goodsVo);
     }
 
