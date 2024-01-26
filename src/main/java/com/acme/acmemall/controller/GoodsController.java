@@ -422,16 +422,23 @@ public class GoodsController extends ApiBase {
     @ApiOperation(value = "商家商品查询")
     @GetMapping(value = "list-mer")
     public Object listMerGoods(@LoginUser LoginUserVo loginUserVo,
-                               Integer on_sale,
-                               Integer merchant_id,
-                               String keyword,
-                               Integer page,
-                               Integer size) {
+                               @RequestParam("on_sale") Integer on_sale,
+                               @RequestParam("merchant_id") Integer merchant_id,
+                               @RequestParam("keyword") String keyword,
+                               @RequestParam("page") Integer page,
+                               @RequestParam("size") Integer size,
+                               @RequestParam("catalogId") Integer catalogId) {
         Map params = Maps.newHashMap();
         params.put("is_delete", 0);
         params.put("is_on_sale", on_sale);
         params.put("keyword", keyword);
         params.put("merchant_id", merchant_id);
+        if (catalogId > 0) {
+            // 商品分类
+            List<Integer> categoryIds = Lists.newArrayList();
+            categoryIds.add(catalogId);
+            params.put("categoryIds", categoryIds);
+        }
         params.put("page", page);
         params.put("limit", size);
         // 根据上架时间排序
