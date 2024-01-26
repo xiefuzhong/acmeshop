@@ -181,4 +181,15 @@ public class GoodsServiceImpl implements IGoodsService {
         goodsDao.batchUpdate(goodsList);
         return ResultMap.response(ResultCodeEnum.SUCCESS);
     }
+
+    /**
+     * 查询商品详情(包含基本信息，规格，库存信息)用于编辑页面展示
+     *
+     * @param goodsId
+     * @return
+     */
+    @Override
+    public GoodsVo loadAllDetail(long goodsId) {
+        return goodsDao.queryGoodsDetail(goodsId);
+    }
 }

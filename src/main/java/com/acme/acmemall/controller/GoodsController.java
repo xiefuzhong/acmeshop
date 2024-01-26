@@ -480,4 +480,11 @@ public class GoodsController extends ApiBase {
 
         return goodsService.updateGoods(manageRequest, loginUserVo);
     }
+
+    @GetMapping("/manage-detail")
+    public Object goodsDetailMer(@LoginUser LoginUserVo userVo, @RequestParam("goodsId") Integer goodsId) {
+        GoodsVo goodsVo = goodsService.loadAllDetail(goodsId);
+        return toResponsSuccess(goodsVo);
+    }
+
 }

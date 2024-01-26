@@ -41,4 +41,12 @@ public interface IGoodsService {
     ResultMap submit(GoodsSubmitRequest request, LoginUserVo loginUser);
 
     ResultMap updateGoods(GoodsManageRequest request, LoginUserVo loginUser);
+
+    /**
+     * 查询商品详情(包含基本信息，规格，库存信息)用于编辑页面展示
+     *
+     * @param goodsId
+     * @return
+     */
+    GoodsVo loadAllDetail(long goodsId);
 }
