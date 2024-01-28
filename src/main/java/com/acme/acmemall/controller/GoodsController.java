@@ -291,10 +291,10 @@ public class GoodsController extends ApiBase {
             paramMap.put("goods_ids", relatedGoodIds);
             relatedGoodsList = goodsService.queryGoodsList(paramMap);
         }
-        // 产品主图
+        // 产品主图,倒序
         paramMap.clear();
         paramMap.put("sidx", "id");
-        paramMap.put("order", "asc");
+        paramMap.put("order", "desc");
         paramMap.put("goods_id", id);
         paramMap.put("enabled", 1);
         List<GoodsGalleryVo> gallery = galleryService.queryGoodsGalleryList(paramMap);
