@@ -9,7 +9,7 @@
         <result property="goods_id" column="goods_id"/>
         <result property="img_url" column="img_url"/>
         <result property="img_desc" column="img_desc"/>
-        <result property="sort_order" column="sort_order"/>
+        <result property="sortId" column="sort_order"/>
         <result property="enabled" column="enabled"/>
     </resultMap>
 
@@ -64,7 +64,7 @@
 			#{goods_id},
 			#{img_url},
 			#{img_desc},
-			#{sort_order}
+        #{sortId}
 		)
 	</insert>
 
@@ -82,7 +82,7 @@
             #{item.goods_id},
             #{item.img_url},
             #{item.img_desc},
-            #{item.sort_order}
+            #{item.sortId}
             )
         </foreach>
     </insert>
@@ -93,7 +93,7 @@
             <if test="goods_id != null">`goods_id` = #{goods_id},</if>
             <if test="img_url != null">`img_url` = #{img_url},</if>
             <if test="img_desc != null">`img_desc` = #{img_desc},</if>
-            <if test="sort_order != null">`sort_order` = #{sort_order}</if>
+            <if test="sortId != null">`sort_order` = #{sortId}</if>
         </set>
         where id = #{id}
     </update>

@@ -20,7 +20,7 @@ public class GoodsGalleryVo implements Serializable {
     //描述
     private String img_desc;
     //排序
-    private Integer sort_order;
+    private Integer sortId;
 
     // 1-启用 0-停用
     private Integer enabled;
