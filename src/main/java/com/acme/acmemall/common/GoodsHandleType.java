@@ -12,6 +12,10 @@ public enum GoodsHandleType {
      */
     DRAFT("draft"),
     /**
+     * 删除
+     */
+    DELETE("draft"),
+    /**
      * on:上架
      */
     ON("on");

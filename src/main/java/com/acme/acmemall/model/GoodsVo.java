@@ -146,6 +146,10 @@ public class GoodsVo implements Serializable {
                 this.draft();
                 break;
             }
+            case DELETE: {
+                this.delete();
+                break;
+            }
 
         }
     }
@@ -169,6 +173,10 @@ public class GoodsVo implements Serializable {
      */
     private void draft() {
         this.is_on_sale = GoodsStatus.IN_DRAFT.getStatusCode();
+    }
+
+    private void delete() {
+        this.is_delete = 1;
     }
 
     /**
