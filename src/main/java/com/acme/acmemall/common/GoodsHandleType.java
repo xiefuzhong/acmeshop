@@ -14,7 +14,7 @@ public enum GoodsHandleType {
     /**
      * 删除
      */
-    DELETE("draft"),
+    DELETE("delete"),
     /**
      * on:上架
      */
