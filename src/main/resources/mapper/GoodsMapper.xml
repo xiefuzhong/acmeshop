@@ -496,7 +496,7 @@
         from
         t_acme_mall_goods g
         LEFT JOIN t_acme_mall_product p on g.id = p.goods_id,
-        LEFT JOIN t_acme_mall_gallery ga on ga.goods_id = g.id
+        LEFT JOIN t_acme_mall_goods_gallery ga on ga.goods_id = g.id
         LEFT JOIN t_acme_mall_goods_specification sp on sp.goods_id = g.id
         WHERE
         g.id = #{id}
