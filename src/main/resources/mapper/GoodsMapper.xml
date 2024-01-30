@@ -450,6 +450,7 @@
         <result property="group_price" column="group_price"/>
         <result property="short_link" column="short_link"/>
 
+        <!--        product-->
         <collection property="products" ofType="com.acme.acmemall.model.ProductVo" javaType="java.util.List">
             <!-- id:明细唯一标识 property:要将订单明细的唯一标识映射到com.acme.acmemall.model.ProductVo的对应属性 -->
             <id column="id" property="id"/>
@@ -465,15 +466,38 @@
             <result property="merchant_id" column="merchant_id"/>
             <result property="group_price" column="group_price"/>
         </collection>
+        <!--        gallery-->
+        <collection property="galleryList" ofType="com.acme.acmemall.model.GoodsGalleryVo" javaType="java.util.List">
+            <result property="id" column="id"/>
+            <result property="goods_id" column="goods_id"/>
+            <result property="img_url" column="img_url"/>
+            <result property="img_desc" column="img_desc"/>
+            <result property="sortId" column="sort_order"/>
+            <result property="enabled" column="enabled"/>
+        </collection>
+        <!--specList-->
+        <collection property="specList" ofType="com.acme.acmemall.model.GoodsSpecificationVo" javaType="java.util.List">
+            <result property="id" column="id"/>
+            <result property="goods_id" column="goods_id"/>
+            <result property="specification_id" column="specification_id"/>
+            <result property="value" column="value"/>
+            <result property="pic_url" column="pic_url"/>
+            <result property="name" column="name"/>
+            <result property="enabled" column="enabled"/>
+        </collection>
     </resultMap>
 
     <select id="queryGoodsDetail" resultMap="detailMap">
         SELECT
         g.*,
-        p.*
+        p.*,
+        ga.*,
+        sp.*
         from
         t_acme_mall_goods g
-        LEFT JOIN t_acme_mall_product p on g.id = p.goods_id
+        LEFT JOIN t_acme_mall_product p on g.id = p.goods_id,
+        LEFT JOIN t_acme_mall_gallery ga on ga.goods_id = g.id
+        LEFT JOIN t_acme_mall_goods_specification sp on sp.goods_id = g.id
         WHERE
         g.id = #{id}
     </select>
@@ -493,6 +517,13 @@
                 <foreach collection="list" item="item" index="index">
                     <if test="item.is_on_sale!=null">
                         when id=#{item.id} then #{item.is_on_sale}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="is_delete =case" suffix="end,">
+                <foreach collection="list" item="item" index="index">
+                    <if test="item.is_delete!=null">
+                        when id=#{item.id} then #{item.is_delete}
                     </if>
                 </foreach>
             </trim>
