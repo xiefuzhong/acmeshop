@@ -9,6 +9,8 @@
         <result property="goods_id" column="goods_id"/>
         <result property="question" column="question"/>
         <result property="answer" column="answer"/>
+        <result property="merchant_id" column="merchant_id"/>
+        <result property="enabled" column="enabled"/>
     </resultMap>
 
     <select id="queryObject" resultMap="goodsIssueMap">
@@ -27,6 +29,12 @@
         <where>
             <if test="goods_id != null">
                 and goods_id = #{goods_id}
+            </if>
+            <if test="merchant_id != null">
+                and merchant_id = #{merchant_id}
+            </if>
+            <if test="enabled != null">
+                and enabled = #{enabled}
             </if>
         </where>
         <choose>

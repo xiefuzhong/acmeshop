@@ -308,7 +308,8 @@ public class GoodsController extends ApiBase {
         List<AttributeVo> attribute = attributeService.queryAttributeList(ngaParam);
         //
         Map issueParam = Maps.newHashMap();
-//        issueParam.put("goods_id", id);
+        issueParam.put("merchant_id", id);
+        issueParam.put("enabled", 1);
         List<GoodsIssueVo> issue = issueService.queryIssueList(issueParam);
         //
         BrandVo brand = brandService.queryObject(info.getBrand_id());

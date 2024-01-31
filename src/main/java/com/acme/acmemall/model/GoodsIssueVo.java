@@ -19,4 +19,8 @@ public class GoodsIssueVo implements Serializable {
     private String question;
     //回答
     private String answer;
+
+    private String merchant_id;
+
+    private Integer enabled;
 }
