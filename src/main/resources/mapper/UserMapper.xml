@@ -259,4 +259,15 @@
         </where>
 
     </select>
+
+    <!--    是否是admin -->
+    <select id="findRoleByUserId" resultType="map">
+        select
+        count(1) as cnt
+        from
+        sys_user_role
+        where
+        user_id = #{userId}
+        and role_id = 5
+    </select>
 </mapper>

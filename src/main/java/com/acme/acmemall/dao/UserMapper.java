@@ -40,5 +40,7 @@ public interface UserMapper extends BaseDao<LoginUserVo> {
     void saveUserGoods(UserGoods userGoods);
 
     int deleteShareGoods(UserGoods userGoods);
+
+    int findRoleByUserId(@Param("userId") Long userId);
 }
 
