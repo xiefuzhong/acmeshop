@@ -5,6 +5,7 @@ import com.acme.acmemall.common.ResultMap;
 import com.acme.acmemall.model.LoginUserVo;
 import com.acme.acmemall.model.ProductVo;
 import com.acme.acmemall.service.IProductService;
+import com.acme.acmemall.utils.GsonUtil;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.base.Throwables;
@@ -46,6 +47,7 @@ public class ProductController extends ApiBase {
         JSONArray array = parameters.getJSONArray("products");
         List<ProductVo> productVoList = JSONArray.parseArray(array.toJSONString(), ProductVo.class);
         try {
+            logger.info("productVoList==>" + GsonUtil.toJson(productVoList));
             productService.batchUpdate(productVoList);
         } catch (Exception e) {
             String errMsg = Throwables.getStackTraceAsString(e);
