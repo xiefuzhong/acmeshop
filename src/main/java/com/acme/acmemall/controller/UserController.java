@@ -7,6 +7,7 @@ import com.acme.acmemall.model.LoginUserVo;
 import com.acme.acmemall.model.UserGoods;
 import com.acme.acmemall.service.IUserService;
 import com.alibaba.fastjson.JSONObject;
+import com.google.common.collect.Maps;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @description:商城客户
@@ -76,6 +78,14 @@ public class UserController extends ApiBase {
             result = userService.delShareGoods(userGoods);
         }
         return result > 0 ? ResultMap.ok() : ResultMap.error();
+    }
+
+    @RequestMapping("/check-admin")
+    public Object checkAdmin(@LoginUser LoginUserVo loginUser) {
+        Boolean flag = userService.checkAdmin(loginUser.getUserId());
+        Map resultMap = Maps.newHashMap();
+        resultMap.put("checkFlag", flag ? "Y" : "N");
+        return toResponsSuccess(resultMap);
     }
 
 }

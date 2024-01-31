@@ -22,7 +22,6 @@ public class UserService implements IUserService {
     protected Logger logger = Logger.getLogger(getClass());
 
 
-
     /**
      * @param openId
      * @return
@@ -105,6 +104,15 @@ public class UserService implements IUserService {
     @Override
     public LoginUserVo queryByUserId(long userId) {
         return userDao.findByUserId(userId);
+    }
+
+    /**
+     * @param userId
+     * @return true-admin
+     */
+    @Override
+    public Boolean checkAdmin(long userId) {
+        return userDao.findRoleByUserId(userId) > 0 ? Boolean.TRUE : Boolean.FALSE;
     }
 
 }

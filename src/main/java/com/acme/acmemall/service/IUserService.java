@@ -28,4 +28,6 @@ public interface IUserService {
     LoginUserVo login(String mobile, String password);
 
     LoginUserVo queryByUserId(long userId);
+
+    Boolean checkAdmin(long userId);
 }
