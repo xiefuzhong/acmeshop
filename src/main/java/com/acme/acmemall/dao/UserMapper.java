@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 用户
@@ -41,6 +42,6 @@ public interface UserMapper extends BaseDao<LoginUserVo> {
 
     int deleteShareGoods(UserGoods userGoods);
 
-    int findRoleByUserId(@Param("userId") Long userId);
+    List<Map> findRoleByUserId(@Param("userId") Long userId);
 }
 

@@ -112,7 +112,8 @@ public class UserService implements IUserService {
      */
     @Override
     public Boolean checkAdmin(long userId) {
-        return userDao.findRoleByUserId(userId) > 0 ? Boolean.TRUE : Boolean.FALSE;
+        int count = (int) userDao.findRoleByUserId(userId).get(0).get("cnt");
+        return count > 0 ? Boolean.TRUE : Boolean.FALSE;
     }
 
 }
