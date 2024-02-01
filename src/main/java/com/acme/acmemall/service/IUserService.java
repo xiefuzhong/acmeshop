@@ -4,6 +4,7 @@ import com.acme.acmemall.model.LoginUserVo;
 import com.acme.acmemall.model.UserGoods;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author HP
@@ -30,4 +31,6 @@ public interface IUserService {
     LoginUserVo queryByUserId(long userId);
 
     Boolean checkAdmin(long userId);
+
+    List<LoginUserVo> queryUserList(Map<String, Object> paramMap);
 }

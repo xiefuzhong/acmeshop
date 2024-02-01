@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class UserService implements IUserService {
@@ -114,6 +115,15 @@ public class UserService implements IUserService {
     public Boolean checkAdmin(long userId) {
         long count = (long) userDao.findRoleByUserId(userId).get(0).get("cnt");
         return count > 0 ? Boolean.TRUE : Boolean.FALSE;
+    }
+
+    /**
+     * @param paramMap
+     * @return
+     */
+    @Override
+    public List<LoginUserVo> queryUserList(Map<String, Object> paramMap) {
+        return userDao.queryList(paramMap);
     }
 
 }

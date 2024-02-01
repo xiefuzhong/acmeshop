@@ -6,12 +6,17 @@ import com.acme.acmemall.exception.ResultCodeEnum;
 import com.acme.acmemall.model.LoginUserVo;
 import com.acme.acmemall.model.UserGoods;
 import com.acme.acmemall.service.IUserService;
+import com.acme.acmemall.utils.PageUtils;
 import com.alibaba.fastjson.JSONObject;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Maps;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -86,6 +91,39 @@ public class UserController extends ApiBase {
         Map resultMap = Maps.newHashMap();
         resultMap.put("checkFlag", flag ? "Y" : "N");
         return toResponsSuccess(resultMap);
+    }
+
+    @GetMapping("/list-mer")
+    public Object findByMerchantId(@LoginUser LoginUserVo loginUser,
+                                   @RequestParam("merchant_id") Integer merchant_id,
+                                   @RequestParam("page") Integer page,
+                                   @RequestParam("size") Integer size) {
+        if (loginUser == null) {
+            return ResultMap.error(400, "非有效用户操作");
+        }
+        LoginUserVo userVo = userService.queryByUserId(loginUser.getUserId());
+        if (userVo == null || userVo.getUserId() == 0) {
+            return ResultMap.error(1001, "请先登录管理系统再操作!");
+        }
+        if (!userVo.getMerchantId().equals(merchant_id)) {
+            return ResultMap.badArgumentValue("merchant_id参数值不对");
+        }
+        Map paramMap = Maps.newHashMap();
+        paramMap.put("merchantId", userVo.getMerchantId());
+        Map params = Maps.newHashMap();
+        params.put("merchant_id", merchant_id);
+        params.put("page", page);
+        params.put("limit", size);
+        params.put("sidx", "id");
+        params.put("order", "desc");
+
+        //查询列表数据
+        PageHelper.startPage(page, size);
+        List<LoginUserVo> userVoList = userService.queryUserList(params);
+
+        PageInfo pageInfo = new PageInfo<>(userVoList);
+        PageUtils pageData = new PageUtils(pageInfo);
+        return toResponsSuccess(pageData);
     }
 
 }
