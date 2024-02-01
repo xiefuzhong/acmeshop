@@ -1,6 +1,7 @@
 package com.acme.acmemall.model;
 
 import com.acme.acmemall.utils.Base64;
+import com.google.common.collect.Maps;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -9,6 +10,7 @@ import lombok.NoArgsConstructor;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.Map;
 
 
 @Builder
@@ -77,6 +79,17 @@ public class LoginUserVo implements Serializable {
         this.gender = loginInfo.getGender();
         this.promoterId = loginInfo.getPromoterId();
         this.nickname = Base64.encode(loginInfo.getNickName());
+    }
+
+    public Map<String, Object> response() {
+        Map<String, Object> response = Maps.newHashMap();
+        response.put("userId", this.userId);
+        response.put("nickname", Base64.decode(this.nickname));
+        response.put("avatarUrl", this.avatar);
+        response.put("mobile", this.mobile);
+        response.put("username", this.username);
+        return response;
+
     }
 
     public boolean checkLogin(String pwd) {

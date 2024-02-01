@@ -126,4 +126,19 @@ public class UserController extends ApiBase {
         return toResponsSuccess(pageData);
     }
 
+    @GetMapping("/get")
+    public Object getUser(@LoginUser LoginUserVo loginUser, @RequestParam("userId") Integer userId) {
+        if (loginUser == null) {
+            return ResultMap.error(400, "非有效用户操作");
+        }
+        LoginUserVo userVo = userService.queryByUserId(loginUser.getUserId());
+        if (userVo == null || userVo.getUserId() == 0) {
+            return ResultMap.error(1001, "请先登录管理系统再操作!");
+        }
+        if (userVo.getMerchantId().intValue() != userId.intValue()) {
+            return ResultMap.badArgumentValue("userId参数值不对");
+        }
+        return toResponsSuccess(userVo.response());
+    }
+
 }
