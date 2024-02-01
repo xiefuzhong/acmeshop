@@ -147,6 +147,7 @@ public class UserController extends ApiBase {
         if (requestJson == null) {
             return ResultMap.badArgument();
         }
+        logger.info("更新用户【头像、昵称】==>" + requestJson.toJSONString());
         LoginUserVo updater = JSONObject.parseObject(requestJson.toJSONString(), LoginUserVo.class);
         userService.updateUser(updater);
         return ResultMap.ok();

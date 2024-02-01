@@ -127,7 +127,6 @@
             <if test="first_buy_money != null">`first_buy_money` = #{first_buy_money}</if>
             <if test="qrCode != null">`qr_code` = #{qrCode}</if>
             <if test="realName != null">`real_name` = #{realName}</if>
-
         </set>
         where id = #{userId}
     </update>
