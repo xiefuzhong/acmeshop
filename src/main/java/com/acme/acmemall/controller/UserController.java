@@ -135,7 +135,7 @@ public class UserController extends ApiBase {
         if (userVo == null || userVo.getUserId() == 0) {
             return ResultMap.error(1001, "请先登录管理系统再操作!");
         }
-        if (userVo.getMerchantId().intValue() != userId.intValue()) {
+        if (userVo.getUserId().intValue() != userId.intValue()) {
             return ResultMap.badArgumentValue("userId参数值不对");
         }
         return toResponsSuccess(userVo.response());
