@@ -124,9 +124,9 @@
             <if test="promoterName != null">`promoter_name` = #{promoterName},</if>
             <if test="isReal != null">`is_real` = #{isReal},</if>
             <if test="is_return_cash != null">`is_return_cash` = #{is_return_cash},</if>
-            <if test="first_buy_money != null">`first_buy_money` = #{first_buy_money}</if>
-            <if test="qrCode != null">`qr_code` = #{qrCode}</if>
-            <if test="realName != null">`real_name` = #{realName}</if>
+            <if test="first_buy_money != null">`first_buy_money` = #{first_buy_money},</if>
+            <if test="qrCode != null">`qr_code` = #{qrCode},</if>
+            <if test="realName != null">`real_name` = #{realName},</if>
         </set>
         where id = #{userId}
     </update>
