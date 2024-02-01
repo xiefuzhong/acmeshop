@@ -105,7 +105,7 @@ public class UserController extends ApiBase {
         if (userVo == null || userVo.getUserId() == 0) {
             return ResultMap.error(1001, "请先登录管理系统再操作!");
         }
-        if (!userVo.getMerchantId().equals(merchant_id)) {
+        if (userVo.getMerchantId().intValue() != merchant_id.intValue()) {
             return ResultMap.badArgumentValue("merchant_id参数值不对");
         }
         Map paramMap = Maps.newHashMap();
