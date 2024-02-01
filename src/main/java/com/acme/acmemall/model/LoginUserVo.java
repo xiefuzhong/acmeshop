@@ -85,7 +85,7 @@ public class LoginUserVo implements Serializable {
         Map<String, Object> response = Maps.newHashMap();
         response.put("userId", this.userId);
         response.put("nickname", Base64.decode(this.nickname));
-        response.put("avatarUrl", this.avatar);
+        response.put("avatar", this.avatar);
         response.put("mobile", this.mobile);
         response.put("username", this.username);
         return response;

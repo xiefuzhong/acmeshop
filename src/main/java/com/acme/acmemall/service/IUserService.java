@@ -33,4 +33,6 @@ public interface IUserService {
     Boolean checkAdmin(long userId);
 
     List<LoginUserVo> queryUserList(Map<String, Object> paramMap);
+
+    void updateUser(LoginUserVo user);
 }

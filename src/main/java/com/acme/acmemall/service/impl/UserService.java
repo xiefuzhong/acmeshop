@@ -126,4 +126,12 @@ public class UserService implements IUserService {
         return userDao.queryList(paramMap);
     }
 
+    /**
+     * @param user
+     */
+    @Override
+    public void updateUser(LoginUserVo user) {
+        userDao.update(user);
+    }
+
 }
