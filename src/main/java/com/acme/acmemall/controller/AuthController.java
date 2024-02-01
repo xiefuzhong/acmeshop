@@ -69,7 +69,9 @@ public class AuthController extends ApiBase {
         LoginUserVo userVo = userService.queryByOpenId(openid);
         logger.info("LoginUserVo>>" + JSONObject.toJSON(userVo));
         if (null == userVo) {
-            userVo = LoginUserVo.builder().weixin_openid(openid).build();
+//            userVo = LoginUserVo.builder().weixin_openid(openid).build();
+            userVo = new LoginUserVo();
+            userVo.setWeixin_openid(openid);
             userVo.loginByWeixin(loginInfo, this.getClientIp());
             // 保存授权登录信息
             userService.save(userVo);

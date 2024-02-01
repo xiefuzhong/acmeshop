@@ -2,10 +2,7 @@ package com.acme.acmemall.model;
 
 import com.acme.acmemall.utils.Base64;
 import com.google.common.collect.Maps;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.Data;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -13,10 +10,7 @@ import java.util.Date;
 import java.util.Map;
 
 
-@Builder
-@Getter
-@NoArgsConstructor
-@AllArgsConstructor
+@Data
 public class LoginUserVo implements Serializable {
     private static final long serialVersionUID = 1L;
 
