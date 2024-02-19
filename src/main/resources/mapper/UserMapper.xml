@@ -29,6 +29,9 @@
         <result property="fid" column="fid"/>
         <result property="fx1" column="fx1"/>
         <result property="fx2" column="fx2"/>
+
+        <result property="group_id" column="groupId"/>
+        <result property="group_name" column="groupName"/>
     </resultMap>
 
     <select id="queryObject" resultMap="userMap">
@@ -127,6 +130,9 @@
             <if test="first_buy_money != null">`first_buy_money` = #{first_buy_money},</if>
             <if test="qrCode != null">`qr_code` = #{qrCode},</if>
             <if test="realName != null">`real_name` = #{realName},</if>
+            <if test="groupId != null">`group_id` = #{groupId},</if>
+            <if test="groupName != null">`group_name` = #{groupName},</if>
+            <if test="labelIds != null">`label_ids` = #{labelIds},</if>
         </set>
         where id = #{userId}
     </update>
