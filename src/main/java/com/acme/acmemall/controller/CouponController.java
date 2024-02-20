@@ -280,4 +280,41 @@ public class CouponController extends ApiBase {
         List<CouponVo> couponVos = couponService.queryCouponList(param);
         return toResponsSuccess(couponVos);
     }
+
+    @PostMapping("/hand-out")
+    public Object handOutCoupon(@LoginUser LoginUserVo userVo) {
+        if (userVo == null) {
+            return ResultMap.error(400, "非有效用户操作");
+        }
+        LoginUserVo loginUserVo = userService.queryByUserId(userVo.getUserId());
+        if (loginUserVo == null || loginUserVo.getUserId() == 0) {
+            return ResultMap.error(1001, "请先登录管理系统再操作!");
+        }
+        JSONObject request = getJsonRequest();
+        String userIds = request.getString("userIds");
+        String[] uids = userIds.split(",");
+        Integer coupon_id = request.getInteger("coupon_id");
+        CouponVo couponVo = couponService.queryObject(coupon_id);
+        //判断优惠券是否被领完
+        Map userParams = Maps.newHashMap();
+        userParams.put("coupon_id", coupon_id);
+        int count = userCouponService.queryUserGetTotal(userParams);
+        if (couponVo.getTotalCount() <= count) {
+            return toResponsFail("优惠券已领完");
+        }
+        if (null != couponVo) {
+            for (int i = 0; i < uids.length; i++) {
+                UserCouponVo userCouponVo = UserCouponVo.builder()
+                        .add_time(new Date())
+                        .coupon_id(couponVo.getId())
+                        .coupon_number(CharUtil.getRandomString(12))
+                        .user_id(Long.parseLong(uids[i]))
+                        .coupon_price(couponVo.getType_money())
+                        .build();
+                userCouponService.save(userCouponVo);
+            }
+            return ResultMap.ok();
+        }
+        return ResultMap.error("发送失败");
+    }
 }
