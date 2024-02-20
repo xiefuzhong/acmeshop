@@ -43,5 +43,7 @@ public interface UserMapper extends BaseDao<LoginUserVo> {
     int deleteShareGoods(UserGoods userGoods);
 
     List<Map> findRoleByUserId(@Param("userId") Long userId);
+
+    int updateUserGroup(@Param("userIds") String[] userIds, LoginUserVo vo);
 }
 

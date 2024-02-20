@@ -134,4 +134,13 @@ public class UserService implements IUserService {
         userDao.update(user);
     }
 
+    /**
+     * @param userIds
+     * @param user
+     */
+    @Override
+    public void updateUserGroup(String[] userIds, LoginUserVo user) {
+        userDao.updateUserGroup(userIds, user);
+    }
+
 }

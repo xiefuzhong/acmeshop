@@ -275,4 +275,17 @@
         user_id = #{userId}
         and role_id = 5
     </select>
+
+    <update id="updateUserGroup">
+        update t_acme_mall_user
+        <set>
+            <if test="groupId != null">`group_id` = #{groupId},</if>
+            <if test="groupName != null">`group_name` = #{groupName},</if>
+            <if test="labelIds != null">`label_ids` = #{labelIds},</if>
+        </set>
+        where id in
+        <foreach item="userId" collection="userIds" open="(" separator="," close=")">
+            #{userId}
+        </foreach>
+    </update>
 </mapper>

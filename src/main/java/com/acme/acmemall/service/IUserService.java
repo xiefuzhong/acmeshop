@@ -35,4 +35,6 @@ public interface IUserService {
     List<LoginUserVo> queryUserList(Map<String, Object> paramMap);
 
     void updateUser(LoginUserVo user);
+
+    void updateUserGroup(String[] userIds, LoginUserVo user);
 }

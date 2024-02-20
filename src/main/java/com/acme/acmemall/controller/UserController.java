@@ -156,4 +156,23 @@ public class UserController extends ApiBase {
         return ResultMap.ok();
     }
 
+    @PostMapping("/management")
+    public Object userManagement(@LoginUser LoginUserVo userVo) {
+        if (userVo == null) {
+            return ResultMap.error(400, "非有效用户操作");
+        }
+        JSONObject requestJson = super.getJsonRequest();
+        if (requestJson == null) {
+            return ResultMap.badArgument();
+        }
+        LoginUserVo updater = JSONObject.parseObject(requestJson.toJSONString(), LoginUserVo.class);
+        if (updater == null) {
+            return ResultMap.badArgumentValue();
+        }
+        String userIds = requestJson.getString("userIds");
+        String[] uids = userIds.split(",");
+        userService.updateUserGroup(uids, updater);
+        return ResultMap.ok();
+    }
+
 }
