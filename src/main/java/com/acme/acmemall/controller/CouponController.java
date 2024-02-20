@@ -2,6 +2,7 @@ package com.acme.acmemall.controller;
 
 import com.acme.acmemall.annotation.IgnoreAuth;
 import com.acme.acmemall.annotation.LoginUser;
+import com.acme.acmemall.common.ResultMap;
 import com.acme.acmemall.model.*;
 import com.acme.acmemall.service.*;
 import com.acme.acmemall.utils.CharUtil;
@@ -257,5 +258,21 @@ public class CouponController extends ApiBase {
             return toResponsSuccess(userCouponVo);
         }
         return toResponsFail("领取失败");
+    }
+
+    //    @IgnoreAuth
+    @GetMapping("/giveable")
+    public Object getMerCouponList(@LoginUser LoginUserVo userVo) {
+        if (userVo == null) {
+            return ResultMap.error(400, "非有效用户操作");
+        }
+        LoginUserVo loginUserVo = userService.queryByUserId(userVo.getUserId());
+        if (loginUserVo == null || loginUserVo.getUserId() == 0) {
+            return ResultMap.error(1001, "请先登录管理系统再操作!");
+        }
+        Map param = Maps.newHashMap();
+        param.put("merchantId", loginUserVo.getMerchantId());
+        List<CouponVo> couponVos = couponService.queryCouponList(param);
+        return toResponsSuccess(couponVos);
     }
 }
