@@ -282,7 +282,7 @@
         <set>
             <if test="user.groupId != null">`group_id` = #{user.groupId},</if>
             <if test="user.groupName != null">`group_name` = #{user.groupName},</if>
-            <if test="user.label != null">`label` = #{user.label},</if>
+            <if test="user.labels != null">`label` = #{user.labels},</if>
         </set>
         where id in
         <foreach item="userId" collection="userIds" open="(" separator="," close=")">
