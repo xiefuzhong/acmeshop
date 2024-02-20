@@ -170,6 +170,7 @@ public class UserController extends ApiBase {
         if (updater == null) {
             return ResultMap.badArgumentValue();
         }
+        logger.info("更新用户【分组、标签】==>" + requestJson.toJSONString());
         String userIds = requestJson.getString("userIds");
         String[] uids = userIds.split(",");
         if (CollectionUtils.isNotEmpty(updater.getLabels())) {
