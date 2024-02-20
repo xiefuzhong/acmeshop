@@ -281,7 +281,6 @@
         <set>
             <if test="user.groupId != null">`group_id` = #{user.groupId},</if>
             <if test="user.groupName != null">`group_name` = #{user.groupName},</if>
-            <if test="labelIds != null">`label_ids` = #{labelIds},</if>
         </set>
         where id in
         <foreach item="userId" collection="userIds" open="(" separator="," close=")">
