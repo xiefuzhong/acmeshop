@@ -262,7 +262,7 @@ public class CouponController extends ApiBase {
 
     //    @IgnoreAuth
     @GetMapping("/giveable")
-    public Object getMerCouponList(@LoginUser LoginUserVo userVo) {
+    public Object getMerCouponList(@LoginUser LoginUserVo userVo, @RequestParam("send_type") Integer sendType) {
         if (userVo == null) {
             return ResultMap.error(400, "非有效用户操作");
         }
@@ -272,6 +272,11 @@ public class CouponController extends ApiBase {
         }
         Map param = Maps.newHashMap();
         param.put("merchantId", loginUserVo.getMerchantId());
+        // 按用户发放
+        if (sendType == null) {
+            sendType = 1;
+        }
+        param.put("send_type", sendType);
         List<CouponVo> couponVos = couponService.queryCouponList(param);
         return toResponsSuccess(couponVos);
     }
