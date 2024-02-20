@@ -5,8 +5,10 @@ import com.acme.acmemall.common.ResultMap;
 import com.acme.acmemall.exception.ResultCodeEnum;
 import com.acme.acmemall.model.LoginUserVo;
 import com.acme.acmemall.model.UserGoods;
+import com.acme.acmemall.model.UserLabel;
 import com.acme.acmemall.service.IUserService;
 import com.acme.acmemall.utils.PageUtils;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -170,9 +172,12 @@ public class UserController extends ApiBase {
         if (updater == null) {
             return ResultMap.badArgumentValue();
         }
+        JSONArray labels = requestJson.getJSONArray("labels");
+        List<UserLabel> userLabels = JSONArray.parseArray(labels.toJSONString(), UserLabel.class);
         logger.info("更新用户【分组、标签】==>" + requestJson.toJSONString());
         String userIds = requestJson.getString("userIds");
         String[] uids = userIds.split(",");
+        updater.setLabels(userLabels);
         if (CollectionUtils.isNotEmpty(updater.getLabels())) {
             updater.buildLabel();
         }
