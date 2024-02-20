@@ -1,15 +1,12 @@
 package com.acme.acmemall.model;
 
 import com.acme.acmemall.utils.Base64;
-import com.acme.acmemall.utils.GsonUtil;
-import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import lombok.Data;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
-import java.util.List;
 import java.util.Map;
 
 
@@ -67,13 +64,7 @@ public class LoginUserVo implements Serializable {
 
     private Long groupId;
     private String groupName;
-    private List<UserLabel> labels = Lists.newArrayList();
-    private String label;
-
-    public void buildLabel() {
-        this.label = GsonUtil.toJson(this.labels);
-    }
-
+    private String labels;
     public void loginByWeixin(LoginInfo loginInfo, String requestIp) {
         this.username = Base64.encode(loginInfo.getNickName());
         this.password = this.weixin_openid;
