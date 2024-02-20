@@ -279,8 +279,8 @@
     <update id="updateUserGroup">
         update t_acme_mall_user
         <set>
-            <if test="groupId != null">`group_id` = #{groupId},</if>
-            <if test="groupName != null">`group_name` = #{groupName},</if>
+            <if test="user.groupId != null">`group_id` = #{user.groupId},</if>
+            <if test="user.groupName != null">`group_name` = #{user.groupName},</if>
             <if test="labelIds != null">`label_ids` = #{labelIds},</if>
         </set>
         where id in
