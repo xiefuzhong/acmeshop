@@ -13,6 +13,7 @@ import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Maps;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -171,6 +172,9 @@ public class UserController extends ApiBase {
         }
         String userIds = requestJson.getString("userIds");
         String[] uids = userIds.split(",");
+        if (CollectionUtils.isNotEmpty(updater.getLabels())) {
+            updater.buildLabel();
+        }
         userService.updateUserGroup(uids, updater);
         return ResultMap.ok();
     }
