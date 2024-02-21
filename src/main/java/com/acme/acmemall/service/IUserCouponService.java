@@ -13,4 +13,6 @@ public interface IUserCouponService {
     void update(UserCouponVo userCouponVo);
 
     int queryUserGetTotal(Map userParams);
+
+    void batchSave(List<UserCouponVo> userCouponVos);
 }

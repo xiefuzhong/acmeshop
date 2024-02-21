@@ -53,4 +53,12 @@ public class UserCouponService implements IUserCouponService {
     public int queryUserGetTotal(Map userParams) {
         return mapper.queryUserGetTotal(userParams);
     }
+
+    /**
+     * @param userCouponVos
+     */
+    @Override
+    public void batchSave(List<UserCouponVo> userCouponVos) {
+        mapper.saveBatch(userCouponVos);
+    }
 }

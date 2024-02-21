@@ -8,6 +8,7 @@ import com.acme.acmemall.service.*;
 import com.acme.acmemall.utils.CharUtil;
 import com.acme.acmemall.utils.StringUtils;
 import com.alibaba.fastjson.JSONObject;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -303,6 +304,7 @@ public class CouponController extends ApiBase {
             return toResponsFail("优惠券已领完");
         }
         if (null != couponVo) {
+            List<UserCouponVo> userCouponVoList = Lists.newArrayList();
             for (int i = 0; i < uids.length; i++) {
                 UserCouponVo userCouponVo = UserCouponVo.builder()
                         .add_time(new Date())
@@ -311,8 +313,9 @@ public class CouponController extends ApiBase {
                         .user_id(Long.parseLong(uids[i]))
                         .coupon_price(couponVo.getType_money())
                         .build();
-                userCouponService.save(userCouponVo);
+                userCouponVoList.add(userCouponVo);
             }
+            userCouponService.batchSave(userCouponVoList);
             return ResultMap.ok();
         }
         return ResultMap.error("发送失败");

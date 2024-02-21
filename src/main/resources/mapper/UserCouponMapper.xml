@@ -117,6 +117,37 @@
 		)
 	</insert>
 
+    <insert id="saveBatch" parameterType="list">
+        insert into t_acme_mall_user_coupon
+        (
+        `coupon_id`,
+        `coupon_number`,
+        `user_id`,
+        `used_time`,
+        `order_id`,
+        `add_time`,
+        `source_key`,
+        `referrer`,
+        `merchant_id`,
+        `coupon_price`
+        )
+        values
+        <foreach collection="list" item="item" separator=",">
+            (
+            #{item.coupon_id},
+            #{item.coupon_number},
+            #{item.user_id},
+            #{item.used_time},
+            #{item.order_id},
+            #{item.add_time},
+            #{item.source_key},
+            #{item.referrer},
+            #{item.merchantId},
+            #{item.coupon_price}
+            )
+        </foreach>
+    </insert>
+
     <update id="update" parameterType="com.acme.acmemall.model.UserCouponVo">
         update t_acme_mall_user_coupon
         <set>
