@@ -222,10 +222,10 @@
             SELECT
             cart.merchant_id as merchantId,
             sys.merchant_name as merchantName,
-            sum(
+        (
                 cart.retail_price * cart.number
             ) as orderTotalPrice,
-            ifnull(sum(goods.extra_price * cart.number),0) as freightPrice
+        ifnull((goods.extra_price * cart.number),0) as freightPrice
         FROM
             t_acme_mall_cart cart,
             t_acme_mall_goods goods,
@@ -236,7 +236,7 @@
         AND cart.user_id = #{userId}
         AND cart.checked = 1
         GROUP BY
-            cart.merchant_id,sys.merchant_name
+        cart.merchant_id,sys.merchant_name,cart.retail_price,goods.extra_price,cart.number
     </select>
     <select id="queryCheckedByUserIdAndMerId" parameterType="java.util.Map" resultMap="cartMap">
         select * from t_acme_mall_cart where user_id=#{user_id} and checked = 1 and merchant_id=#{merchantId}
