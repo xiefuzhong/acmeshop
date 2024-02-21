@@ -128,14 +128,15 @@ public class UserController extends ApiBase {
         if (loginUser == null) {
             return ResultMap.error(400, "非有效用户操作");
         }
-        LoginUserVo userVo = userService.queryObject(loginUser.getUserId());
+        LoginUserVo userVo = userService.queryByUserId(loginUser.getUserId());
         if (userVo == null || userVo.getUserId() == 0) {
             return ResultMap.error(1001, "请先登录管理系统再操作!");
         }
-        if (userVo.getUserId().intValue() != userId.intValue()) {
-            return ResultMap.badArgumentValue("userId参数值不对");
+        LoginUserVo userVo2 = userService.queryObject(userId);
+        if (userVo2 == null) {
+            return ResultMap.badArgumentValue("userId查无数据");
         }
-        return toResponsSuccess(userVo.response());
+        return toResponsSuccess(userVo2.response());
     }
 
     @PostMapping("/update")
