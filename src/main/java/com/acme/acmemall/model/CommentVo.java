@@ -22,9 +22,9 @@ import java.util.List;
 public class CommentVo implements Serializable {
     //主键
     private Integer id;
-    //用户评论的类型;0评论的是商品,1评论的是文章
+    //用户评论的类型;0评论的是商品,1评论的是回复 0-针对商品 1-针对评论
     private Integer type_id;
-    //产品Id
+    //0-商品Id,1-评论ID
     private Integer value_id;
     //储存为base64编码
     private String content;
@@ -48,6 +48,7 @@ public class CommentVo implements Serializable {
      */
     public void post(JSONObject object) {
         this.add_time = System.currentTimeMillis() / 1000;
+//        this.fmt_add_time = DateUtils.timeToUtcDate(this.add_time, DateUtils.DATE_TIME_PATTERN);
         this.status = 0;
         this.type_id = object.getInteger("type_id");
         this.value_id = object.getInteger("value_id");
