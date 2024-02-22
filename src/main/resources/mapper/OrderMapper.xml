@@ -55,6 +55,7 @@
         <result property="addressId" column="address_id"/>
         <result property="goodsCount" column="goods_count"/>
         <result property="invoiceHeaderId" column="invoice_header_id"/>
+        <result property="goodsIds" column="goods_ids"/>
     </resultMap>
 
     <select id="queryObject" resultMap="orderMap">
@@ -87,7 +88,7 @@
 
     <select id="queryList" resultMap="orderMap">
         SELECT DISTINCT o.*,
-        g.goods_name, g.list_pic_url, g.goods_id
+        GROUP_CONCAT(g.goods_id) as goods_ids
         FROM t_acme_mall_order o
         LEFT JOIN t_acme_mall_order_goods g ON o.id = g.order_id
         <where>

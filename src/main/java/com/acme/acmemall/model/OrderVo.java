@@ -178,6 +178,8 @@ public class OrderVo implements Serializable {
     @Builder.Default
     private List<OrderGoodsVo> items = Lists.newArrayList();
 
+    private String goodsIds;
+
     private static void check(OrderVo orderVo, long userId) {
         if (orderVo == null) {
             throw new ApiCusException("订单不存在");
