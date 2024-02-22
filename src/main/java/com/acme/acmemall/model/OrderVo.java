@@ -465,4 +465,8 @@ public class OrderVo implements Serializable {
             this.merRemark = orderVo.getMerRemark();
         }
     }
+
+    public void fillItem(List<OrderGoodsVo> items) {
+        this.items.addAll(items);
+    }
 }

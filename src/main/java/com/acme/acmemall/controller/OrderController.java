@@ -100,6 +100,11 @@ public class OrderController extends ApiBase {
         orderGoodsParam.put("ids", orderIds);
         //订单的商品
         List<OrderGoodsVo> orderGoods = orderGoodsService.queryList(orderGoodsParam);
+        Map<String, List<OrderGoodsVo>> orderGoodsMap = orderGoods.stream()
+                .collect(Collectors.groupingBy(OrderGoodsVo::getOrder_id));
+        orderList.forEach(orderVo -> {
+            orderVo.fillItem(orderGoodsMap.get(orderVo.getId()));
+        });
         PageInfo pageInfo = new PageInfo<>(orderList);
 //        logger.info("pageinfo-->"+JSONObject.toJSONString(pageInfo));
         PageUtils goodsData = new PageUtils(pageInfo);
