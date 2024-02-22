@@ -131,6 +131,9 @@
                 order by id desc
             </otherwise>
         </choose>
+        GROUP BY
+        o.id,
+        o.user_id
         <if test="offset != null and limit != null">
             limit #{offset}, #{limit}
         </if>
