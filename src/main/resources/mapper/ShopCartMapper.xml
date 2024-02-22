@@ -219,24 +219,21 @@
 
 <!--    查询用户已选择的购物车信息-->
     <select id="queryMerCartList" parameterType="java.lang.Long" resultType="com.acme.acmemall.model.MerCartVo">
-            SELECT
-            cart.merchant_id as merchantId,
-            sys.merchant_name as merchantName,
-        (
-                cart.retail_price * cart.number
-            ) as orderTotalPrice,
-        ifnull((goods.extra_price * cart.number),0) as freightPrice
+        SELECT
+        c.merchant_id as merchantId,
+        s.merchant_name as merchantName,
+        sum(c.retail_price * c.NUMBER) as orderTotalPrice,
+        ifnull(sum(g.extra_price * c.number), 0) as freightPrice
         FROM
-            t_acme_mall_cart cart,
-            t_acme_mall_goods goods,
-            sys_user sys
+        t_acme_mall_cart c
+        INNER JOIN sys_user s ON s.user_id = c.user_id
+        INNER JOIN t_acme_mall_goods g ON g.id = c.goods_id
         WHERE
-            cart.goods_id = goods.id
-         AND sys.merchant_id=cart.merchant_id
-        AND cart.user_id = #{userId}
-        AND cart.checked = 1
+        c.user_id = #{user_id}
+        and c.checked = 1
         GROUP BY
-        cart.merchant_id,sys.merchant_name,cart.retail_price,goods.extra_price,cart.number
+        c.merchant_id,
+        s.merchant_name
     </select>
     <select id="queryCheckedByUserIdAndMerId" parameterType="java.util.Map" resultMap="cartMap">
         select * from t_acme_mall_cart where user_id=#{user_id} and checked = 1 and merchant_id=#{merchantId}

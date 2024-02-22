@@ -48,7 +48,7 @@ public class CommentVo implements Serializable {
      */
     public void post(JSONObject object) {
         this.add_time = System.currentTimeMillis() / 1000;
-//        this.fmt_add_time = DateUtils.timeToUtcDate(this.add_time, DateUtils.DATE_TIME_PATTERN);
+        this.fmt_add_time = DateUtils.timeToUtcDate(this.add_time, DateUtils.DATE_TIME_PATTERN);
         this.status = 0;
         this.type_id = object.getInteger("type_id");
         this.value_id = object.getInteger("value_id");
