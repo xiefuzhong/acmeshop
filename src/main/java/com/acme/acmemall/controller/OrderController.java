@@ -97,7 +97,7 @@ public class OrderController extends ApiBase {
         List<String> tmpOrderIds = orderList.stream().map(OrderVo::getId).collect(Collectors.toList());
         List<String> orderIds = tmpOrderIds.stream().distinct().collect(Collectors.toList());
         Map orderGoodsParam = Maps.newHashMap();
-        orderGoodsParam.put("ids", orderIds);
+        orderGoodsParam.put("orderIds", orderIds);
         //订单的商品
         List<OrderGoodsVo> orderGoods = orderGoodsService.queryList(orderGoodsParam);
         Map<String, List<OrderGoodsVo>> orderGoodsMap = orderGoods.stream()
@@ -126,7 +126,7 @@ public class OrderController extends ApiBase {
         }
         Map orderGoodsParam = Maps.newHashMap();
 //        orderGoodsParam.put("order_id", orderId);
-        orderGoodsParam.put("ids", Lists.newArrayList(orderId));
+        orderGoodsParam.put("orderIds", Lists.newArrayList(orderId));
         //订单的商品
         List<OrderGoodsVo> orderGoods = orderGoodsService.queryList(orderGoodsParam);
         //订单最后支付时间
