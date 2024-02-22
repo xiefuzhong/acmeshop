@@ -123,6 +123,9 @@
                 and o.group_buying_id = #{group_buying_id}
             </if>
         </where>
+        GROUP BY
+        o.id,
+        o.user_id
         <choose>
             <when test="sidx != null and sidx.trim() != ''">
                 order by ${sidx} ${order}
@@ -131,9 +134,6 @@
                 order by id desc
             </otherwise>
         </choose>
-        GROUP BY
-        o.id,
-        o.user_id
         <if test="offset != null and limit != null">
             limit #{offset}, #{limit}
         </if>
