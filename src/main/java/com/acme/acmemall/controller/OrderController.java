@@ -17,6 +17,7 @@ import com.acme.acmemall.utils.wechat.WechatUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -28,6 +29,7 @@ import javax.annotation.Resource;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @description:订单相关
@@ -92,6 +94,12 @@ public class OrderController extends ApiBase {
         PageHelper.startPage(page, size);
         List<OrderVo> orderList = orderService.queryOrderList(params);
         logger.info("Order.list=" + (CollectionUtils.isEmpty(orderList) ? 0 : orderList.size()));
+        List<String> tmpOrderIds = orderList.stream().map(OrderVo::getId).collect(Collectors.toList());
+        List<String> orderIds = tmpOrderIds.stream().distinct().collect(Collectors.toList());
+        Map orderGoodsParam = Maps.newHashMap();
+        orderGoodsParam.put("ids", orderIds);
+        //订单的商品
+        List<OrderGoodsVo> orderGoods = orderGoodsService.queryList(orderGoodsParam);
         PageInfo pageInfo = new PageInfo<>(orderList);
 //        logger.info("pageinfo-->"+JSONObject.toJSONString(pageInfo));
         PageUtils goodsData = new PageUtils(pageInfo);
@@ -112,7 +120,8 @@ public class OrderController extends ApiBase {
             return toResponsObject(400, "订单不存在", "");
         }
         Map orderGoodsParam = Maps.newHashMap();
-        orderGoodsParam.put("order_id", orderId);
+//        orderGoodsParam.put("order_id", orderId);
+        orderGoodsParam.put("ids", Lists.newArrayList(orderId));
         //订单的商品
         List<OrderGoodsVo> orderGoods = orderGoodsService.queryList(orderGoodsParam);
         //订单最后支付时间

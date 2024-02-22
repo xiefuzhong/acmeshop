@@ -28,7 +28,11 @@
     <select id="queryList" resultMap="orderGoodsMap">
         select * from t_acme_mall_order_goods
         <where>
-            AND order_id = #{order_id}
+            <!--            AND order_id = #{order_id}-->
+            AND order_id in
+            <foreach item="id" collection="list" open="(" separator="," close=")">
+                #{id}
+            </foreach>
         </where>
         <choose>
             <when test="sidx != null and sidx.trim() != ''">
