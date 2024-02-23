@@ -15,6 +15,8 @@
         <result property="order_id" column="order_id"/>
         <!--        reply_flag-->
         <result property="reply_flag" column="reply_flag"/>
+        <result property="mer_reply_content" column="mer_reply_content"/>
+        <result property="mer_reply_time" column="mer_reply_time"/>
 
         <result property="goods_name" column="goods_name"/>
         <result property="goods_spec" column="goods_spec"/>
@@ -38,6 +40,9 @@
             <!--            AND c.status = #{status}-->
             <if test="status != null and status != ''">
                 and c.status = #{status}
+            </if>
+            <if test="reply_flag != null and reply_flag != ''">
+                and c.reply_flag = #{reply_flag}
             </if>
             <if test="type_id != null and type_id != ''">
                 and c.type_id = #{type_id}
@@ -142,6 +147,8 @@
             <if test="add_time != null">`add_time` = #{add_time},</if>
             <if test="status != null">`status` = #{status},</if>
             <if test="user_id != null">`user_id` = #{user_id}</if>
+            <if test="mer_reply_content != null">`mer_reply_content` = #{mer_reply_content}</if>
+            <if test="mer_reply_time != null">`mer_reply_time` = #{mer_reply_time}</if>
         </set>
         where id = #{id}
     </update>
