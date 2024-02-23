@@ -48,13 +48,13 @@ public class CommentController extends ApiBase {
         }
 
         JSONObject object = super.getJsonRequest();
-        CommentVo commentVo = commentService.queryComment(object.getLong("comment_id"));
-        if (commentVo == null) {
-            return ResultMap.error("回复失败,不存在评论");
-        }
-        commentVo.reply(object);
+        CommentVo commentVo = CommentVo.builder()
+                .user_id(loginUser.getUserId())
+                .build();
+
+        commentVo.post(object);
         int result = commentService.doSave(commentVo);
-        return result > 0 ? ResultMap.ok("回复成功") : ResultMap.error("回复失败,可能已经回复过了");
+        return result > 0 ? ResultMap.ok("评论添加成功") : ResultMap.error("评论添加失败");
     }
 
     @PostMapping("reply")
@@ -68,12 +68,13 @@ public class CommentController extends ApiBase {
         }
         JSONObject object = super.getJsonRequest();
 
-        CommentVo commentVo = CommentVo.builder()
-                .user_id(loginUser.getUserId())
-                .build();
+        CommentVo commentVo = commentService.queryComment(object.getLong("comment_id"));
+        if (commentVo == null) {
+            return ResultMap.error("回复失败,不存在评论");
+        }
         commentVo.reply(object);
         int result = commentService.updateComment(commentVo);
-        return result > 0 ? ResultMap.ok("评论添加成功") : ResultMap.error("评论添加失败");
+        return result > 0 ? ResultMap.ok("回复成功") : ResultMap.error("回复失败");
     }
 
     /**
