@@ -41,10 +41,10 @@ public class CommentService implements ICommentService {
     @Override
     public List<CommentVo> queryCommentList(Map<String, Object> map) {
         List<CommentVo> comments = mapper.queryList(map);
-//        comments.stream().forEach(item -> {
+        comments.stream().forEach(item -> {
 //            LoginUserVo user = userMapper.queryObject(item.getUser_id());
-//            item.resetShow(user);
-//        });
+            item.resetShow(null);
+        });
         return comments;
     }
 
