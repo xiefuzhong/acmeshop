@@ -68,9 +68,7 @@ public class CommentController extends ApiBase {
                 .user_id(loginUser.getUserId())
                 .build();
         commentVo.reply(object);
-        LoginUserVo user = userService.queryObject(commentVo.getUser_id());
-        commentVo.resetShow(user);
-        int result = commentService.doSave(commentVo);
+        int result = commentService.updateComment(commentVo);
         return result > 0 ? ResultMap.ok("评论添加成功") : ResultMap.error("评论添加失败");
     }
 
