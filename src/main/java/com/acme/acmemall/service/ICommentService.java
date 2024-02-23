@@ -12,4 +12,8 @@ public interface ICommentService {
     List<CommentVo> queryCommentList(Map<String, Object> map);
 
     int doSave(CommentVo commentVo);
+
+    CommentVo queryComment(Long id);
+
+    int updateComment(CommentVo commentVo);
 }

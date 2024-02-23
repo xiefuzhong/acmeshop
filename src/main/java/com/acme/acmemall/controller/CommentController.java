@@ -48,10 +48,26 @@ public class CommentController extends ApiBase {
         }
 
         JSONObject object = super.getJsonRequest();
+        CommentVo commentVo = commentService.queryComment(object.getLong("comment_id"));
+        if (commentVo == null) {
+            return ResultMap.error("回复失败,不存在评论");
+        }
+        commentVo.reply(object);
+        int result = commentService.doSave(commentVo);
+        return result > 0 ? ResultMap.ok("回复成功") : ResultMap.error("回复失败,可能已经回复过了");
+    }
+
+    @PostMapping("reply")
+    public Object repyComment(@LoginUser LoginUserVo loginUser) {
+        if (loginUser == null) {
+            return ResultMap.error(400, "非有效用户操作");
+        }
+        JSONObject object = super.getJsonRequest();
+
         CommentVo commentVo = CommentVo.builder()
                 .user_id(loginUser.getUserId())
                 .build();
-        commentVo.post(object);
+        commentVo.reply(object);
         LoginUserVo user = userService.queryObject(commentVo.getUser_id());
         commentVo.resetShow(user);
         int result = commentService.doSave(commentVo);

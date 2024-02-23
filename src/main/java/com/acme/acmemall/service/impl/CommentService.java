@@ -19,6 +19,7 @@ import java.util.Map;
 @Service
 public class CommentService implements ICommentService {
 
+
     @Autowired
     CommentMapper mapper;
 
@@ -64,4 +65,23 @@ public class CommentService implements ICommentService {
         }
         return mapper.save(commentVo);
     }
+
+    /**
+     * @param id
+     * @return
+     */
+    @Override
+    public CommentVo queryComment(Long id) {
+        return mapper.queryObject(id);
+    }
+
+    /**
+     * @param commentVo
+     * @return
+     */
+    @Override
+    public int updateComment(CommentVo commentVo) {
+        return mapper.update(commentVo);
+    }
+
 }
