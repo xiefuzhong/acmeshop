@@ -3,7 +3,6 @@ package com.acme.acmemall.service.impl;
 import com.acme.acmemall.dao.CommentMapper;
 import com.acme.acmemall.dao.UserMapper;
 import com.acme.acmemall.model.CommentVo;
-import com.acme.acmemall.model.LoginUserVo;
 import com.acme.acmemall.service.ICommentService;
 import com.google.common.collect.Maps;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,10 +41,10 @@ public class CommentService implements ICommentService {
     @Override
     public List<CommentVo> queryCommentList(Map<String, Object> map) {
         List<CommentVo> comments = mapper.queryList(map);
-        comments.stream().forEach(item -> {
-            LoginUserVo user = userMapper.queryObject(item.getUser_id());
-            item.resetShow(user);
-        });
+//        comments.stream().forEach(item -> {
+//            LoginUserVo user = userMapper.queryObject(item.getUser_id());
+//            item.resetShow(user);
+//        });
         return comments;
     }
 
