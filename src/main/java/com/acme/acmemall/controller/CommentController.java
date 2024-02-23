@@ -7,6 +7,7 @@ import com.acme.acmemall.exception.ResultCodeEnum;
 import com.acme.acmemall.model.CommentVo;
 import com.acme.acmemall.model.LoginUserVo;
 import com.acme.acmemall.service.ICommentService;
+import com.acme.acmemall.service.IUserService;
 import com.acme.acmemall.utils.PageUtils;
 import com.acme.acmemall.utils.StringUtils;
 import com.alibaba.fastjson.JSONObject;
@@ -17,6 +18,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import java.util.List;
 import java.util.Map;
 
@@ -32,18 +34,26 @@ public class CommentController extends ApiBase {
     @Autowired
     ICommentService commentService;
 
+    @Resource
+    IUserService userService;
+
     /**
      * 发表评论
      */
     @ApiOperation(value = "发表评论")
     @PostMapping("post")
     public Object postComment(@LoginUser LoginUserVo loginUser) {
+        if (loginUser == null) {
+            return ResultMap.error(400, "非有效用户操作");
+        }
+
         JSONObject object = super.getJsonRequest();
         CommentVo commentVo = CommentVo.builder()
                 .user_id(loginUser.getUserId())
                 .build();
         commentVo.post(object);
-
+        LoginUserVo user = userService.queryObject(commentVo.getUser_id());
+        commentVo.resetShow(user);
         int result = commentService.doSave(commentVo);
         return result > 0 ? ResultMap.ok("评论添加成功") : ResultMap.error("评论添加失败");
     }
@@ -111,6 +121,31 @@ public class CommentController extends ApiBase {
 //            List<CommentPictureVo> commentPictureEntities = commentPictureService.queryList(paramPicture);
 //            commentItem.setPic_list(commentPictureEntities);
 //        }
+        return ResultMap.response(ResultCodeEnum.SUCCESS, commenData);
+    }
+
+    @GetMapping("mer-list")
+    public Object merList(@LoginUser LoginUserVo userVo,
+                          @RequestParam(value = "page", defaultValue = "1") Integer page,
+                          @RequestParam(value = "size", defaultValue = "10") Integer size,
+                          @RequestParam(value = "status", defaultValue = "-1") Integer status) {
+        if (userVo == null) {
+            return ResultMap.error(400, "非有效用户操作");
+        }
+        LoginUserVo sysUserVo = userService.queryByUserId(userVo.getUserId());
+        if (sysUserVo == null) {
+            return ResultMap.error(1001, "请先登录管理系统再操作!");
+        }
+
+        Map param = Maps.newHashMap();
+        param.put("page", page);
+        param.put("limit", size);
+        param.put("sidx", "id");
+        param.put("order", "desc");
+        PageHelper.startPage(page, size);
+        List<CommentVo> commentList = commentService.queryCommentList(param);
+        PageInfo pageInfo = new PageInfo<>(commentList);
+        PageUtils commenData = new PageUtils(pageInfo);
         return ResultMap.response(ResultCodeEnum.SUCCESS, commenData);
     }
 }

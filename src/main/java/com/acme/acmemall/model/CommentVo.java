@@ -47,6 +47,11 @@ public class CommentVo implements Serializable {
 
     private String mer_reply_content;
     private Long mer_reply_time;
+    private String goods_name;
+    private String goods_spec;
+    private String goods_pic;
+    private String nick_name;
+    private String avatar;
 
     /**
      * 发表评论
@@ -59,10 +64,15 @@ public class CommentVo implements Serializable {
         this.status = 0;
         this.type_id = object.getInteger("type_id");
         this.value_id = object.getInteger("value_id");
+        this.goods_name = object.getString("goods_name");
+        this.goods_spec = object.getString("goods_spec");
+        this.goods_pic = object.getString("goods_pic");
+
         this.content = object.getString("content");
         this.order_id = object.getString("order_id");
         this.reply_flag = 0;
         this.del_flag = 0;
+
     }
 
     public void reply(JSONObject object) {
@@ -75,5 +85,7 @@ public class CommentVo implements Serializable {
         this.user_info = userVo;
 //        this.content = Base64.encode(this.content);
         this.fmt_add_time = DateUtils.timeToUtcDate(this.add_time, DateUtils.DATE_TIME_PATTERN);
+        this.nick_name = userVo.getNickname();
+        this.avatar = userVo.getAvatar();
     }
 }
