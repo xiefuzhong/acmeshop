@@ -22,7 +22,7 @@ import java.util.List;
 public class CommentVo implements Serializable {
     //主键
     private Integer id;
-    //用户评论的类型;0评论的是商品,1评论的是回复 0-针对商品 1-针对评论
+    //用户评论的类型; 0-针对商品 1-针对评论
     private Integer type_id;
     //0-商品Id,1-评论ID
     private Integer value_id;
@@ -41,6 +41,13 @@ public class CommentVo implements Serializable {
     private LoginUserVo user_info;
     private List<CommentPictureVo> pic_list;
 
+    private String order_id;
+    private Integer reply_flag;
+    private Integer del_flag;
+
+    private String mer_reply_content;
+    private Long mer_reply_time;
+
     /**
      * 发表评论
      *
@@ -53,6 +60,15 @@ public class CommentVo implements Serializable {
         this.type_id = object.getInteger("type_id");
         this.value_id = object.getInteger("value_id");
         this.content = object.getString("content");
+        this.order_id = object.getString("order_id");
+        this.reply_flag = 0;
+        this.del_flag = 0;
+    }
+
+    public void reply(JSONObject object) {
+        this.reply_flag = 1;
+        this.mer_reply_content = object.getString("content");
+        this.mer_reply_time = System.currentTimeMillis() / 1000;
     }
 
     public void resetShow(LoginUserVo userVo) {

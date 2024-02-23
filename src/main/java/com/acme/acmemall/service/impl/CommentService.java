@@ -5,6 +5,7 @@ import com.acme.acmemall.dao.UserMapper;
 import com.acme.acmemall.model.CommentVo;
 import com.acme.acmemall.model.LoginUserVo;
 import com.acme.acmemall.service.ICommentService;
+import com.google.common.collect.Maps;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -53,6 +54,15 @@ public class CommentService implements ICommentService {
      */
     @Override
     public int doSave(CommentVo commentVo) {
+        Map<String, Object> params = Maps.newHashMap();
+        params.put("user_id", commentVo.getUser_id());
+        params.put("value_id", commentVo.getValue_id());
+        params.put("type_id", commentVo.getType_id());
+        params.put("order_id", commentVo.getOrder_id());
+        int count = mapper.queryTotal(params);
+        if (count > 0) {
+            return 0;
+        }
         return mapper.save(commentVo);
     }
 }
