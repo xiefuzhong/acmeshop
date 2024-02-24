@@ -48,10 +48,13 @@ public class CommentController extends ApiBase {
         }
 
         JSONObject object = super.getJsonRequest();
+
+        LoginUserVo sysUserVo = userService.queryObject(loginUser.getUserId());
         CommentVo commentVo = CommentVo.builder()
                 .user_id(loginUser.getUserId())
+                .avatar(sysUserVo.getAvatar())
+                .nick_name(sysUserVo.getNickname())
                 .build();
-
         commentVo.post(object);
         int result = commentService.doSave(commentVo);
         return result > 0 ? ResultMap.ok("评论添加成功") : ResultMap.error("评论添加失败");
