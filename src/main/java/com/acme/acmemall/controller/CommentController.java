@@ -164,7 +164,7 @@ public class CommentController extends ApiBase {
         param.put("limit", size);
         param.put("sidx", "id");
         param.put("order", "desc");
-        if (status > 0) {
+        if (status >= 0) {
             param.put("reply_flag", status);
         }
         logger.info("merList.param==" + GsonUtil.toJson(param));
