@@ -47,13 +47,14 @@ public class CommentController extends ApiBase {
             return ResultMap.error(400, "非有效用户操作");
         }
         JSONObject object = super.getJsonRequest();
-        LoginUserVo sysUserVo = userService.queryObject(loginUser.getUserId());
+        LoginUserVo userVo = userService.queryObject(loginUser.getUserId());
         CommentVo commentVo = CommentVo.builder()
                 .user_id(loginUser.getUserId())
-                .avatar(sysUserVo.getAvatar())
-                .nick_name(sysUserVo.getNickname())
+                .avatar(userVo.getAvatar())
+                .nick_name(userVo.getNickname())
                 .build();
         commentVo.post(object);
+        logger.info("postComment == " + commentVo.toString());
         int result = commentService.doSave(commentVo);
         return result > 0 ? ResultMap.ok("评论添加成功") : ResultMap.error("评论添加失败");
     }

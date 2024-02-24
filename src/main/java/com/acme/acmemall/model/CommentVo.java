@@ -1,11 +1,9 @@
 package com.acme.acmemall.model;
 
 import com.acme.acmemall.utils.DateUtils;
+import com.acme.acmemall.utils.GsonUtil;
 import com.alibaba.fastjson.JSONObject;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.io.Serializable;
 import java.util.List;
@@ -94,5 +92,10 @@ public class CommentVo implements Serializable {
             this.nick_name = userVo.getNickname();
             this.avatar = userVo.getAvatar();
         }
+    }
+
+    @Override
+    public String toString() {
+        return GsonUtil.toJson(this);
     }
 }
