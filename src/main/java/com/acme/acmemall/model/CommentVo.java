@@ -52,6 +52,7 @@ public class CommentVo implements Serializable {
     private String avatar;
 
     private String fmt_reply_time;
+    private Integer score;
 
     /**
      * 发表评论
@@ -72,6 +73,8 @@ public class CommentVo implements Serializable {
         this.order_id = object.getString("order_id");
         this.reply_flag = 0;
         this.del_flag = 0;
+
+        this.score = object.getInteger("score");
 
     }
 

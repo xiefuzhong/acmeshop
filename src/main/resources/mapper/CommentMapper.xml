@@ -24,6 +24,8 @@
 
         <result property="nick_name" column="nickname"/>
         <result property="avatar" column="avatar"/>
+        <!--        score-->
+        <result property="score" column="score"/>
     </resultMap>
 
     <select id="queryObject" resultMap="commentMap">
@@ -119,7 +121,8 @@
         `avatar`,
         `goods_name`,
         `goods_spec`,
-        `goods_pic`
+        `goods_pic`,
+        `score`
         )
         values
         (
@@ -134,7 +137,8 @@
         #{avatar},
         #{goods_name},
         #{goods_spec},
-        #{goods_pic}
+        #{goods_pic},
+        #{score}
         )
     </insert>
 
