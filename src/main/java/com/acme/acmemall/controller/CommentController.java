@@ -46,9 +46,7 @@ public class CommentController extends ApiBase {
         if (loginUser == null) {
             return ResultMap.error(400, "非有效用户操作");
         }
-
         JSONObject object = super.getJsonRequest();
-
         LoginUserVo sysUserVo = userService.queryObject(loginUser.getUserId());
         CommentVo commentVo = CommentVo.builder()
                 .user_id(loginUser.getUserId())
