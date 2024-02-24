@@ -53,6 +53,8 @@ public class CommentVo implements Serializable {
     private String nick_name;
     private String avatar;
 
+    private String fmt_reply_time;
+
     /**
      * 发表评论
      *
@@ -84,6 +86,9 @@ public class CommentVo implements Serializable {
     public void resetShow(LoginUserVo userVo) {
 //        this.content = Base64.encode(this.content);
         this.fmt_add_time = DateUtils.timeToStr(this.add_time, DateUtils.DATE_TIME_PATTERN);
+        if (reply_flag == 1) {
+            this.fmt_reply_time = DateUtils.timeToStr(this.mer_reply_time, DateUtils.DATE_TIME_PATTERN);
+        }
         if (userVo != null) {
             this.user_info = userVo;
             this.nick_name = userVo.getNickname();
