@@ -130,8 +130,8 @@
         #{status},
         #{user_id},
         #{order_id},
-        #{user_info.nickname},
-        #{user_info.avatar},
+        #{nickname},
+        #{avatar},
         #{goods_name},
         #{goods_spec},
         #{goods_pic}
