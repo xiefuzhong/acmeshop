@@ -93,6 +93,9 @@
         <if test="user_id != null and user_id != ''">
             and c.user_id = #{user_id}
         </if>
+        <if test="reply_flag != null and reply_flag != ''">
+            and c.reply_flag = #{reply_flag}
+        </if>
     </select>
 
     <select id="queryhasPicTotal" resultType="int">
