@@ -161,6 +161,11 @@ public class CommentController extends ApiBase {
         param.put("limit", size);
         param.put("sidx", "id");
         param.put("order", "desc");
+        if (status == 0) {
+            param.put("reply_flag", 0);
+        } else if (status == 1) {
+            param.put("reply_flag", 1);
+        }
         PageHelper.startPage(page, size);
         List<CommentVo> commentList = commentService.queryCommentList(param);
         PageInfo pageInfo = new PageInfo<>(commentList);
