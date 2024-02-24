@@ -8,6 +8,7 @@ import com.acme.acmemall.model.CommentVo;
 import com.acme.acmemall.model.LoginUserVo;
 import com.acme.acmemall.service.ICommentService;
 import com.acme.acmemall.service.IUserService;
+import com.acme.acmemall.utils.GsonUtil;
 import com.acme.acmemall.utils.PageUtils;
 import com.acme.acmemall.utils.StringUtils;
 import com.alibaba.fastjson.JSONObject;
@@ -163,11 +164,10 @@ public class CommentController extends ApiBase {
         param.put("limit", size);
         param.put("sidx", "id");
         param.put("order", "desc");
-        if (status == 0) {
-            param.put("reply_flag", 0);
-        } else if (status == 1) {
-            param.put("reply_flag", 1);
+        if (status > 0) {
+            param.put("reply_flag", status);
         }
+        logger.info("merList.param==" + GsonUtil.toJson(param));
         PageHelper.startPage(page, size);
         List<CommentVo> commentList = commentService.queryCommentList(param);
         PageInfo pageInfo = new PageInfo<>(commentList);
