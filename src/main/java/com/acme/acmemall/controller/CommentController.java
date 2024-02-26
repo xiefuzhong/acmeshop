@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -37,6 +38,9 @@ public class CommentController extends ApiBase {
 
     @Resource
     IUserService userService;
+
+    //    一天 24*60*60*1000
+    private static final long DAY_TIME = 86400000;
 
     /**
      * 发表评论
@@ -150,6 +154,7 @@ public class CommentController extends ApiBase {
     public Object merList(@LoginUser LoginUserVo userVo,
                           @RequestParam(value = "page", defaultValue = "1") Integer page,
                           @RequestParam(value = "size", defaultValue = "10") Integer size,
+                          @RequestParam(value = "timeRange", defaultValue = "3") Integer timeRange,
                           @RequestParam(value = "status", defaultValue = "-1") Integer status) {
         if (userVo == null) {
             return ResultMap.error(400, "非有效用户操作");
@@ -167,6 +172,8 @@ public class CommentController extends ApiBase {
         if (status >= 0) {
             param.put("reply_flag", status);
         }
+        Date now = new Date(System.currentTimeMillis() - timeRange * DAY_TIME);
+        param.put("add_time", now.getTime() / 1000);
         logger.info("merList.param==" + GsonUtil.toJson(param));
         PageHelper.startPage(page, size);
         List<CommentVo> commentList = commentService.queryCommentList(param);

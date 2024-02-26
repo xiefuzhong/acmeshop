@@ -61,6 +61,9 @@
             <if test="hasPic != null and hasPic == 1">
                 and cp.id is not null
             </if>
+            <if test="add_time != null and add_time != ''">
+                and c.add_time >= #{add_time}
+            </if>
         </where>
         <choose>
             <when test="sidx != null and sidx.trim() != ''">
@@ -95,6 +98,9 @@
         </if>
         <if test="reply_flag != null and reply_flag != ''">
             and c.reply_flag = #{reply_flag}
+        </if>
+        <if test="add_time != null and add_time != ''">
+            and c.add_time >= #{add_time}
         </if>
     </select>
 
