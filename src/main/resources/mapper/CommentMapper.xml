@@ -43,7 +43,7 @@
             <if test="status != null and status != ''">
                 and c.status = #{status}
             </if>
-            <if test="reply_flag != null and reply_flag != ''">
+            <if test="reply_flag != null and reply_flag >=0">
                 and c.reply_flag = #{reply_flag}
             </if>
             <if test="type_id != null and type_id != ''">
