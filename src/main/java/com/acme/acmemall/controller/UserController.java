@@ -136,6 +136,7 @@ public class UserController extends ApiBase {
         if (userVo2 == null) {
             return ResultMap.badArgumentValue("userId查无数据");
         }
+        userVo2.parseLabel();
         return toResponsSuccess(userVo2);
     }
 

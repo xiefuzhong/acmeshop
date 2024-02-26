@@ -1,12 +1,16 @@
 package com.acme.acmemall.model;
 
 import com.acme.acmemall.utils.Base64;
+import com.acme.acmemall.utils.StringUtils;
+import com.alibaba.fastjson.JSONArray;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import lombok.Data;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 
@@ -65,6 +69,8 @@ public class LoginUserVo implements Serializable {
     private Long groupId;
     private String groupName;
     private String labels;
+
+    private List<UserLabel> userLabels = Lists.newArrayList();
     public void loginByWeixin(LoginInfo loginInfo, String requestIp) {
         this.username = Base64.encode(loginInfo.getNickName());
         this.password = this.weixin_openid;
@@ -86,6 +92,12 @@ public class LoginUserVo implements Serializable {
         response.put("mobile", this.mobile);
         return response;
 
+    }
+
+    public void parseLabel() {
+        if (StringUtils.isNullOrEmpty(this.labels)) {
+            this.userLabels = JSONArray.parseArray(this.labels, UserLabel.class);
+        }
     }
 
     public boolean checkLogin(String pwd) {
