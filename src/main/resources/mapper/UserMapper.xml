@@ -133,7 +133,7 @@
             <if test="realName != null">`real_name` = #{realName},</if>
             <if test="groupId != null">`group_id` = #{groupId},</if>
             <if test="groupName != null">`group_name` = #{groupName},</if>
-            <if test="label != null">`label` = #{label},</if>
+            <if test="labels != null">`label` = #{labels},</if>
         </set>
         where id = #{userId}
     </update>
