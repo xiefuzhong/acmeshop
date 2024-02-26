@@ -94,19 +94,21 @@ public class OrderController extends ApiBase {
         PageHelper.startPage(page, size);
         List<OrderVo> orderList = orderService.queryOrderList(params);
         logger.info("Order.list=" + (CollectionUtils.isEmpty(orderList) ? 0 : orderList.size()));
-        List<String> tmpOrderIds = orderList.stream().map(OrderVo::getId).collect(Collectors.toList());
-        List<String> orderIds = tmpOrderIds.stream().distinct().collect(Collectors.toList());
-        Map orderGoodsParam = Maps.newHashMap();
-        orderGoodsParam.put("orderIds", orderIds);
-        //订单的商品
-        List<OrderGoodsVo> orderGoods = orderGoodsService.queryList(orderGoodsParam);
-        Map<String, List<OrderGoodsVo>> orderGoodsMap = orderGoods.stream()
-                .collect(Collectors.groupingBy(OrderGoodsVo::getOrder_id));
-        orderList.forEach(orderVo -> {
-            orderVo.fillItem(orderGoodsMap.get(orderVo.getId()));
-        });
+        if (CollectionUtils.isNotEmpty(orderList)) {
+            List<String> tmpOrderIds = orderList.stream().map(OrderVo::getId).collect(Collectors.toList());
+            List<String> orderIds = tmpOrderIds.stream().distinct().collect(Collectors.toList());
+            Map orderGoodsParam = Maps.newHashMap();
+            orderGoodsParam.put("orderIds", orderIds);
+            //订单的商品
+            List<OrderGoodsVo> orderGoods = orderGoodsService.queryList(orderGoodsParam);
+            Map<String, List<OrderGoodsVo>> orderGoodsMap = orderGoods.stream()
+                    .collect(Collectors.groupingBy(OrderGoodsVo::getOrder_id));
+            orderList.forEach(orderVo -> {
+                orderVo.fillItem(orderGoodsMap.get(orderVo.getId()));
+            });
+        }
+
         PageInfo pageInfo = new PageInfo<>(orderList);
-//        logger.info("pageinfo-->"+JSONObject.toJSONString(pageInfo));
         PageUtils goodsData = new PageUtils(pageInfo);
 
         return toResponsSuccess(goodsData);
