@@ -116,15 +116,25 @@ public class ApiBase {
      * @return 客户端Ip
      */
     public String getClientIp() {
-        String xff = request.getHeader("x-forwarded-for");
-        if (xff == null) {
-            return "0.0.0.0";
+        String ip = request.getHeader("x-forwarded-for");
+        logger.info("x-forwarded-for:" + ip);
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getHeader("Proxy-Client-IP");
+            logger.info("Proxy-Client-IP:" + ip);
+        }
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getHeader("WL-Proxy-Client-IP");
+            logger.info("WL-Proxy-Client-IP:" + ip);
+        }
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getRemoteAddr();
+            logger.info("unknown:" + ip);
         } else {
-            if (xff.length() > 15) {
-                xff = xff.substring(0, 14);
+            if (ip.length() > 15) {
+                ip = ip.substring(0, 14);
             }
         }
-        return xff;
+        return ip;
     }
 
     public JSONObject getJsonRequest() {

@@ -39,4 +39,8 @@ public class UserUtils {
         return String.format(ResourceUtil.getConfigByName("wx.addLogisticsOrder"), accessToken);
     }
 
+    public static String getUserPhoneNumber(String accessToken) {
+        return String.format(ResourceUtil.getConfigByName("wx.getuserphonenumber"), accessToken);
+    }
+
 }
