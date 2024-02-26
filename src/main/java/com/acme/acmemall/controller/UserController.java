@@ -3,8 +3,10 @@ package com.acme.acmemall.controller;
 import com.acme.acmemall.annotation.LoginUser;
 import com.acme.acmemall.common.ResultMap;
 import com.acme.acmemall.exception.ResultCodeEnum;
+import com.acme.acmemall.model.CouponVo;
 import com.acme.acmemall.model.LoginUserVo;
 import com.acme.acmemall.model.UserGoods;
+import com.acme.acmemall.service.ICouponService;
 import com.acme.acmemall.service.IUserService;
 import com.acme.acmemall.utils.PageUtils;
 import com.alibaba.fastjson.JSONObject;
@@ -31,6 +33,9 @@ public class UserController extends ApiBase {
 
     @Autowired
     IUserService userService;
+
+    @Autowired
+    ICouponService couponService;
 
     /**
      * 取当前用户分享历史
@@ -137,6 +142,10 @@ public class UserController extends ApiBase {
             return ResultMap.badArgumentValue("userId查无数据");
         }
         userVo2.parseLabel();
+        Map param = Maps.newHashMap();
+        param.put("user_id", loginUser.getUserId());
+        List<CouponVo> couponVos = couponService.queryUserCoupons(param);
+        userVo2.setCouponList(couponVos);
         return toResponsSuccess(userVo2);
     }
 
