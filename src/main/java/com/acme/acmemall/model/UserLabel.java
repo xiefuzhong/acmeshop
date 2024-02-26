@@ -17,6 +17,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserLabel implements Serializable {
+    //    [{"checked":true,"id":2,"title":"设计总监"}]
     private long id;
     private String title;
     private Integer type;

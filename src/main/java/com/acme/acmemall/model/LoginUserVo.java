@@ -95,7 +95,7 @@ public class LoginUserVo implements Serializable {
     }
 
     public void parseLabel() {
-        if (StringUtils.isNullOrEmpty(this.labels)) {
+        if (StringUtils.isNotEmpty(this.labels)) {
             this.userLabels = JSONArray.parseArray(this.labels, UserLabel.class);
         }
     }
