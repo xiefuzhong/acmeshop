@@ -136,7 +136,7 @@ public class UserController extends ApiBase {
         if (userVo2 == null) {
             return ResultMap.badArgumentValue("userId查无数据");
         }
-        return toResponsSuccess(userVo2.response());
+        return toResponsSuccess(userVo2);
     }
 
     @PostMapping("/update")

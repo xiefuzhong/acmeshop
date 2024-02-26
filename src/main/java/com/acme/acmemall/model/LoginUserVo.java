@@ -84,7 +84,6 @@ public class LoginUserVo implements Serializable {
         response.put("nickname", this.nickname);
         response.put("avatar", this.avatar);
         response.put("mobile", this.mobile);
-        response.put("username", this.username);
         return response;
 
     }
