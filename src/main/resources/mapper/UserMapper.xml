@@ -30,8 +30,8 @@
         <result property="fx1" column="fx1"/>
         <result property="fx2" column="fx2"/>
 
-        <result property="group_id" column="groupId"/>
-        <result property="group_name" column="groupName"/>
+        <result property="groupId" column="group_id"/>
+        <result property="groupName" column="group_name"/>
         <result property="labels" column="label"/>
     </resultMap>
 

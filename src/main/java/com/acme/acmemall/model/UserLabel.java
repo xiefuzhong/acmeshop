@@ -20,5 +20,5 @@ public class UserLabel implements Serializable {
     //    [{"checked":true,"id":2,"title":"设计总监"}]
     private long id;
     private String title;
-    private Integer type;
+    private boolean checked;
 }
