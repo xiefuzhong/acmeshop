@@ -21,6 +21,11 @@ spring:
     type: ehcache
     ehcache:
       config: classpath:ehcache.xml
+  jackson:
+    #  格式化返回时间 yyyy-MM-dd HH:mm:ss
+    date-format: yyyy-MM-dd HH:mm:ss
+    # 设置时区
+    time-zone: GMT+8
 
 mybatis:
   mapper-locations: classpath*:mapper/*Mapper.xml

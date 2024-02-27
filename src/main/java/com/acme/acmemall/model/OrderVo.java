@@ -7,6 +7,7 @@ import com.acme.acmemall.exception.ResultCodeEnum;
 import com.acme.acmemall.factory.OrderFactory;
 import com.acme.acmemall.utils.DateUtils;
 import com.alibaba.fastjson.JSON;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.google.common.collect.Lists;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -113,6 +114,7 @@ public class OrderVo implements Serializable {
     //确认时间
     private Date confirm_time;
     //付款时间
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date pay_time;
     //配送费用
     @Builder.Default
