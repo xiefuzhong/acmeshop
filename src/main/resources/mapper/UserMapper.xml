@@ -279,7 +279,7 @@
 
 
     <!--    根据用户ID统计订单数目和金额-->
-    <select id="countByUserId" resultMap="map">
+    <select id="countByUserId" resultType="map">
         SELECT
         count(id) as value,
         'all_count' as title
