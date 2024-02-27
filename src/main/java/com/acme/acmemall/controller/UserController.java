@@ -223,7 +223,7 @@ public class UserController extends ApiBase {
 
         List<Map> result = userService.countByUserId(userId);
         Map resultMap = result.stream().collect(Collectors.toMap(s -> s.get("title"), s -> s.get("value")));
-        return ResultMap.ok(resultMap);
+        return toResponsSuccess(resultMap);
     }
 
 }
