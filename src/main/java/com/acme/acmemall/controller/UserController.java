@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @description:商城客户
@@ -204,6 +205,25 @@ public class UserController extends ApiBase {
 //        }
         userService.updateUserGroup(uids, updater);
         return ResultMap.ok();
+    }
+
+    @GetMapping("/get-user-consumption")
+    public Object consumption(@LoginUser LoginUserVo userVo, @RequestParam("userId") Long userId) {
+        if (userVo == null) {
+            return ResultMap.error(400, "非有效用户操作");
+        }
+        LoginUserVo loginUserVo = userService.queryByUserId(userVo.getUserId());
+        if (loginUserVo == null || loginUserVo.getUserId() == 0) {
+            return ResultMap.error(1001, "请先登录管理系统再操作!");
+        }
+        LoginUserVo userVo2 = userService.queryObject(userId);
+        if (userVo2 == null) {
+            return ResultMap.badArgumentValue("userId查无数据");
+        }
+
+        List<Map> result = userService.countByUserId(userId);
+        Map resultMap = result.stream().collect(Collectors.toMap(s -> s.get("title"), s -> s.get("value")));
+        return ResultMap.ok(resultMap);
     }
 
 }
