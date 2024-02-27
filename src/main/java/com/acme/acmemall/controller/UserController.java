@@ -5,8 +5,10 @@ import com.acme.acmemall.common.ResultMap;
 import com.acme.acmemall.exception.ResultCodeEnum;
 import com.acme.acmemall.model.CouponVo;
 import com.acme.acmemall.model.LoginUserVo;
+import com.acme.acmemall.model.OrderVo;
 import com.acme.acmemall.model.UserGoods;
 import com.acme.acmemall.service.ICouponService;
+import com.acme.acmemall.service.IOrderService;
 import com.acme.acmemall.service.IUserService;
 import com.acme.acmemall.utils.PageUtils;
 import com.alibaba.fastjson.JSONObject;
@@ -36,6 +38,9 @@ public class UserController extends ApiBase {
 
     @Autowired
     ICouponService couponService;
+
+    @Autowired
+    IOrderService orderService;
 
     /**
      * 取当前用户分享历史
@@ -146,6 +151,14 @@ public class UserController extends ApiBase {
         param.put("user_id", loginUser.getUserId());
         List<CouponVo> couponVos = couponService.queryUserCoupons(param);
         userVo2.setCouponList(couponVos);
+
+        param.clear();
+        param.put("user_id", userId);
+        param.put("sidx", "id");
+        param.put("order", "desc");
+        param.put("order_status", 201);
+        List<OrderVo> orderList = orderService.queryOrderList(param);
+        userVo2.setOrderList(orderList);
         return toResponsSuccess(userVo2);
     }
 

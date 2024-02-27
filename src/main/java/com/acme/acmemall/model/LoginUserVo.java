@@ -73,6 +73,8 @@ public class LoginUserVo implements Serializable {
     private List<UserLabel> userLabels = Lists.newArrayList();
 
     private List<CouponVo> couponList = Lists.newArrayList();
+
+    private List<OrderVo> orderList = Lists.newArrayList();
     public void loginByWeixin(LoginInfo loginInfo, String requestIp) {
         this.username = Base64.encode(loginInfo.getNickName());
         this.password = this.weixin_openid;
