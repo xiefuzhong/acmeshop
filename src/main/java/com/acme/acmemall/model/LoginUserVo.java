@@ -3,6 +3,7 @@ package com.acme.acmemall.model;
 import com.acme.acmemall.utils.Base64;
 import com.acme.acmemall.utils.StringUtils;
 import com.alibaba.fastjson.JSONArray;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import lombok.Data;
@@ -29,8 +30,10 @@ public class LoginUserVo implements Serializable {
     //出生日期
     private Date birthday;
     //注册时间
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date register_time;
     //最后登录时间
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date last_login_time;
     //最后登录Ip
     private String last_login_ip;
