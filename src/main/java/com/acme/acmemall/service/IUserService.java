@@ -37,4 +37,6 @@ public interface IUserService {
     void updateUser(LoginUserVo user);
 
     void updateUserGroup(String[] userIds, LoginUserVo user);
+
+    List<Map> countByUserId(long userId);
 }

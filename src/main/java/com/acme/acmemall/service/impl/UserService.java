@@ -143,4 +143,13 @@ public class UserService implements IUserService {
         userDao.updateUserGroup(userIds, user);
     }
 
+    /**
+     * @param userId
+     * @return
+     */
+    @Override
+    public List<Map> countByUserId(long userId) {
+        return userDao.countByUserId(userId);
+    }
+
 }

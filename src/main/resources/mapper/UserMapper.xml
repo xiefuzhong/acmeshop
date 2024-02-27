@@ -277,6 +277,61 @@
         and role_id = 5
     </select>
 
+
+    <!--    根据用户ID统计订单数目和金额-->
+    <select id="countByUserId" resultMap="map">
+        SELECT
+        count(id) as value,
+        'all_count' as title
+        FROM
+        t_acme_mall_order
+        WHERE
+        user_id = #{userId}
+        AND order_status in (200, 201, 300)
+        group by
+        id,
+        title
+        UNION all
+        SELECT
+        count(id) as value,
+        'month_count' as title
+        FROM
+        t_acme_mall_order
+        WHERE
+        user_id = #{userId}
+        AND order_status in (200, 201, 300)
+        and DATE_FORMAT(add_time, '%Y-%m') = DATE_FORMAT(CURDATE(), '%Y-%m')
+        group by
+        id,
+        title
+        union all
+        SELECT
+        sum(order_price) as value,
+        'all_total' as title
+        FROM
+        t_acme_mall_order
+        WHERE
+        user_id = #{userId}
+        AND order_status in (200, 201, 300)
+        group by
+        id,
+        title
+        union all
+        SELECT
+        sum(order_price) as value,
+        'month_total' as title
+        FROM
+        t_acme_mall_order
+        WHERE
+        user_id = #{userId}
+        AND order_status in (200, 201, 300)
+        and DATE_FORMAT(add_time, '%Y-%m') = DATE_FORMAT(CURDATE(), '%Y-%m')
+        group by
+        id,
+        title
+
+    </select>
+
     <update id="updateUserGroup">
         update t_acme_mall_user
         <set>
