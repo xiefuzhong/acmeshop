@@ -46,7 +46,23 @@
         )
         VALUES
         (
-
+        #{order_id},
+        #{user_id},
+        #{add_time},
+        #{refund_type},
+        #{refund_num},
+        #{refund_price},
+        #{refunded_price},
+        #{refunded_time},
+        #{refund_phone},
+        #{refund_express},
+        #{refund_express_name},
+        #{refund_explain},
+        #{refund_reason},
+        #{refuse_reason},
+        #{remark},
+        #{goods_info},
+        #{refund_status}
         )
     </insert>
 </mapper>
