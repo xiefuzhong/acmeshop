@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.acme.acmemall.dao.OrderRefundMapper">
+    <resultMap type="com.acme.acmemall.model.OrderRefundVo" id="orderRefundMap">
+        <result property="id" column="id"/>
+        <result property="order_id" column="order_id"/>
+        <result property="user_id" column="user_id"/>
+        <result property="add_time" column="add_time"/>
+        <result property="refund_type" column="refund_type"/>
+        <result property="refund_num" column="refund_num"/>
+        <result property="refund_price" column="refund_price"/>
+        <result property="refunded_price" column="refunded_price"/>
+        <result property="refunded_time" column="refunded_time"/>
+        <result property="refund_phone" column="refund_phone"/>
+        <result property="refund_express" column="refund_express"/>
+        <result property="refund_express_name" column="refund_express_name"/>
+        <result property="refund_explain" column="refund_explain"/>
+        <result property="refund_reason" column="refund_reason"/>
+        <result property="refuse_reason" column="refuse_reason"/>
+        <result property="remark" column="remark"/>
+        <result property="goods_info" column="goods_info"/>
+        <result property="refund_status" column="refund_status"/>
+    </resultMap>
+
+    <insert id="save" parameterType="com.acme.acmemall.model.OrderRefundVo" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO `t_acme_mall_order_refund`
+        (
+        `order_id`,
+        `user_id`,
+        `add_time`,
+        `refund_type`,
+        `refund_num`,
+        `refund_price`,
+        `refunded_price`,
+        `refunded_time`,
+        `refund_phone`,
+        `refund_express`,
+        `refund_express_name`,
+        `refund_explain`,
+        `refund_reason`,
+        `refuse_reason`,
+        `remark`,
+        `goods_info`,
+        `refund_status`
+        )
+        VALUES
+        (
+
+        )
+    </insert>
+</mapper>
