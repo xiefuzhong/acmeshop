@@ -105,12 +105,12 @@ public class OrderHandleOption {
             }
             case TO_BE_RECEIVED: {
                 this.confirm = Boolean.TRUE;
-                this.returned = Boolean.TRUE;
                 break;
             }
             case COMPLETED: {
                 this.comment = Boolean.TRUE;
                 this.buy = Boolean.TRUE;
+                this.returned = Boolean.TRUE;
                 break;
             }
             case PAID: {

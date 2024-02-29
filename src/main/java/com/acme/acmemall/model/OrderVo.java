@@ -55,6 +55,10 @@ public class OrderVo implements Serializable {
     private Integer shipping_status;
     //付款状态 支付状态;0未付款;1付款中;2已付款;4退款
     private Integer pay_status;
+
+    // 退款状态 0未申请，1申请  2-审核通过 3-已退款 4-拒绝 5-取消申请 6完结 7失效
+    private Integer refund_status;
+
     //收货人
     private String consignee;
     //国家
@@ -103,14 +107,18 @@ public class OrderVo implements Serializable {
     //商品总价
     private BigDecimal goods_price = BigDecimal.ZERO;
     //新增时间-下单时间
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date add_time;
     private String fmt_add_time;
 
     // 订单删除时间
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date delete_time;
 
     // 取消时间
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date cancle_time;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     //确认时间
     private Date confirm_time;
     //付款时间
@@ -181,6 +189,11 @@ public class OrderVo implements Serializable {
     private List<OrderGoodsVo> items = Lists.newArrayList();
 
     private String goodsIds;
+
+    // 评论状态 0-未评论
+    @Builder.Default
+    private Integer comment_status = 0;
+
 
     private static void check(OrderVo orderVo, long userId) {
         if (orderVo == null) {
@@ -338,7 +351,7 @@ public class OrderVo implements Serializable {
      *
      * @return
      */
-    public OrderVo grade() {
+    public OrderVo comment() {
         return this;
     }
 
@@ -473,4 +486,6 @@ public class OrderVo implements Serializable {
     public void fillItem(List<OrderGoodsVo> items) {
         this.items.addAll(items);
     }
+
+
 }
