@@ -2,6 +2,7 @@ package com.acme.acmemall.controller;
 
 import com.acme.acmemall.annotation.LoginUser;
 import com.acme.acmemall.common.ResultMap;
+import com.acme.acmemall.controller.reqeust.OrderRefundRequest;
 import com.acme.acmemall.controller.reqeust.OrderSubmitRequest;
 import com.acme.acmemall.kuaidi100.response.QueryTrackResp;
 import com.acme.acmemall.kuaidi100.service.KuaiDi100QueryService;
@@ -10,6 +11,7 @@ import com.acme.acmemall.model.LoginUserVo;
 import com.acme.acmemall.model.OrderGoodsVo;
 import com.acme.acmemall.model.OrderVo;
 import com.acme.acmemall.service.IOrderGoodsService;
+import com.acme.acmemall.service.IOrderRefundService;
 import com.acme.acmemall.service.IOrderService;
 import com.acme.acmemall.utils.PageUtils;
 import com.acme.acmemall.utils.wechat.WechatRefundApiResult;
@@ -17,6 +19,7 @@ import com.acme.acmemall.utils.wechat.WechatUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.google.common.base.Throwables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import io.swagger.annotations.Api;
@@ -41,8 +44,10 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/order")
 public class OrderController extends ApiBase {
 
+    @Resource
     IOrderService orderService;
 
+    @Resource
     IOrderGoodsService orderGoodsService;
 
     @Resource
@@ -51,10 +56,8 @@ public class OrderController extends ApiBase {
     @Resource
     ExpressService expressService;
 
-    public OrderController(IOrderService orderService, IOrderGoodsService orderGoodsService) {
-        this.orderService = orderService;
-        this.orderGoodsService = orderGoodsService;
-    }
+    @Resource
+    IOrderRefundService refundService;
 
     @ApiOperation(value = "订单提交")
     @PostMapping("submit")
@@ -249,6 +252,64 @@ public class OrderController extends ApiBase {
         }
         String result = expressService.query(orderVo.getShipping_code(), orderVo.getShipping_no());
         return toResponsSuccess(result);
+    }
+
+
+    @PostMapping("/cancel")
+    public Object cancel(@LoginUser LoginUserVo loginUser) {
+        try {
+            if (loginUser == null) {
+                return ResultMap.error(400, "非有效用户操作");
+            }
+            JSONObject object = getJsonRequest();
+            if (object == null) {
+                return ResultMap.badArgument();
+            }
+
+            OrderVo orderVo = orderService.findOrder(object.getString("orderId"));
+            if (orderVo == null) {
+                return ResultMap.badArgument("查无此单,请确认订单信息");
+            }
+            if (orderVo.getUser_id() != loginUser.getUserId()) {
+                return ResultMap.badArgument("非法用户不能取消");
+            }
+            // 未付款，直接取消
+            if (!orderVo.canCancel()) {
+                return ResultMap.error(400, "当前状态下不能取消操作");
+            }
+            orderVo.cancle();
+            orderService.updateOrder(orderVo);
+        } catch (Exception e) {
+            String errMsg = Throwables.getStackTraceAsString(e);
+            return ResultMap.error(errMsg);
+        }
+        return ResultMap.ok("取消成功");
+    }
+
+    @PostMapping("refund-apply")
+    public Object refund(@LoginUser LoginUserVo loginUserVo) {
+        try {
+            JSONObject object = getJsonRequest();
+            if (object == null) {
+                return ResultMap.badArgument();
+            }
+            OrderRefundRequest request = JSONObject.toJavaObject(object, OrderRefundRequest.class);
+            if (loginUserVo == null) {
+                return ResultMap.error(400, "非有效用户操作");
+            }
+            OrderVo orderVo = orderService.findOrder(request.getOrderId());
+            if (orderVo == null) {
+                return ResultMap.badArgument("查无此单,请确认订单信息");
+            }
+            if (orderVo.getUser_id() != loginUserVo.getUserId()) {
+                return ResultMap.badArgument("非法用户不能申请");
+            }
+            orderVo.refundRequest(request, loginUserVo.getUserId());
+            orderService.updateOrder(orderVo);
+            return ResultMap.ok("取消成功");
+        } catch (Exception e) {
+            return ResultMap.error(Throwables.getStackTraceAsString(e));
+        }
     }
 
 }

@@ -1,7 +1,6 @@
 package com.acme.acmemall.factory;
 
 import com.acme.acmemall.controller.reqeust.OrderRefundRequest;
-import com.acme.acmemall.model.LoginUserVo;
 import com.acme.acmemall.model.OrderRefundVo;
 
 /**
@@ -11,9 +10,9 @@ import com.acme.acmemall.model.OrderRefundVo;
  */
 public class OrderRefundFactory {
 
-    public static OrderRefundVo build(OrderRefundRequest request, LoginUserVo userVo) {
+    public static OrderRefundVo build(OrderRefundRequest request, Long userId) {
         return OrderRefundVo.builder()
-                .user_id(userVo.getUserId())
+                .user_id(userId)
                 .order_id(request.getOrderId())
                 .refund_num(request.getGoodsCount())
                 .refund_type(request.getRefundType())

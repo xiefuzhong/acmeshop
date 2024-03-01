@@ -1,6 +1,6 @@
 package com.acme.acmemall.model;
 
-import com.acme.acmemall.model.status.OrderStatusEnum;
+import com.acme.acmemall.model.enums.OrderStatusEnum;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import lombok.AllArgsConstructor;

@@ -1,10 +1,13 @@
 package com.acme.acmemall.model;
 
 import com.acme.acmemall.controller.reqeust.LogisticsInfo;
+import com.acme.acmemall.controller.reqeust.OrderRefundRequest;
 import com.acme.acmemall.controller.reqeust.OrderShippedRequest;
 import com.acme.acmemall.exception.ApiCusException;
 import com.acme.acmemall.exception.ResultCodeEnum;
 import com.acme.acmemall.factory.OrderFactory;
+import com.acme.acmemall.factory.OrderRefundFactory;
+import com.acme.acmemall.model.enums.OrderStatusEnum;
 import com.acme.acmemall.utils.DateUtils;
 import com.alibaba.fastjson.JSON;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -57,7 +60,8 @@ public class OrderVo implements Serializable {
     private Integer pay_status;
 
     // 退款状态 0未申请，1申请  2-审核通过 3-已退款 4-拒绝 5-取消申请 6完结 7失效
-    private Integer refund_status;
+    @Builder.Default
+    private Integer refund_status = 0;
 
     //收货人
     private String consignee;
@@ -194,6 +198,8 @@ public class OrderVo implements Serializable {
     @Builder.Default
     private Integer comment_status = 0;
 
+    private OrderRefundVo refundVo;
+
 
     private static void check(OrderVo orderVo, long userId) {
         if (orderVo == null) {
@@ -310,6 +316,13 @@ public class OrderVo implements Serializable {
         this.cancle_time = new Date();
     }
 
+    public void cancle() {
+        this.order_status = OrderStatus.CANCELED.code;
+        this.order_status_text = OrderStatus.CANCELED.getDescription();
+        this.cancle_time = new Date();
+    }
+
+
     /**
      * 是否可以取消：true-可
      *
@@ -317,6 +330,11 @@ public class OrderVo implements Serializable {
      */
     public boolean validCancle() {
         return OrderStatus.validCancle(this.order_status);
+    }
+
+    public boolean canCancel() {
+        OrderStatusEnum statusEnum = OrderStatusEnum.parse(this.order_status);
+        return statusEnum == OrderStatusEnum.NEW;
     }
 
     /**
@@ -465,6 +483,14 @@ public class OrderVo implements Serializable {
             this.order_status = 402;
         }
         this.pay_status = 4;
+    }
+
+    public void refundRequest(OrderRefundRequest request, Long userId) {
+        this.order_status = OrderStatusEnum.AFTER_SERVICE.getCode();
+        this.order_status_text = OrderStatusEnum.AFTER_SERVICE.getName();
+        this.refund_status = 1;
+        this.refundVo = OrderRefundFactory.build(request, userId);
+        refundVo.submit();
     }
 
     /**

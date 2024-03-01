@@ -3,6 +3,7 @@ package com.acme.acmemall.service.impl;
 import com.acme.acmemall.common.ResultMap;
 import com.acme.acmemall.controller.reqeust.OrderSubmitRequest;
 import com.acme.acmemall.dao.*;
+import com.acme.acmemall.exception.Assert;
 import com.acme.acmemall.exception.ResultCodeEnum;
 import com.acme.acmemall.factory.OrderFactory;
 import com.acme.acmemall.model.*;
@@ -39,11 +40,14 @@ public class OrderServiceImpl implements IOrderService {
 
     private final InvoiceTitleMapper invoiceHeaderMapper;
 
+    private final OrderRefundMapper orderRefundMapper;
+
     public OrderServiceImpl(UserCouponMapper userCouponMapper,
                             AddressMapper addressMapper,
                             ShopCartMapper cartMapper,
                             OrderMapper orderMapper,
                             InvoiceTitleMapper invoiceHeaderMapper,
+                            OrderRefundMapper orderRefundMapper,
                             OrderGoodsMapper orderItemMapper) {
         this.userCouponMapper = userCouponMapper;
         this.addressMapper = addressMapper;
@@ -51,6 +55,7 @@ public class OrderServiceImpl implements IOrderService {
         this.orderMapper = orderMapper;
         this.orderItemMapper = orderItemMapper;
         this.invoiceHeaderMapper = invoiceHeaderMapper;
+        this.orderRefundMapper = orderRefundMapper;
     }
 
     protected Logger logger = Logger.getLogger(getClass());
@@ -136,6 +141,7 @@ public class OrderServiceImpl implements IOrderService {
      */
     @Override
     public OrderVo findOrder(String orderId) {
+        Assert.isBlank(orderId, "订单号不能为空!");
         return orderMapper.queryObject(orderId);
     }
 
@@ -154,6 +160,9 @@ public class OrderServiceImpl implements IOrderService {
                     .used_time(null)
                     .build();
             userCouponMapper.updateCouponStatus(uc);
+        }
+        if (orderVo.getRefundVo() != null && orderVo.getRefund_status() == 1) {
+            orderRefundMapper.save(orderVo.getRefundVo());
         }
     }
 

@@ -1,4 +1,4 @@
-package com.acme.acmemall.model.status;
+package com.acme.acmemall.model.enums;
 
 public enum OrderOperationType {
     SUBMIT("提交"),
