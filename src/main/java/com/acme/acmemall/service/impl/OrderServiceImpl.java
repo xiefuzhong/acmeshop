@@ -7,6 +7,7 @@ import com.acme.acmemall.exception.Assert;
 import com.acme.acmemall.exception.ResultCodeEnum;
 import com.acme.acmemall.factory.OrderFactory;
 import com.acme.acmemall.model.*;
+import com.acme.acmemall.model.enums.OrderStatusEnum;
 import com.acme.acmemall.service.IOrderService;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -153,7 +154,7 @@ public class OrderServiceImpl implements IOrderService {
         // 更新优惠券状态
         orderMapper.update(orderVo);
         if (orderVo.getCoupon_id() != null && orderVo.getCoupon_id() > 0
-                && OrderStatus.TO_BE_PAID == OrderStatus.parse(orderVo.getOrder_status())) {
+                && OrderStatusEnum.NEW == OrderStatusEnum.parse(orderVo.getOrder_status())) {
             UserCouponVo uc = UserCouponVo.builder()
                     .id(orderVo.getCoupon_id())
                     .coupon_status(1)
