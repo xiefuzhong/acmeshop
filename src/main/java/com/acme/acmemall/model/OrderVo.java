@@ -293,8 +293,8 @@ public class OrderVo implements Serializable {
      */
     public OrderVo paid() {
         this.pay_status = 2;
-        this.order_status = OrderStatus.PAID.getCode();
-        this.order_status_text = OrderStatus.PAID.getDescription();
+        this.order_status = OrderStatusEnum.PAID.getCode();
+        this.order_status_text = OrderStatusEnum.PAID.getName();
         this.shipping_status = 0;
         this.pay_time = new Date();
         return this;
@@ -308,17 +308,17 @@ public class OrderVo implements Serializable {
     public void cancle(OrderVo orderVo, long userId) {
         check(orderVo, userId);
         // 待付款、已付款、已付款未发货可取消
-        if (!orderVo.validCancle()) {
+        if (!orderVo.canCancel()) {
             throw new ApiCusException("当前订单状态不支持取消订单");
         }
-        this.order_status = OrderStatus.CANCELED.code;
-        this.order_status_text = OrderStatus.CANCELED.getDescription();
+        this.order_status = OrderStatusEnum.CANCELED.getCode();
+        this.order_status_text = OrderStatusEnum.CANCELED.getName();
         this.cancle_time = new Date();
     }
 
     public void cancle() {
-        this.order_status = OrderStatus.CANCELED.code;
-        this.order_status_text = OrderStatus.CANCELED.getDescription();
+        this.order_status = OrderStatusEnum.CANCELED.getCode();
+        this.order_status_text = OrderStatusEnum.CANCELED.getName();
         this.cancle_time = new Date();
     }
 
@@ -328,9 +328,9 @@ public class OrderVo implements Serializable {
      *
      * @return
      */
-    public boolean validCancle() {
-        return OrderStatus.validCancle(this.order_status);
-    }
+//    public boolean validCancle() {
+//        return OrderStatusEnum.validCancle(this.order_status);
+//    }
 
     public boolean canCancel() {
         OrderStatusEnum statusEnum = OrderStatusEnum.parse(this.order_status);
@@ -345,12 +345,12 @@ public class OrderVo implements Serializable {
      */
     public void delete(OrderVo orderVo, long userId) {
         check(orderVo, userId);
-        OrderStatus status = OrderStatus.parse(orderVo.order_status);
-        if (status != OrderStatus.CANCELED) {
+        OrderStatusEnum status = OrderStatusEnum.parse(orderVo.order_status);
+        if (status != OrderStatusEnum.CANCELED) {
             throw new ApiCusException("当前订单状态不支持删除订单");
         }
-        this.order_status = OrderStatus.DELETED.code;
-        this.order_status_text = OrderStatus.DELETED.getDescription();
+        this.order_status = OrderStatusEnum.DELETED.getCode();
+        this.order_status_text = OrderStatusEnum.DELETED.getName();
         this.delete_time = new Date();
     }
 
@@ -358,8 +358,8 @@ public class OrderVo implements Serializable {
      * 确认收货
      */
     public void confirm() {
-        this.order_status = OrderStatus.COMPLETED.code;
-        this.order_status_text = OrderStatus.COMPLETED.getDescription();
+        this.order_status = OrderStatusEnum.ROG.getCode();
+        this.order_status_text = OrderStatusEnum.ROG.getName();
         this.confirm_time = new Date();
         this.shipping_status = 2;
     }
@@ -381,8 +381,8 @@ public class OrderVo implements Serializable {
     public OrderVo shipped(OrderShippedRequest shippedRequest) {
         this.setLogistics(shippedRequest.getLogisticsInfo());
         // 客户待收货
-        this.order_status = OrderStatus.TO_BE_RECEIVED.getCode();
-        this.order_status_text = OrderStatus.TO_BE_RECEIVED.getDescription();
+        this.order_status = OrderStatusEnum.SHIPPED.getCode();
+        this.order_status_text = OrderStatusEnum.SHIPPED.getName();
         // 物流已发货
         this.shipping_status = 1;
         this.shipping_fee = BigDecimal.ZERO;
