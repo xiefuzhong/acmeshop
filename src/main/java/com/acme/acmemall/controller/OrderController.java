@@ -111,7 +111,7 @@ public class OrderController extends ApiBase {
             Map<String, List<OrderGoodsVo>> orderGoodsMap = orderGoods.stream()
                     .collect(Collectors.groupingBy(OrderGoodsVo::getOrder_id));
             orderList.forEach(orderVo -> {
-                orderVo.handleOption(0);
+                orderVo.buildHandleOption(0);
                 orderVo.fillItem(orderGoodsMap.get(orderVo.getId()));
             });
         }
@@ -146,7 +146,7 @@ public class OrderController extends ApiBase {
 
         LoginUserVo loginUserVo = userService.queryByUserId(userVo.getUserId());
         //订单可操作的选择,删除，支付，收货，评论，退换货
-        orderInfo.handleOption(loginUserVo == null ? 0 : loginUserVo.getMerchantId());
+        orderInfo.buildHandleOption(0);
         //
         resultObj.put("orderInfo", orderInfo);
         resultObj.put("orderGoods", orderGoods);
