@@ -13,6 +13,7 @@ import com.acme.acmemall.model.OrderVo;
 import com.acme.acmemall.service.IOrderGoodsService;
 import com.acme.acmemall.service.IOrderRefundService;
 import com.acme.acmemall.service.IOrderService;
+import com.acme.acmemall.service.IUserService;
 import com.acme.acmemall.utils.PageUtils;
 import com.acme.acmemall.utils.wechat.WechatRefundApiResult;
 import com.acme.acmemall.utils.wechat.WechatUtil;
@@ -58,6 +59,9 @@ public class OrderController extends ApiBase {
 
     @Resource
     IOrderRefundService refundService;
+
+    @Resource
+    IUserService userService;
 
     @ApiOperation(value = "订单提交")
     @PostMapping("submit")
@@ -107,6 +111,7 @@ public class OrderController extends ApiBase {
             Map<String, List<OrderGoodsVo>> orderGoodsMap = orderGoods.stream()
                     .collect(Collectors.groupingBy(OrderGoodsVo::getOrder_id));
             orderList.forEach(orderVo -> {
+                orderVo.getHandleOption(0);
                 orderVo.fillItem(orderGoodsMap.get(orderVo.getId()));
             });
         }
@@ -122,22 +127,26 @@ public class OrderController extends ApiBase {
      */
     @ApiOperation(value = "获取订单详情")
     @GetMapping("detail")
-    public Object detail(String orderId) {
+    public Object detail(@LoginUser LoginUserVo userVo,
+                         @RequestParam("orderId") String orderId) {
+        if (userVo == null) {
+            return ResultMap.badArgument("非有效用户操作");
+        }
+
         Map resultObj = Maps.newHashMap();
-        //
         OrderVo orderInfo = orderService.findOrder(orderId);
-        if (null == orderInfo) {
-            return toResponsObject(400, "订单不存在", "");
+        if (orderInfo == null) {
+            return ResultMap.badArgument("查无此单:" + orderId);
         }
         Map orderGoodsParam = Maps.newHashMap();
-//        orderGoodsParam.put("order_id", orderId);
         orderGoodsParam.put("orderIds", Lists.newArrayList(orderId));
         //订单的商品
         List<OrderGoodsVo> orderGoods = orderGoodsService.queryList(orderGoodsParam);
         //订单最后支付时间
 
+        LoginUserVo loginUserVo = userService.queryByUserId(userVo.getUserId());
         //订单可操作的选择,删除，支付，收货，评论，退换货
-        Map handleOption = orderInfo.getHandleOption();
+        Map handleOption = orderInfo.getHandleOption(loginUserVo == null ? 0 : loginUserVo.getMerchantId());
         //
         resultObj.put("orderInfo", orderInfo);
         resultObj.put("orderGoods", orderGoods);

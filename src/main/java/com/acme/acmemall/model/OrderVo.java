@@ -429,11 +429,19 @@ public class OrderVo implements Serializable {
      * @return
      */
     public String getOrder_status_text() {
-        return OrderStatus.parse(order_status).getDescription();
+        return OrderStatusEnum.parse(order_status).getName();
     }
 
-    public Map getHandleOption() {
-        return OrderHandleOption.builder().build().canOption(this.order_status);
+    public Map getHandleOption(long merchantId) {
+        return merchantId > 0 ? this.getMerchantOption() : this.getBuyerOption();
+    }
+
+    private Map getBuyerOption() {
+        return OrderOperationOption.builder().build().buyerOption(this.order_status);
+    }
+
+    private Map getMerchantOption() {
+        return OrderOperationOption.builder().build().merchantOperation(this.order_status);
     }
 
     public boolean checkOwner(long userId) {
