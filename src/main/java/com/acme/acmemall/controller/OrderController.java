@@ -166,7 +166,7 @@ public class OrderController extends ApiBase {
         try {
             OrderVo orderVo = orderService.findOrder(orderId);
             // 可取消-待付款-已付款、未发货
-            if (!orderVo.validCancle()) {
+            if (!orderVo.canCancel()) {
                 return ResultMap.error(400, "当前状态下不能取消操作");
             }
             // 需要退款
