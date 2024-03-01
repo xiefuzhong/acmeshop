@@ -215,7 +215,7 @@ public class OrderController extends ApiBase {
             orderService.updateStatus(orderVo);
             return ResultMap.ok("确认收货成功");
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(Throwables.getStackTraceAsString(e));
         }
         return ResultMap.error("提交失败");
     }
