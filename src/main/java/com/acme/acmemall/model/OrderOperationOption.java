@@ -138,7 +138,7 @@ public class OrderOperationOption {
                 this.viewLogistics = Boolean.TRUE;
                 break;
             }
-            case CANCELLED:
+            case CANCELED:
             case COMPLETE: {
                 // 交易关闭/完成/超时未支付关闭  可再次购买
                 this.buy = Boolean.TRUE;
