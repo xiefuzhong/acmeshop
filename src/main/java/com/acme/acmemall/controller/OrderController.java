@@ -146,11 +146,11 @@ public class OrderController extends ApiBase {
 
         LoginUserVo loginUserVo = userService.queryByUserId(userVo.getUserId());
         //订单可操作的选择,删除，支付，收货，评论，退换货
-        Map handleOption = orderInfo.getHandleOption(loginUserVo == null ? 0 : loginUserVo.getMerchantId());
+        orderInfo.handleOption(loginUserVo == null ? 0 : loginUserVo.getMerchantId());
         //
         resultObj.put("orderInfo", orderInfo);
         resultObj.put("orderGoods", orderGoods);
-        resultObj.put("handleOption", handleOption);
+        resultObj.put("handleOption", orderInfo.getHandleOption());
         if (!StringUtils.isEmpty(orderInfo.getShipping_code()) && !StringUtils.isEmpty(orderInfo.getShipping_no())) {
             resultObj.put("shippingList", null);
         }
