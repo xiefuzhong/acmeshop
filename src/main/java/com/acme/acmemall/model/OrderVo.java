@@ -432,8 +432,8 @@ public class OrderVo implements Serializable {
         return OrderStatusEnum.parse(order_status).getName();
     }
 
-    public Map getHandleOption(long merchantId) {
-        return merchantId > 0 ? this.getMerchantOption() : this.getBuyerOption();
+    public void handleOption(long merchantId) {
+        this.handleOption = merchantId > 0 ? this.getMerchantOption() : this.getBuyerOption();
     }
 
     private Map getBuyerOption() {

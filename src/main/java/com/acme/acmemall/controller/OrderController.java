@@ -111,7 +111,7 @@ public class OrderController extends ApiBase {
             Map<String, List<OrderGoodsVo>> orderGoodsMap = orderGoods.stream()
                     .collect(Collectors.groupingBy(OrderGoodsVo::getOrder_id));
             orderList.forEach(orderVo -> {
-                orderVo.getHandleOption(0);
+                orderVo.handleOption(0);
                 orderVo.fillItem(orderGoodsMap.get(orderVo.getId()));
             });
         }
