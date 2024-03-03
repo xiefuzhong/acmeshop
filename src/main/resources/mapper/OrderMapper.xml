@@ -111,7 +111,8 @@
             </if>
 
             <if test="order_status != null and order_status == 4">
-                AND (o.order_status = 401 or o.order_status = 402)
+                <!--                AND (o.order_status = 401 or o.order_status = 402)-->
+                AND o.order_status in (101,401,402)
             </if>
             <if test="all_order_id != null and all_order_id != ''">
                 and o.all_order_id = #{all_order_id}
