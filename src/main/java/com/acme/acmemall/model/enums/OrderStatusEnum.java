@@ -1,5 +1,8 @@
 package com.acme.acmemall.model.enums;
 
+/**
+ * 订单状态
+ */
 public enum OrderStatusEnum {
     NEW(0, "待支付"),
     PAID(200, "已付款"),
