@@ -170,6 +170,15 @@ public class OrderOperationOption {
                 this.refundMoney = Boolean.TRUE;
                 break;
             }
+            case PAID: {
+                // 已付款,可发货
+                this.toShipping = Boolean.TRUE;
+                break;
+            }
+            case NEW: {
+                // 商家在经用户同意后，主动取消
+                this.cancel = Boolean.TRUE;
+            }
         }
         return JSON.parseObject(JSON.toJSONString(this), new TypeReference<Map<String, Boolean>>() {
         });
