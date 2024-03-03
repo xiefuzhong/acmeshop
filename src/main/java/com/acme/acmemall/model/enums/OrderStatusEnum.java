@@ -8,7 +8,7 @@ public enum OrderStatusEnum {
     COMPLETE(500, "已完成"),
     CANCELED(101, "已取消"),
     DELETED(102, "已删除"),
-    AFTER_SERVICE(400, "售后中");
+    AFTER_SERVICE(400, "退款中");
 
     private final int code;
     private final String name;
