@@ -65,4 +65,8 @@
         #{refund_status}
         )
     </insert>
+
+    <select id="findByOrderId" resultMap="orderRefundMap">
+        SELECT * from t_acme_mall_order_refund where order_id = #{orderId}
+    </select>
 </mapper>

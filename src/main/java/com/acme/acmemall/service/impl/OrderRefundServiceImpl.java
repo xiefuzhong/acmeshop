@@ -35,4 +35,13 @@ public class OrderRefundServiceImpl implements IOrderRefundService {
         orderRefundMapper.save(refundVo);
         return ResultMap.response(ResultCodeEnum.SUCCESS, refundVo);
     }
+
+    /**
+     * @param orderId
+     * @return
+     */
+    @Override
+    public OrderRefundVo findByOrderId(String orderId) {
+        return orderRefundMapper.findByOrderId(orderId);
+    }
 }

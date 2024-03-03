@@ -7,6 +7,7 @@ import com.acme.acmemall.exception.Assert;
 import com.acme.acmemall.exception.ResultCodeEnum;
 import com.acme.acmemall.model.LoginUserVo;
 import com.acme.acmemall.model.OrderVo;
+import com.acme.acmemall.service.IOrderRefundService;
 import com.acme.acmemall.service.IOrderService;
 import com.acme.acmemall.utils.PageUtils;
 import com.alibaba.fastjson.JSONObject;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.Resource;
 import java.util.List;
 import java.util.Map;
 
@@ -33,11 +35,11 @@ import java.util.Map;
 @RequestMapping("/api/mer-order")
 public class ShopOrderController extends ApiBase {
 
+    @Resource
     IOrderService orderService;
 
-    public ShopOrderController(IOrderService orderService) {
-        this.orderService = orderService;
-    }
+    @Resource
+    IOrderRefundService refundService;
 
     @ApiOperation(value = "商户订单列表")
     @RequestMapping("list")
@@ -108,7 +110,24 @@ public class ShopOrderController extends ApiBase {
                               @RequestParam("orderId") String orderId) {
         Assert.isBlank(orderId, "订单号不能为空");
         Assert.isNull(userVo, "非有效用户操作");
+        OrderVo orderVo = orderService.findOrder(orderId);
+        Assert.isNull(orderVo, "查无此单:" + orderId);
 
+        // type = 1 仅退款流程(已付款未发货) 2，退货退款流程(已付款已发货)
+        if (orderVo.refundStatus()) {
+            return ResultMap.error(400, "订单已退款");
+        }
+        if (!orderVo.paidCheck()) {
+            return ResultMap.error(400, "订单未付款，不能退款");
+        }
+        /**
+         *  WechatRefundApiResult result = WechatUtil.wxRefund(orderId, orderVo.getActual_price().doubleValue(), orderVo.getActual_price().doubleValue());
+         *         if (StringUtils.equalsIgnoreCase(SUCCESS, result.getResult_code())) {
+         *             orderVo.refund();
+         *             orderService.updateOrder(orderVo);
+         *             return ResultMap.ok("操作成功，请查看账户");
+         *         }
+         */
         return ResultMap.ok();
     }
 }
