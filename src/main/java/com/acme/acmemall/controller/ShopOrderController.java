@@ -68,6 +68,7 @@ public class ShopOrderController extends ApiBase {
         //查询列表数据
         PageHelper.startPage(page, size);
         List<OrderVo> orders = orderService.queryOrderList(params);
+        orders.forEach(orderVo -> orderVo.buildHandleOption(merchant_id));
         PageInfo pageInfo = new PageInfo<>(orders);
         PageUtils ordersPage = new PageUtils(pageInfo);
         return ResultMap.response(ResultCodeEnum.SUCCESS, ordersPage);

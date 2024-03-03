@@ -200,7 +200,6 @@ public class OrderVo implements Serializable {
 
     private OrderRefundVo refundVo;
 
-
     private static void check(OrderVo orderVo, long userId) {
         if (orderVo == null) {
             throw new ApiCusException("订单不存在");
@@ -331,7 +330,6 @@ public class OrderVo implements Serializable {
 //    public boolean validCancle() {
 //        return OrderStatusEnum.validCancle(this.order_status);
 //    }
-
     public boolean canCancel() {
         OrderStatusEnum statusEnum = OrderStatusEnum.parse(this.order_status);
         return statusEnum == OrderStatusEnum.NEW;
@@ -437,11 +435,22 @@ public class OrderVo implements Serializable {
     }
 
     private Map getBuyerOption() {
-        return OrderOperationOption.builder().build().buyerOption(this.order_status);
+        Map<String, Boolean> optionMap = OrderOperationOption.builder().build().buyerOption(this.order_status);
+        if (this.refund_status == 2) {
+            // 商家审核通过，填写物流信息
+            optionMap.put("fillInLogistics", Boolean.TRUE);
+        }
+        return optionMap;
     }
 
     private Map getMerchantOption() {
-        return OrderOperationOption.builder().build().merchantOperation(this.order_status);
+        Map<String, Boolean> optionMap = OrderOperationOption.builder().build().merchantOperation(this.order_status);
+        // 退款状态 0未申请，1申请  2-审核通过 3-已退款 4-拒绝 5-取消申请 6完结 7失效
+        if (this.refund_status == 1) {
+            // 商家审核，仅退款-直接退款 ，退货退款-货物收到-确认收货后退款
+            optionMap.put("refundAudit", Boolean.TRUE);
+        }
+        return optionMap;
     }
 
     public boolean checkOwner(long userId) {
@@ -477,7 +486,7 @@ public class OrderVo implements Serializable {
         this.pay_status = 0;
     }
 
-    public Boolean refund_status() {
+    public Boolean refundStatus() {
         return this.order_status == 401 || this.order_status == 402;
     }
 

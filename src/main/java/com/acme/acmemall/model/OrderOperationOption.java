@@ -100,6 +100,18 @@ public class OrderOperationOption {
     Boolean confirmReceipt = Boolean.FALSE;
 
     /**
+     * 立即退款
+     */
+    @Builder.Default
+    Boolean refundMoney = Boolean.FALSE;
+
+    /**
+     * 填写物流
+     */
+    @Builder.Default
+    Boolean fillInLogistics = Boolean.FALSE;
+
+    /**
      * 买家可操作项
      *
      * @param status 订单状态
@@ -153,7 +165,11 @@ public class OrderOperationOption {
     public Map<String, Boolean> merchantOperation(Integer status) {
         OrderStatusEnum statusEnum = OrderStatusEnum.parse(status);
         switch (statusEnum) {
-
+            case AFTER_SERVICE: {
+                // 售后中,立即退款
+                this.refundMoney = Boolean.TRUE;
+                break;
+            }
         }
         return JSON.parseObject(JSON.toJSONString(this), new TypeReference<Map<String, Boolean>>() {
         });

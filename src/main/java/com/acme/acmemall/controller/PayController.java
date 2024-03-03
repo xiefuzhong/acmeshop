@@ -327,7 +327,7 @@ public class PayController extends ApiBase {
         if (orderVo.checkOwner(loginUserVo.getUserId())) {
             return ResultMap.error(400, "非有效用户操作");
         }
-        if (orderVo.refund_status()) {
+        if (orderVo.refundStatus()) {
             return ResultMap.error(400, "订单已退款");
         }
         if (!orderVo.paidCheck()) {
