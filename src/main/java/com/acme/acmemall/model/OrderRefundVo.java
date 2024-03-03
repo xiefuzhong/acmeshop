@@ -40,6 +40,6 @@ public class OrderRefundVo implements Serializable {
 
     public void submit() {
         this.add_time = new Date();
-        this.refund_status = 0;
+        this.refund_status = 1;
     }
 }

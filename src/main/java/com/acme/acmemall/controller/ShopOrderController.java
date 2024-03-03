@@ -3,6 +3,7 @@ package com.acme.acmemall.controller;
 import com.acme.acmemall.annotation.LoginUser;
 import com.acme.acmemall.common.ResultMap;
 import com.acme.acmemall.controller.reqeust.OrderShippedRequest;
+import com.acme.acmemall.exception.Assert;
 import com.acme.acmemall.exception.ResultCodeEnum;
 import com.acme.acmemall.model.LoginUserVo;
 import com.acme.acmemall.model.OrderVo;
@@ -100,5 +101,14 @@ public class ShopOrderController extends ApiBase {
         orderService.handleOrderByMer(orderVo);
         // 下单
         return toResponsSuccess(orderVo);
+    }
+
+    @RequestMapping("refund-audit")
+    public Object refundAudit(@LoginUser LoginUserVo userVo,
+                              @RequestParam("orderId") String orderId) {
+        Assert.isBlank(orderId, "订单号不能为空");
+        Assert.isNull(userVo, "非有效用户操作");
+
+        return ResultMap.ok();
     }
 }
