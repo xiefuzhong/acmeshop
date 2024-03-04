@@ -127,6 +127,7 @@ public class ShopOrderController extends ApiBase {
         OrderRefundVo refundVo = refundService.findByOrderId(orderId);
         Assert.isNull(refundVo, "没有查到对应的售后单:" + orderId);
 
+        // 仅退款
         if (refundVo.getRefund_type() == 1 && orderVo.getPay_status() == 2) {
             // 退款
             WechatRefundApiResult result = WechatUtil.wxRefund(orderId, orderVo.getActual_price().doubleValue(), orderVo.getActual_price().doubleValue());
@@ -137,6 +138,10 @@ public class ShopOrderController extends ApiBase {
             } else {
                 ResultMap.badArgument(result.getErr_code_des());
             }
+        } else if (refundVo.getRefund_type() == 2 && orderVo.getPay_status() == 2) {
+            // 退货退款
+            Assert.isBlank(refundVo.getRefund_express(), "未填写物流信息");
+
         }
         return ResultMap.ok();
     }
