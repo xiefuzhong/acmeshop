@@ -131,9 +131,8 @@ public class ShopOrderController extends ApiBase {
             // 退款
             WechatRefundApiResult result = WechatUtil.wxRefund(orderId, orderVo.getActual_price().doubleValue(), orderVo.getActual_price().doubleValue());
             if (StringUtils.equalsIgnoreCase("SUCCESS", result.getResult_code())) {
-                orderVo.refund();
                 refundVo.audit();
-                orderVo.updateOrderRefundVo(refundVo);
+                orderVo.unshippedRefund(refundVo);
                 orderService.updateOrder(orderVo);
             } else {
                 ResultMap.badArgument(result.getErr_code_des());

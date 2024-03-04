@@ -200,10 +200,6 @@ public class OrderVo implements Serializable {
 
     private OrderRefundVo refundVo;
 
-    public void updateOrderRefundVo(OrderRefundVo refundVo) {
-        this.refundVo = refundVo;
-    }
-
     private static void check(OrderVo orderVo, long userId) {
         if (orderVo == null) {
             throw new ApiCusException("订单不存在");
@@ -507,6 +503,20 @@ public class OrderVo implements Serializable {
 //            this.refundVo = refundVo;
         }
 
+    }
+
+    /**
+     * 未发货退款
+     */
+    public void unshippedRefund(OrderRefundVo refundVo) {
+        OrderStatusEnum orderStatus = OrderStatusEnum.parse(this.order_status);
+        if (orderStatus == OrderStatusEnum.AFTER_SERVICE) {
+            this.order_status = OrderStatusEnum.CLOSED.getCode();
+            this.order_status_text = OrderStatusEnum.CLOSED.getName();
+            this.pay_status = 4;
+            this.refund_status = 3;
+            this.refundVo = refundVo;
+        }
     }
 
     public void refundRequest(OrderRefundRequest request, Long userId) {
