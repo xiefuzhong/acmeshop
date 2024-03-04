@@ -19,7 +19,9 @@ import java.util.Date;
 @Builder
 @Getter
 public class OrderRefundVo implements Serializable {
-    private long id;
+
+    @Builder.Default
+    private long id = 0;
     private String order_id;
     private long user_id;
     private Integer refund_type;
@@ -45,5 +47,7 @@ public class OrderRefundVo implements Serializable {
 
     public void audit() {
         this.refund_status = 2;
+        this.refunded_price = refund_price;
+        this.refunded_time = new Date();
     }
 }

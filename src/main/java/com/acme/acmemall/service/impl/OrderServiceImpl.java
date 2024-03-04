@@ -162,8 +162,10 @@ public class OrderServiceImpl implements IOrderService {
                     .build();
             userCouponMapper.updateCouponStatus(uc);
         }
-        if (orderVo.getRefundVo() != null && orderVo.getRefund_status() == 1) {
+        if (orderVo.getRefundVo() != null && orderVo.getRefundVo().getId() == 0) {
             orderRefundMapper.save(orderVo.getRefundVo());
+        } else if (orderVo.getRefundVo() != null && orderVo.getRefundVo().getId() > 0) {
+            orderRefundMapper.update(orderVo.getRefundVo());
         }
     }
 

@@ -69,4 +69,18 @@
     <select id="findByOrderId" resultMap="orderRefundMap">
         SELECT * from t_acme_mall_order_refund where order_id = #{orderId}
     </select>
+
+    <update id="update" parameterType="com.acme.acmemall.model.OrderRefundVo">
+        update t_acme_mall_order_refund
+        <set>
+            <if test="refund_status != null">`refund_status` = #{refund_status},</if>
+            <if test="refunded_price != null">`refunded_price` = #{refunded_price},</if>
+            <if test="refunded_time != null">`refunded_time` = #{refunded_time},</if>
+            <if test="refund_phone != null">`refund_phone` = #{refund_phone},</if>
+            <if test="refund_express != null">`refund_express` = #{refund_express},</if>
+            <if test="refund_express_name != null">`refund_express_name` = #{refund_express_name},</if>
+            <if test="refuse_reason != null">`refuse_reason` = #{refuse_reason},</if>
+        </set>
+        where id = #{id}
+    </update>
 </mapper>

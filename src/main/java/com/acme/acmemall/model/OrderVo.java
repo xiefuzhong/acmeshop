@@ -200,6 +200,10 @@ public class OrderVo implements Serializable {
 
     private OrderRefundVo refundVo;
 
+    public void updateOrderRefundVo(OrderRefundVo refundVo) {
+        this.refundVo = refundVo;
+    }
+
     private static void check(OrderVo orderVo, long userId) {
         if (orderVo == null) {
             throw new ApiCusException("订单不存在");

@@ -6,16 +6,20 @@ import com.acme.acmemall.controller.reqeust.OrderShippedRequest;
 import com.acme.acmemall.exception.Assert;
 import com.acme.acmemall.exception.ResultCodeEnum;
 import com.acme.acmemall.model.LoginUserVo;
+import com.acme.acmemall.model.OrderRefundVo;
 import com.acme.acmemall.model.OrderVo;
 import com.acme.acmemall.service.IOrderRefundService;
 import com.acme.acmemall.service.IOrderService;
 import com.acme.acmemall.utils.PageUtils;
+import com.acme.acmemall.utils.wechat.WechatRefundApiResult;
+import com.acme.acmemall.utils.wechat.WechatUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Maps;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -120,14 +124,19 @@ public class ShopOrderController extends ApiBase {
         if (!orderVo.paidCheck()) {
             return ResultMap.error(400, "订单未付款，不能退款");
         }
-        /**
-         *  WechatRefundApiResult result = WechatUtil.wxRefund(orderId, orderVo.getActual_price().doubleValue(), orderVo.getActual_price().doubleValue());
-         *         if (StringUtils.equalsIgnoreCase(SUCCESS, result.getResult_code())) {
-         *             orderVo.refund();
-         *             orderService.updateOrder(orderVo);
-         *             return ResultMap.ok("操作成功，请查看账户");
-         *         }
-         */
+        OrderRefundVo refundVo = refundService.findByOrderId(orderId);
+        Assert.isNull(refundVo, "没有查到对应的售后单:" + orderId);
+
+        if (refundVo.getRefund_type() == 1 && orderVo.getPay_status() == 2) {
+            // 退款
+            WechatRefundApiResult result = WechatUtil.wxRefund(orderId, orderVo.getActual_price().doubleValue(), orderVo.getActual_price().doubleValue());
+            if (StringUtils.equalsIgnoreCase("SUCCESS", result.getResult_code())) {
+                orderVo.refund();
+                refundVo.audit();
+                orderVo.updateOrderRefundVo(refundVo);
+                orderService.updateOrder(orderVo);
+            }
+        }
         return ResultMap.ok();
     }
 }
