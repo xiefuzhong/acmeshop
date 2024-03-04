@@ -499,12 +499,14 @@ public class OrderVo implements Serializable {
      * 退款操作，未发货-退款
      */
     public void refund() {
-        if (order_status == 201) {
-            this.order_status = 401;
-        } else if (order_status == 300) {
-            this.order_status = 402;
+        if (this.order_status == 400) {
+            this.order_status = OrderStatusEnum.CLOSED.getCode();
+            this.order_status_text = OrderStatusEnum.CLOSED.getName();
+            this.pay_status = 4;
+            this.refund_status = 3;
+//            this.refundVo = refundVo;
         }
-        this.pay_status = 4;
+
     }
 
     public void refundRequest(OrderRefundRequest request, Long userId) {
