@@ -135,6 +135,8 @@ public class ShopOrderController extends ApiBase {
                 refundVo.audit();
                 orderVo.updateOrderRefundVo(refundVo);
                 orderService.updateOrder(orderVo);
+            } else {
+                ResultMap.badArgument(result.getErr_code_des());
             }
         }
         return ResultMap.ok();
