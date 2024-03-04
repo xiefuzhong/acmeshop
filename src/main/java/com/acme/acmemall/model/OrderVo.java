@@ -61,7 +61,7 @@ public class OrderVo implements Serializable {
     //付款状态 支付状态;0未付款;1付款中;2已付款;4退款
     private Integer pay_status;
 
-    // 退款状态 0未申请，1申请  2-审核通过 3-已退款 4-拒绝 5-取消申请 6完结 7失效
+    // 退款状态 0未申请，1申请  2-审核通过 3-商品待收货 4-已退款 5-拒绝 6-取消申请 7完结 8失效
     // 商品待退货
     @Builder.Default
     private Integer refund_status = 0;
@@ -526,7 +526,15 @@ public class OrderVo implements Serializable {
             this.order_status = OrderStatusEnum.CLOSED.getCode();
             this.order_status_text = OrderStatusEnum.CLOSED.getName();
             this.pay_status = 4;
-            this.refund_status = 3;
+            this.refund_status = 4; //已退款
+            this.refundVo = refundVo;
+        }
+    }
+
+    public void fillLogistics(OrderRefundVo refundVo) {
+        OrderStatusEnum orderStatus = OrderStatusEnum.parse(this.order_status);
+        if (orderStatus == OrderStatusEnum.AFTER_SERVICE) {
+            this.refund_status = 3; // 填写物流信息
             this.refundVo = refundVo;
         }
     }

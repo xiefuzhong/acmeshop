@@ -20,6 +20,9 @@ public class OrderRefundRequest implements Serializable {
     private String refundReason;
     private String refundContent;
     private BigDecimal refundPrice;
+    private String refund_express;
+    private String refund_phone;
+    private String refund_express_name;
 
     public void check() {
         Assert.isNull(this.orderId, "订单号不能为空!");

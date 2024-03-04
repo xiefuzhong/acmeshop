@@ -1,5 +1,6 @@
 package com.acme.acmemall.model;
 
+import com.acme.acmemall.controller.reqeust.OrderRefundRequest;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -49,5 +50,12 @@ public class OrderRefundVo implements Serializable {
         this.refund_status = 2;
         this.refunded_price = refund_price;
         this.refunded_time = new Date();
+    }
+
+    public void fillLogistics(OrderRefundRequest request) {
+        this.refund_phone = request.getRefund_phone();
+        this.refund_express = request.getRefund_express();
+        this.refund_express_name = request.getRefund_express_name();
+        this.refund_status = 3; // 已填写物流信息，待商家收货确认
     }
 }

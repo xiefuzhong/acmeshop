@@ -365,6 +365,10 @@
                 <if test="refundVo.refund_type != null">`refund_type` = #{refundVo.refund_type},</if>
                 <if test="refundVo.refund_price != null">`refund_status` = #{refundVo.refund_price},</if>
                 <if test="refundVo.refund_reason != null">`refund_reason_wap` = #{refundVo.refund_reason},</if>
+                <!--                    填写物流信息-->
+                <if test="refundVo.refund_phone != null">`refund_reason_wap` = #{refundVo.refund_reason},</if>
+                <if test="refundVo.refund_express != null">`refund_reason_wap` = #{refundVo.refund_reason},</if>
+                <if test="refundVo.refund_express_name != null">`refund_reason_wap` = #{refundVo.refund_reason},</if>
             </if>
 
         </set>

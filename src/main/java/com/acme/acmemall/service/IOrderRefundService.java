@@ -9,4 +9,6 @@ public interface IOrderRefundService {
     ResultMap submit(OrderRefundRequest request, LoginUserVo loginUser);
 
     OrderRefundVo findByOrderId(String orderId);
+
+    ResultMap updateRefund(OrderRefundRequest request);
 }
