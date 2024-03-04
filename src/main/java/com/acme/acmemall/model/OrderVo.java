@@ -323,6 +323,7 @@ public class OrderVo implements Serializable {
         this.order_status = OrderStatusEnum.CANCELED.getCode();
         this.order_status_text = OrderStatusEnum.CANCELED.getName();
         this.cancle_time = new Date();
+//        this.cancel_reason = "系统自动取消";
     }
 
 
