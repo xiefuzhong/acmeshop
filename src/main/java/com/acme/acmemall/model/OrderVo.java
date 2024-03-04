@@ -8,6 +8,7 @@ import com.acme.acmemall.exception.ResultCodeEnum;
 import com.acme.acmemall.factory.OrderFactory;
 import com.acme.acmemall.factory.OrderRefundFactory;
 import com.acme.acmemall.model.enums.OrderStatusEnum;
+import com.acme.acmemall.model.enums.ShipStatusEnum;
 import com.acme.acmemall.utils.DateUtils;
 import com.alibaba.fastjson.JSON;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -56,10 +57,12 @@ public class OrderVo implements Serializable {
     private Integer order_status;
     //发货状态 商品配送情况;0未发货,1已发货,2已收货,4退货
     private Integer shipping_status;
+    private String shipping_status_text;
     //付款状态 支付状态;0未付款;1付款中;2已付款;4退款
     private Integer pay_status;
 
     // 退款状态 0未申请，1申请  2-审核通过 3-已退款 4-拒绝 5-取消申请 6完结 7失效
+    // 商品待退货
     @Builder.Default
     private Integer refund_status = 0;
 
@@ -294,7 +297,8 @@ public class OrderVo implements Serializable {
         this.pay_status = 2;
         this.order_status = OrderStatusEnum.PAID.getCode();
         this.order_status_text = OrderStatusEnum.PAID.getName();
-        this.shipping_status = 0;
+        this.shipping_status = ShipStatusEnum.SHIP_NO.getCode();
+        this.shipping_status_text = ShipStatusEnum.SHIP_NO.getName();
         this.pay_time = new Date();
         return this;
     }
@@ -360,7 +364,8 @@ public class OrderVo implements Serializable {
         this.order_status = OrderStatusEnum.ROG.getCode();
         this.order_status_text = OrderStatusEnum.ROG.getName();
         this.confirm_time = new Date();
-        this.shipping_status = 2;
+        this.shipping_status = ShipStatusEnum.SHIP_ROG.getCode();
+        this.shipping_status_text = ShipStatusEnum.SHIP_ROG.getName();
     }
 
     /**
@@ -383,7 +388,8 @@ public class OrderVo implements Serializable {
         this.order_status = OrderStatusEnum.SHIPPED.getCode();
         this.order_status_text = OrderStatusEnum.SHIPPED.getName();
         // 物流已发货
-        this.shipping_status = 1;
+        this.shipping_status = ShipStatusEnum.SHIP_YES.getCode();
+        this.shipping_status_text = ShipStatusEnum.SHIP_YES.getName();
         this.shipping_fee = BigDecimal.ZERO;
         return this;
     }
@@ -429,6 +435,10 @@ public class OrderVo implements Serializable {
      */
     public String getOrder_status_text() {
         return OrderStatusEnum.parse(order_status).getName();
+    }
+
+    public String getShipping_status_text() {
+        return ShipStatusEnum.parse(this.shipping_status).getName();
     }
 
     public void buildHandleOption(long merchantId) {

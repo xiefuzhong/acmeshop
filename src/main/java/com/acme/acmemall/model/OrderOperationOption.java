@@ -111,6 +111,10 @@ public class OrderOperationOption {
     @Builder.Default
     Boolean fillInLogistics = Boolean.FALSE;
 
+    @Builder.Default
+    Boolean cancelRefundRequest = Boolean.FALSE;
+
+
     /**
      * 买家可操作项
      *
@@ -148,6 +152,12 @@ public class OrderOperationOption {
                 this.refundRequest = Boolean.TRUE;
                 this.comment = Boolean.TRUE;
                 this.viewLogistics = Boolean.TRUE;
+                break;
+            }
+            case AFTER_SERVICE: {
+                // 售后中，可填写物流(退货退款)，可取消申请
+                this.fillInLogistics = Boolean.TRUE;
+                this.cancelRefundRequest = Boolean.TRUE;
                 break;
             }
             case CANCELED:

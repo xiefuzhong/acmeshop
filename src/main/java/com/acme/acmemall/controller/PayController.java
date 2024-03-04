@@ -13,6 +13,7 @@ import com.acme.acmemall.utils.cache.J2EcacheUtil;
 import com.acme.acmemall.utils.wechat.NonceUtil;
 import com.acme.acmemall.utils.wechat.WechatRefundApiResult;
 import com.acme.acmemall.utils.wechat.WechatUtil;
+import com.google.common.base.Throwables;
 import com.google.common.collect.Maps;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -137,7 +138,7 @@ public class PayController extends ApiBase {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(Throwables.getStackTraceAsString(e));
             return toResponsFail("下单失败,error=" + e.getMessage());
         }
         return toResponsFail("下单失败");
