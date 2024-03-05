@@ -449,7 +449,9 @@ public class OrderVo implements Serializable {
         Map<String, Boolean> optionMap = OrderOperationOption.builder().build().buyerOption(this.order_status);
         if (this.refund_status == 2) {
             // 商家审核通过，填写物流信息
-            optionMap.put("fillInLogistics", Boolean.TRUE);
+            if (this.shipping_status == 1) {
+                optionMap.put("fillInLogistics", Boolean.TRUE);
+            }
         } else if (this.refund_status == 1) {
             optionMap.put("cancelRefundRequest", Boolean.TRUE);
         } else if (this.refund_status == 3) {
