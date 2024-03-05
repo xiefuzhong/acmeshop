@@ -33,6 +33,7 @@ public class OrderRefundVo implements Serializable {
     private String goods_info;
     private Integer refund_num;
     private String refund_explain;
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
     private BigDecimal refund_price;
     private Date add_time;
 
