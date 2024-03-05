@@ -48,4 +48,15 @@ public enum OrderStatusEnum {
         return NEW;
     }
 
+    public static Boolean endCheck(int code) {
+        OrderStatusEnum status = parse(code);
+        if (status == OrderStatusEnum.CANCELED
+                || status == OrderStatusEnum.CLOSED
+                || status == OrderStatusEnum.COMPLETE
+                || status == OrderStatusEnum.DELETED) {
+            return Boolean.TRUE;
+        }
+        return Boolean.FALSE;
+    }
+
 }
