@@ -1,6 +1,8 @@
 package com.acme.acmemall.model;
 
 import com.acme.acmemall.controller.reqeust.OrderRefundRequest;
+import com.acme.acmemall.model.enums.RefundStatusEnum;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -26,12 +28,16 @@ public class OrderRefundVo implements Serializable {
     private String order_id;
     private long user_id;
     private Integer refund_type;
+    private String refund_type_text;
     private String refund_reason;
     private String goods_info;
     private Integer refund_num;
     private String refund_explain;
     private BigDecimal refund_price;
     private Date add_time;
+
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
     private BigDecimal refunded_price;
     private Date refunded_time;
     private String refund_phone;
@@ -40,6 +46,12 @@ public class OrderRefundVo implements Serializable {
     private String refuse_reason;
     private String remark;
     private Integer refund_status;
+    private String refund_status_text;
+
+    public String getRefund_status_text() {
+        return RefundStatusEnum.parse(this.refund_status).getName();
+    }
+
 
     public void submit() {
         this.add_time = new Date();
