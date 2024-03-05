@@ -454,6 +454,9 @@ public class OrderVo implements Serializable {
             }
         } else if (this.refund_status == 1) {
             optionMap.put("cancelRefundRequest", Boolean.TRUE);
+            if (this.shipping_status == 0) {
+                optionMap.put("fillInLogistics", Boolean.FALSE);
+            }
         } else if (this.refund_status == 3) {
             optionMap.put("fillInLogistics", Boolean.FALSE);
         }
