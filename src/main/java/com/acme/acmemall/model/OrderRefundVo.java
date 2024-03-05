@@ -56,11 +56,11 @@ public class OrderRefundVo implements Serializable {
 
     public void submit() {
         this.add_time = new Date();
-        this.refund_status = 1;
+        this.refund_status = RefundStatusEnum.REFUND_APPLY.getCode();
     }
 
     public void audit() {
-        this.refund_status = 2;
+        this.refund_status = RefundStatusEnum.REFUND_PASS.getCode();
         this.refunded_price = refund_price;
         this.refunded_time = new Date();
     }
@@ -69,6 +69,20 @@ public class OrderRefundVo implements Serializable {
         this.refund_phone = request.getRefund_phone();
         this.refund_express = request.getRefund_express();
         this.refund_express_name = request.getRefund_express_name();
-        this.refund_status = 3; // 已填写物流信息，待商家收货确认
+        this.refund_status = RefundStatusEnum.REFUND_RECEIVED.getCode(); // 已填写物流信息，待商家收货确认
+    }
+
+    public void cancel() {
+        this.refund_status = RefundStatusEnum.REFUND_CANCEL.getCode();
+        this.refund_explain = "用户自主取消申请售后";
+    }
+
+    public void reject(OrderRefundRequest request) {
+        this.refund_status = RefundStatusEnum.REFUND_REJECT.getCode();
+        this.refuse_reason = request.getRefuse_reason();
+    }
+
+    public void refundPaid() {
+        this.refund_status = RefundStatusEnum.REFUND_PAID.getCode();
     }
 }

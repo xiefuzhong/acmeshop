@@ -81,6 +81,6 @@
             <if test="refund_express_name != null">`refund_express_name` = #{refund_express_name},</if>
             <if test="refuse_reason != null">`refuse_reason` = #{refuse_reason},</if>
         </set>
-        where id = #{id}
+        where order_id = #{order_id}
     </update>
 </mapper>

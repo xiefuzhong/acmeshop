@@ -23,7 +23,7 @@ public class OrderRefundRequest implements Serializable {
     private String refund_express;
     private String refund_phone;
     private String refund_express_name;
-
+    private String refuse_reason;
     public void check() {
         Assert.isNull(this.orderId, "订单号不能为空!");
         Assert.isNull(this.refundType, "退货申请类型不能为空!");

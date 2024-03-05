@@ -145,7 +145,6 @@ public class OrderController extends ApiBase {
         List<OrderGoodsVo> orderGoods = orderGoodsService.queryList(orderGoodsParam);
         // 售后记录
         OrderRefundVo refundVo = refundService.findByOrderId(orderId);
-
 //        LoginUserVo loginUserVo = userService.queryByUserId(userVo.getUserId());
         //订单可操作的选择,删除，支付，收货，评论，退换货
         orderInfo.buildHandleOption(0);
