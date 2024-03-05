@@ -8,6 +8,7 @@ import com.acme.acmemall.exception.ResultCodeEnum;
 import com.acme.acmemall.factory.OrderFactory;
 import com.acme.acmemall.factory.OrderRefundFactory;
 import com.acme.acmemall.model.enums.OrderStatusEnum;
+import com.acme.acmemall.model.enums.PayStatusEnum;
 import com.acme.acmemall.model.enums.ShipStatusEnum;
 import com.acme.acmemall.utils.DateUtils;
 import com.alibaba.fastjson.JSON;
@@ -60,6 +61,12 @@ public class OrderVo implements Serializable {
     private String shipping_status_text;
     //付款状态 支付状态;0未付款;1付款中;2已付款;4退款
     private Integer pay_status;
+
+    public String getPay_status_text() {
+        return PayStatusEnum.parse(this.pay_status).getName();
+    }
+
+    private String pay_status_text;
 
     // 退款状态 0未申请，1申请  2-审核通过 3-商品待收货 4-已退款 5-拒绝 6-取消申请 7完结 8失效
     // 商品待退货
@@ -284,7 +291,7 @@ public class OrderVo implements Serializable {
         this.pay_name = null;
         this.pay_time = new Date();
         // 支付中
-        this.pay_status = 1;
+        this.pay_status = PayStatusEnum.PAY_ING.getCode();
         return this;
     }
 
@@ -294,7 +301,7 @@ public class OrderVo implements Serializable {
      * @return
      */
     public OrderVo paid() {
-        this.pay_status = 2;
+        this.pay_status = PayStatusEnum.PAY_YES.getCode();
         this.order_status = OrderStatusEnum.PAID.getCode();
         this.order_status_text = OrderStatusEnum.PAID.getName();
         this.shipping_status = ShipStatusEnum.SHIP_NO.getCode();
@@ -502,11 +509,11 @@ public class OrderVo implements Serializable {
 
 
     public Boolean paidCheck() {
-        return pay_status.intValue() == 2;
+        return pay_status.intValue() == PayStatusEnum.PAY_YES.getCode();
     }
 
     public void resetPayStatus() {
-        this.pay_status = 0;
+        this.pay_status = PayStatusEnum.PAY_NO.getCode();
     }
 
     public Boolean refundStatus() {
@@ -520,9 +527,8 @@ public class OrderVo implements Serializable {
         if (this.order_status == 400) {
             this.order_status = OrderStatusEnum.CLOSED.getCode();
             this.order_status_text = OrderStatusEnum.CLOSED.getName();
-            this.pay_status = 4;
+            this.pay_status = PayStatusEnum.PAY_REFUND.getCode();
             this.refund_status = 3;
-//            this.refundVo = refundVo;
         }
 
     }
@@ -535,7 +541,8 @@ public class OrderVo implements Serializable {
         if (orderStatus == OrderStatusEnum.AFTER_SERVICE) {
             this.order_status = OrderStatusEnum.CLOSED.getCode();
             this.order_status_text = OrderStatusEnum.CLOSED.getName();
-            this.pay_status = 4;
+            this.pay_status = PayStatusEnum.PAY_REFUND.getCode();
+            ;
             this.refund_status = 4; //已退款
             this.refundVo = refundVo;
         }
