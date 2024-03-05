@@ -164,6 +164,7 @@ public class OrderOperationOption {
             case COMPLETE: {
                 // 交易关闭/完成/超时未支付关闭  可再次购买
                 this.buy = Boolean.TRUE;
+                this.cancelRefundRequest = Boolean.FALSE;
                 break;
             }
         }
