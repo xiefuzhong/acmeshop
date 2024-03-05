@@ -56,11 +56,15 @@ public class OrderRefundServiceImpl implements IOrderRefundService {
      */
     @Override
     public ResultMap updateRefund(OrderRefundRequest request) {
-        OrderVo orderVo = orderMapper.queryObject(request.getOrderId());
         OrderRefundVo refundVo = orderRefundMapper.findByOrderId(request.getOrderId());
         refundVo.fillLogistics(request);
-        orderVo.fillLogistics(refundVo);
-        orderMapper.update(orderVo);
+
+//        OrderVo orderVo = orderMapper.queryObject(request.getOrderId());
+        OrderVo newOrderVo = OrderVo.builder()
+                .id(request.getOrderId())
+                .build();
+        newOrderVo.fillLogistics(refundVo);
+        orderMapper.update(newOrderVo);
         orderRefundMapper.update(refundVo);
         return ResultMap.response(ResultCodeEnum.SUCCESS, refundVo);
     }
