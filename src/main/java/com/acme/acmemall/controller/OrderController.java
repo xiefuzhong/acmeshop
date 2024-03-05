@@ -9,6 +9,7 @@ import com.acme.acmemall.kuaidi100.service.KuaiDi100QueryService;
 import com.acme.acmemall.kuainiao.ExpressService;
 import com.acme.acmemall.model.LoginUserVo;
 import com.acme.acmemall.model.OrderGoodsVo;
+import com.acme.acmemall.model.OrderRefundVo;
 import com.acme.acmemall.model.OrderVo;
 import com.acme.acmemall.service.IOrderGoodsService;
 import com.acme.acmemall.service.IOrderRefundService;
@@ -142,15 +143,17 @@ public class OrderController extends ApiBase {
         orderGoodsParam.put("orderIds", Lists.newArrayList(orderId));
         //订单的商品
         List<OrderGoodsVo> orderGoods = orderGoodsService.queryList(orderGoodsParam);
-        //订单最后支付时间
+        // 售后记录
+        OrderRefundVo refundVo = refundService.findByOrderId(orderId);
 
-        LoginUserVo loginUserVo = userService.queryByUserId(userVo.getUserId());
+//        LoginUserVo loginUserVo = userService.queryByUserId(userVo.getUserId());
         //订单可操作的选择,删除，支付，收货，评论，退换货
         orderInfo.buildHandleOption(0);
         //
         resultObj.put("orderInfo", orderInfo);
         resultObj.put("orderGoods", orderGoods);
         resultObj.put("handleOption", orderInfo.getHandleOption());
+        resultObj.put("orderRefund", refundVo);
         if (!StringUtils.isEmpty(orderInfo.getShipping_code()) && !StringUtils.isEmpty(orderInfo.getShipping_no())) {
             resultObj.put("shippingList", null);
         }
