@@ -37,6 +37,8 @@ import java.util.stream.Collectors;
 @Builder
 @Getter
 public class OrderVo implements Serializable {
+    // 24个小时过期
+    private static final long EXPIRE_TIME = 3600 * 24;
     //主键
     private String id;
     // 订单编号
@@ -122,6 +124,10 @@ public class OrderVo implements Serializable {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date add_time;
     private String fmt_add_time;
+
+    // 过期时间
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    private Date expire_time;
 
     // 订单删除时间
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
@@ -273,7 +279,8 @@ public class OrderVo implements Serializable {
         this.all_price = actual_price;
         this.handleOption = OrderOperationOption.builder().build().buyerOption(this.order_status);
         this.merchant_id = cartList.stream().findFirst().get().getMerchant_id();
-
+        this.add_time = new Date();
+        this.expire_time = new Date(add_time.getTime() + EXPIRE_TIME * 1000);
         // 订单明细
         cartList.stream().forEach(cartVo -> this.items.add(OrderFactory.buildOrderItem(cartVo, id)));
         return this;

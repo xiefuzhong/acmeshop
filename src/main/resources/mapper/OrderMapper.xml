@@ -56,6 +56,7 @@
         <result property="goodsCount" column="goods_count"/>
         <result property="invoiceHeaderId" column="invoice_header_id"/>
         <result property="goodsIds" column="goods_ids"/>
+        <result property="expire_time" column="expire_time"/>
     </resultMap>
 
     <select id="queryObject" resultMap="orderMap">
@@ -265,7 +266,8 @@
         `group_buying_id`,
         `address_id`,
         `goods_count`,
-        `invoice_header_id`
+        `invoice_header_id`,
+        `expire_time`
 
         )
         values
@@ -312,7 +314,8 @@
         #{group_buying_id},
         #{addressId},
         #{goodsCount},
-        #{invoiceHeaderId}
+        #{invoiceHeaderId},
+        #{expire_time}
         )
     </insert>
 

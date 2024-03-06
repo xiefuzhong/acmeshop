@@ -5,8 +5,6 @@ import com.acme.acmemall.model.OrderVo;
 import com.acme.acmemall.model.ShopCartVo;
 import com.acme.acmemall.utils.SnowFlakeGenerateIdWorker;
 
-import java.util.Date;
-
 /**
  * @description:
  * @author: ihpangzi
@@ -19,7 +17,6 @@ public class OrderFactory {
                 .id(SnowFlakeGenerateIdWorker.generateOrderNumber())
                 .all_order_id(SnowFlakeGenerateIdWorker.generateOrderNumber())
                 .order_sn(SnowFlakeGenerateIdWorker.generateOrderNumber())
-                .add_time(new Date())
                 .order_status(0)
                 .order_type(type)
                 .pay_status(0)
