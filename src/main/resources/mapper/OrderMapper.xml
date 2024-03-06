@@ -123,6 +123,10 @@
             <if test="group_buying_id != null and group_buying_id != 0">
                 and o.group_buying_id = #{group_buying_id}
             </if>
+            <if test="pay_status != null">
+                and o.pay_status = #{pay_status}
+            </if>
+
         </where>
         GROUP BY
         o.id,

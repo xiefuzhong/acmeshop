@@ -2,6 +2,7 @@ package com.acme.acmemall.task;
 
 import com.acme.acmemall.model.OrderVo;
 import com.acme.acmemall.model.enums.OrderStatusEnum;
+import com.acme.acmemall.model.enums.PayStatusEnum;
 import com.acme.acmemall.service.IOrderService;
 import com.acme.acmemall.utils.DateUtils;
 import com.google.common.base.Throwables;
@@ -39,7 +40,8 @@ public class OrderStatusCheckTask {
         logger.info(String.format("autoCancelOrderTask-- 执行时间：%s", DateUtils.currentDate(DateUtils.DATE_TIME_PATTERN)));
         try {
             Map param = Maps.newHashMap();
-            param.put("order_status", OrderStatusEnum.NEW);
+            param.put("order_status", OrderStatusEnum.NEW.getCode());
+            param.put("pay_status", PayStatusEnum.PAY_NO.getCode());
             List<OrderVo> orders = orderService.queryOrderList(param);
             logger.info(String.format("查询出待处理数据条数：%s", CollectionUtils.isEmpty(orders) ? 0 : orders.size()));
         } catch (Exception e) {
