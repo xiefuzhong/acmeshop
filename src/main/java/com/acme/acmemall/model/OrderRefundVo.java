@@ -49,6 +49,8 @@ public class OrderRefundVo implements Serializable {
     private Integer refund_status;
     private String refund_status_text;
 
+    private String refundOption;
+
     public String getRefund_status_text() {
         return RefundStatusEnum.parse(this.refund_status).getName();
     }

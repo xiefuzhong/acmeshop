@@ -7,9 +7,7 @@ import com.acme.acmemall.exception.ApiCusException;
 import com.acme.acmemall.exception.ResultCodeEnum;
 import com.acme.acmemall.factory.OrderFactory;
 import com.acme.acmemall.factory.OrderRefundFactory;
-import com.acme.acmemall.model.enums.OrderStatusEnum;
-import com.acme.acmemall.model.enums.PayStatusEnum;
-import com.acme.acmemall.model.enums.ShipStatusEnum;
+import com.acme.acmemall.model.enums.*;
 import com.acme.acmemall.utils.DateUtils;
 import com.alibaba.fastjson.JSON;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -543,24 +541,38 @@ public class OrderVo implements Serializable {
             this.order_status = OrderStatusEnum.CLOSED.getCode();
             this.order_status_text = OrderStatusEnum.CLOSED.getName();
             this.pay_status = PayStatusEnum.PAY_REFUND.getCode();
-            ;
-            this.refund_status = 4; //已退款
+//            this.refund_status = 4; //已退款
+            this.refundVo = refundVo;
+            this.refund_status = RefundStatusEnum.REFUND_PAID.getCode();
+        }
+    }
+
+    private void fillLogistics(OrderRefundVo refundVo) {
+        OrderStatusEnum orderStatus = OrderStatusEnum.parse(this.order_status);
+        if (orderStatus == OrderStatusEnum.AFTER_SERVICE) {
+//            this.refund_status = 3; // 填写物流信息,表示货物已寄回，商家待收货
+            this.refund_status = RefundStatusEnum.REFUND_RECEIVED.getCode();
             this.refundVo = refundVo;
         }
     }
 
-    public void fillLogistics(OrderRefundVo refundVo) {
+    public void updateRefund(OrderRefundVo refundVo) {
         OrderStatusEnum orderStatus = OrderStatusEnum.parse(this.order_status);
         if (orderStatus == OrderStatusEnum.AFTER_SERVICE) {
-            this.refund_status = 3; // 填写物流信息
-            this.refundVo = refundVo;
+            RefundOptionEnum optionEnum = RefundOptionEnum.parse(refundVo.getRefundOption());
+            switch (optionEnum) {
+                case LOGISTICS: {
+                    fillLogistics(refundVo);
+                    break;
+                }
+            }
         }
     }
 
     public void refundRequest(OrderRefundRequest request, Long userId) {
         this.order_status = OrderStatusEnum.AFTER_SERVICE.getCode();
         this.order_status_text = OrderStatusEnum.AFTER_SERVICE.getName();
-        this.refund_status = 1;
+        this.refund_status = RefundStatusEnum.REFUND_APPLY.getCode();
         this.refundVo = OrderRefundFactory.build(request, userId);
         refundVo.submit();
     }
