@@ -1,6 +1,7 @@
 package com.acme.acmemall.controller.reqeust;
 
 import com.acme.acmemall.exception.Assert;
+import com.acme.acmemall.utils.GsonUtil;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -30,5 +31,10 @@ public class OrderRefundRequest implements Serializable {
         Assert.isNull(this.orderId, "订单号不能为空!");
         Assert.isNull(this.refundType, "退货申请类型不能为空!");
         Assert.isNull(this.refundReason, "退货申请原因不能为空!");
+    }
+
+    @Override
+    public String toString() {
+        return GsonUtil.toJson(this);
     }
 }

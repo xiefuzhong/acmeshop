@@ -53,6 +53,7 @@ public class OrderRefundController extends ApiBase {
             return ResultMap.badArgument();
         }
         OrderRefundRequest request = JSONObject.toJavaObject(object, OrderRefundRequest.class);
+        logger.info(request.toString());
         Assert.isNull(request.getOrderId(), "订单号不能为空!");
         return refundService.updateRefund(request);
     }
