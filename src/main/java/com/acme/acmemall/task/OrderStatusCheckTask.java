@@ -1,11 +1,20 @@
 package com.acme.acmemall.task;
 
+import com.acme.acmemall.model.OrderVo;
+import com.acme.acmemall.model.enums.OrderStatusEnum;
+import com.acme.acmemall.service.IOrderService;
 import com.acme.acmemall.utils.DateUtils;
 import com.google.common.base.Throwables;
+import com.google.common.collect.Maps;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+
+import javax.annotation.Resource;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @description:
@@ -15,6 +24,9 @@ import org.springframework.stereotype.Component;
 @Component
 @EnableScheduling
 public class OrderStatusCheckTask {
+
+    @Resource
+    IOrderService orderService;
 
     protected final Logger logger = Logger.getLogger(this.getClass());
 
@@ -26,9 +38,12 @@ public class OrderStatusCheckTask {
     public void autoCancelOrderTask() {
         logger.info(String.format("autoCancelOrderTask-- 执行时间：%s", DateUtils.currentDate(DateUtils.DATE_TIME_PATTERN)));
         try {
-
+            Map param = Maps.newHashMap();
+            param.put("order_status", OrderStatusEnum.NEW);
+            List<OrderVo> orders = orderService.queryOrderList(param);
+            logger.info(String.format("查询出待处理数据条数：%s", CollectionUtils.isEmpty(orders) ? 0 : orders.size()));
         } catch (Exception e) {
-            logger.error(Throwables.getStackTraceAsString(e));
+            logger.error(String.format("autoCancelOrderTask-- Exception：%s", Throwables.getStackTraceAsString(e)));
         }
     }
 }

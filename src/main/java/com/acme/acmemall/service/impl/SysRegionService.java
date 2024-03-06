@@ -33,18 +33,19 @@ public class SysRegionService implements ISysRegionService {
         logger.info("<--region.init()-->");
         if (null != regionList) {
             regionList = mapper.queryList(Maps.newHashMap());
-            logger.info("init>>"+regionList.size());
+            logger.info("init>>" + regionList.size());
         }
     }
 
     /**
      * 省市区县列表
+     *
      * @param parentId 层 0-省级
      * @return
      */
     @Override
     public List<RegionVo> getChildrenByParentId(Integer parentId) {
-        logger.info("region.getChildrenByParentId>>"+parentId);
+        logger.info("region.getChildrenByParentId>>" + parentId);
         if (parentId == null) {
             return Lists.newArrayList();
         }
