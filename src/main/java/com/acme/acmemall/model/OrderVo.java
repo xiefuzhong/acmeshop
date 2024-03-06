@@ -568,13 +568,28 @@ public class OrderVo implements Serializable {
                     break;
                 }
                 case CANCEL: {
+                    // 取消售后申请
                     this.refund_status = RefundStatusEnum.REFUND_CANCEL.getCode();
                     this.refundVo.cancel();
+                    if (this.shipping_status == ShipStatusEnum.SHIP_YES.getCode()) {
+                        // 已发货,订单状态重置为已发货
+                        this.order_status = OrderStatusEnum.SHIPPED.getCode();
+                    } else if (this.shipping_status == ShipStatusEnum.SHIP_NO.getCode()) {
+                        // 未发货，订单状态重置为 待发货
+                        this.order_status = OrderStatusEnum.PAID.getCode();
+                    }
                     break;
                 }
                 case REJECT: {
                     this.refund_status = RefundStatusEnum.REFUND_REJECT.getCode();
                     this.refundVo.reject(request);
+                    if (this.shipping_status == ShipStatusEnum.SHIP_YES.getCode()) {
+                        // 已发货,订单状态重置为已发货
+                        this.order_status = OrderStatusEnum.SHIPPED.getCode();
+                    } else if (this.shipping_status == ShipStatusEnum.SHIP_NO.getCode()) {
+                        // 未发货，订单状态重置为 待发货
+                        this.order_status = OrderStatusEnum.PAID.getCode();
+                    }
                     break;
                 }
                 case AUDIT: {
