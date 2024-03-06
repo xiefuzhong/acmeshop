@@ -13,6 +13,7 @@ import java.math.BigDecimal;
  */
 @Data
 public class OrderRefundRequest implements Serializable {
+    private long userid;
     private int goodsCount;
     private String goodsInfo;
     private String orderId;

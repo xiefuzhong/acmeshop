@@ -56,9 +56,10 @@ public class OrderRefundVo implements Serializable {
     }
 
 
-    public void submit() {
+    public void submit(long userId) {
         this.add_time = new Date();
         this.refund_status = RefundStatusEnum.REFUND_APPLY.getCode();
+        this.user_id = userId;
     }
 
     public void audit() {

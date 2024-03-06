@@ -308,6 +308,7 @@ public class OrderController extends ApiBase {
             if (loginUserVo == null) {
                 return ResultMap.error(400, "非有效用户操作");
             }
+            request.setUserid(loginUserVo.getUserId());
             OrderVo orderVo = orderService.findOrder(request.getOrderId());
             if (orderVo == null) {
                 return ResultMap.badArgument("查无此单,请确认订单信息");
@@ -315,7 +316,7 @@ public class OrderController extends ApiBase {
             if (!orderVo.getUser_id().equals(loginUserVo.getUserId())) {
                 return ResultMap.badArgument("非法用户不能申请");
             }
-            orderVo.refundRequest(request, loginUserVo.getUserId());
+            orderVo.refundRequest(request);
             orderService.updateOrder(orderVo);
             return ResultMap.ok("取消成功");
         } catch (Exception e) {

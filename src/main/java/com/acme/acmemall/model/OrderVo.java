@@ -556,25 +556,37 @@ public class OrderVo implements Serializable {
         }
     }
 
-    public void updateRefund(OrderRefundVo refundVo) {
+    public void updateRefund(OrderRefundRequest request) {
         OrderStatusEnum orderStatus = OrderStatusEnum.parse(this.order_status);
         if (orderStatus == OrderStatusEnum.AFTER_SERVICE) {
-            RefundOptionEnum optionEnum = RefundOptionEnum.parse(refundVo.getRefundOption());
+            OrderRefundVo refundVo = OrderRefundFactory.build(request);
+            this.refundVo = refundVo;
+            RefundOptionEnum optionEnum = RefundOptionEnum.parse(request.getRefundOption());
             switch (optionEnum) {
                 case LOGISTICS: {
-                    fillLogistics(refundVo);
+                    this.refund_status = RefundStatusEnum.REFUND_RECEIVED.getCode();
+                    break;
+                }
+                case CANCEL: {
+                    this.refund_status = RefundStatusEnum.REFUND_CANCEL.getCode();
+                    this.refundVo.cancel();
+                    break;
+                }
+                case REJECT: {
+                    this.refund_status = RefundStatusEnum.REFUND_REJECT.getCode();
+                    this.refundVo.reject(request);
                     break;
                 }
             }
         }
     }
 
-    public void refundRequest(OrderRefundRequest request, Long userId) {
+    public void refundRequest(OrderRefundRequest request) {
         this.order_status = OrderStatusEnum.AFTER_SERVICE.getCode();
         this.order_status_text = OrderStatusEnum.AFTER_SERVICE.getName();
         this.refund_status = RefundStatusEnum.REFUND_APPLY.getCode();
-        this.refundVo = OrderRefundFactory.build(request, userId);
-        refundVo.submit();
+        this.refundVo = OrderRefundFactory.build(request);
+        refundVo.submit(this.user_id);
     }
 
     /**

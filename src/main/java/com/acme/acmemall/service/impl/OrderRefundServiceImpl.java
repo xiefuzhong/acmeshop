@@ -35,8 +35,8 @@ public class OrderRefundServiceImpl implements IOrderRefundService {
      */
     @Override
     public ResultMap submit(OrderRefundRequest request, LoginUserVo loginUser) {
-        OrderRefundVo refundVo = OrderRefundFactory.build(request, loginUser.getUserId());
-        refundVo.submit();
+        OrderRefundVo refundVo = OrderRefundFactory.build(request);
+        refundVo.submit(loginUser.getUserId());
         orderRefundMapper.save(refundVo);
         return ResultMap.response(ResultCodeEnum.SUCCESS, refundVo);
     }
@@ -60,11 +60,10 @@ public class OrderRefundServiceImpl implements IOrderRefundService {
         if (refundVo == null) {
             return ResultMap.error("无售后信息");
         }
-        refundVo.fillLogistics(request);
         OrderVo newOrderVo = OrderVo.builder()
                 .id(request.getOrderId())
                 .build();
-        newOrderVo.updateRefund(refundVo);
+        newOrderVo.updateRefund(request);
         orderMapper.update(newOrderVo);
         orderRefundMapper.update(refundVo);
         return ResultMap.response(ResultCodeEnum.SUCCESS, refundVo);
