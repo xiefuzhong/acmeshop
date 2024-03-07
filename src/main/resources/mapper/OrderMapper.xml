@@ -366,6 +366,7 @@
             <if test="merRemark != null">`mer_remark` = #{merRemark},</if>
             <if test="cusRemark != null">`cus_remark` = #{cusRemark},</if>
             <if test="invoiceHeaderId != null">`invoice_header_id` = #{invoiceHeaderId},</if>
+            <if test="comment_status != null">`comment_status` = #{comment_status},</if>
             <!--            申请退款-->
             <if test="refundVo != null">
                 <if test="refundVo.refund_status != null">`refund_status` = #{refundVo.refund_status},</if>
@@ -392,6 +393,8 @@
             <if test="shipping_status != null">`shipping_status` = #{shipping_status},</if>
             <if test="pay_time != null">`pay_time` = #{pay_time},</if>
             <if test="pay_id != null">`pay_id` = #{pay_id},</if>
+            <!--            comment_status-->
+            <if test="comment_status != null">`comment_status` = #{comment_status},</if>
         </set>
         where all_order_id = #{all_order_id}
     </update>
