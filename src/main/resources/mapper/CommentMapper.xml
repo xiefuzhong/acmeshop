@@ -159,10 +159,10 @@
             <if test="content != null">`content` = #{content},</if>
             <if test="add_time != null">`add_time` = #{add_time},</if>
             <if test="status != null">`status` = #{status},</if>
-            <!--            <if test="user_id != null">`user_id` = #{user_id},</if>-->
+            <!-- <if test="user_id != null">`user_id` = #{user_id},</if>-->
             <if test="mer_reply_content != null">`mer_reply_content` = #{mer_reply_content},</if>
             <if test="mer_reply_time != null">`mer_reply_time` = #{mer_reply_time},</if>
-            <!--            reply_flag-->
+            <!-- reply_flag-->
             <if test="reply_flag != null">`reply_flag` = #{reply_flag}</if>
         </set>
         where id = #{id}
