@@ -142,7 +142,7 @@
         #{status},
         #{user_id},
         #{order_id},
-        #{nickname},
+        #{nick_name},
         #{avatar},
         #{goods_name},
         #{goods_spec},
