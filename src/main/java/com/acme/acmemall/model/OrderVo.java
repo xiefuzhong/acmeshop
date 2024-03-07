@@ -136,6 +136,10 @@ public class OrderVo implements Serializable {
     // 取消时间
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date cancle_time;
+
+    // 取消原因
+    private String cancel_reason;
+
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     //确认时间
     private Date confirm_time;
@@ -331,11 +335,11 @@ public class OrderVo implements Serializable {
         this.cancle_time = new Date();
     }
 
-    public void cancle() {
+    public void cancle(String cancel_reason) {
         this.order_status = OrderStatusEnum.CANCELED.getCode();
         this.order_status_text = OrderStatusEnum.CANCELED.getName();
         this.cancle_time = new Date();
-//        this.cancel_reason = "系统自动取消";
+        this.cancel_reason = cancel_reason;
     }
 
 
@@ -388,6 +392,7 @@ public class OrderVo implements Serializable {
     public OrderVo comment() {
         return this;
     }
+
 
     /**
      * 发货

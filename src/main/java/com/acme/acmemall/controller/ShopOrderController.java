@@ -96,14 +96,18 @@ public class ShopOrderController extends ApiBase {
             return ResultMap.badArgument();
         }
         logger.info("updateOrder request:" + jsonRequest);
-        OrderShippedRequest shippedRequest = JSONObject.toJavaObject(jsonRequest, OrderShippedRequest.class);
+        OrderShippedRequest request = JSONObject.toJavaObject(jsonRequest, OrderShippedRequest.class);
 
-        String orderId = shippedRequest.getOrderId();
+        String orderId = request.getOrderId();
         OrderVo orderVo = orderService.findOrder(orderId);
         if (orderVo == null) {
             return ResultMap.badArgument("查无此单:" + orderId);
         }
-        orderVo.shipped(shippedRequest);
+        if (StringUtils.equalsIgnoreCase("shipping", request.getHandle())) {
+            orderVo.shipped(request);
+        } else if (StringUtils.equalsIgnoreCase("cancel", request.getHandle())) {
+            orderVo.cancle("商家取消");
+        }
         orderService.handleOrderByMer(orderVo);
         // 下单
         return toResponsSuccess(orderVo);

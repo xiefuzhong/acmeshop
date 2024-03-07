@@ -288,7 +288,7 @@ public class OrderController extends ApiBase {
             if (!orderVo.canCancel()) {
                 return ResultMap.error(400, "当前状态下不能取消操作");
             }
-            orderVo.cancle();
+            orderVo.cancle("用户取消");
             orderService.updateOrder(orderVo);
         } catch (Exception e) {
             String errMsg = Throwables.getStackTraceAsString(e);
