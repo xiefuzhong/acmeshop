@@ -389,8 +389,8 @@ public class OrderVo implements Serializable {
      *
      * @return
      */
-    public OrderVo comment() {
-        return this;
+    public void comment() {
+        this.comment_status = 1;
     }
 
 

@@ -1,13 +1,16 @@
 package com.acme.acmemall.service.impl;
 
 import com.acme.acmemall.dao.CommentMapper;
+import com.acme.acmemall.dao.OrderMapper;
 import com.acme.acmemall.dao.UserMapper;
 import com.acme.acmemall.model.CommentVo;
+import com.acme.acmemall.model.OrderVo;
 import com.acme.acmemall.service.ICommentService;
 import com.google.common.collect.Maps;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.Resource;
 import java.util.List;
 import java.util.Map;
 
@@ -20,11 +23,14 @@ import java.util.Map;
 public class CommentService implements ICommentService {
 
 
-    @Autowired
+    @Resource
     CommentMapper mapper;
 
-    @Autowired
+    @Resource
     UserMapper userMapper;
+
+    @Resource
+    OrderMapper orderMapper;
 
     /**
      * @param map
@@ -52,6 +58,7 @@ public class CommentService implements ICommentService {
     /**
      * @param commentVo
      */
+    @Transactional(rollbackFor = {RuntimeException.class, Exception.class})
     @Override
     public int doSave(CommentVo commentVo) {
         Map<String, Object> params = Maps.newHashMap();
@@ -63,6 +70,9 @@ public class CommentService implements ICommentService {
         if (count > 0) {
             return 0;
         }
+        OrderVo orderVo = orderMapper.queryObject(commentVo.getOrder_id());
+        orderVo.comment();
+        orderMapper.update(orderVo);
         return mapper.save(commentVo);
     }
 
