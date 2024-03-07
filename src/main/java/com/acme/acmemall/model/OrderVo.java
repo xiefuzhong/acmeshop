@@ -637,7 +637,9 @@ public class OrderVo implements Serializable {
     }
 
     public void fillItem(List<OrderGoodsVo> items) {
-        this.items.addAll(items);
+        if (CollectionUtils.isNotEmpty(items)) {
+            this.items.addAll(items);
+        }
     }
 
 
