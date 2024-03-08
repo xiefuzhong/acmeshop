@@ -31,11 +31,22 @@ public class OrderStatusCheckTask {
 
     protected final Logger logger = Logger.getLogger(this.getClass());
 
+
+    /**
+     * 订单半个小时未付款要自动取消
+     */
+    private static final long AUTO_CANCEL_RATE = 1800000;
+
+    /**
+     * 取消的订单 自动完结(5分钟)。
+     */
+    private static final long AOTU_END_RATE = 300000;
+
     /**
      * 订单半个小时未付款要自动取消
      * fixedRate:毫秒
      */
-    @Scheduled(fixedRate = 30 * 60 * 1000)
+    @Scheduled(fixedRate = AUTO_CANCEL_RATE)
     public void autoCancelOrderTask() {
         logger.info(String.format("autoCancelOrderTask-- 执行时间：%s", DateUtils.currentDate(DateUtils.DATE_TIME_PATTERN)));
         try {
@@ -51,7 +62,7 @@ public class OrderStatusCheckTask {
     }
 
     // 取消的订单 自动完结(5分钟)。
-    @Scheduled(fixedRate = 300000)
+    @Scheduled(fixedRate = AOTU_END_RATE)
     public void autoEnd() {
 
     }
