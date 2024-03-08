@@ -217,7 +217,7 @@ public class OrderServiceImpl implements IOrderService {
         if (CollectionUtils.isEmpty(orderIds)) {
             return 0;
         }
-        return orderMapper.updateByIds(orderIds);
+        return orderMapper.cancelBatch(orderIds);
     }
 
     private List<UserCouponVo> getUserCouponVos(String userCouponId, BigDecimal goodsTotalPrice, LoginUserVo loginUser) {
