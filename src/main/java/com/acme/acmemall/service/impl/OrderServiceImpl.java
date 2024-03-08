@@ -196,6 +196,27 @@ public class OrderServiceImpl implements IOrderService {
         return orderMapper.queryListByIds(ids);
     }
 
+    /**
+     * 查询待处理的数据列表
+     *
+     * @param params
+     * @return
+     */
+    @Override
+    public List<OrderVo> queryPendingDataByTask(Map params) {
+        return orderMapper.queryPendingDataByTask(params);
+    }
+
+    /**
+     * 根据订单ID更新状态
+     *
+     * @param orderIds
+     */
+    @Override
+    public int updateByIds(List<String> orderIds) {
+        return orderMapper.updateByIds(orderIds);
+    }
+
     private List<UserCouponVo> getUserCouponVos(String userCouponId, BigDecimal goodsTotalPrice, LoginUserVo loginUser) {
         List<UserCouponVo> userCouponList = Lists.newArrayList();
         if (StringUtils.isNotEmpty(userCouponId)) {

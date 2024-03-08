@@ -45,4 +45,19 @@ public interface IOrderService {
     void handleOrderByMer(OrderVo orderVo);
 
     List<OrderVo> queryByIds(List<String> ids);
+
+    /**
+     * 查询待处理的数据列表
+     *
+     * @param params
+     * @return
+     */
+    List<OrderVo> queryPendingDataByTask(Map params);
+
+    /**
+     * 根据订单ID更新状态
+     *
+     * @param orderIds
+     */
+    int updateByIds(List<String> orderIds);
 }

@@ -6,6 +6,7 @@ import com.acme.acmemall.model.enums.PayStatusEnum;
 import com.acme.acmemall.service.IOrderService;
 import com.acme.acmemall.utils.DateUtils;
 import com.google.common.base.Throwables;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.log4j.Logger;
@@ -51,11 +52,14 @@ public class OrderStatusCheckTask {
         logger.info(String.format("autoCancelOrderTask-- 执行时间：%s", DateUtils.currentDate(DateUtils.DATE_TIME_PATTERN)));
         try {
             Map param = Maps.newHashMap();
-            param.put("order_status", OrderStatusEnum.NEW.getCode());
+            List<Integer> status = Lists.newArrayList(OrderStatusEnum.NEW.getCode());
+            param.put("status", status);
             param.put("pay_status", PayStatusEnum.PAY_NO.getCode());
-            List<OrderVo> orders = orderService.queryOrderList(param);
+            param.put("data_type", "toCancel");
+            List<OrderVo> orders = orderService.queryPendingDataByTask(param);
             logger.info(String.format("查询出待处理数据条数：%s", CollectionUtils.isEmpty(orders) ? 0 : orders.size()));
-
+            int result = orderService.updateByIds(Lists.newArrayList());
+            logger.info(String.format("处理数据条数：%s", result));
         } catch (Exception e) {
             logger.error(String.format("autoCancelOrderTask-- Exception：%s", Throwables.getStackTraceAsString(e)));
         }

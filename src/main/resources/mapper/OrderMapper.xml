@@ -399,6 +399,26 @@
         where all_order_id = #{all_order_id}
     </update>
 
+    <update id="updateByIds">
+        update t_acme_mall_order
+        <set>
+            <if test="pay_status != null">`pay_status` = #{pay_status},</if>
+            <if test="order_status != null">`order_status` = #{order_status},</if>
+            <if test="shipping_status != null">`shipping_status` = #{shipping_status},</if>
+            <if test="pay_time != null">`pay_time` = #{pay_time},</if>
+            <if test="pay_id != null">`pay_id` = #{pay_id},</if>
+            <!--            comment_status-->
+            <if test="comment_status != null">`comment_status` = #{comment_status},</if>
+        </set>
+        <where>
+            id in
+            <foreach item="id" collection="list" open="(" separator="," close=")">
+                #{id}
+            </foreach>
+        </where>
+    </update>
+
+
     <delete id="delete">
         delete from t_acme_mall_order where id = #{value}
     </delete>
@@ -480,6 +500,31 @@
         </where>
         <!--        where-->
         <!--        id in('20240123032534730406446')-->
+    </select>
+
+
+    <select id="queryPendingDataByTask" resultMap="orderMap">
+        SELECT
+        *
+        from
+        t_acme_mall_order
+        <where>
+            AND order_status IN
+            <foreach item="item" collection="status" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+            <if test="pay_status != null">
+                AND pay_status = #{pay_status}
+            </if>
+            <if test="data_type != null and data_type !=''">
+                <choose>
+                    <when test="data_type == 'toCancel'">
+                        <![CDATA[ AND expire_time < now() ]]>
+                    </when>
+                </choose>
+            </if>
+        </where>
+
     </select>
 
 </mapper>

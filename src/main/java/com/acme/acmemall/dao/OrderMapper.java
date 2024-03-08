@@ -16,4 +16,8 @@ public interface OrderMapper extends BaseDao<OrderVo> {
     List<OrderVo> queryMerOrders(Map<String, Object> params);
 
     List<OrderVo> queryListByIds(List<String> orderIds);
+
+    List<OrderVo> queryPendingDataByTask(Map<String, Object> params);
+
+    int updateByIds(List<String> orderIds);
 }
