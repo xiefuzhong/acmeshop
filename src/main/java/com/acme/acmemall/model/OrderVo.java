@@ -37,8 +37,8 @@ import java.util.stream.Collectors;
 @Builder
 @Getter
 public class OrderVo implements Serializable {
-    // 24个小时过期
-    private static final long EXPIRE_TIME = 3600 * 24;
+    // 半个
+    private static final long EXPIRE_TIME = 1800;
     //主键
     private String id;
     // 订单编号

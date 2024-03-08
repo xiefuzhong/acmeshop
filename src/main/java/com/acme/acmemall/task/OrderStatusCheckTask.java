@@ -32,10 +32,10 @@ public class OrderStatusCheckTask {
     protected final Logger logger = Logger.getLogger(this.getClass());
 
     /**
-     * 订单24小时未付款要自动取消
+     * 订单半个小时未付款要自动取消
      * fixedRate:毫秒
      */
-    @Scheduled(fixedRate = 60 * 60 * 1000)
+    @Scheduled(fixedRate = 30 * 60 * 1000)
     public void autoCancelOrderTask() {
         logger.info(String.format("autoCancelOrderTask-- 执行时间：%s", DateUtils.currentDate(DateUtils.DATE_TIME_PATTERN)));
         try {
@@ -44,8 +44,15 @@ public class OrderStatusCheckTask {
             param.put("pay_status", PayStatusEnum.PAY_NO.getCode());
             List<OrderVo> orders = orderService.queryOrderList(param);
             logger.info(String.format("查询出待处理数据条数：%s", CollectionUtils.isEmpty(orders) ? 0 : orders.size()));
+
         } catch (Exception e) {
             logger.error(String.format("autoCancelOrderTask-- Exception：%s", Throwables.getStackTraceAsString(e)));
         }
+    }
+
+    // 取消的订单 自动完结(5分钟)。
+    @Scheduled(fixedRate = 300000)
+    public void autoEnd() {
+
     }
 }
