@@ -93,7 +93,7 @@ public class OrderController extends ApiBase {
         params.put("user_id", loginUser.getUserId());
         params.put("page", page);
         params.put("limit", size);
-        params.put("sidx", "id");
+        params.put("sidx", "add_time");
         params.put("order", "desc");
         if (order_status != null) {
             params.put("order_status", order_status);
