@@ -41,7 +41,12 @@ public class OrderStatusCheckTask {
     /**
      * 取消的订单 自动完结(5分钟)。
      */
-    private static final long AOTU_END_RATE = 300000;
+    private static final long AUTO_END_RATE = 300000;
+
+    /**
+     * 超时(超时自动好评,售后超出时效,超时未支付自动关闭)
+     */
+    private static final long AUTO_TIMEOUT = 300000;
 
     /**
      * 订单半个小时未付款要自动取消
@@ -66,8 +71,19 @@ public class OrderStatusCheckTask {
     }
 
     // 取消的订单 自动完结(5分钟)。
-    @Scheduled(fixedRate = AOTU_END_RATE)
+//    @Scheduled(fixedRate = AUTO_END_RATE)
     public void autoEnd() {
 
+    }
+
+    @Scheduled(fixedRate = AUTO_TIMEOUT)
+    public void timeout() {
+        logger.info(String.format("timeout-- 执行开始时间：%s", DateUtils.currentDate(DateUtils.DATE_TIME_PATTERN)));
+        try {
+
+        } catch (Exception e) {
+            logger.error(String.format("timeout-- Exception：%s", Throwables.getStackTraceAsString(e)));
+        }
+        logger.info(String.format("timeout-- 执行结束时间：%s", DateUtils.currentDate(DateUtils.DATE_TIME_PATTERN)));
     }
 }
