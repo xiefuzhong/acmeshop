@@ -207,7 +207,7 @@ public class SnowFlakeGenerateIdWorker {
      */
     public static String generateOrderNumber() {
         SnowFlakeGenerateIdWorker snowFlake = new SnowFlakeGenerateIdWorker(0, 0);
-        return String.format("%016d", snowFlake.generateId(System.currentTimeMillis()));
+        return String.valueOf(snowFlake.generateId(System.currentTimeMillis()));
     }
 
 
