@@ -5,8 +5,6 @@ import org.apache.commons.lang.math.RandomUtils;
 
 import java.net.Inet4Address;
 import java.net.UnknownHostException;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.Random;
 
 /**
@@ -208,17 +206,17 @@ public class SnowFlakeGenerateIdWorker {
      * 生成订单的编号order_sn
      */
     public static String generateOrderNumber() {
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(new Date());
-        String timeStr = DateUtils.format(cal.getTime(), DateUtils.DATE_TIME_PATTERN_YYYY_MM_DD_HH_MM_SS_SSS);
-        return timeStr + CharUtil.getRandomNum(6);
+        SnowFlakeGenerateIdWorker snowFlake = new SnowFlakeGenerateIdWorker(0, 0);
+        return String.format("%016d", snowFlake.generateId(System.currentTimeMillis()));
     }
 
 
     public static void main(String[] args) {
+        SnowFlakeGenerateIdWorker snowFlakeGenerateIdWorker = new SnowFlakeGenerateIdWorker(0, 0);
         for (int i = 0; i < 100; i++) {
-//            System.out.println(new SnowFlakeGenerateIdWorker(0, 0).generateId(System.currentTimeMillis()));
             System.out.println(SnowFlakeGenerateIdWorker.generateOrderNumber());
+//            System.out.println(SnowFlakeGenerateIdWorker.generateOrderNumber());
+//            System.out.println(snowFlakeGenerateIdWorker.nextId());
         }
 
     }
