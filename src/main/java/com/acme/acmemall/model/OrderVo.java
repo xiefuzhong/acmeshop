@@ -59,6 +59,8 @@ public class OrderVo implements Serializable {
     //发货状态 商品配送情况;0未发货,1已发货,2已收货,4退货
     private Integer shipping_status;
     private String shipping_status_text;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    private Date shipping_time; // 发货时间
     //付款状态 支付状态;0未付款;1付款中;2已付款;4退款
     private Integer pay_status;
 
@@ -140,8 +142,8 @@ public class OrderVo implements Serializable {
     // 取消原因
     private String cancel_reason;
 
+    //确认收货时间
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    //确认时间
     private Date confirm_time;
     //付款时间
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
@@ -215,6 +217,9 @@ public class OrderVo implements Serializable {
     // 评论状态 0-未评论
     @Builder.Default
     private Integer comment_status = 0;
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    private Date comment_time; // 评论时间
 
     private OrderRefundVo refundVo;
 
@@ -391,6 +396,7 @@ public class OrderVo implements Serializable {
      */
     public void comment() {
         this.comment_status = 1;
+        this.comment_time = new Date();
     }
 
 
@@ -407,6 +413,8 @@ public class OrderVo implements Serializable {
         // 物流已发货
         this.shipping_status = ShipStatusEnum.SHIP_YES.getCode();
         this.shipping_status_text = ShipStatusEnum.SHIP_YES.getName();
+        // 发货时间
+        this.shipping_time = new Date();
         this.shipping_fee = BigDecimal.ZERO;
         return this;
     }

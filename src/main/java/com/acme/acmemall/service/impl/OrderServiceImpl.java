@@ -214,6 +214,9 @@ public class OrderServiceImpl implements IOrderService {
      */
     @Override
     public int updateByIds(List<String> orderIds) {
+        if (CollectionUtils.isEmpty(orderIds)) {
+            return 0;
+        }
         return orderMapper.updateByIds(orderIds);
     }
 

@@ -17,6 +17,7 @@ import org.springframework.stereotype.Component;
 import javax.annotation.Resource;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @description:
@@ -62,8 +63,14 @@ public class OrderStatusCheckTask {
             param.put("pay_status", PayStatusEnum.PAY_NO.getCode());
             param.put("data_type", "toCancel");
             List<OrderVo> orders = orderService.queryPendingDataByTask(param);
-            logger.info(String.format("查询出待处理数据条数：%s", CollectionUtils.isEmpty(orders) ? 0 : orders.size()));
-            int result = orderService.updateByIds(Lists.newArrayList());
+
+            int size = CollectionUtils.isEmpty(orders) ? 0 : orders.size();
+            logger.info(String.format("查询出待处理数据条数：%s", size));
+            if (size == 0) {
+                return;
+            }
+            List<String> ids = orders.stream().map(OrderVo::getId).collect(Collectors.toList());
+            int result = orderService.updateByIds(ids);
             logger.info(String.format("处理数据条数：%s", result));
         } catch (Exception e) {
             logger.error(String.format("autoCancelOrderTask-- Exception：%s", Throwables.getStackTraceAsString(e)));
