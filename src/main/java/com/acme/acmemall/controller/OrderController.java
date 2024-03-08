@@ -223,7 +223,7 @@ public class OrderController extends ApiBase {
         try {
             OrderVo orderVo = orderService.findOrder(orderId);
             orderVo.confirm();
-            orderService.updateStatus(orderVo);
+            orderService.updateOrder(orderVo);
             return ResultMap.ok("确认收货成功");
         } catch (Exception e) {
             logger.error(Throwables.getStackTraceAsString(e));

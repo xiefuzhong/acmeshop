@@ -57,6 +57,8 @@
         <result property="invoiceHeaderId" column="invoice_header_id"/>
         <result property="goodsIds" column="goods_ids"/>
         <result property="expire_time" column="expire_time"/>
+        <!--        comment-->
+        <result property="comment_time" column="comment_time"/>
     </resultMap>
 
     <select id="queryObject" resultMap="orderMap">
@@ -339,6 +341,7 @@
             <if test="shipping_no != null">`shipping_no` = #{shipping_no},</if>
             <if test="shipping_code != null">`shipping_code` = #{shipping_code},</if>
             <if test="shipping_name != null">`shipping_name` = #{shipping_name},</if>
+            <if test="shipping_time != null">`shipping_time` = #{shipping_time},</if>
             <if test="pay_id != null">`pay_id` = #{pay_id},</if>
             <if test="pay_name != null">`pay_name` = #{pay_name},</if>
             <if test="shipping_fee != null">`shipping_fee` = #{shipping_fee},</if>
@@ -409,6 +412,7 @@
             <if test="pay_id != null">`pay_id` = #{pay_id},</if>
             <!--            comment_status-->
             <if test="comment_status != null">`comment_status` = #{comment_status},</if>
+            <if test="comment_time != null">`comment_time` = #{comment_time},</if>
         </set>
         <where>
             id in
