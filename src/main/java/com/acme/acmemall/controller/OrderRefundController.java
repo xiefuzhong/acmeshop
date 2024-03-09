@@ -3,6 +3,7 @@ package com.acme.acmemall.controller;
 import com.acme.acmemall.annotation.LoginUser;
 import com.acme.acmemall.common.ResultMap;
 import com.acme.acmemall.controller.reqeust.OrderRefundRequest;
+import com.acme.acmemall.controller.reqeust.RefundReviewRequest;
 import com.acme.acmemall.exception.Assert;
 import com.acme.acmemall.model.LoginUserVo;
 import com.acme.acmemall.service.IOrderRefundService;
@@ -56,5 +57,27 @@ public class OrderRefundController extends ApiBase {
         logger.info(request.toString());
         Assert.isNull(request.getOrderId(), "订单号不能为空!");
         return refundService.updateRefund(request);
+    }
+
+
+    /**
+     * 退款审核
+     *
+     * @param userVo
+     * @return
+     */
+    @PostMapping("/review")
+    public Object refundReview(@LoginUser LoginUserVo userVo) {
+        if (userVo == null) {
+            return ResultMap.error(400, "非有效用户操作");
+        }
+        JSONObject object = getJsonRequest();
+        if (object == null) {
+            return ResultMap.badArgument();
+        }
+        RefundReviewRequest request = JSONObject.toJavaObject(object, RefundReviewRequest.class);
+        logger.info(request.toString());
+        Assert.isNull(request.getOrderId(), "订单号不能为空!");
+        return refundService.refundReview(request);
     }
 }

@@ -2,6 +2,7 @@ package com.acme.acmemall.service.impl;
 
 import com.acme.acmemall.common.ResultMap;
 import com.acme.acmemall.controller.reqeust.OrderRefundRequest;
+import com.acme.acmemall.controller.reqeust.RefundReviewRequest;
 import com.acme.acmemall.dao.OrderMapper;
 import com.acme.acmemall.dao.OrderRefundMapper;
 import com.acme.acmemall.exception.ResultCodeEnum;
@@ -64,6 +65,19 @@ public class OrderRefundServiceImpl implements IOrderRefundService {
         orderVo.updateRefund(request);
         orderMapper.update(orderVo);
         orderRefundMapper.update(refundVo);
+        return ResultMap.response(ResultCodeEnum.SUCCESS, refundVo);
+    }
+
+    /**
+     * @param request
+     * @return
+     */
+    @Override
+    public ResultMap refundReview(RefundReviewRequest request) {
+        OrderRefundVo refundVo = orderRefundMapper.findByOrderId(request.getOrderId());
+        if (refundVo == null) {
+            return ResultMap.error("无售后信息");
+        }
         return ResultMap.response(ResultCodeEnum.SUCCESS, refundVo);
     }
 
