@@ -511,6 +511,9 @@ public class OrderVo implements Serializable {
             if (this.refund_status == 1) {
                 // 商家审核，仅退款-直接退款 ，退货退款-货物收到-确认收货后退款
                 optionMap.put("refundAudit", Boolean.TRUE);
+            } else if (this.refund_status == 2) {
+                // 商家审核，仅退款-直接退款 ，退货退款-货物收到-确认收货后退款
+                optionMap.put("confirmReceipt", Boolean.TRUE);
             } else if (this.refund_status == 9) {
                 optionMap.put("confirmReceipt", Boolean.FALSE);
             }
