@@ -8,6 +8,7 @@ import com.acme.acmemall.exception.ResultCodeEnum;
 import com.acme.acmemall.model.LoginUserVo;
 import com.acme.acmemall.model.OrderRefundVo;
 import com.acme.acmemall.model.OrderVo;
+import com.acme.acmemall.model.enums.ShipStatusEnum;
 import com.acme.acmemall.service.IOrderRefundService;
 import com.acme.acmemall.service.IOrderService;
 import com.acme.acmemall.utils.PageUtils;
@@ -140,11 +141,14 @@ public class ShopOrderController extends ApiBase {
                 orderVo.unshippedRefund(refundVo);
                 orderService.updateOrder(orderVo);
             } else {
-                ResultMap.badArgument(result.getErr_code_des());
+                return ResultMap.badArgument(result.getErr_code_des());
             }
         } else if (refundVo.getRefund_type() == 2 && orderVo.getPay_status() == 2) {
             // 退货退款
             Assert.isBlank(refundVo.getRefund_express(), "未填写物流信息");
+            if (orderVo.getShipping_status() != ShipStatusEnum.SHIP_RETURN.getCode()) {
+                return ResultMap.error("商品退回未被确认");
+            }
 
         }
         return ResultMap.ok();

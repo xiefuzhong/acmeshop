@@ -7,6 +7,7 @@ public enum RefundOptionEnum {
     AUDIT("audit", "同意退款"),
     REJECT("reject", "拒绝退款"),
     CANCEL("cancel", "取消申请"),
+    RECEIPT("receipt", "确认收货"),
     LOGISTICS("fillLogistics", "填写退货物流");
 
     private final String code;
