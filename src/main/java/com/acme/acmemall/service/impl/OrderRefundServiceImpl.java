@@ -2,7 +2,6 @@ package com.acme.acmemall.service.impl;
 
 import com.acme.acmemall.common.ResultMap;
 import com.acme.acmemall.controller.reqeust.OrderRefundRequest;
-import com.acme.acmemall.controller.reqeust.RefundReviewRequest;
 import com.acme.acmemall.dao.OrderMapper;
 import com.acme.acmemall.dao.OrderRefundMapper;
 import com.acme.acmemall.exception.ResultCodeEnum;
@@ -11,6 +10,9 @@ import com.acme.acmemall.model.LoginUserVo;
 import com.acme.acmemall.model.OrderRefundVo;
 import com.acme.acmemall.model.OrderVo;
 import com.acme.acmemall.service.IOrderRefundService;
+import com.acme.acmemall.utils.wechat.WechatRefundApiResult;
+import com.acme.acmemall.utils.wechat.WechatUtil;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -63,23 +65,19 @@ public class OrderRefundServiceImpl implements IOrderRefundService {
         }
         OrderVo orderVo = orderMapper.queryObject(request.getOrderId());
         orderVo.updateRefund(request);
+        if (orderVo.canRefund()) {
+            // 订单金额
+            Double orderMoney = orderVo.getActual_price().doubleValue();
+            // 退款金额
+            Double refundMoney = refundVo.getRefund_price().doubleValue();
+            WechatRefundApiResult result = WechatUtil.wxRefund(orderVo.getId(), orderMoney, refundMoney);
+            if (StringUtils.equalsIgnoreCase("SUCCESS", result.getResult_code())) {
+                refundVo.refundPaid();
+                orderVo.closed(refundVo);
+            }
+        }
         orderMapper.update(orderVo);
         orderRefundMapper.update(refundVo);
         return ResultMap.response(ResultCodeEnum.SUCCESS, refundVo);
     }
-
-    /**
-     * @param request
-     * @return
-     */
-    @Override
-    public ResultMap refundReview(RefundReviewRequest request) {
-        OrderRefundVo refundVo = orderRefundMapper.findByOrderId(request.getOrderId());
-        if (refundVo == null) {
-            return ResultMap.error("无售后信息");
-        }
-        return ResultMap.response(ResultCodeEnum.SUCCESS, refundVo);
-    }
-
-
 }

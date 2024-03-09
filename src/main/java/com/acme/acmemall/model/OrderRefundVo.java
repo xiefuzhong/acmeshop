@@ -27,6 +27,7 @@ public class OrderRefundVo implements Serializable {
     private long id = 0;
     private String order_id;
     private long user_id;
+    // 1-仅退款 2-退货退款
     private Integer refund_type;
     private String refund_type_text;
     private String refund_reason;
@@ -68,28 +69,34 @@ public class OrderRefundVo implements Serializable {
         this.refunded_time = new Date();
     }
 
-    public void fillLogistics(OrderRefundRequest request) {
-        this.refund_phone = request.getRefund_phone();
-        this.refund_express = request.getRefund_express();
-        this.refund_express_name = request.getRefund_express_name();
-        this.refund_status = RefundStatusEnum.REFUND_RECEIVED.getCode(); // 已填写物流信息，待商家收货确认
-    }
-
     public void cancel() {
         this.refund_status = RefundStatusEnum.REFUND_CANCEL.getCode();
         this.refund_explain = "用户自主取消申请售后";
     }
 
+    /**
+     * 拒绝退款
+     *
+     * @param request
+     */
     public void reject(OrderRefundRequest request) {
         this.refund_status = RefundStatusEnum.REFUND_REJECT.getCode();
         this.refuse_reason = request.getRefuse_reason();
     }
 
+    /**
+     * 退回商品确认收货
+     */
     public void confirm() {
         this.refund_status = RefundStatusEnum.REFUND_RETURNED.getCode();
     }
 
+    /**
+     * 已退款
+     */
     public void refundPaid() {
         this.refund_status = RefundStatusEnum.REFUND_PAID.getCode();
+        this.refunded_price = refund_price;
+        this.refunded_time = new Date();
     }
 }

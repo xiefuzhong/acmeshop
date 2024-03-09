@@ -4,6 +4,7 @@ import com.acme.acmemall.controller.reqeust.LogisticsInfo;
 import com.acme.acmemall.controller.reqeust.OrderRefundRequest;
 import com.acme.acmemall.controller.reqeust.OrderShippedRequest;
 import com.acme.acmemall.exception.ApiCusException;
+import com.acme.acmemall.exception.Assert;
 import com.acme.acmemall.exception.ResultCodeEnum;
 import com.acme.acmemall.factory.OrderFactory;
 import com.acme.acmemall.factory.OrderRefundFactory;
@@ -546,13 +547,25 @@ public class OrderVo implements Serializable {
      * 退款操作，未发货-退款
      */
     public void refund() {
-        if (this.order_status == 400) {
+        if (this.order_status == OrderStatusEnum.AFTER_SERVICE.getCode()) {
             this.order_status = OrderStatusEnum.CLOSED.getCode();
             this.order_status_text = OrderStatusEnum.CLOSED.getName();
             this.pay_status = PayStatusEnum.PAY_REFUND.getCode();
             this.refund_status = 3;
         }
+    }
 
+    public void closed(OrderRefundVo refundVo) {
+        Assert.isNull(refundVo, "无售后信息，不能结束交易");
+        Assert.isNull(refundVo.getRefund_type(), "无售后类型，不能结束交易");
+        OrderStatusEnum orderStatus = OrderStatusEnum.parse(this.order_status);
+        // 订单售后中
+        if (orderStatus == OrderStatusEnum.AFTER_SERVICE) {
+            this.order_status = OrderStatusEnum.CLOSED.getCode();
+            this.pay_status = PayStatusEnum.PAY_REFUND.getCode();
+            this.refundVo = refundVo;
+            this.refund_status = RefundStatusEnum.REFUND_PAID.getCode();
+        }
     }
 
     /**
@@ -564,7 +577,6 @@ public class OrderVo implements Serializable {
             this.order_status = OrderStatusEnum.CLOSED.getCode();
             this.order_status_text = OrderStatusEnum.CLOSED.getName();
             this.pay_status = PayStatusEnum.PAY_REFUND.getCode();
-//            this.refund_status = 4; //已退款
             this.refundVo = refundVo;
             this.refund_status = RefundStatusEnum.REFUND_PAID.getCode();
         }
@@ -663,5 +675,23 @@ public class OrderVo implements Serializable {
         this.shipping_status = ShipStatusEnum.SHIP_RETURN.getCode();
         refundVo.confirm();
         this.refundVo = refundVo;
+    }
+
+    public Boolean canRefund() {
+        if (this.refundVo == null) {
+            return Boolean.FALSE;
+        }
+        if (this.refundVo.getRefund_type() == 1) {
+            // 仅退款(审核通过&&已付款)
+            return this.refund_status == RefundStatusEnum.REFUND_PASS.getCode()
+                    && this.pay_status == PayStatusEnum.PAY_YES.getCode();
+        } else if (this.refundVo.getRefund_type() == 2) {
+            // 货物退回 && 商家签收
+            if (this.shipping_status == ShipStatusEnum.SHIP_RETURN.getCode()
+                    && this.refund_status == RefundStatusEnum.REFUND_RETURNED.getCode()) {
+                return Boolean.TRUE;
+            }
+        }
+        return Boolean.FALSE;
     }
 }
