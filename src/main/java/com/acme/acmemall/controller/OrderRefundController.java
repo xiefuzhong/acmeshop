@@ -55,6 +55,7 @@ public class OrderRefundController extends ApiBase {
         OrderRefundRequest request = JSONObject.toJavaObject(object, OrderRefundRequest.class);
         logger.info("refundUpdate>>" + request.toString());
         Assert.isNull(request.getOrderId(), "订单号不能为空!");
+        Assert.isBlank(request.getRefundOption(), "操作类型不能为空>" + request.getRefundOption());
         return refundService.updateRefund(request);
     }
 }
