@@ -148,9 +148,16 @@ public class ShopOrderController extends ApiBase {
             }
         } else if (refundVo.getRefund_type() == 2 && orderVo.getPay_status() == 2) {
             // 退货退款
-            Assert.isBlank(refundVo.getRefund_express(), "未填写物流信息");
             if (orderVo.getShipping_status() != ShipStatusEnum.SHIP_RETURN.getCode()) {
                 return ResultMap.error("商品退回未被确认");
+            }
+            WechatRefundApiResult result = WechatUtil.wxRefund(orderId, orderVo.getActual_price().doubleValue(), orderVo.getActual_price().doubleValue());
+            if (StringUtils.equalsIgnoreCase("SUCCESS", result.getResult_code())) {
+                refundVo.audit();
+                orderVo.unshippedRefund(refundVo);
+                orderService.updateOrder(orderVo);
+            } else {
+                return ResultMap.badArgument(result.getErr_code_des());
             }
 
         }
