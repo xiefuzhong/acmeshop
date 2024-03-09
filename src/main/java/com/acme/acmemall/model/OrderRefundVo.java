@@ -85,6 +85,10 @@ public class OrderRefundVo implements Serializable {
         this.refuse_reason = request.getRefuse_reason();
     }
 
+    public void confirm() {
+        this.refund_status = RefundStatusEnum.REFUND_RETURNED.getCode();
+    }
+
     public void refundPaid() {
         this.refund_status = RefundStatusEnum.REFUND_PAID.getCode();
     }

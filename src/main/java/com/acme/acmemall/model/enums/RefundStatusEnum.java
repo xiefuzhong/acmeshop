@@ -5,6 +5,7 @@ public enum RefundStatusEnum {
     REFUND_APPLY(1, "提交申请"),
     REFUND_PASS(2, "审核通过"),
     REFUND_RECEIVED(3, "商品待收货"),
+    REFUND_RETURNED(9, "商品已收货"),
     REFUND_PAID(4, "已退款"),
     REFUND_REJECT(5, "拒绝退款"),
     REFUND_CANCEL(6, "取消申请"),

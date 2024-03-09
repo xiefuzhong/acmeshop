@@ -108,6 +108,9 @@ public class ShopOrderController extends ApiBase {
             orderVo.shipped(request);
         } else if (StringUtils.equalsIgnoreCase("cancel", request.getHandle())) {
             orderVo.cancle("商家取消");
+        } else if (StringUtils.equalsIgnoreCase("receipt", request.getHandle())) {
+            OrderRefundVo refundVo = refundService.findByOrderId(orderId);
+            orderVo.merReceipt(refundVo);
         }
         orderService.handleOrderByMer(orderVo);
         // 下单

@@ -184,6 +184,9 @@ public class OrderServiceImpl implements IOrderService {
      */
     @Override
     public void handleOrderByMer(OrderVo orderVo) {
+        if (orderVo.getRefundVo() != null) {
+            orderRefundMapper.update(orderVo.getRefundVo());
+        }
         orderMapper.update(orderVo);
     }
 

@@ -656,4 +656,9 @@ public class OrderVo implements Serializable {
     }
 
 
+    public void merReceipt(OrderRefundVo refundVo) {
+        this.refund_status = RefundStatusEnum.REFUND_RETURNED.getCode();
+        refundVo.confirm();
+        this.refundVo = refundVo;
+    }
 }
