@@ -12,6 +12,8 @@ public enum OrderStatusEnum {
     COMPLETE(501, "交易完成"),
     CANCELED(101, "已取消"),
     DELETED(102, "已删除"),
+    REFUNDED(401, "已退款"),
+    REFUND_RETURNED(402, "已退款退货"),
     AFTER_SERVICE(400, "退款中");
 
     private final int code;
