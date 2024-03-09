@@ -112,6 +112,7 @@ public class ShopOrderController extends ApiBase {
             OrderRefundVo refundVo = refundService.findByOrderId(orderId);
             orderVo.merReceipt(refundVo);
         }
+        logger.info(orderVo.toString());
         orderService.handleOrderByMer(orderVo);
         // 下单
         return toResponsSuccess(orderVo);
