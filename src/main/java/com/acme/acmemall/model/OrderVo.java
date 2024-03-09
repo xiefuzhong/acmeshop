@@ -657,7 +657,10 @@ public class OrderVo implements Serializable {
 
 
     public void merReceipt(OrderRefundVo refundVo) {
+        // 商家确认收货
         this.refund_status = RefundStatusEnum.REFUND_RETURNED.getCode();
+        // 物流：货物已退回
+        this.shipping_status = ShipStatusEnum.SHIP_RETURN.getCode();
         refundVo.confirm();
         this.refundVo = refundVo;
     }
