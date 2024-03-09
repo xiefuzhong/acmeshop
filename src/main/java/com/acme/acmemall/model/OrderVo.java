@@ -476,20 +476,24 @@ public class OrderVo implements Serializable {
         if (OrderStatusEnum.endCheck(this.order_status)) {
             return optionMap;
         }
-        if (this.refund_status == 2) {
-            // 商家审核通过，填写物流信息
-            if (this.shipping_status == 1) {
-                optionMap.put("fillInLogistics", Boolean.TRUE);
-            }
-        } else if (this.refund_status == 1) {
-            optionMap.put("cancelRefundRequest", Boolean.TRUE);
-            if (this.shipping_status == 0) {
+        OrderStatusEnum orderStatus = OrderStatusEnum.parse(this.order_status);
+        if (orderStatus == OrderStatusEnum.AFTER_SERVICE) {
+            if (this.refund_status == RefundStatusEnum.REFUND_PASS.getCode()) {
+                // 商家审核通过，填写物流信息
+                if (this.shipping_status == ShipStatusEnum.SHIP_YES.getCode()) {
+                    optionMap.put("fillInLogistics", Boolean.TRUE);
+                }
+            } else if (this.refund_status == 1) {
+                optionMap.put("cancelRefundRequest", Boolean.TRUE);
+                if (this.shipping_status == 0) {
+                    optionMap.put("fillInLogistics", Boolean.FALSE);
+                }
+            } else if (this.refund_status == 3) {
                 optionMap.put("fillInLogistics", Boolean.FALSE);
+                optionMap.put("cancelRefundRequest", Boolean.FALSE);
             }
-        } else if (this.refund_status == 3) {
-            optionMap.put("fillInLogistics", Boolean.FALSE);
-            optionMap.put("cancelRefundRequest", Boolean.FALSE);
         }
+
         if (this.comment_status == 1) {
             optionMap.put("comment", Boolean.FALSE);
         }
@@ -499,9 +503,12 @@ public class OrderVo implements Serializable {
     private Map getMerchantOption() {
         Map<String, Boolean> optionMap = OrderOperationOption.builder().build().merchantOperation(this.order_status);
         // 退款状态 0未申请，1申请  2-审核通过 3-已退款 4-拒绝 5-取消申请 6完结 7失效
-        if (this.refund_status == 1) {
-            // 商家审核，仅退款-直接退款 ，退货退款-货物收到-确认收货后退款
-            optionMap.put("refundAudit", Boolean.TRUE);
+        OrderStatusEnum orderStatus = OrderStatusEnum.parse(this.order_status);
+        if (orderStatus == OrderStatusEnum.AFTER_SERVICE) {
+            if (this.refund_status == 1) {
+                // 商家审核，仅退款-直接退款 ，退货退款-货物收到-确认收货后退款
+                optionMap.put("refundAudit", Boolean.TRUE);
+            }
         }
         return optionMap;
     }

@@ -1,7 +1,7 @@
 package com.acme.acmemall.model.enums;
 
 public enum RefundStatusEnum {
-    //    退款状态 0未申请，1申请  2-审核通过 3-商品待收货 4-已退款 5-拒绝 6-取消申请 7完结 8失效
+    //    退款状态 0未申请，1申请  2-审核通过 3-商品待收货 4-已退款 5-拒绝 6-取消申请 7完结 8失效 9 商品已收货
     REFUND_APPLY(1, "提交申请"),
     REFUND_PASS(2, "审核通过"),
     REFUND_RECEIVED(3, "商品待收货"),
