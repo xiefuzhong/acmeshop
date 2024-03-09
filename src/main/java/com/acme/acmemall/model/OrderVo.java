@@ -588,6 +588,8 @@ public class OrderVo implements Serializable {
             switch (optionEnum) {
                 case LOGISTICS: {
                     this.refund_status = RefundStatusEnum.REFUND_RECEIVED.getCode();
+                    // 货物退回
+                    this.shipping_status = ShipStatusEnum.SHIP_RETURN.getCode();
                     break;
                 }
                 case CANCEL: {
