@@ -648,6 +648,7 @@ public class OrderVo implements Serializable {
                 case AUDIT: {
                     this.refund_status = RefundStatusEnum.REFUND_PASS.getCode();
                     this.refundVo.audit();
+                    break;
                 }
             }
         }
