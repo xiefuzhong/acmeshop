@@ -106,6 +106,12 @@ public class OrderOperationOption {
     Boolean refundMoney = Boolean.FALSE;
 
     /**
+     * 退款审核
+     */
+    @Builder.Default
+    Boolean refundAudit = Boolean.FALSE;
+
+    /**
      * 填写物流
      */
     @Builder.Default
@@ -179,6 +185,8 @@ public class OrderOperationOption {
             case AFTER_SERVICE: {
                 // 售后中,立即退款
                 this.refundMoney = Boolean.TRUE;
+                this.confirmReceipt = Boolean.TRUE;
+                this.refundAudit = Boolean.TRUE;
                 break;
             }
             case PAID: {
