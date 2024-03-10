@@ -106,7 +106,7 @@ public class OrderOperationOption {
     Boolean refundMoney = Boolean.FALSE;
 
     /**
-     * 退款审核
+     * 退款审核 退货申请通过后
      */
     @Builder.Default
     Boolean refundAudit = Boolean.FALSE;
