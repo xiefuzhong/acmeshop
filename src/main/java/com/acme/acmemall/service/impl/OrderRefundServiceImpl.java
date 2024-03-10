@@ -10,6 +10,7 @@ import com.acme.acmemall.model.LoginUserVo;
 import com.acme.acmemall.model.OrderRefundVo;
 import com.acme.acmemall.model.OrderVo;
 import com.acme.acmemall.service.IOrderRefundService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -19,6 +20,7 @@ import javax.annotation.Resource;
  * @author: ihpangzi
  * @time: 2024/2/28 20:26
  */
+@Slf4j
 @Service
 public class OrderRefundServiceImpl implements IOrderRefundService {
 
@@ -27,6 +29,9 @@ public class OrderRefundServiceImpl implements IOrderRefundService {
 
     @Resource
     OrderMapper orderMapper;
+
+    //    private static final Logger LOGGER = Logger.getLogger(getClass());
+//    private static final Logger LOGGER = LoggerFactory.getLogger(OrderRefundServiceImpl.class);
 
     /**
      * @param request
@@ -65,17 +70,7 @@ public class OrderRefundServiceImpl implements IOrderRefundService {
         }
         OrderVo orderVo = orderMapper.queryObject(request.getOrderId());
         orderVo.updateRefund(request);
-//        if (orderVo.canRefund()) {
-//            // 订单金额
-//            Double orderMoney = orderVo.getActual_price().doubleValue();
-//            // 退款金额
-//            Double refundMoney = refundVo.getRefund_price().doubleValue();
-//            WechatRefundApiResult result = WechatUtil.wxRefund(orderVo.getId(), orderMoney, refundMoney);
-//            if (StringUtils.equalsIgnoreCase("SUCCESS", result.getResult_code())) {
-//                refundVo.refundPaid();
-//                orderVo.closed(refundVo);
-//            }
-//        }
+        log.info("orderVo.updateRefund after: {}", orderVo);
         orderMapper.update(orderVo);
         orderRefundMapper.update(refundVo);
         return ResultMap.response(ResultCodeEnum.SUCCESS, refundVo);
