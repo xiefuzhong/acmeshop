@@ -40,6 +40,9 @@ public class OrderRefundServiceImpl implements IOrderRefundService {
     public ResultMap submit(OrderRefundRequest request, LoginUserVo loginUser) {
         OrderRefundVo refundVo = OrderRefundFactory.build(request);
         refundVo.submit(loginUser.getUserId());
+        OrderVo orderVo = orderMapper.queryObject(request.getOrderId());
+        orderVo.afterService(refundVo);
+        orderMapper.update(orderVo);
         orderRefundMapper.save(refundVo);
         return ResultMap.response(ResultCodeEnum.SUCCESS, refundVo);
     }

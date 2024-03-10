@@ -8,6 +8,8 @@ public enum RefundOptionEnum {
     REJECT("reject", "拒绝退款"),
     CANCEL("cancel", "取消申请"),
     RECEIPT("receipt", "确认收货"),
+    RETURN("return", "退还商品"),
+    REFUND("refund", "立即退款"),
     LOGISTICS("fillLogistics", "填写退货物流");
 
     private final String code;
@@ -36,5 +38,33 @@ public enum RefundOptionEnum {
             }
         }
         return SUBMIT;
+    }
+
+    /**
+     * 买家操作
+     *
+     * @param refundOption
+     * @return
+     */
+    public static boolean buyerOption(String refundOption) {
+        RefundOptionEnum option = parse(refundOption);
+        if (option == SUBMIT || option == CANCEL || option == RETURN) {
+            return Boolean.TRUE;
+        }
+        return Boolean.FALSE;
+    }
+
+    /**
+     * 售后操作
+     *
+     * @param refundOption
+     * @return
+     */
+    public static boolean merchantOption(String refundOption) {
+        RefundOptionEnum option = parse(refundOption);
+        if (option == AUDIT || option == REJECT || option == RECEIPT || option == REFUND) {
+            return Boolean.TRUE;
+        }
+        return Boolean.FALSE;
     }
 }

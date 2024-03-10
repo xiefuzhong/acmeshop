@@ -3,7 +3,6 @@ package com.acme.acmemall.controller;
 import com.acme.acmemall.annotation.LoginUser;
 import com.acme.acmemall.common.ResultMap;
 import com.acme.acmemall.controller.reqeust.OrderRefundRequest;
-import com.acme.acmemall.exception.Assert;
 import com.acme.acmemall.model.LoginUserVo;
 import com.acme.acmemall.service.IOrderRefundService;
 import com.acme.acmemall.service.IUserService;
@@ -39,10 +38,18 @@ public class OrderRefundController extends ApiBase {
             return ResultMap.badArgument();
         }
         OrderRefundRequest request = JSONObject.toJavaObject(object, OrderRefundRequest.class);
-        request.check();
+        request.reqCheck();
         return refundService.submit(request, userVo);
     }
 
+    /**
+     * 售后操作：
+     * 买家：申请退款(未发货)，申请退货退款(确认收货/拒收)，退还商品(填写物流信息)
+     * 卖家：审批(同意退款、拒绝退款) 确认收货(退还商品)，退款仅支持原路退回(不支持账号退回，填写账号和金额)
+     *
+     * @param userVo
+     * @return
+     */
     @PostMapping("/update")
     public Object refundUpdate(@LoginUser LoginUserVo userVo) {
         if (userVo == null) {
@@ -54,8 +61,7 @@ public class OrderRefundController extends ApiBase {
         }
         OrderRefundRequest request = JSONObject.toJavaObject(object, OrderRefundRequest.class);
         logger.info("refundUpdate>>" + request.toString());
-        Assert.isNull(request.getOrderId(), "订单号不能为空!");
-        Assert.isBlank(request.getRefundOption(), "操作类型不能为空>" + request.getRefundOption());
+        request.updateCheck();
         return refundService.updateRefund(request);
     }
 }

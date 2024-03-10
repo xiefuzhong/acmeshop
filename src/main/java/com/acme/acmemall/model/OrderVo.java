@@ -607,6 +607,19 @@ public class OrderVo implements Serializable {
         }
     }
 
+    /**
+     * 售后服务
+     *
+     * @param refundVo
+     */
+    public void afterService(OrderRefundVo refundVo) {
+        OrderStatusEnum orderStatus = OrderStatusEnum.parse(this.order_status);
+        if (orderStatus == OrderStatusEnum.AFTER_SERVICE) {
+            this.refundVo = refundVo;
+            this.refund_status = refundVo.getRefund_status();
+        }
+    }
+
     public void updateRefund(OrderRefundRequest request) {
         OrderStatusEnum orderStatus = OrderStatusEnum.parse(this.order_status);
         if (orderStatus == OrderStatusEnum.AFTER_SERVICE) {

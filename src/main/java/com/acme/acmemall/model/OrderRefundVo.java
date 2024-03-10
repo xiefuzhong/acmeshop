@@ -57,18 +57,29 @@ public class OrderRefundVo implements Serializable {
     }
 
 
+    /**
+     * 提交申请
+     *
+     * @param userId
+     */
     public void submit(long userId) {
         this.add_time = new Date();
         this.refund_status = RefundStatusEnum.REFUND_APPLY.getCode();
         this.user_id = userId;
     }
 
+    /**
+     * 商家审批
+     */
     public void audit() {
         this.refund_status = RefundStatusEnum.REFUND_PASS.getCode();
         this.refunded_price = refund_price;
         this.refunded_time = new Date();
     }
 
+    /**
+     * 取消售后申请
+     */
     public void cancel() {
         this.refund_status = RefundStatusEnum.REFUND_CANCEL.getCode();
         this.refund_explain = "用户自主取消申请售后";
