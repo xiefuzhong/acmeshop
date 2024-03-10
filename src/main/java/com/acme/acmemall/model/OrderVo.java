@@ -634,6 +634,11 @@ public class OrderVo implements Serializable {
                     this.refundUpdate();
                     break;
                 }
+                case AUDIT: {
+                    this.refundVo.audit();
+                    this.refund_status = this.refundVo.getRefund_status();
+                    break;
+                }
             }
         }
     }
