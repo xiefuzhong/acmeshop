@@ -154,7 +154,7 @@
             AND o.merchant_id=#{merchant_id}
             <choose>
                 <when test="order_status ==-1">
-                    <!--                    AND o.order_status!=102-->
+                    AND o.order_status!=102
                 </when>
                 <!--            订单已发货-->
                 <when test="order_status ==301">
