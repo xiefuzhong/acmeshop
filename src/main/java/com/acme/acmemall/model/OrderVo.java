@@ -619,7 +619,6 @@ public class OrderVo implements Serializable {
         OrderStatusEnum orderStatus = OrderStatusEnum.parse(this.order_status);
         if (orderStatus == OrderStatusEnum.AFTER_SERVICE) {
             this.refundVo = refundVo;
-//            this.refund_status = refundVo.getRefund_status();
             RefundOptionEnum option = RefundOptionEnum.parse(refundVo.getRefundOption());
             switch (option) {
                 case CANCEL: {
