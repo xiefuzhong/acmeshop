@@ -479,7 +479,7 @@ public class OrderVo implements Serializable {
         OrderStatusEnum orderStatus = OrderStatusEnum.parse(this.order_status);
         if (orderStatus == OrderStatusEnum.AFTER_SERVICE) {
             if (this.refund_status == RefundStatusEnum.REFUND_PASS.getCode()) {
-                // 商家审核通过，填写物流信息
+                // 商家审核通过，填写物流信息 且 退货退款()
                 if (this.shipping_status == ShipStatusEnum.SHIP_YES.getCode()) {
                     optionMap.put("fillInLogistics", Boolean.TRUE);
                 }
@@ -489,6 +489,9 @@ public class OrderVo implements Serializable {
                     optionMap.put("fillInLogistics", Boolean.FALSE);
                 }
             } else if (this.refund_status == 3) {
+                optionMap.put("fillInLogistics", Boolean.FALSE);
+                optionMap.put("cancelRefundRequest", Boolean.FALSE);
+            } else if (this.refund_status == 6) {
                 optionMap.put("fillInLogistics", Boolean.FALSE);
                 optionMap.put("cancelRefundRequest", Boolean.FALSE);
             }
@@ -627,6 +630,7 @@ public class OrderVo implements Serializable {
             this.refundVo = refundVo;
             RefundOptionEnum optionEnum = RefundOptionEnum.parse(request.getRefundOption());
             switch (optionEnum) {
+                case RETURN:
                 case LOGISTICS: {
                     this.refund_status = RefundStatusEnum.REFUND_RECEIVED.getCode();
                     // 货物退回
@@ -637,25 +641,13 @@ public class OrderVo implements Serializable {
                     // 取消售后申请
                     this.refund_status = RefundStatusEnum.REFUND_CANCEL.getCode();
                     this.refundVo.cancel();
-                    if (this.shipping_status == ShipStatusEnum.SHIP_YES.getCode()) {
-                        // 已发货,订单状态重置为已发货
-                        this.order_status = OrderStatusEnum.SHIPPED.getCode();
-                    } else if (this.shipping_status == ShipStatusEnum.SHIP_NO.getCode()) {
-                        // 未发货，订单状态重置为 待发货
-                        this.order_status = OrderStatusEnum.PAID.getCode();
-                    }
+                    refundUpdate();
                     break;
                 }
                 case REJECT: {
                     this.refund_status = RefundStatusEnum.REFUND_REJECT.getCode();
                     this.refundVo.reject(request);
-                    if (this.shipping_status == ShipStatusEnum.SHIP_YES.getCode()) {
-                        // 已发货,订单状态重置为已发货
-                        this.order_status = OrderStatusEnum.SHIPPED.getCode();
-                    } else if (this.shipping_status == ShipStatusEnum.SHIP_NO.getCode()) {
-                        // 未发货，订单状态重置为 待发货
-                        this.order_status = OrderStatusEnum.PAID.getCode();
-                    }
+                    refundUpdate();
                     break;
                 }
                 case AUDIT: {
@@ -664,6 +656,16 @@ public class OrderVo implements Serializable {
                     break;
                 }
             }
+        }
+    }
+
+    private void refundUpdate() {
+        if (this.shipping_status == ShipStatusEnum.SHIP_YES.getCode()) {
+            // 已发货,订单状态重置为已发货
+            this.order_status = OrderStatusEnum.SHIPPED.getCode();
+        } else if (this.shipping_status == ShipStatusEnum.SHIP_NO.getCode()) {
+            // 未发货，订单状态重置为 待发货
+            this.order_status = OrderStatusEnum.PAID.getCode();
         }
     }
 

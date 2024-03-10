@@ -10,9 +10,6 @@ import com.acme.acmemall.model.LoginUserVo;
 import com.acme.acmemall.model.OrderRefundVo;
 import com.acme.acmemall.model.OrderVo;
 import com.acme.acmemall.service.IOrderRefundService;
-import com.acme.acmemall.utils.wechat.WechatRefundApiResult;
-import com.acme.acmemall.utils.wechat.WechatUtil;
-import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -68,17 +65,17 @@ public class OrderRefundServiceImpl implements IOrderRefundService {
         }
         OrderVo orderVo = orderMapper.queryObject(request.getOrderId());
         orderVo.updateRefund(request);
-        if (orderVo.canRefund()) {
-            // 订单金额
-            Double orderMoney = orderVo.getActual_price().doubleValue();
-            // 退款金额
-            Double refundMoney = refundVo.getRefund_price().doubleValue();
-            WechatRefundApiResult result = WechatUtil.wxRefund(orderVo.getId(), orderMoney, refundMoney);
-            if (StringUtils.equalsIgnoreCase("SUCCESS", result.getResult_code())) {
-                refundVo.refundPaid();
-                orderVo.closed(refundVo);
-            }
-        }
+//        if (orderVo.canRefund()) {
+//            // 订单金额
+//            Double orderMoney = orderVo.getActual_price().doubleValue();
+//            // 退款金额
+//            Double refundMoney = refundVo.getRefund_price().doubleValue();
+//            WechatRefundApiResult result = WechatUtil.wxRefund(orderVo.getId(), orderMoney, refundMoney);
+//            if (StringUtils.equalsIgnoreCase("SUCCESS", result.getResult_code())) {
+//                refundVo.refundPaid();
+//                orderVo.closed(refundVo);
+//            }
+//        }
         orderMapper.update(orderVo);
         orderRefundMapper.update(refundVo);
         return ResultMap.response(ResultCodeEnum.SUCCESS, refundVo);
