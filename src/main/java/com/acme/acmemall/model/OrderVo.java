@@ -624,22 +624,31 @@ public class OrderVo implements Serializable {
                 case CANCEL: {
                     // 取消申请
                     this.refundVo.cancel();
-                    this.refund_status = this.refundVo.getRefund_status();
                     this.refundUpdate();
                     break;
                 }
                 case REJECT: {
                     this.refundVo.reject();
-                    this.refund_status = this.refundVo.getRefund_status();
                     this.refundUpdate();
                     break;
                 }
                 case AUDIT: {
                     this.refundVo.audit();
-                    this.refund_status = this.refundVo.getRefund_status();
+                    break;
+                }
+                case RETURN:
+                case LOGISTICS: {
+                    this.refundVo.refundReturned();
+                    // 货物退回
+                    this.shipping_status = ShipStatusEnum.SHIP_RETURN.getCode();
+                    break;
+                }
+                case REFUND: {
+                    this.refundVo.refundPaid();
                     break;
                 }
             }
+            this.refund_status = this.refundVo.getRefund_status();
         }
     }
 

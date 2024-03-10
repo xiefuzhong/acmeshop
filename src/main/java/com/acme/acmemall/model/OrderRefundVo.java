@@ -1,5 +1,6 @@
 package com.acme.acmemall.model;
 
+import com.acme.acmemall.exception.Assert;
 import com.acme.acmemall.model.enums.RefundStatusEnum;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
@@ -123,6 +124,12 @@ public class OrderRefundVo implements Serializable {
         this.refund_status = RefundStatusEnum.REFUND_PAID.getCode();
         this.refunded_price = refund_price;
         this.refunded_time = new Date();
+    }
+
+    public void refundReturned() {
+        Assert.isBlank(this.refund_express, "物流单号不能为空");
+        Assert.isBlank(this.refund_phone, "联系人电话不能为空");
+        this.refund_status = RefundStatusEnum.REFUND_RECEIVED.getCode();
     }
 
     public boolean canApply() {
