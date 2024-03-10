@@ -43,11 +43,10 @@ public enum RefundOptionEnum {
     /**
      * 买家操作
      *
-     * @param refundOption
+     * @param option
      * @return
      */
-    public static boolean buyerOption(String refundOption) {
-        RefundOptionEnum option = parse(refundOption);
+    public static boolean buyerOption(RefundOptionEnum option) {
         if (option == SUBMIT || option == CANCEL || option == RETURN) {
             return Boolean.TRUE;
         }
@@ -57,11 +56,10 @@ public enum RefundOptionEnum {
     /**
      * 售后操作
      *
-     * @param refundOption
+     * @param option
      * @return
      */
-    public static boolean merchantOption(String refundOption) {
-        RefundOptionEnum option = parse(refundOption);
+    public static boolean merchantOption(RefundOptionEnum option) {
         if (option == AUDIT || option == REJECT || option == RECEIPT || option == REFUND) {
             return Boolean.TRUE;
         }
