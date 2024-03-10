@@ -1,6 +1,5 @@
 package com.acme.acmemall.model;
 
-import com.acme.acmemall.controller.reqeust.OrderRefundRequest;
 import com.acme.acmemall.model.enums.RefundStatusEnum;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
@@ -34,22 +33,37 @@ public class OrderRefundVo implements Serializable {
     private String goods_info;
     private Integer refund_num;
     private String refund_explain;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "0.00")
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "##0.00")
     private BigDecimal refund_price;
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date add_time;
 
-
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "0.00")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "##0.00")
     private BigDecimal refunded_price;
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date refunded_time;
     private String refund_phone;
     private String refund_express;
     private String refund_express_name;
     private String refuse_reason;
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    private Date refuse_time;
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    private Date confirm_time;
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    private Date cancel_time;
+
     private String remark;
     private Integer refund_status;
     private String refund_status_text;
 
+    //    RefundOptionEnum 操作
     private String refundOption;
 
     public String getRefund_status_text() {
@@ -83,16 +97,15 @@ public class OrderRefundVo implements Serializable {
     public void cancel() {
         this.refund_status = RefundStatusEnum.REFUND_CANCEL.getCode();
         this.refund_explain = "用户自主取消申请售后";
+        this.cancel_time = new Date();
     }
 
     /**
      * 拒绝退款
-     *
-     * @param request
      */
-    public void reject(OrderRefundRequest request) {
+    public void reject() {
         this.refund_status = RefundStatusEnum.REFUND_REJECT.getCode();
-        this.refuse_reason = request.getRefuse_reason();
+        this.refuse_time = new Date();
     }
 
     /**
@@ -100,6 +113,7 @@ public class OrderRefundVo implements Serializable {
      */
     public void confirm() {
         this.refund_status = RefundStatusEnum.REFUND_RETURNED.getCode();
+        this.confirm_time = new Date();
     }
 
     /**

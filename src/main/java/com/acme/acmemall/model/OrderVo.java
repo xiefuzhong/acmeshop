@@ -71,7 +71,7 @@ public class OrderVo implements Serializable {
 
     private String pay_status_text;
 
-    // 退款状态 0未申请，1申请  2-审核通过 3-商品待收货 4-已退款 5-拒绝 6-取消申请 7完结 8失效
+    // 退款状态 0未申请，1申请  2-审核通过 3-买家退还商品 4-已退款 5-拒绝 6-取消申请 7完结 8失效 9-卖家入库
     // 商品待退货
     @Builder.Default
     private Integer refund_status = 0;
@@ -622,7 +622,14 @@ public class OrderVo implements Serializable {
             RefundOptionEnum option = RefundOptionEnum.parse(refundVo.getRefundOption());
             switch (option) {
                 case CANCEL: {
+                    // 取消申请
                     this.refundVo.cancel();
+                    this.refund_status = this.refundVo.getRefund_status();
+                    this.refundUpdate();
+                    break;
+                }
+                case REJECT: {
+                    this.refundVo.reject();
                     this.refund_status = this.refundVo.getRefund_status();
                     this.refundUpdate();
                     break;
@@ -654,7 +661,7 @@ public class OrderVo implements Serializable {
                 }
                 case REJECT: {
                     this.refund_status = RefundStatusEnum.REFUND_REJECT.getCode();
-                    this.refundVo.reject(request);
+                    this.refundVo.reject();
                     refundUpdate();
                     break;
                 }
@@ -665,6 +672,13 @@ public class OrderVo implements Serializable {
                 }
             }
         }
+    }
+
+    private void rollbackOrderStatus() {
+        // 取消回退
+
+        // 商家拒绝退款
+
     }
 
     private void refundUpdate() {
