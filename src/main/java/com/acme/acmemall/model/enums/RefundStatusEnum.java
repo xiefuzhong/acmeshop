@@ -42,4 +42,12 @@ public enum RefundStatusEnum {
         return REFUND_APPLY;
     }
 
+    public static Boolean canApply(int code) {
+        RefundStatusEnum status = parse(code);
+        if (status == REFUND_NO || status == REFUND_REJECT || status == REFUND_CANCEL) {
+            return Boolean.TRUE;
+        }
+        return Boolean.FALSE;
+    }
+
 }

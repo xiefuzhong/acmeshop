@@ -69,7 +69,7 @@ public class OrderRefundServiceImpl implements IOrderRefundService {
             return ResultMap.error("无售后信息");
         }
         OrderVo orderVo = orderMapper.queryObject(request.getOrderId());
-        orderVo.updateRefund(request);
+        orderVo.afterService(refundVo);
         log.info("orderVo.updateRefund after: {}", orderVo);
         orderMapper.update(orderVo);
         orderRefundMapper.update(refundVo);

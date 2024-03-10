@@ -110,4 +110,8 @@ public class OrderRefundVo implements Serializable {
         this.refunded_price = refund_price;
         this.refunded_time = new Date();
     }
+
+    public boolean canApply() {
+        return RefundStatusEnum.canApply(this.refund_status);
+    }
 }
