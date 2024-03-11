@@ -472,44 +472,24 @@ public class OrderVo implements Serializable {
         if (orderStatus == OrderStatusEnum.AFTER_SERVICE) {
             RefundStatusEnum refundStatus = RefundStatusEnum.parse(this.refund_status);
             switch (refundStatus) {
+                case REFUND_REJECT:
+                case REFUND_CANCEL:
                 case REFUND_NO: {
-                    optionMap.put("refundAudit", Boolean.TRUE);
-                    optionMap.put("refundMoney", Boolean.TRUE);
-                }
-                break;
-                case REFUND_APPLY: {
+                    // 可申请
                     optionMap.put("refundRequest", Boolean.TRUE);
-                    optionMap.put("refundMoney", Boolean.TRUE);
+                    break;
                 }
-                break;
-                case REFUND_CANCEL: {
+                case REFUND_APPLY: {
+                    // 可取消
                     optionMap.put("cancelRefundRequest", Boolean.TRUE);
+                    break;
                 }
-                break;
-                case REFUND_RETURNED: {
-                    optionMap.put("returned", Boolean.TRUE);
-                }
-            }
-            if (this.refund_status == RefundStatusEnum.REFUND_PASS.getCode()) {
-                // 商家审核通过，填写物流信息 且 退货退款()
-                if (this.shipping_status == ShipStatusEnum.SHIP_YES.getCode()) {
+                case REFUND_PASS: {
+                    // 审批通过填写退货物流信息
                     optionMap.put("fillInLogistics", Boolean.TRUE);
+                    break;
                 }
-            } else if (this.refund_status == 1) {
-                optionMap.put("cancelRefundRequest", Boolean.TRUE);
-                if (this.shipping_status == 0) {
-                    optionMap.put("fillInLogistics", Boolean.FALSE);
-                }
-            } else if (this.refund_status == 3) {
-                optionMap.put("fillInLogistics", Boolean.FALSE);
-                optionMap.put("cancelRefundRequest", Boolean.FALSE);
-            } else if (this.refund_status == 6) {
-                optionMap.put("fillInLogistics", Boolean.FALSE);
-                optionMap.put("cancelRefundRequest", Boolean.FALSE);
             }
-        } else {
-            optionMap.put("fillInLogistics", Boolean.FALSE);
-            optionMap.put("cancelRefundRequest", Boolean.FALSE);
         }
 
         if (this.comment_status == 1) {
