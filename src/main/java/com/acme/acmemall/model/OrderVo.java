@@ -503,15 +503,22 @@ public class OrderVo implements Serializable {
         // 退款状态 0未申请，1申请  2-审核通过 3-已退款 4-拒绝 5-取消申请 6完结 7失效
         OrderStatusEnum orderStatus = OrderStatusEnum.parse(this.order_status);
         if (orderStatus == OrderStatusEnum.AFTER_SERVICE) {
-            if (this.refund_status == 1) {
-                // 商家审核，仅退款-直接退款 ，退货退款-货物收到-确认收货后退款
-                optionMap.put("refundAudit", Boolean.TRUE);
-                optionMap.put("confirmReceipt", Boolean.FALSE);
-            } else if (this.refund_status == 2) {
-                // 商家审核，仅退款-直接退款 ，退货退款-货物收到-确认收货后退款
-                optionMap.put("confirmReceipt", Boolean.TRUE);
-            } else if (this.refund_status == 9) {
-                optionMap.put("confirmReceipt", Boolean.FALSE);
+            RefundStatusEnum refundStatus = RefundStatusEnum.parse(this.refund_status);
+            switch (refundStatus) {
+                case REFUND_APPLY: {
+                    // 卖家审核
+                    optionMap.put("refundAudit", Boolean.TRUE);
+                    break;
+                }
+                case REFUND_RECEIVED: {
+                    // 商品待退还入库
+                    optionMap.put("confirmReceipt", Boolean.TRUE);
+                    break;
+                }
+                case REFUND_RETURNED: {
+                    optionMap.put("refundMoney", Boolean.TRUE);
+                    break;
+                }
             }
         }
         return optionMap;
