@@ -529,6 +529,7 @@ public class OrderVo implements Serializable {
                     optionMap.put("confirmReceipt", Boolean.TRUE);
                     break;
                 }
+                case REFUND_PASS:
                 case REFUND_RETURNED: {
                     optionMap.put("refundMoney", Boolean.TRUE);
                     break;
