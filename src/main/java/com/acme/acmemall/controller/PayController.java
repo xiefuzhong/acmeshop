@@ -91,7 +91,7 @@ public class PayController extends ApiBase {
             parame.put("notify_url", ResourceUtil.getConfigByName("wx.notifyUrl"));
             // 交易类型APP
             parame.put("trade_type", ResourceUtil.getConfigByName("wx.tradeType"));
-            parame.put("spbill_create_ip", getClientIp());
+            parame.put("spbill_create_ip", getPayClientIp());
             parame.put("openid", loginUser.getWeixin_openid());
             String sign = WechatUtil.arraySign(parame, ResourceUtil.getConfigByName("wx.paySignKey"));
             logger.info("[" + sign + "]");

@@ -137,6 +137,18 @@ public class ApiBase {
         return ip;
     }
 
+    public String getPayClientIp() {
+        String xff = request.getHeader("x-forwarded-for");
+        if (xff == null) {
+            return "0.0.0.0";
+        } else {
+            if (xff.length() > 15) {
+                xff = xff.substring(0, 14);
+            }
+        }
+        return xff;
+    }
+
     public JSONObject getJsonRequest() {
         JSONObject result = null;
         StringBuilder sb = new StringBuilder();
