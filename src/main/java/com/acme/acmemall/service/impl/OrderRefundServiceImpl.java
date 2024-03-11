@@ -9,8 +9,12 @@ import com.acme.acmemall.factory.OrderRefundFactory;
 import com.acme.acmemall.model.LoginUserVo;
 import com.acme.acmemall.model.OrderRefundVo;
 import com.acme.acmemall.model.OrderVo;
+import com.acme.acmemall.model.enums.RefundOptionEnum;
 import com.acme.acmemall.service.IOrderRefundService;
+import com.acme.acmemall.utils.wechat.WechatRefundApiResult;
+import com.acme.acmemall.utils.wechat.WechatUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -73,6 +77,19 @@ public class OrderRefundServiceImpl implements IOrderRefundService {
         }
         refundVo.updateRequest(request);
         OrderVo orderVo = orderMapper.queryObject(request.getOrderId());
+
+        // 退款操作
+        if (orderVo.canRefund(refundVo)) {
+            RefundOptionEnum refundOption = RefundOptionEnum.parse(request.getRefundOption());
+            if (refundOption == RefundOptionEnum.REFUND) {
+                WechatRefundApiResult result = WechatUtil.wxRefund(orderVo.getId(), orderVo.getActual_price().doubleValue(), refundVo.getRefund_price().doubleValue());
+                if (StringUtils.equalsIgnoreCase("SUCCESS", result.getResult_code())) {
+                    orderVo.refund();
+                    return ResultMap.ok("操作成功，请查看账户");
+                }
+            }
+        }
+
         orderVo.afterService(refundVo, request.getRefundOption());
         log.info("orderVo.updateRefund after: {}", orderVo);
         orderMapper.update(orderVo);

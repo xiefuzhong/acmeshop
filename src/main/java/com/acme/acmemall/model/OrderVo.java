@@ -710,18 +710,22 @@ public class OrderVo implements Serializable {
         this.refundVo = refundVo;
     }
 
-    public Boolean canRefund() {
-        if (this.refundVo == null) {
+    public Boolean canRefund(OrderRefundVo refundVo) {
+        if (refundVo == null) {
             return Boolean.FALSE;
         }
-        if (this.refundVo.getRefund_type() == 1) {
+        if (this.order_status != OrderStatusEnum.AFTER_SERVICE.getCode()) {
+            return Boolean.FALSE;
+        }
+        if (refundVo.getRefund_type() == 1) {
             // 仅退款(审核通过&&已付款)
             return this.refund_status == RefundStatusEnum.REFUND_PASS.getCode()
                     && this.pay_status == PayStatusEnum.PAY_YES.getCode();
         } else if (this.refundVo.getRefund_type() == 2) {
             // 货物退回 && 商家签收
             if (this.shipping_status == ShipStatusEnum.SHIP_RETURN.getCode()
-                    && this.refund_status == RefundStatusEnum.REFUND_RETURNED.getCode()) {
+                    && this.refund_status == RefundStatusEnum.REFUND_RETURNED.getCode()
+                    && this.pay_status == PayStatusEnum.PAY_YES.getCode()) {
                 return Boolean.TRUE;
             }
         }
