@@ -454,8 +454,22 @@ public class OrderVo implements Serializable {
         return OrderStatusEnum.parse(order_status).getName();
     }
 
+    /**
+     * 物流状态
+     *
+     * @return
+     */
     public String getShipping_status_text() {
         return ShipStatusEnum.parse(this.shipping_status).getName();
+    }
+
+    /**
+     * 售后状态
+     *
+     * @return
+     */
+    public String getRefund_status_text() {
+        return RefundStatusEnum.parse(this.refund_status).getName();
     }
 
     public void buildHandleOption(long merchantId) {
