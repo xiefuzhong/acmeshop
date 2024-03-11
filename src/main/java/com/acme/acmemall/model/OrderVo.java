@@ -348,15 +348,6 @@ public class OrderVo implements Serializable {
         this.cancel_reason = cancel_reason;
     }
 
-
-    /**
-     * 是否可以取消：true-可
-     *
-     * @return
-     */
-//    public boolean validCancle() {
-//        return OrderStatusEnum.validCancle(this.order_status);
-//    }
     public boolean canCancel() {
         OrderStatusEnum statusEnum = OrderStatusEnum.parse(this.order_status);
         return statusEnum == OrderStatusEnum.NEW;
@@ -601,25 +592,16 @@ public class OrderVo implements Serializable {
         }
     }
 
-    private void fillLogistics(OrderRefundVo refundVo) {
-        OrderStatusEnum orderStatus = OrderStatusEnum.parse(this.order_status);
-        if (orderStatus == OrderStatusEnum.AFTER_SERVICE) {
-//            this.refund_status = 3; // 填写物流信息,表示货物已寄回，商家待收货
-            this.refund_status = RefundStatusEnum.REFUND_RECEIVED.getCode();
-            this.refundVo = refundVo;
-        }
-    }
-
     /**
      * 售后服务
      *
      * @param refundVo
      */
-    public void afterService(OrderRefundVo refundVo) {
+    public void afterService(OrderRefundVo refundVo, String refundOption) {
         OrderStatusEnum orderStatus = OrderStatusEnum.parse(this.order_status);
         if (orderStatus == OrderStatusEnum.AFTER_SERVICE) {
             this.refundVo = refundVo;
-            RefundOptionEnum option = RefundOptionEnum.parse(refundVo.getRefundOption());
+            RefundOptionEnum option = RefundOptionEnum.parse(refundOption);
             switch (option) {
                 case CANCEL: {
                     // 取消申请
@@ -645,6 +627,10 @@ public class OrderVo implements Serializable {
                 }
                 case REFUND: {
                     this.refundVo.refundPaid();
+                    break;
+                }
+                case SUBMIT: {
+                    this.refundVo.submit(this.user_id);
                     break;
                 }
             }
@@ -686,13 +672,6 @@ public class OrderVo implements Serializable {
                 }
             }
         }
-    }
-
-    private void rollbackOrderStatus() {
-        // 取消回退
-
-        // 商家拒绝退款
-
     }
 
     private void refundUpdate() {
