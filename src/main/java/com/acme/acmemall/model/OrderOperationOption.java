@@ -140,21 +140,17 @@ public class OrderOperationOption {
             case PAID: {
                 // 待发货,修改收件地址，查看物流，申请退款
                 this.updateAddress = Boolean.TRUE;
-                this.viewLogistics = Boolean.TRUE;
                 this.refundRequest = Boolean.TRUE;
                 break;
             }
             case SHIPPED: {
                 // 待收货 查看看物流，确认收货，申请退货退款
                 this.viewLogistics = Boolean.TRUE;
-                this.returned = Boolean.TRUE;
-                this.refundRequest = Boolean.TRUE;
                 this.confirmReceipt = Boolean.TRUE;
                 break;
             }
             case ROG: {
                 // 已收货(确认收货) 查看物流、评价、开发票、申请退货退款
-                this.returned = Boolean.TRUE;
                 this.refundRequest = Boolean.TRUE;
                 this.comment = Boolean.TRUE;
                 this.viewLogistics = Boolean.TRUE;
@@ -162,7 +158,6 @@ public class OrderOperationOption {
             }
             case AFTER_SERVICE: {
                 // 售后中，可填写物流(退货退款)，可取消申请
-//                this.fillInLogistics = Boolean.TRUE;
                 this.cancelRefundRequest = Boolean.TRUE;
                 break;
             }
