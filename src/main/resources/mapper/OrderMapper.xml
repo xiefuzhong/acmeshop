@@ -75,7 +75,7 @@
     <select id="queryByAllOrderId" resultMap="orderMap">
         select *
         from t_acme_mall_order
-        where all_order_id = #{allOrderId}
+        where id = #{id}
     </select>
 
     <select id="queryWaitList" resultMap="orderMap">
@@ -117,9 +117,9 @@
                 <!--                AND (o.order_status = 401 or o.order_status = 402)-->
                 AND o.order_status in (101,401,402)
             </if>
-            <if test="all_order_id != null and all_order_id != ''">
-                and o.all_order_id = #{all_order_id}
-            </if>
+            <!--            <if test="all_order_id != null and all_order_id != ''">-->
+            <!--                and o.all_order_id = #{all_order_id}-->
+            <!--            </if>-->
             <if test="promoter_id != null and promoter_id != 0">
                 and o.promoter_id = #{promoter_id}
             </if>
@@ -214,9 +214,9 @@
             <if test="order_status != null and order_status == 4">
                 AND (o.order_status = 401 or o.order_status = 402)
             </if>
-            <if test="all_order_id != null and all_order_id != ''">
-                and o.all_order_id = #{all_order_id}
-            </if>
+            <!--            <if test="all_order_id != null and all_order_id != ''">-->
+            <!--                and o.all_order_id = #{all_order_id}-->
+            <!--            </if>-->
             <if test="promoter_id != null and promoter_id != 0">
                 and o.promoter_id = #{promoter_id}
             </if>
@@ -399,7 +399,7 @@
             <!--            comment_status-->
             <if test="comment_status != null">`comment_status` = #{comment_status},</if>
         </set>
-        where all_order_id = #{all_order_id}
+        where id = #{id}
     </update>
 
     <update id="cancelBatch">
