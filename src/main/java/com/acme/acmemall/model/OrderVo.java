@@ -646,42 +646,6 @@ public class OrderVo implements Serializable {
         }
     }
 
-    public void updateRefund(OrderRefundRequest request) {
-        OrderStatusEnum orderStatus = OrderStatusEnum.parse(this.order_status);
-        if (orderStatus == OrderStatusEnum.AFTER_SERVICE) {
-            OrderRefundVo refundVo = OrderRefundFactory.build(request);
-            this.refundVo = refundVo;
-            RefundOptionEnum option = RefundOptionEnum.parse(request.getRefundOption());
-            switch (option) {
-                case RETURN:
-                case LOGISTICS: {
-                    this.refund_status = RefundStatusEnum.REFUND_RECEIVED.getCode();
-                    // 货物退回
-                    this.shipping_status = ShipStatusEnum.SHIP_RETURN.getCode();
-                    break;
-                }
-                case CANCEL: {
-                    // 取消售后申请
-                    this.refund_status = RefundStatusEnum.REFUND_CANCEL.getCode();
-                    this.refundVo.cancel();
-                    refundUpdate();
-                    break;
-                }
-                case REJECT: {
-                    this.refund_status = RefundStatusEnum.REFUND_REJECT.getCode();
-                    this.refundVo.reject();
-                    refundUpdate();
-                    break;
-                }
-                case AUDIT: {
-                    this.refund_status = RefundStatusEnum.REFUND_PASS.getCode();
-                    this.refundVo.audit();
-                    break;
-                }
-            }
-        }
-    }
-
     private void refundUpdate() {
         if (this.shipping_status == ShipStatusEnum.SHIP_YES.getCode()) {
             // 已发货,订单状态重置为已发货
