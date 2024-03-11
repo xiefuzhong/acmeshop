@@ -162,7 +162,7 @@ public class OrderOperationOption {
             }
             case AFTER_SERVICE: {
                 // 售后中，可填写物流(退货退款)，可取消申请
-                this.fillInLogistics = Boolean.TRUE;
+//                this.fillInLogistics = Boolean.TRUE;
                 this.cancelRefundRequest = Boolean.TRUE;
                 break;
             }
@@ -184,8 +184,8 @@ public class OrderOperationOption {
         switch (statusEnum) {
             case AFTER_SERVICE: {
                 // 售后中,立即退款
-                this.refundMoney = Boolean.TRUE;
-                this.confirmReceipt = Boolean.TRUE;
+//                this.refundMoney = Boolean.TRUE;
+//                this.confirmReceipt = Boolean.TRUE;
                 this.refundAudit = Boolean.TRUE;
                 break;
             }

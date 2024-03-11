@@ -468,7 +468,28 @@ public class OrderVo implements Serializable {
             return optionMap;
         }
         OrderStatusEnum orderStatus = OrderStatusEnum.parse(this.order_status);
+        // 售后操作
         if (orderStatus == OrderStatusEnum.AFTER_SERVICE) {
+            RefundStatusEnum refundStatus = RefundStatusEnum.parse(this.refund_status);
+            switch (refundStatus) {
+                case REFUND_NO: {
+                    optionMap.put("refundAudit", Boolean.TRUE);
+                    optionMap.put("refundMoney", Boolean.TRUE);
+                }
+                break;
+                case REFUND_APPLY: {
+                    optionMap.put("refundRequest", Boolean.TRUE);
+                    optionMap.put("refundMoney", Boolean.TRUE);
+                }
+                break;
+                case REFUND_CANCEL: {
+                    optionMap.put("cancelRefundRequest", Boolean.TRUE);
+                }
+                break;
+                case REFUND_RETURNED: {
+                    optionMap.put("returned", Boolean.TRUE);
+                }
+            }
             if (this.refund_status == RefundStatusEnum.REFUND_PASS.getCode()) {
                 // 商家审核通过，填写物流信息 且 退货退款()
                 if (this.shipping_status == ShipStatusEnum.SHIP_YES.getCode()) {
