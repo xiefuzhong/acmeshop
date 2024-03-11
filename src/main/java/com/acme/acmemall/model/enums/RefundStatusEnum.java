@@ -32,14 +32,14 @@ public enum RefundStatusEnum {
 
     public static RefundStatusEnum parse(Integer code) {
         if (code <= 0) {
-            return REFUND_APPLY;
+            return REFUND_NO;
         }
         for (RefundStatusEnum status : values()) {
             if (code == status.getCode()) {
                 return status;
             }
         }
-        return REFUND_APPLY;
+        return REFUND_NO;
     }
 
     public static Boolean canApply(int code) {
