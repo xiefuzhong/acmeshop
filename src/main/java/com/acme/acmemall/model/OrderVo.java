@@ -532,6 +532,7 @@ public class OrderVo implements Serializable {
                 }
                 case REFUND_RETURNED: {
                     optionMap.put("refundMoney", Boolean.TRUE);
+                    optionMap.put("refundAudit", Boolean.FALSE);
                     break;
                 }
             }
