@@ -75,7 +75,7 @@ public class OrderRefundServiceImpl implements IOrderRefundService {
         orderVo.afterService(refundVo, request.getRefundOption());
         log.info("orderVo.updateRefund after: {}", orderVo);
         orderMapper.update(orderVo);
-        orderRefundMapper.update(refundVo);
+        orderRefundMapper.update(orderVo.getRefundVo());
         return ResultMap.response(ResultCodeEnum.SUCCESS, refundVo);
     }
 }
