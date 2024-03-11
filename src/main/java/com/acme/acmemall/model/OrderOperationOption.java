@@ -184,8 +184,6 @@ public class OrderOperationOption {
         switch (statusEnum) {
             case AFTER_SERVICE: {
                 // 售后中,立即退款
-//                this.refundMoney = Boolean.TRUE;
-//                this.confirmReceipt = Boolean.TRUE;
                 this.refundAudit = Boolean.TRUE;
                 break;
             }
