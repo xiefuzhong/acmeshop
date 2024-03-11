@@ -374,7 +374,7 @@
             <if test="refundVo != null">
                 <if test="refundVo.refund_status != null">`refund_status` = #{refundVo.refund_status},</if>
                 <if test="refundVo.refund_type != null">`refund_type` = #{refundVo.refund_type},</if>
-                <if test="refundVo.refund_price != null">`refund_status` = #{refundVo.refund_price},</if>
+                <if test="refundVo.refund_price != null">`refund_price` = #{refundVo.refund_price},</if>
                 <if test="refundVo.refund_reason != null">`refund_reason_wap` = #{refundVo.refund_reason},</if>
                 <!--                    填写物流信息-->
                 <if test="refundVo.refund_phone != null">`refund_phone` = #{refundVo.refund_phone},</if>
