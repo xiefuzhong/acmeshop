@@ -1,5 +1,6 @@
 package com.acme.acmemall.model;
 
+import com.acme.acmemall.controller.reqeust.OrderRefundRequest;
 import com.acme.acmemall.exception.Assert;
 import com.acme.acmemall.model.enums.RefundStatusEnum;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -81,6 +82,15 @@ public class OrderRefundVo implements Serializable {
         this.add_time = new Date();
         this.refund_status = RefundStatusEnum.REFUND_APPLY.getCode();
         this.user_id = userId;
+    }
+
+    public void updateRequest(OrderRefundRequest request) {
+        this.refund_reason = request.getRefundReason();
+        this.refund_express = request.getRefund_express();
+        this.refund_express_name = request.getRefund_express_name();
+        this.refund_phone = request.getRefund_phone();
+        this.refuse_reason = request.getRefuse_reason();
+        this.refunded_price = request.getRefundPrice();
     }
 
     /**
