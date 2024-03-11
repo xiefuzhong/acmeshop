@@ -9,7 +9,7 @@ public enum RefundStatusEnum {
     REFUND_RETURNED(9, "退还入库"),
     REFUND_PAID(4, "已退款"),
     REFUND_REJECT(5, "拒绝退款"),
-    REFUND_CANCEL(6, "取消申请"),
+    REFUND_CANCEL(6, "撤销售后"),
     REFUND_END(7, "完结"),
     REFUND_EXPIRED(8, "失效");
 

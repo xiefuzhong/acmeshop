@@ -513,6 +513,7 @@ public class OrderVo implements Serializable {
                 case REFUND_RECEIVED: {
                     // 商品待退还入库
                     optionMap.put("confirmReceipt", Boolean.TRUE);
+                    optionMap.put("refundAudit", Boolean.FALSE);
                     break;
                 }
                 case REFUND_RETURNED: {
