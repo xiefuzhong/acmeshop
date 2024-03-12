@@ -679,6 +679,9 @@ public class OrderVo implements Serializable {
         } else if (this.shipping_status == ShipStatusEnum.SHIP_NO.getCode()) {
             // 未发货，订单状态重置为 待发货
             this.order_status = OrderStatusEnum.PAID.getCode();
+        } else if (this.shipping_status == ShipStatusEnum.SHIP_ROG.getCode()) {
+            // 订单重置为已收货
+            this.order_status = OrderStatusEnum.ROG.getCode();
         }
     }
 
