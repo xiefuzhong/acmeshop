@@ -34,9 +34,6 @@ public class OrderRefundServiceImpl implements IOrderRefundService {
     @Resource
     OrderMapper orderMapper;
 
-    //    private static final Logger LOGGER = Logger.getLogger(getClass());
-//    private static final Logger LOGGER = LoggerFactory.getLogger(OrderRefundServiceImpl.class);
-
     /**
      * @param request
      * @param loginUser

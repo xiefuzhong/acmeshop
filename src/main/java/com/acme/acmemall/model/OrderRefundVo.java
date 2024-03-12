@@ -64,14 +64,12 @@ public class OrderRefundVo implements Serializable {
     private String remark;
     private Integer refund_status;
     private String refund_status_text;
-
-    //    RefundOptionEnum 操作
-    private String refundOption;
-
     public String getRefund_status_text() {
         return RefundStatusEnum.parse(this.refund_status).getName();
     }
 
+    //    RefundOptionEnum 操作
+    private String refundOption;
 
     /**
      * 提交申请
