@@ -661,6 +661,10 @@ public class OrderVo implements Serializable {
                     this.refundVo.submit(this.user_id);
                     break;
                 }
+                case RECEIPT: {
+                    this.refundVo.confirm();
+                    break;
+                }
             }
             this.refund_status = this.refundVo.getRefund_status();
         }
