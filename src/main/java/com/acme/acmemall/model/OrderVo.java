@@ -224,6 +224,10 @@ public class OrderVo implements Serializable {
 
     private OrderRefundVo refundVo;
 
+    // 订单操作记录
+    private String orderProcessText;
+    private List<OrderProcessVo> orderProcessList = Lists.newArrayList();
+
     private static void check(OrderVo orderVo, long userId) {
         if (orderVo == null) {
             throw new ApiCusException("订单不存在");
@@ -491,8 +495,6 @@ public class OrderVo implements Serializable {
                 case REFUND_NO: {
                     // 可申请
                     optionMap.put("refundRequest", Boolean.TRUE);
-                    // 不可撤销
-                    optionMap.put("cancelRefundRequest", Boolean.FALSE);
                     break;
                 }
                 case REFUND_APPLY: {
@@ -503,6 +505,11 @@ public class OrderVo implements Serializable {
                 case REFUND_PASS: {
                     // 审批通过填写退货物流信息
                     optionMap.put("fillInLogistics", Boolean.TRUE);
+                    break;
+                }
+                default: {
+                    optionMap.put("fillInLogistics", Boolean.FALSE);
+                    optionMap.put("cancelRefundRequest", Boolean.FALSE);
                     break;
                 }
             }

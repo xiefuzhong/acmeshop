@@ -145,7 +145,7 @@ public class OrderOperationOption {
             }
             case SHIPPED: {
                 // 待收货 查看看物流，确认收货，申请退货退款
-                this.viewLogistics = Boolean.TRUE;
+//                this.viewLogistics = Boolean.TRUE;
                 this.confirmReceipt = Boolean.TRUE;
                 break;
             }
@@ -154,11 +154,6 @@ public class OrderOperationOption {
                 this.refundRequest = Boolean.TRUE;
                 this.comment = Boolean.TRUE;
                 this.viewLogistics = Boolean.TRUE;
-                break;
-            }
-            case AFTER_SERVICE: {
-                // 售后中，可填写物流(退货退款)，可取消申请
-                this.cancelRefundRequest = Boolean.TRUE;
                 break;
             }
             case CANCELED:
