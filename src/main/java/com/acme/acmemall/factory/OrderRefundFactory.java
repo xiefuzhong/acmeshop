@@ -10,9 +10,9 @@ import com.acme.acmemall.model.OrderRefundVo;
  */
 public class OrderRefundFactory {
 
-    public static OrderRefundVo build(OrderRefundRequest request) {
+    public static OrderRefundVo build(OrderRefundRequest request, long userId) {
         return OrderRefundVo.builder()
-                .user_id(request.getUserid())
+                .user_id(userId)
                 .order_id(request.getOrderId())
                 .refund_num(request.getGoodsCount())
                 .refund_type(request.getRefundType())

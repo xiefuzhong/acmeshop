@@ -709,7 +709,7 @@ public class OrderVo implements Serializable {
         this.order_status = OrderStatusEnum.AFTER_SERVICE.getCode();
         this.order_status_text = OrderStatusEnum.AFTER_SERVICE.getName();
         this.refund_status = RefundStatusEnum.REFUND_APPLY.getCode();
-        this.refundVo = OrderRefundFactory.build(request);
+        this.refundVo = OrderRefundFactory.build(request, this.user_id);
         refundVo.submit(this.user_id);
     }
 
