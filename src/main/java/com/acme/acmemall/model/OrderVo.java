@@ -495,6 +495,7 @@ public class OrderVo implements Serializable {
                 case REFUND_NO: {
                     // 可申请
                     optionMap.put("refundRequest", Boolean.TRUE);
+                    optionMap.put("fillInLogistics", Boolean.FALSE);
                     break;
                 }
                 case REFUND_APPLY: {
@@ -513,6 +514,8 @@ public class OrderVo implements Serializable {
                     break;
                 }
             }
+        } else {
+
         }
 
         if (this.comment_status == 1) {
