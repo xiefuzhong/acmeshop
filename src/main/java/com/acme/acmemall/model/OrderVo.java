@@ -491,6 +491,8 @@ public class OrderVo implements Serializable {
                 case REFUND_NO: {
                     // 可申请
                     optionMap.put("refundRequest", Boolean.TRUE);
+                    // 不可撤销
+                    optionMap.put("cancelRefundRequest", Boolean.FALSE);
                     break;
                 }
                 case REFUND_APPLY: {
