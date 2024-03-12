@@ -31,7 +31,7 @@ public enum RefundStatusEnum {
 
 
     public static RefundStatusEnum parse(Integer code) {
-        if (code <= 0) {
+        if (code == null || code <= 0) {
             return REFUND_NO;
         }
         for (RefundStatusEnum status : values()) {
