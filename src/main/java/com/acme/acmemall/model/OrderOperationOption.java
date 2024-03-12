@@ -145,7 +145,7 @@ public class OrderOperationOption {
             }
             case SHIPPED: {
                 // 待收货 查看看物流，确认收货，申请退货退款
-//                this.viewLogistics = Boolean.TRUE;
+                this.viewLogistics = Boolean.TRUE;
                 this.confirmReceipt = Boolean.TRUE;
                 break;
             }
