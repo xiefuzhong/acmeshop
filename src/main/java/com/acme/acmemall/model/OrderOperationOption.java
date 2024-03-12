@@ -172,11 +172,6 @@ public class OrderOperationOption {
     public Map<String, Boolean> merchantOperation(Integer status) {
         OrderStatusEnum statusEnum = OrderStatusEnum.parse(status);
         switch (statusEnum) {
-//            case AFTER_SERVICE: {
-//                // 售后中,立即退款
-//                this.refundMoney = Boolean.TRUE;
-//                break;
-//            }
             case PAID: {
                 // 已付款,可发货
                 this.toShipping = Boolean.TRUE;

@@ -224,6 +224,15 @@ public class OrderVo implements Serializable {
 
     private OrderRefundVo refundVo;
 
+    // 1-仅退款 2-退货退款
+    private Integer refund_type;
+
+    private String refund_type_text;
+
+    public String getRefund_type_text() {
+        return RefundType.parse(this.refund_type).getTitle();
+    }
+
     // 订单操作记录
     private String orderProcessText;
     private List<OrderProcessVo> orderProcessList = Lists.newArrayList();
@@ -671,6 +680,7 @@ public class OrderVo implements Serializable {
                 }
                 case SUBMIT: {
                     this.refundVo.submit(this.user_id);
+                    this.refund_type = refundVo.getRefund_type();
                     break;
                 }
                 case RECEIPT: {
