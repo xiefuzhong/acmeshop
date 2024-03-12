@@ -42,6 +42,12 @@ public enum RefundStatusEnum {
         return REFUND_NO;
     }
 
+    /**
+     * 是否可以申请售后
+     *
+     * @param code
+     * @return
+     */
     public static Boolean canApply(int code) {
         RefundStatusEnum status = parse(code);
         if (status == REFUND_NO || status == REFUND_REJECT || status == REFUND_CANCEL) {
