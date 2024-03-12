@@ -650,6 +650,11 @@ public class OrderVo implements Serializable {
                 }
                 case REFUND: {
                     this.refundVo.refundPaid();
+                    if (refundVo.getRefund_type() == 1) {
+                        this.order_status = OrderStatusEnum.REFUNDED.getCode();
+                    } else if (refundVo.getRefund_type() == 2) {
+                        this.order_status = OrderStatusEnum.REFUND_RETURNED.getCode();
+                    }
                     break;
                 }
                 case SUBMIT: {
