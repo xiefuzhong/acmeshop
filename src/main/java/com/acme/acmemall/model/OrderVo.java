@@ -727,7 +727,7 @@ public class OrderVo implements Serializable {
             // 仅退款(审核通过&&已付款)
             return this.refund_status == RefundStatusEnum.REFUND_PASS.getCode()
                     && this.pay_status == PayStatusEnum.PAY_YES.getCode();
-        } else if (this.refundVo.getRefund_type() == 2) {
+        } else if (refundVo.getRefund_type() == 2) {
             // 货物退回 && 商家签收
             if (this.shipping_status == ShipStatusEnum.SHIP_RETURN.getCode()
                     && this.refund_status == RefundStatusEnum.REFUND_RETURNED.getCode()
