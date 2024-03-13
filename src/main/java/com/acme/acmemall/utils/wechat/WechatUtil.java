@@ -1,10 +1,8 @@
 package com.acme.acmemall.utils.wechat;
 
-import com.acme.acmemall.utils.CharUtil;
-import com.acme.acmemall.utils.MapUtils;
-import com.acme.acmemall.utils.ResourceUtil;
-import com.acme.acmemall.utils.XmlUtil;
+import com.acme.acmemall.utils.*;
 import com.alibaba.fastjson.JSONObject;
+import com.google.common.collect.Maps;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.http.HttpEntity;
@@ -35,9 +33,6 @@ import java.util.*;
 /**
  * <p>Title: 微信退款工具类</p>
  * <p>Description: 微信退款工具类，通过充值客户端的不同初始化不同的工具类，得到相应微信退款相关的appid和muchid</p>
- *
- * @author xubo
- * @date 2017年6月6日  下午5:05:03
  */
 public class WechatUtil {
     private static final Log logger = LogFactory.getLog(WechatUtil.class);
@@ -77,7 +72,7 @@ public class WechatUtil {
      */
     private static Map<Object, Object> payMoneyToUser(String openid, BigDecimal bdpayMoney, String userName, String payCountId) {
 
-        Map<Object, Object> params = new HashMap<Object, Object>();
+        Map<Object, Object> params = Maps.newHashMap();
         //微信分配的公众账号ID（企业号corpid即为此appId）
         params.put("mch_appid", ResourceUtil.getConfigByName("wx.appId"));
         //微信支付分配的商户号
@@ -137,8 +132,6 @@ public class WechatUtil {
 
     /**
      * 方法描述：微信退款逻辑
-     * 创建时间：2017年4月12日  上午11:04:25
-     * 作者： xubo
      *
      * @param
      * @return
@@ -159,14 +152,11 @@ public class WechatUtil {
 
     /**
      * 方法描述：得到请求微信退款请求的参数
-     * 创建时间：2017年6月8日  上午11:27:02
-     * 作者： xubo
-     *
      * @param
      * @return
      */
     private static Map<Object, Object> buildRequsetMapParam(String out_trade_no, BigDecimal bdOrderMoney, BigDecimal bdRefundMoney) {
-        Map<Object, Object> params = new HashMap<Object, Object>();
+        Map<Object, Object> params = Maps.newHashMap();
         //微信分配的公众账号ID（企业号corpid即为此appId）
         params.put("appid", ResourceUtil.getConfigByName("wx.appId"));
         //微信支付分配的商户号
@@ -176,7 +166,7 @@ public class WechatUtil {
         //商户侧传给微信的订单号
         params.put("out_trade_no", out_trade_no);
         //商户系统内部的退款单号，商户系统内部唯一，同一退款单号多次请求只退一笔
-        params.put("out_refund_no", getBundleId());
+        params.put("out_refund_no", SnowFlakeGenerateIdWorker.generateId());
         //订单总金额，单位为分，只能为整数
         params.put("total_fee", bdOrderMoney.multiply(new BigDecimal(100)).intValue());
         //退款总金额，订单总金额，单位为分，只能为整数
@@ -237,8 +227,6 @@ public class WechatUtil {
 
     /**
      * 方法描述：根据签名加密请求参数
-     * 创建时间：2017年6月8日  上午11:28:52
-     * 作者： xubo
      *
      * @param
      * @return
@@ -332,14 +320,12 @@ public class WechatUtil {
 
     /**
      * 方法描述：微信查询退款逻辑
-     * 创建时间：2017年4月12日  上午11:04:25
-     * 作者： xubo
      *
      * @param
      * @return
      */
     public Map<String, Object> wxRefundquery(String out_trade_no, String out_refund_no) {
-        Map<Object, Object> params = new HashMap<Object, Object>();
+        Map<Object, Object> params = Maps.newHashMap();
         //微信分配的公众账号ID（企业号corpid即为此appId）
         params.put("appid", ResourceUtil.getConfigByName("wx.appId"));
         //微信支付分配的商户号
@@ -367,7 +353,7 @@ public class WechatUtil {
             response = httpClient.execute(httPost);
             HttpEntity entity = response.getEntity();
             String xmlStr = EntityUtils.toString(entity, "UTF-8");
-            System.out.println(xmlStr);
+            logger.info(xmlStr);
             Map<String, Object> result = XmlUtil.xmlStrToMap(xmlStr);//.xmlStrToBean(xmlStr, WechatRefundApiResult.class);
             return result;
             //将信息保存到数据库

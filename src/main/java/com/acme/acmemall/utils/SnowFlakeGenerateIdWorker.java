@@ -205,7 +205,7 @@ public class SnowFlakeGenerateIdWorker {
     /**
      * 生成订单的编号order_sn
      */
-    public static String generateOrderNumber() {
+    public static String generateId() {
         SnowFlakeGenerateIdWorker snowFlake = new SnowFlakeGenerateIdWorker(0, 0);
         return String.valueOf(snowFlake.generateId(System.currentTimeMillis()));
     }
@@ -214,7 +214,7 @@ public class SnowFlakeGenerateIdWorker {
     public static void main(String[] args) {
         SnowFlakeGenerateIdWorker snowFlakeGenerateIdWorker = new SnowFlakeGenerateIdWorker(0, 0);
         for (int i = 0; i < 100; i++) {
-            System.out.println(SnowFlakeGenerateIdWorker.generateOrderNumber());
+            System.out.println(SnowFlakeGenerateIdWorker.generateId());
 //            System.out.println(SnowFlakeGenerateIdWorker.generateOrderNumber());
 //            System.out.println(snowFlakeGenerateIdWorker.nextId());
         }
