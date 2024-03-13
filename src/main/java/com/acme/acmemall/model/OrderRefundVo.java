@@ -3,6 +3,7 @@ package com.acme.acmemall.model;
 import com.acme.acmemall.controller.reqeust.OrderRefundRequest;
 import com.acme.acmemall.exception.Assert;
 import com.acme.acmemall.model.enums.RefundStatusEnum;
+import com.acme.acmemall.utils.GsonUtil;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -142,5 +143,10 @@ public class OrderRefundVo implements Serializable {
 
     public boolean canApply() {
         return RefundStatusEnum.canApply(this.refund_status);
+    }
+
+    @Override
+    public String toString() {
+        return GsonUtil.toJson(this);
     }
 }
