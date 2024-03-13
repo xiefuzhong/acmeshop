@@ -552,17 +552,17 @@ public class OrderVo implements Serializable {
                 }
                 case REFUND_PASS:
                 case REFUND_RETURNED: {
-                    if (this.refund_type == RefundType.REFUND_ONLY.getCode() && refundStatus == RefundStatusEnum.REFUND_PASS) {
-                        optionMap.put("refundMoney", Boolean.TRUE);
-                        break;
+                    if ((refundStatus == RefundStatusEnum.REFUND_PASS && this.refund_type == RefundType.REFUND_ONLY.getCode())
+                            || (refundStatus == RefundStatusEnum.REFUND_RETURNED && this.refund_type != RefundType.REFUND_RETURN.getCode())) {
+                        optionMap.put("refundMoney", true);
                     }
-                    optionMap.put("refundMoney", Boolean.TRUE);
                     break;
                 }
             }
         }
         return optionMap;
     }
+
 
     public boolean checkOwner(long userId) {
         if (userId <= 0) {
