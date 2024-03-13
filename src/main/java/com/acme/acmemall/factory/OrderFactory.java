@@ -13,8 +13,10 @@ import com.acme.acmemall.utils.SnowFlakeGenerateIdWorker;
 public class OrderFactory {
 
     public static OrderVo buildNewOrder(long userId,String type) {
+        String id = SnowFlakeGenerateIdWorker.generateOrderNumber();
         return OrderVo.builder()
-                .id(SnowFlakeGenerateIdWorker.generateOrderNumber())
+                .id(id)
+                .order_sn(String.format("wx%s", id))
                 .order_status(0)
                 .order_type(type)
                 .pay_status(0)
