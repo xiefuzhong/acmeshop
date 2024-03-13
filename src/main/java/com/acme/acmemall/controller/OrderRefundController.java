@@ -39,6 +39,7 @@ public class OrderRefundController extends ApiBase {
         }
         OrderRefundRequest request = JSONObject.toJavaObject(object, OrderRefundRequest.class);
         request.reqCheck();
+        logger.info("refundPost.request==>" + request);
         return refundService.submit(request, userVo);
     }
 
