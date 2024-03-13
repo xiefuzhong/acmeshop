@@ -86,19 +86,21 @@ public class OrderRefundServiceImpl implements IOrderRefundService {
         refundVo.updateRequest(request);
         OrderVo orderVo = orderMapper.queryObject(request.getOrderId());
         // 退款操作
-        if (orderVo.canRefund(refundVo)) {
-            RefundOptionEnum refundOption = RefundOptionEnum.parse(request.getRefundOption());
-            if (refundOption == RefundOptionEnum.REFUND) {
-                WechatRefundApiResult result = WechatUtil.wxRefund(orderVo.getId(), orderVo.getActual_price().doubleValue(), refundVo.getRefund_price().doubleValue());
-                if (StringUtils.equalsIgnoreCase("SUCCESS", result.getResult_code())) {
-                    orderVo.afterService(refundVo, request.getRefundOption());
-                    log.info("orderVo.updateRefund after: {}", orderVo);
-                    orderMapper.update(orderVo);
-                    orderRefundMapper.update(orderVo.getRefundVo());
-                    return ResultMap.ok("操作成功，请查看账户");
-                }
+        RefundOptionEnum refundOption = RefundOptionEnum.parse(request.getRefundOption());
+        if (refundOption == RefundOptionEnum.REFUND) {
+            if (!orderVo.canRefund(refundVo)) {
+                return ResultMap.error("状态不对,不能退款");
+            }
+            WechatRefundApiResult result = WechatUtil.wxRefund(orderVo.getId(), orderVo.getActual_price().doubleValue(), refundVo.getRefund_price().doubleValue());
+            if (StringUtils.equalsIgnoreCase("SUCCESS", result.getResult_code())) {
+                orderVo.afterService(refundVo, request.getRefundOption());
+                log.info("orderVo.updateRefund after: {}", orderVo);
+                orderMapper.update(orderVo);
+                orderRefundMapper.update(orderVo.getRefundVo());
+                return ResultMap.ok("操作成功，请查看账户");
             }
         }
+
         orderVo.afterService(refundVo, request.getRefundOption());
         log.info("orderVo.updateRefund after: {}", orderVo);
         orderMapper.update(orderVo);
