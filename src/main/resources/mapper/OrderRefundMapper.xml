@@ -21,6 +21,9 @@
         <result property="remark" column="remark"/>
         <result property="goods_info" column="goods_info"/>
         <result property="refund_status" column="refund_status"/>
+        <!--        refund_express_code-->
+        <result property="refund_express_code" column="refund_express_code"/>
+
     </resultMap>
 
     <insert id="save" parameterType="com.acme.acmemall.model.OrderRefundVo" useGeneratedKeys="true" keyProperty="id">

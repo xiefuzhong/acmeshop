@@ -382,6 +382,10 @@
                 <if test="refundVo.refund_express_name != null">`refund_express_name` =
                     #{refundVo.refund_express_name},
                 </if>
+                <!--                refund_express_code-->
+                <if test="refundVo.refund_express_code != null">`refund_express_code` =
+                    #{refundVo.refund_express_code},
+                </if>
             </if>
 
         </set>

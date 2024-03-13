@@ -25,6 +25,7 @@ public class OrderRefundRequest implements Serializable {
     private String refund_express;
     private String refund_phone;
     private String refund_express_name;
+    private String refund_express_code;
     private String refuse_reason;
     private String refundOption;
 
