@@ -166,7 +166,9 @@ public class WechatUtil {
         //商户侧传给微信的订单号
         params.put("out_trade_no", out_trade_no);
         //商户系统内部的退款单号，商户系统内部唯一，同一退款单号多次请求只退一笔
-        params.put("out_refund_no", SnowFlakeGenerateIdWorker.generateId());
+        String refund_no = SnowFlakeGenerateIdWorker.generateId();
+        String currentDateStr = DateUtils.currentDate(DateUtils.DATE_PATTERN).replaceAll("-", "");
+        params.put("out_refund_no", String.format("%sTR%s", currentDateStr, refund_no));
         //订单总金额，单位为分，只能为整数
         params.put("total_fee", bdOrderMoney.multiply(new BigDecimal(100)).intValue());
         //退款总金额，订单总金额，单位为分，只能为整数

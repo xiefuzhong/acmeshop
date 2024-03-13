@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Locale;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -44,4 +45,9 @@ public class OrderGoodsVo implements Serializable {
 
     //使用的优惠券id
     private Long coupon_id;
+
+    public String getPayBody_title() {
+        // 商品名称 规格
+        return String.format(Locale.ROOT, "%s %s", goods_name, goods_specifition_name_value);
+    }
 }

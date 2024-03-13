@@ -4,7 +4,9 @@ import com.acme.acmemall.annotation.IgnoreAuth;
 import com.acme.acmemall.annotation.LoginUser;
 import com.acme.acmemall.common.ResultMap;
 import com.acme.acmemall.model.LoginUserVo;
+import com.acme.acmemall.model.OrderGoodsVo;
 import com.acme.acmemall.model.OrderVo;
+import com.acme.acmemall.service.IOrderGoodsService;
 import com.acme.acmemall.service.IOrderService;
 import com.acme.acmemall.utils.MapUtils;
 import com.acme.acmemall.utils.ResourceUtil;
@@ -14,18 +16,21 @@ import com.acme.acmemall.utils.wechat.NonceUtil;
 import com.acme.acmemall.utils.wechat.WechatRefundApiResult;
 import com.acme.acmemall.utils.wechat.WechatUtil;
 import com.google.common.base.Throwables;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.text.MessageFormat;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -39,14 +44,14 @@ import java.util.TreeMap;
 @RequestMapping("/api/pay")
 public class PayController extends ApiBase {
 
-    private static final String SUCCESS = "SUCCESS";
-    private static final String OK = "OK";
-
+    @Resource
     IOrderService orderService;
 
-    public PayController(IOrderService orderService) {
-        this.orderService = orderService;
-    }
+    @Resource
+    IOrderGoodsService orderGoodsService;
+
+    private static final String SUCCESS = "SUCCESS";
+    private static final String OK = "OK";
 
     public static String setXml(String return_code, String return_msg) {
         return "<xml><return_code><![CDATA[" + return_code + "]]></return_code><return_msg><![CDATA[" + return_msg + "]]></return_msg></xml>";
@@ -69,6 +74,11 @@ public class PayController extends ApiBase {
             return ResultMap.error(400, "当前订单已支付,请不要重复操作");
         }
 
+        Map orderGoodsParam = Maps.newHashMap();
+        orderGoodsParam.put("orderIds", Lists.newArrayList(orderId));
+        //订单的商品
+        List<OrderGoodsVo> orderGoods = orderGoodsService.queryList(orderGoodsParam);
+        orderVo.fillItem(orderGoods);
         //https://pay.weixin.qq.com/wiki/doc/api/wxa/wxa_api.php?chapter=7_7&index=3
         Map<Object, Object> resultObj = new TreeMap();
 

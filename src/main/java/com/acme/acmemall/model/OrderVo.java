@@ -579,7 +579,7 @@ public class OrderVo implements Serializable {
         if (CollectionUtils.isEmpty(items)) {
             return this.id;
         }
-        List<String> names = items.stream().map(OrderGoodsVo::getGoods_name).collect(Collectors.toList());
+        List<String> names = items.stream().map(OrderGoodsVo::getPayBody_title).collect(Collectors.toList());
         return names.stream().collect(Collectors.joining(",")) + " and so on";
 
     }
