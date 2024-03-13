@@ -47,12 +47,12 @@ public class OrderRefundServiceImpl implements IOrderRefundService {
         } else if (!refundVo.canApply()) {
             return ResultMap.error("售后中不能重复提交");
         }
-
+        log.info("request.getRefundOption: {}", request.getRefundOption());
         refundVo.updateRequest(request);
         log.info("orderVo.afterService before: {}", refundVo);
         OrderVo orderVo = orderMapper.queryObject(request.getOrderId());
         orderVo.afterService(refundVo, request.getRefundOption());
-        log.info("orderVo.afterService after: {}", orderVo);
+        log.info("orderVo.afterService after: {}", orderVo.getRefundVo());
         orderMapper.update(orderVo);
         orderRefundMapper.save(refundVo);
         return ResultMap.response(ResultCodeEnum.SUCCESS, refundVo);
