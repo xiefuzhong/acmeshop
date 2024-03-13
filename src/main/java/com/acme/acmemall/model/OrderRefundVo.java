@@ -51,6 +51,7 @@ public class OrderRefundVo implements Serializable {
     private String refund_phone;
     private String refund_express;
     private String refund_express_name;
+    private String refund_express_code;
     private String refuse_reason;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
