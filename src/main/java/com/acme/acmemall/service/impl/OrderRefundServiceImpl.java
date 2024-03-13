@@ -42,12 +42,12 @@ public class OrderRefundServiceImpl implements IOrderRefundService {
     @Override
     public ResultMap submit(OrderRefundRequest request, LoginUserVo loginUser) {
         OrderRefundVo refundVo = orderRefundMapper.findByOrderId(request.getOrderId());
-        if (refundVo != null && !refundVo.canApply()) {
-            return ResultMap.error("售后中不能重复提交");
-        }
         if (refundVo == null) {
             refundVo = OrderRefundFactory.build(request, loginUser.getUserId());
+        } else if (!refundVo.canApply()) {
+            return ResultMap.error("售后中不能重复提交");
         }
+
         refundVo.updateRequest(request);
         log.info("orderVo.afterService before: {}", refundVo);
         OrderVo orderVo = orderMapper.queryObject(request.getOrderId());
