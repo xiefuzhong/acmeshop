@@ -76,6 +76,8 @@ public class OrderVo implements Serializable {
     @Builder.Default
     private Integer refund_status = 0;
 
+    private String refund_pay_id;
+
     //收货人
     private String consignee;
     //国家
