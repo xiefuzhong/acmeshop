@@ -552,6 +552,10 @@ public class OrderVo implements Serializable {
                 }
                 case REFUND_PASS:
                 case REFUND_RETURNED: {
+                    if (this.refund_type == RefundType.REFUND_ONLY.getCode() && refundStatus == RefundStatusEnum.REFUND_PASS) {
+                        optionMap.put("refundMoney", Boolean.TRUE);
+                        break;
+                    }
                     optionMap.put("refundMoney", Boolean.TRUE);
                     break;
                 }
