@@ -49,6 +49,7 @@ public class OrderRefundServiceImpl implements IOrderRefundService {
             refundVo = OrderRefundFactory.build(request, loginUser.getUserId());
         }
         refundVo.updateRequest(request);
+        log.info("orderVo.afterService before: {}", refundVo);
         OrderVo orderVo = orderMapper.queryObject(request.getOrderId());
         orderVo.afterService(refundVo, request.getRefundOption());
         log.info("orderVo.afterService after: {}", orderVo);
