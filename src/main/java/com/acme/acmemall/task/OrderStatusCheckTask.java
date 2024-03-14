@@ -78,9 +78,27 @@ public class OrderStatusCheckTask {
     }
 
     // 取消的订单 自动完结(5分钟)。
-//    @Scheduled(fixedRate = AUTO_END_RATE)
+    @Scheduled(fixedRate = AUTO_END_RATE)
     public void autoEnd() {
-
+        logger.info(String.format("autoEnd-- 执行开始时间：%s", DateUtils.currentDate(DateUtils.DATE_TIME_PATTERN)));
+        try {
+            Map params = Maps.newHashMap();
+            // 已取消、已退款,已退货退款
+            List<Integer> status = Lists.newArrayList(OrderStatusEnum.CANCELED.getCode(),
+                    OrderStatusEnum.REFUNDED.getCode(),
+                    OrderStatusEnum.REFUND_RETURNED.getCode());
+            params.put("status", status);
+            params.put("data_type", "toEnd");
+            List<OrderVo> orders = orderService.queryPendingDataByTask(params);
+            int size = CollectionUtils.isEmpty(orders) ? 0 : orders.size();
+            logger.info(String.format("查询出待处理数据条数：%s", size));
+            if (size == 0) {
+                return;
+            }
+        } catch (Exception e) {
+            logger.error(String.format("autoEnd-- Exception：%s", Throwables.getStackTraceAsString(e)));
+        }
+        logger.info(String.format("autoEnd-- 执行结束时间：%s", DateUtils.currentDate(DateUtils.DATE_TIME_PATTERN)));
     }
 
     @Scheduled(fixedRate = AUTO_TIMEOUT)
