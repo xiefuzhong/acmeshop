@@ -4,6 +4,7 @@ public enum ResultCodeEnum {
     SUCCESS(0,"操作成功"),
 
     FAILED(1,"操作失败"),
+    USER_NOT_LOGIN(400, "用户未登录！"),
 
     UNAUTHORIZED(401, "未登录或token过期，请重新登录！"),
 
