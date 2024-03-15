@@ -67,6 +67,10 @@ public class OrderVo implements Serializable {
     //付款状态 支付状态;0未付款;1付款中;2已付款;4退款
     private Integer pay_status;
 
+    // 售后过期时间
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    private Date refund_expire_time;
+
     public String getPay_status_text() {
         return PayStatusEnum.parse(this.pay_status).getName();
     }
@@ -322,7 +326,7 @@ public class OrderVo implements Serializable {
         this.expire_time = new Date(add_time.getTime() + TimeConstants.PAY_EXPIRE_TIME);
         // 订单明细
         cartList.stream().forEach(cartVo -> this.items.add(OrderFactory.buildOrderItem(cartVo, id)));
-        this.addProcess(OrderStatusEnum.NEW);
+        this.addProcess("您的提交了订单," + OrderStatusEnum.NEW.getName());
         return this;
     }
 
@@ -352,14 +356,14 @@ public class OrderVo implements Serializable {
         this.shipping_status = ShipStatusEnum.SHIP_NO.getCode();
         this.shipping_status_text = ShipStatusEnum.SHIP_NO.getName();
         this.pay_time = new Date();
-        this.addProcess(OrderStatusEnum.PAID);
+        this.addProcess(OrderStatusEnum.PAID.getName());
         return this;
     }
 
-    private void addProcess(OrderStatusEnum status) {
+    private void addProcess(String desc) {
         this.orderProcessList = JSONArray.parseArray(this.orderProcessText, OrderProcessVo.class);
         OrderProcessVo process = OrderProcessVo.builder()
-                .process_desc(status.getName())
+                .process_desc(desc)
                 .process_time(new Date())
                 .sort_id(this.orderProcessList.size() + 1)
                 .build();
@@ -380,7 +384,7 @@ public class OrderVo implements Serializable {
         this.order_status = OrderStatusEnum.CANCELED.getCode();
         this.order_status_text = OrderStatusEnum.CANCELED.getName();
         this.cancle_time = new Date();
-        this.addProcess(OrderStatusEnum.CANCELED);
+        this.addProcess(String.format("订单%s:用户手动取消订单", OrderStatusEnum.CANCELED.getName()));
     }
 
     public void cancle(String cancel_reason) {
@@ -388,6 +392,7 @@ public class OrderVo implements Serializable {
         this.order_status_text = OrderStatusEnum.CANCELED.getName();
         this.cancle_time = new Date();
         this.cancel_reason = cancel_reason;
+        this.addProcess(String.format("订单%s:%s", OrderStatusEnum.CANCELED.getName(), cancel_reason));
     }
 
     public boolean canCancel() {
@@ -410,7 +415,7 @@ public class OrderVo implements Serializable {
         this.order_status = OrderStatusEnum.DELETED.getCode();
         this.order_status_text = OrderStatusEnum.DELETED.getName();
         this.delete_time = new Date();
-        this.addProcess(OrderStatusEnum.DELETED);
+        this.addProcess(String.format("订单%s", OrderStatusEnum.DELETED.getName()));
     }
 
     /**
@@ -422,6 +427,8 @@ public class OrderVo implements Serializable {
         this.confirm_time = new Date();
         this.shipping_status = ShipStatusEnum.SHIP_ROG.getCode();
         this.shipping_status_text = ShipStatusEnum.SHIP_ROG.getName();
+        this.addProcess(String.format("您的订单%s", OrderStatusEnum.ROG.getName()));
+        this.refund_expire_time = new Date(this.confirm_time.getTime() + TimeConstants.AFTER_SALES_EXPIRE_TIME);
     }
 
     /**
@@ -453,7 +460,7 @@ public class OrderVo implements Serializable {
         this.shipping_fee = BigDecimal.ZERO;
         // 收货确认过期时间
         this.rog_time = new Date(this.shipping_time.getTime() + TimeConstants.PAY_EXPIRE_TIME);
-        this.addProcess(OrderStatusEnum.SHIPPED);
+        this.addProcess(String.format("您的订单%s", OrderStatusEnum.SHIPPED.getName()));
         return this;
     }
 
@@ -807,11 +814,13 @@ public class OrderVo implements Serializable {
         switch (orderStatus) {
             case CANCELED: {
                 this.order_status = OrderStatusEnum.CLOSED.getCode();
+                this.addProcess(String.format("%s:系统自动关闭", OrderStatusEnum.CLOSED.getName()));
                 break;
             }
             case REFUNDED:
             case REFUND_RETURNED: {
                 this.order_status = OrderStatusEnum.COMPLETE.getCode();
+                this.addProcess(String.format("%s,感谢您的惠顾,阿可美欢迎您再次光临", OrderStatusEnum.COMPLETE.getName()));
                 break;
             }
         }
