@@ -1,7 +1,7 @@
 package com.acme.acmemall.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.Data;
+import lombok.*;
 
 import java.util.Date;
 
@@ -10,7 +10,10 @@ import java.util.Date;
  * @author: ihpangzi
  * @time: 2024/3/12 19:15
  */
-@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+@Getter
 public class OrderProcessVo {
     // 订单处理时间
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")

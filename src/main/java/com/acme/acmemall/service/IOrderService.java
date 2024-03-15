@@ -60,4 +60,11 @@ public interface IOrderService {
      * @param orderIds
      */
     int updateByIds(List<String> orderIds);
+
+    /**
+     * 批量更新
+     *
+     * @param entityList
+     */
+    void batchUpdate(List<OrderVo> entityList);
 }

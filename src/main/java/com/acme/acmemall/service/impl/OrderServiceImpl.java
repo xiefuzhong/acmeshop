@@ -223,6 +223,16 @@ public class OrderServiceImpl implements IOrderService {
         return orderMapper.cancelBatch(orderIds);
     }
 
+    /**
+     * 批量更新
+     *
+     * @param entityList
+     */
+    @Override
+    public void batchUpdate(List<OrderVo> entityList) {
+
+    }
+
     private List<UserCouponVo> getUserCouponVos(String userCouponId, BigDecimal goodsTotalPrice, LoginUserVo loginUser) {
         List<UserCouponVo> userCouponList = Lists.newArrayList();
         if (StringUtils.isNotEmpty(userCouponId)) {

@@ -11,6 +11,7 @@ import com.acme.acmemall.factory.OrderRefundFactory;
 import com.acme.acmemall.model.enums.*;
 import com.acme.acmemall.utils.DateUtils;
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.google.common.collect.Lists;
 import lombok.AllArgsConstructor;
@@ -308,6 +309,7 @@ public class OrderVo implements Serializable {
         this.expire_time = new Date(add_time.getTime() + EXPIRE_TIME * 1000);
         // 订单明细
         cartList.stream().forEach(cartVo -> this.items.add(OrderFactory.buildOrderItem(cartVo, id)));
+        this.addProcess(OrderStatusEnum.NEW);
         return this;
     }
 
@@ -337,7 +339,18 @@ public class OrderVo implements Serializable {
         this.shipping_status = ShipStatusEnum.SHIP_NO.getCode();
         this.shipping_status_text = ShipStatusEnum.SHIP_NO.getName();
         this.pay_time = new Date();
+        this.addProcess(OrderStatusEnum.PAID);
         return this;
+    }
+
+    private void addProcess(OrderStatusEnum status) {
+        this.orderProcessList = JSONArray.parseArray(this.orderProcessText, OrderProcessVo.class);
+        OrderProcessVo process = OrderProcessVo.builder()
+                .process_desc(status.getName())
+                .process_time(new Date())
+                .sort_id(this.orderProcessList.size() + 1)
+                .build();
+        this.orderProcessList.add(process);
     }
 
     /**
@@ -354,6 +367,7 @@ public class OrderVo implements Serializable {
         this.order_status = OrderStatusEnum.CANCELED.getCode();
         this.order_status_text = OrderStatusEnum.CANCELED.getName();
         this.cancle_time = new Date();
+        this.addProcess(OrderStatusEnum.CANCELED);
     }
 
     public void cancle(String cancel_reason) {
@@ -383,6 +397,7 @@ public class OrderVo implements Serializable {
         this.order_status = OrderStatusEnum.DELETED.getCode();
         this.order_status_text = OrderStatusEnum.DELETED.getName();
         this.delete_time = new Date();
+        this.addProcess(OrderStatusEnum.DELETED);
     }
 
     /**
@@ -423,6 +438,7 @@ public class OrderVo implements Serializable {
         // 发货时间
         this.shipping_time = new Date();
         this.shipping_fee = BigDecimal.ZERO;
+        this.addProcess(OrderStatusEnum.SHIPPED);
         return this;
     }
 

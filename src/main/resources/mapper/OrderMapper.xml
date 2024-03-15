@@ -529,4 +529,36 @@
 
     </select>
 
+
+    <update id="batchUpdate" parameterType="list">
+        update t_acme_mall_order
+        <trim prefix="set" suffixOverrides=",">
+            <trim prefix="order_status =case" suffix="end,">
+                <foreach collection="list" item="item" index="index">
+                    <if test="item.order_status!=null">
+                        when id=#{item.id} then #{item.order_status}
+                    </if>
+                </foreach>
+            </trim>
+            <!--            <trim prefix="is_on_sale =case" suffix="end,">-->
+            <!--                <foreach collection="list" item="item" index="index">-->
+            <!--                    <if test="item.is_on_sale!=null">-->
+            <!--                        when id=#{item.id} then #{item.is_on_sale}-->
+            <!--                    </if>-->
+            <!--                </foreach>-->
+            <!--            </trim>-->
+            <trim prefix="is_delete =case" suffix="end,">
+                <foreach collection="list" item="item" index="index">
+                    <if test="item.is_delete!=null">
+                        when id=#{item.id} then #{item.is_delete}
+                    </if>
+                </foreach>
+            </trim>
+        </trim>
+        where id in
+        <foreach collection="list" item="item" index="index" separator="," open="(" close=")">
+            #{item.id}
+        </foreach>
+    </update>
+
 </mapper>
