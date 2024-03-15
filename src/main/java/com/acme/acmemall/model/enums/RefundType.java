@@ -40,4 +40,15 @@ public enum RefundType {
         return REFUND_ONLY;
     }
 
+
+    public static Boolean isRefundOnly(Integer code) {
+        RefundType type = parse(code);
+        return type == REFUND_ONLY;
+    }
+
+    public static Boolean isRefundReturn(Integer code) {
+        RefundType type = parse(code);
+        return type == REFUND_RETURN;
+    }
+
 }

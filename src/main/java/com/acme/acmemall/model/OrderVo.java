@@ -278,7 +278,7 @@ public class OrderVo implements Serializable {
         } else {
             StringBuffer strBuff = new StringBuffer();
             if (StringUtils.isNotEmpty(this.country)) {
-                strBuff.append(this.country.equalsIgnoreCase("CN") ? "中国" : this.country).append(" ");
+                strBuff.append(StringUtils.equalsIgnoreCase("CN", this.country) ? "中国" : this.country).append(" ");
             }
             if (StringUtils.isNotEmpty(this.province)) {
                 strBuff.append(this.province).append(" ");
@@ -606,10 +606,16 @@ public class OrderVo implements Serializable {
                 }
                 case REFUND_PASS:
                 case REFUND_RETURNED: {
-                    if ((refundStatus == RefundStatusEnum.REFUND_PASS && this.refund_type == RefundType.REFUND_ONLY.getCode())
-                            || (refundStatus == RefundStatusEnum.REFUND_RETURNED && this.refund_type == RefundType.REFUND_RETURN.getCode())) {
+                    if ((refundStatus == RefundStatusEnum.REFUND_PASS && RefundType.isRefundOnly(this.refund_type))
+                            || (refundStatus == RefundStatusEnum.REFUND_RETURNED && RefundType.isRefundReturn(this.refund_type))) {
                         optionMap.put("refundMoney", true);
                     }
+                    break;
+                }
+                default: {
+                    optionMap.put("refundAudit", Boolean.FALSE);
+                    optionMap.put("confirmReceipt", Boolean.FALSE);
+                    optionMap.put("refundMoney", Boolean.FALSE);
                     break;
                 }
             }
@@ -745,6 +751,7 @@ public class OrderVo implements Serializable {
                     this.refundVo.confirm();
                     break;
                 }
+                default:
             }
             this.refund_status = this.refundVo.getRefund_status();
         }
@@ -839,6 +846,7 @@ public class OrderVo implements Serializable {
                 this.addProcess(String.format("%s,感谢您的惠顾,阿可美欢迎您再次光临", OrderStatusEnum.COMPLETE.getName()));
                 break;
             }
+            default:
 //            case ROG: {
 //                this.order_status = OrderStatusEnum.COMPLETE.getCode();
 //                this.addProcess(String.format("%s,感谢您的惠顾,阿可美欢迎您再次光临", OrderStatusEnum.COMPLETE.getName()));
