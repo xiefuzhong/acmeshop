@@ -364,7 +364,9 @@ public class OrderVo implements Serializable {
     }
 
     private void addProcess(String desc) {
-        this.orderProcessList = JSONArray.parseArray(this.orderProcessText, OrderProcessVo.class);
+        if (StringUtils.isNotEmpty(this.orderProcessText)) {
+            this.orderProcessList = JSONArray.parseArray(this.orderProcessText, OrderProcessVo.class);
+        }
         OrderProcessVo process = OrderProcessVo.builder()
                 .process_desc(desc)
                 .process_time(new Date())
