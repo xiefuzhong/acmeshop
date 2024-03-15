@@ -248,6 +248,9 @@ public class OrderVo implements Serializable {
     private String orderProcessText;
     private List<OrderProcessVo> orderProcessList = Lists.newArrayList();
 
+    // 评论
+    private List<CommentVo> commentList = Lists.newArrayList();
+
     public List<OrderProcessVo> buildOrderProcessList() {
         if (StringUtils.isEmpty(this.orderProcessText)) {
             return Lists.newArrayList();
@@ -356,7 +359,7 @@ public class OrderVo implements Serializable {
         this.shipping_status = ShipStatusEnum.SHIP_NO.getCode();
         this.shipping_status_text = ShipStatusEnum.SHIP_NO.getName();
         this.pay_time = new Date();
-        this.addProcess(OrderStatusEnum.PAID.getName());
+        this.addProcess(String.format("您的订单已支付成功", OrderStatusEnum.PAID.getName()));
         return this;
     }
 
@@ -437,6 +440,14 @@ public class OrderVo implements Serializable {
     public void comment() {
         this.comment_status = 1;
         this.comment_time = new Date();
+        CommentVo comment = CommentVo.builder()
+                .user_id(this.user_id)
+                .order_id(this.id)
+                .goods_name(this.goods_name)
+                .score(5)
+                .content("此用户未填写评价内容")
+                .build();
+        this.commentList.add(comment);
     }
 
 
@@ -819,6 +830,12 @@ public class OrderVo implements Serializable {
             case REFUND_RETURNED: {
                 this.order_status = OrderStatusEnum.COMPLETE.getCode();
                 this.addProcess(String.format("%s,感谢您的惠顾,阿可美欢迎您再次光临", OrderStatusEnum.COMPLETE.getName()));
+                break;
+            }
+            case ROG: {
+                this.order_status = OrderStatusEnum.COMPLETE.getCode();
+                this.addProcess(String.format("%s,感谢您的惠顾,阿可美欢迎您再次光临", OrderStatusEnum.COMPLETE.getName()));
+                this.comment();
                 break;
             }
         }

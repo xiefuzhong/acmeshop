@@ -551,11 +551,51 @@
                     </if>
                 </foreach>
             </trim>
-            <!--            cancel_reason-->
+            <!--     取消原因       cancel_reason-->
             <trim prefix="cancel_reason =case" suffix="end,">
                 <foreach collection="list" item="item" index="index">
                     <if test="item.cancel_reason!=null">
                         when id=#{item.id} then #{item.cancel_reason}
+                    </if>
+                </foreach>
+            </trim>
+            <!--       更新确认时间     confirm_time-->
+            <trim prefix="confirm_time =case" suffix="end,">
+                <foreach collection="list" item="item" index="index">
+                    <if test="item.confirm_time!=null">
+                        when id=#{item.id} then #{item.confirm_time}
+                    </if>
+                </foreach>
+            </trim>
+            <!--       更新发货状态     shipping_status-->
+            <trim prefix="shipping_status =case" suffix="end,">
+                <foreach collection="list" item="item" index="index">
+                    <if test="item.shipping_status!=null">
+                        when id=#{item.id} then #{item.shipping_status}
+                    </if>
+                </foreach>
+            </trim>
+            <!--     更新退款过期时间       refund_expire_time-->
+            <trim prefix="refund_expire_time =case" suffix="end,">
+                <foreach collection="list" item="item" index="index">
+                    <if test="item.refund_expire_time!=null">
+                        when id=#{item.id} then #{item.refund_expire_time}
+                    </if>
+                </foreach>
+            </trim>
+            <!--    发货时间        shipping_time-->
+            <trim prefix="shipping_time =case" suffix="end,">
+                <foreach collection="list" item="item" index="index">
+                    <if test="item.shipping_time!=null">
+                        when id=#{item.id} then #{item.shipping_time}
+                    </if>
+                </foreach>
+            </trim>
+            <!--    自动确认收货时间        rog_time-->
+            <trim prefix="rog_time =case" suffix="end,">
+                <foreach collection="list" item="item" index="index">
+                    <if test="item.rog_time!=null">
+                        when id=#{item.id} then #{item.rog_time}
                     </if>
                 </foreach>
             </trim>
