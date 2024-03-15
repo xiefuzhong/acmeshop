@@ -246,9 +246,12 @@ public class OrderVo implements Serializable {
 
     // 订单操作记录
     private String orderProcessText;
+
+    @Builder.Default
     private List<OrderProcessVo> orderProcessList = Lists.newArrayList();
 
     // 评论
+    @Builder.Default
     private List<CommentVo> commentList = Lists.newArrayList();
 
     public List<OrderProcessVo> buildOrderProcessList() {
