@@ -226,11 +226,14 @@ public class OrderServiceImpl implements IOrderService {
     /**
      * 批量更新
      *
-     * @param entityList
+     * @param
      */
     @Override
-    public void batchUpdate(List<OrderVo> entityList) {
-
+    public int batchUpdate(List<OrderVo> orders) {
+        if (CollectionUtils.isEmpty(orders)) {
+            return 0;
+        }
+        return orderMapper.batchUpdate(orders);
     }
 
     private List<UserCouponVo> getUserCouponVos(String userCouponId, BigDecimal goodsTotalPrice, LoginUserVo loginUser) {

@@ -21,5 +21,12 @@ public interface OrderMapper extends BaseDao<OrderVo> {
 
     int cancelBatch(List<String> orderIds);
 
-    void batchUpdate(List<OrderVo> entityList);
+    /**
+     * 批量更新<br>
+     * 更新状态，操作时间(取消时间、支付时间、发货时间、收货时间，评价时间、售后时间)
+     *
+     * @param entityList
+     * @return
+     */
+    int batchUpdate(List<OrderVo> entityList);
 }

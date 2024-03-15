@@ -533,7 +533,6 @@
 
     </select>
 
-
     <update id="batchUpdate" parameterType="list">
         update t_acme_mall_order
         <trim prefix="set" suffixOverrides=",">
@@ -541,6 +540,22 @@
                 <foreach collection="list" item="item" index="index">
                     <if test="item.order_status!=null">
                         when id=#{item.id} then #{item.order_status}
+                    </if>
+                </foreach>
+            </trim>
+            <!--            取消时间-->
+            <trim prefix="cancle_time =case" suffix="end,">
+                <foreach collection="list" item="item" index="index">
+                    <if test="item.cancle_time!=null">
+                        when id=#{item.id} then #{item.cancle_time}
+                    </if>
+                </foreach>
+            </trim>
+            <!--            cancel_reason-->
+            <trim prefix="cancel_reason =case" suffix="end,">
+                <foreach collection="list" item="item" index="index">
+                    <if test="item.cancel_reason!=null">
+                        when id=#{item.id} then #{item.cancel_reason}
                     </if>
                 </foreach>
             </trim>

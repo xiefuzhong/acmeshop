@@ -17,7 +17,6 @@ import org.springframework.stereotype.Component;
 import javax.annotation.Resource;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * @description:
@@ -50,11 +49,11 @@ public class OrderStatusCheckTask {
     private static final long AUTO_TIMEOUT = 300000;
 
     /**
-     * 订单半个小时未付款要自动取消
+     * 支付超时自动取消:超下订单时间半个小时自动取消订单<br>
      * fixedRate:毫秒
      */
     @Scheduled(fixedRate = AUTO_CANCEL_RATE)
-    public void autoCancelOrderTask() {
+    public void payTimeout() {
         logger.info(String.format("autoCancelOrderTask-- 执行时间：%s", DateUtils.currentDate(DateUtils.DATE_TIME_PATTERN)));
         try {
             Map param = Maps.newHashMap();
@@ -69,9 +68,9 @@ public class OrderStatusCheckTask {
             if (size == 0) {
                 return;
             }
-            List<String> ids = orders.stream().map(OrderVo::getId).collect(Collectors.toList());
-            int result = orderService.updateByIds(ids);
-            logger.info(String.format("处理数据条数：%s", result));
+            orders.stream().forEach(order -> order.cancle("支付超时自动取消"));
+            orderService.batchUpdate(orders);
+            logger.info(String.format("处理数据条数：%s", 0));
         } catch (Exception e) {
             logger.error(String.format("autoCancelOrderTask-- Exception：%s", Throwables.getStackTraceAsString(e)));
         }

@@ -66,5 +66,5 @@ public interface IOrderService {
      *
      * @param entityList
      */
-    void batchUpdate(List<OrderVo> entityList);
+    int batchUpdate(List<OrderVo> entityList);
 }

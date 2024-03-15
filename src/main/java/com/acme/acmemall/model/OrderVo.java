@@ -381,10 +381,8 @@ public class OrderVo implements Serializable {
         if (!orderVo.canCancel()) {
             throw new ApiCusException("当前订单状态不支持取消订单");
         }
-        this.order_status = OrderStatusEnum.CANCELED.getCode();
-        this.order_status_text = OrderStatusEnum.CANCELED.getName();
-        this.cancle_time = new Date();
-        this.addProcess(String.format("订单%s:用户手动取消订单", OrderStatusEnum.CANCELED.getName()));
+        this.cancel_reason = "用户手动取消订单";
+        this.cancle(this.cancel_reason);
     }
 
     public void cancle(String cancel_reason) {
