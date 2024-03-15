@@ -1,9 +1,9 @@
 package com.acme.acmemall.model;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.*;
-
-import java.util.Date;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 /**
  * @description:
@@ -16,8 +16,7 @@ import java.util.Date;
 @Getter
 public class OrderProcessVo {
     // 订单处理时间
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    private Date process_time;
+    private String process_time;
 
     // 操作描述(生成订单、支付、发货、收货、退款、退货、关闭)
     private String process_desc;

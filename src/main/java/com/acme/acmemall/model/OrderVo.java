@@ -375,7 +375,7 @@ public class OrderVo implements Serializable {
         }
         OrderProcessVo process = OrderProcessVo.builder()
                 .process_desc(desc)
-                .process_time(new Date())
+                .process_time(DateUtils.timeToUtcDate(new Date().getTime(), DateUtils.DATE_TIME_PATTERN))
                 .sort_id(sort_id)
                 .build();
         this.orderProcessList.add(process);
