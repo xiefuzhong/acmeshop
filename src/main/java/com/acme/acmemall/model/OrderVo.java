@@ -240,6 +240,14 @@ public class OrderVo implements Serializable {
     private String orderProcessText;
     private List<OrderProcessVo> orderProcessList = Lists.newArrayList();
 
+    public List<OrderProcessVo> buildOrderProcessList() {
+        if (StringUtils.isEmpty(this.orderProcessText)) {
+            return Lists.newArrayList();
+        }
+        this.orderProcessList = JSONArray.parseArray(this.orderProcessText, OrderProcessVo.class);
+        return orderProcessList;
+    }
+
     private static void check(OrderVo orderVo, long userId) {
         if (orderVo == null) {
             throw new ApiCusException("订单不存在");
