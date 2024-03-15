@@ -7,10 +7,7 @@ import com.acme.acmemall.controller.reqeust.OrderSubmitRequest;
 import com.acme.acmemall.kuaidi100.response.QueryTrackResp;
 import com.acme.acmemall.kuaidi100.service.KuaiDi100QueryService;
 import com.acme.acmemall.kuainiao.ExpressService;
-import com.acme.acmemall.model.LoginUserVo;
-import com.acme.acmemall.model.OrderGoodsVo;
-import com.acme.acmemall.model.OrderRefundVo;
-import com.acme.acmemall.model.OrderVo;
+import com.acme.acmemall.model.*;
 import com.acme.acmemall.service.IOrderGoodsService;
 import com.acme.acmemall.service.IOrderRefundService;
 import com.acme.acmemall.service.IOrderService;
@@ -139,6 +136,7 @@ public class OrderController extends ApiBase {
         if (orderInfo == null) {
             return ResultMap.badArgument("查无此单:" + orderId);
         }
+
         Map orderGoodsParam = Maps.newHashMap();
         orderGoodsParam.put("orderIds", Lists.newArrayList(orderId));
         //订单的商品
@@ -153,6 +151,7 @@ public class OrderController extends ApiBase {
         resultObj.put("orderGoods", orderGoods);
         resultObj.put("handleOption", orderInfo.getHandleOption());
         resultObj.put("orderRefund", refundVo);
+        resultObj.put("orderProcessList", orderInfo.buildOrderProcessList());
         if (!StringUtils.isEmpty(orderInfo.getShipping_code()) && !StringUtils.isEmpty(orderInfo.getShipping_no())) {
             resultObj.put("shippingList", null);
         }
