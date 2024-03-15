@@ -103,11 +103,18 @@ public class OrderStatusCheckTask {
         logger.info(String.format("autoEnd-- 执行结束时间：%s", DateUtils.currentDate(DateUtils.DATE_TIME_PATTERN)));
     }
 
+    /**
+     * 评价超时：自收货之日起，15天内未评价的订单自动好评<br>
+     * 自动确认收货：自发货之日起，10天内未确认收货的订单自动确认收货;<br>
+     * 售后时效：自发货之日起，30天内未确认收货的订单自动确认收货;<br>
+     * 自动退款：仅退款且审批通过2天内未退款的订单自动退款，退货退款且确认退回的2天内未退款的订单自动退款<br>
+     */
     @Scheduled(fixedRate = AUTO_TIMEOUT)
     public void timeout() {
         logger.info(String.format("timeout-- 执行开始时间：%s", DateUtils.currentDate(DateUtils.DATE_TIME_PATTERN)));
         try {
-
+            Map params = Maps.newHashMap();
+            params.put("data_type", "toTimeout");
         } catch (Exception e) {
             logger.error(String.format("timeout-- Exception：%s", Throwables.getStackTraceAsString(e)));
         }

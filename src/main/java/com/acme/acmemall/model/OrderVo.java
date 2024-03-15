@@ -1,5 +1,6 @@
 package com.acme.acmemall.model;
 
+import com.acme.acmemall.common.TimeConstants;
 import com.acme.acmemall.controller.reqeust.LogisticsInfo;
 import com.acme.acmemall.controller.reqeust.OrderRefundRequest;
 import com.acme.acmemall.controller.reqeust.OrderShippedRequest;
@@ -39,8 +40,8 @@ import java.util.stream.Collectors;
 @Builder
 @Getter
 public class OrderVo implements Serializable {
-    // 半个
-    private static final long EXPIRE_TIME = 1800;
+    // 半个小时
+//    private static final long EXPIRE_TIME = 1800;
     //主键
     private String id;
     // 订单编号
@@ -227,10 +228,13 @@ public class OrderVo implements Serializable {
 
     private OrderRefundVo refundVo;
 
-    // 1-仅退款 2-退货退款
+    // 1-仅退款 2-退货退款 RefundType.class
     private Integer refund_type;
-
     private String refund_type_text;
+
+    // 收货时间
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    private Date rog_time;
 
     public String getRefund_type_text() {
         return RefundType.parse(this.refund_type).getTitle();
@@ -314,7 +318,8 @@ public class OrderVo implements Serializable {
         this.handleOption = OrderOperationOption.builder().build().buyerOption(this.order_status);
         this.merchant_id = cartList.stream().findFirst().get().getMerchant_id();
         this.add_time = new Date();
-        this.expire_time = new Date(add_time.getTime() + EXPIRE_TIME * 1000);
+        // 支付过期时间(状态扫描任务执行时间)
+        this.expire_time = new Date(add_time.getTime() + TimeConstants.PAY_EXPIRE_TIME);
         // 订单明细
         cartList.stream().forEach(cartVo -> this.items.add(OrderFactory.buildOrderItem(cartVo, id)));
         this.addProcess(OrderStatusEnum.NEW);
@@ -446,6 +451,8 @@ public class OrderVo implements Serializable {
         // 发货时间
         this.shipping_time = new Date();
         this.shipping_fee = BigDecimal.ZERO;
+        // 收货确认过期时间
+        this.rog_time = new Date(this.shipping_time.getTime() + TimeConstants.PAY_EXPIRE_TIME);
         this.addProcess(OrderStatusEnum.SHIPPED);
         return this;
     }

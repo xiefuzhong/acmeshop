@@ -137,7 +137,7 @@ public class PayController extends ApiBase {
                     String paySign = WechatUtil.arraySign(resultObj, ResourceUtil.getConfigByName("wx.paySignKey"));
                     resultObj.put("paySign", paySign);
 
-                    OrderVo newOrder = OrderVo.builder().all_order_id(orderVo.getAll_order_id()).pay_id(prepay_id).build();
+                    OrderVo newOrder = OrderVo.builder().id(orderVo.getId()).pay_id(prepay_id).build();
                     newOrder.prePay(newOrder);
                     orderService.updateStatus(newOrder);
 
