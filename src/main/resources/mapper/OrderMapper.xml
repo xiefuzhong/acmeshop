@@ -544,17 +544,11 @@
                     </if>
                 </foreach>
             </trim>
-            <!--            <trim prefix="is_on_sale =case" suffix="end,">-->
-            <!--                <foreach collection="list" item="item" index="index">-->
-            <!--                    <if test="item.is_on_sale!=null">-->
-            <!--                        when id=#{item.id} then #{item.is_on_sale}-->
-            <!--                    </if>-->
-            <!--                </foreach>-->
-            <!--            </trim>-->
-            <trim prefix="is_delete =case" suffix="end,">
+            <!--            更新操作记录-->
+            <trim prefix="order_process_text =case" suffix="end,">
                 <foreach collection="list" item="item" index="index">
-                    <if test="item.is_delete!=null">
-                        when id=#{item.id} then #{item.is_delete}
+                    <if test="item.orderProcessText!=null">
+                        when id=#{item.id} then #{item.orderProcessText}
                     </if>
                 </foreach>
             </trim>

@@ -20,4 +20,6 @@ public interface OrderMapper extends BaseDao<OrderVo> {
     List<OrderVo> queryPendingDataByTask(Map<String, Object> params);
 
     int cancelBatch(List<String> orderIds);
+
+    void batchUpdate(List<OrderVo> entityList);
 }

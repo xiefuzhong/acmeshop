@@ -95,6 +95,8 @@ public class OrderStatusCheckTask {
             if (size == 0) {
                 return;
             }
+            orders.stream().forEach(orderVo -> orderVo.autoEnd());
+            orderService.batchUpdate(orders);
         } catch (Exception e) {
             logger.error(String.format("autoEnd-- Exception：%s", Throwables.getStackTraceAsString(e)));
         }

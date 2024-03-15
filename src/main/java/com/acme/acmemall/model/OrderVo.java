@@ -794,4 +794,19 @@ public class OrderVo implements Serializable {
         }
         return Boolean.FALSE;
     }
+
+    public void autoEnd() {
+        OrderStatusEnum orderStatus = OrderStatusEnum.parse(this.order_status);
+        switch (orderStatus) {
+            case CANCELED: {
+                this.order_status = OrderStatusEnum.CLOSED.getCode();
+                break;
+            }
+            case REFUNDED:
+            case REFUND_RETURNED: {
+                this.order_status = OrderStatusEnum.COMPLETE.getCode();
+                break;
+            }
+        }
+    }
 }
