@@ -88,7 +88,7 @@ public class OrderRefundServiceImpl implements IOrderRefundService {
         // 退款操作
         RefundOptionEnum refundOption = RefundOptionEnum.parse(request.getRefundOption());
         if (refundOption == RefundOptionEnum.REFUND) {
-            log.info("refundOption: {},进行退款操作：{}", refundOption, orderVo.getId());
+            log.info("refundOption: {},进行退款操作：{},refundVo:{}", refundOption, orderVo.getId(), refundVo);
             if (!orderVo.canRefund(refundVo)) {
                 return ResultMap.error("状态不对,不能退款");
             }
