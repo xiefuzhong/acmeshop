@@ -832,12 +832,12 @@ public class OrderVo implements Serializable {
                 this.addProcess(String.format("%s,感谢您的惠顾,阿可美欢迎您再次光临", OrderStatusEnum.COMPLETE.getName()));
                 break;
             }
-            case ROG: {
-                this.order_status = OrderStatusEnum.COMPLETE.getCode();
-                this.addProcess(String.format("%s,感谢您的惠顾,阿可美欢迎您再次光临", OrderStatusEnum.COMPLETE.getName()));
-                this.comment();
-                break;
-            }
+//            case ROG: {
+//                this.order_status = OrderStatusEnum.COMPLETE.getCode();
+//                this.addProcess(String.format("%s,感谢您的惠顾,阿可美欢迎您再次光临", OrderStatusEnum.COMPLETE.getName()));
+//                this.comment();
+//                break;
+//            }
         }
     }
 }

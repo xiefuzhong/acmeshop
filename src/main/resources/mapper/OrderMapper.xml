@@ -520,12 +520,15 @@
                 #{item}
             </foreach>
             <if test="data_type != null and data_type !=''">
-                <if test="pay_status != null">
-                    AND pay_status = #{pay_status}
-                </if>
                 <choose>
                     <when test="data_type == 'toCancel'">
+                        <if test="pay_status != null">
+                            AND pay_status = #{pay_status}
+                        </if>
                         <![CDATA[ AND expire_time < now() ]]>
+                    </when>
+                    <when test="data_type == 'toEnd'">
+
                     </when>
                 </choose>
             </if>
