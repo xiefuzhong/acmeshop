@@ -99,6 +99,7 @@ public class OrderRefundServiceImpl implements IOrderRefundService {
                 orderRefundMapper.update(orderVo.getRefundVo());
                 return ResultMap.ok("操作成功，请查看账户");
             }
+            return ResultMap.error(result.getErr_code_des());
         }
 
         orderVo.afterService(refundVo, request.getRefundOption());
