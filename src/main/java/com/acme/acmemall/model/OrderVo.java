@@ -418,7 +418,8 @@ public class OrderVo implements Serializable {
     public void delete(OrderVo orderVo, long userId) {
         check(orderVo, userId);
         OrderStatusEnum status = OrderStatusEnum.parse(orderVo.order_status);
-        if (status != OrderStatusEnum.CANCELED) {
+        // 完结的订单可删除
+        if (status != OrderStatusEnum.CLOSED && status != OrderStatusEnum.CANCELED) {
             throw new ApiCusException("当前订单状态不支持删除订单");
         }
         this.order_status = OrderStatusEnum.DELETED.getCode();
