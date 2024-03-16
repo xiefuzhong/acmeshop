@@ -245,21 +245,24 @@ public class OrderVo implements Serializable {
     }
 
     // 订单操作记录
-    private String orderProcessText;
+    @Builder.Default
+    private String orderProcessText = StringUtils.EMPTY;
 
     @Builder.Default
     private List<OrderProcessVo> orderProcessList = Lists.newArrayList();
 
-    // 评论
-    @Builder.Default
-    private List<CommentVo> commentList = Lists.newArrayList();
-
-    public void buildOrderProcessList() {
+    public List<OrderProcessVo> getOrderProcessList() {
         if (StringUtils.isNotEmpty(this.orderProcessText)) {
             JSONArray processArr = JSON.parseArray(orderProcessText);
             this.orderProcessList = JSONArray.parseArray(processArr.toJSONString(), OrderProcessVo.class);
         }
+        return orderProcessList;
     }
+
+
+    // 评论
+    @Builder.Default
+    private List<CommentVo> commentList = Lists.newArrayList();
 
     private static void check(OrderVo orderVo, long userId) {
         if (orderVo == null) {
@@ -367,18 +370,20 @@ public class OrderVo implements Serializable {
 
     private void addProcess(String desc) {
         int sort_id = 1;
+        List<OrderProcessVo> processList = Lists.newArrayList();
         if (StringUtils.isNotEmpty(this.orderProcessText)) {
             JSONArray processArr = JSON.parseArray(orderProcessText);
-            this.orderProcessList = JSONArray.parseArray(processArr.toJSONString(), OrderProcessVo.class);
-            sort_id = this.orderProcessList.size() + 1;
+            processList = JSONArray.parseArray(processArr.toJSONString(), OrderProcessVo.class);
+            sort_id = processList.size() + 1;
         }
         OrderProcessVo process = OrderProcessVo.builder()
                 .process_desc(desc)
                 .process_time(DateUtils.timeToStr(new Date().getTime(), DateUtils.DATE_TIME_PATTERN))
                 .sort_id(sort_id)
                 .build();
-        this.orderProcessList.add(process);
-        this.orderProcessText = JSON.toJSONString(this.orderProcessList);
+        processList.add(process);
+        this.orderProcessText = JSON.toJSONString(processList);
+        this.orderProcessList = processList;
     }
 
     /**

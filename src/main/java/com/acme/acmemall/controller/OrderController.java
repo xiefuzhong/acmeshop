@@ -146,9 +146,7 @@ public class OrderController extends ApiBase {
 //        LoginUserVo loginUserVo = userService.queryByUserId(userVo.getUserId());
         //订单可操作的选择,删除，支付，收货，评论，退换货
         orderInfo.buildHandleOption(0);
-        //
-        orderInfo.buildOrderProcessList();
-        //
+
         resultObj.put("orderInfo", orderInfo);
         resultObj.put("orderGoods", orderGoods);
         resultObj.put("handleOption", orderInfo.getHandleOption());
@@ -290,6 +288,7 @@ public class OrderController extends ApiBase {
             if (!orderVo.canCancel()) {
                 return ResultMap.badArgument("当前状态下不能取消操作");
             }
+//            orderVo.buildOrderProcessList();
             orderVo.cancle("用户取消");
             logger.info("用户取消订单 cancel after：" + orderVo.toString());
             orderService.updateOrder(orderVo);
