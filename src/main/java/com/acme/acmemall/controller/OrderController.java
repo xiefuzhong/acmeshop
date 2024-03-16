@@ -7,7 +7,10 @@ import com.acme.acmemall.controller.reqeust.OrderSubmitRequest;
 import com.acme.acmemall.kuaidi100.response.QueryTrackResp;
 import com.acme.acmemall.kuaidi100.service.KuaiDi100QueryService;
 import com.acme.acmemall.kuainiao.ExpressService;
-import com.acme.acmemall.model.*;
+import com.acme.acmemall.model.LoginUserVo;
+import com.acme.acmemall.model.OrderGoodsVo;
+import com.acme.acmemall.model.OrderRefundVo;
+import com.acme.acmemall.model.OrderVo;
 import com.acme.acmemall.service.IOrderGoodsService;
 import com.acme.acmemall.service.IOrderRefundService;
 import com.acme.acmemall.service.IOrderService;
@@ -15,6 +18,8 @@ import com.acme.acmemall.service.IUserService;
 import com.acme.acmemall.utils.PageUtils;
 import com.acme.acmemall.utils.wechat.WechatRefundApiResult;
 import com.acme.acmemall.utils.wechat.WechatUtil;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -136,7 +141,11 @@ public class OrderController extends ApiBase {
         if (orderInfo == null) {
             return ResultMap.badArgument("查无此单:" + orderId);
         }
-
+        String orderProcessText = orderInfo.getOrderProcessText();
+        if (StringUtils.isNotEmpty(orderProcessText)) {
+            JSONArray array = JSON.parseArray(orderProcessText);
+            logger.info("orderProcessText.size " + array.size());
+        }
         Map orderGoodsParam = Maps.newHashMap();
         orderGoodsParam.put("orderIds", Lists.newArrayList(orderId));
         //订单的商品
