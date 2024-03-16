@@ -147,11 +147,13 @@ public class OrderController extends ApiBase {
         //订单可操作的选择,删除，支付，收货，评论，退换货
         orderInfo.buildHandleOption(0);
         //
+        orderInfo.buildOrderProcessList();
+        //
         resultObj.put("orderInfo", orderInfo);
         resultObj.put("orderGoods", orderGoods);
         resultObj.put("handleOption", orderInfo.getHandleOption());
         resultObj.put("orderRefund", refundVo);
-        resultObj.put("orderProcessList", orderInfo.buildOrderProcessList());
+        resultObj.put("orderProcessList", orderInfo.getOrderProcessList());
         if (!StringUtils.isEmpty(orderInfo.getShipping_code()) && !StringUtils.isEmpty(orderInfo.getShipping_no())) {
             resultObj.put("shippingList", null);
         }

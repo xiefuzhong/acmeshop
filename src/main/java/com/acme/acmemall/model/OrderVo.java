@@ -255,13 +255,11 @@ public class OrderVo implements Serializable {
     @Builder.Default
     private List<CommentVo> commentList = Lists.newArrayList();
 
-    public List<OrderProcessVo> buildOrderProcessList() {
-        if (StringUtils.isEmpty(this.orderProcessText)) {
-            return Lists.newArrayList();
+    public void buildOrderProcessList() {
+        if (StringUtils.isNotEmpty(this.orderProcessText)) {
+            JSONArray processArr = JSON.parseArray(orderProcessText);
+            this.orderProcessList = JSONArray.parseArray(processArr.toJSONString(), OrderProcessVo.class);
         }
-        JSONArray processArr = JSON.parseArray(orderProcessText);
-        this.orderProcessList = JSONArray.parseArray(processArr.toJSONString(), OrderProcessVo.class);
-        return orderProcessList;
     }
 
     private static void check(OrderVo orderVo, long userId) {
