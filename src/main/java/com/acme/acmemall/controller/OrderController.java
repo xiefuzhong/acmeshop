@@ -283,12 +283,12 @@ public class OrderController extends ApiBase {
             if (orderVo == null) {
                 return ResultMap.badArgument("查无此单,请确认订单信息");
             }
-            if (orderVo.getUser_id() != loginUser.getUserId()) {
+            if (!orderVo.getUser_id().equals(loginUser.getUserId())) {
                 return ResultMap.badArgument("非法用户不能取消");
             }
             // 未付款，直接取消
             if (!orderVo.canCancel()) {
-                return ResultMap.error(400, "当前状态下不能取消操作");
+                return ResultMap.badArgument("当前状态下不能取消操作");
             }
             orderVo.cancle("用户取消");
             logger.info("用户取消订单 cancel after：" + orderVo.toString());

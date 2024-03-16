@@ -265,7 +265,7 @@ public class OrderVo implements Serializable {
         if (orderVo == null) {
             throw new ApiCusException("订单不存在");
         }
-        if (orderVo.getUser_id() != userId) {
+        if (!orderVo.getUser_id().equals(userId)) {
             throw new ApiCusException("非法用户不能取消");
         }
     }
