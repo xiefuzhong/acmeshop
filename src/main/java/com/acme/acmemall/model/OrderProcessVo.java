@@ -1,8 +1,7 @@
 package com.acme.acmemall.model;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
@@ -10,10 +9,9 @@ import lombok.NoArgsConstructor;
  * @author: ihpangzi
  * @time: 2024/3/12 19:15
  */
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
-@Getter
 public class OrderProcessVo {
     // 订单处理时间
     private String process_time;

@@ -375,11 +375,8 @@ public class OrderVo implements Serializable {
             processList = JSONArray.parseArray(processArr.toJSONString(), OrderProcessVo.class);
             sort_id = processList.size() + 1;
         }
-        OrderProcessVo process = OrderProcessVo.builder()
-                .process_desc(desc)
-                .process_time(DateUtils.timeToStr(new Date().getTime(), DateUtils.DATE_TIME_PATTERN))
-                .sort_id(sort_id)
-                .build();
+
+        OrderProcessVo process = new OrderProcessVo(DateUtils.timeToStr(new Date().getTime(), DateUtils.DATE_TIME_PATTERN), desc, sort_id);
         processList.add(process);
         this.orderProcessText = JSON.toJSONString(processList);
         this.orderProcessList = processList;
