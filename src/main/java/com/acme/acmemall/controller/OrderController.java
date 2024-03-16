@@ -142,6 +142,7 @@ public class OrderController extends ApiBase {
             return ResultMap.badArgument("查无此单:" + orderId);
         }
         String orderProcessText = orderInfo.getOrderProcessText();
+        logger.info("orderProcessText--> " + orderProcessText);
         if (StringUtils.isNotEmpty(orderProcessText)) {
             JSONArray array = JSON.parseArray(orderProcessText);
             logger.info("orderProcessText.size " + array.size());
