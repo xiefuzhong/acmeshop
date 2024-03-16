@@ -259,7 +259,8 @@ public class OrderVo implements Serializable {
         if (StringUtils.isEmpty(this.orderProcessText)) {
             return Lists.newArrayList();
         }
-        this.orderProcessList = JSONArray.parseArray(this.orderProcessText, OrderProcessVo.class);
+        JSONArray processArr = JSON.parseArray(orderProcessText);
+        this.orderProcessList = JSONArray.parseArray(processArr.toJSONString(), OrderProcessVo.class);
         return orderProcessList;
     }
 
@@ -370,12 +371,13 @@ public class OrderVo implements Serializable {
     private void addProcess(String desc) {
         int sort_id = 1;
         if (StringUtils.isNotEmpty(this.orderProcessText)) {
-            this.orderProcessList = JSONArray.parseArray(this.orderProcessText, OrderProcessVo.class);
+            JSONArray processArr = JSON.parseArray(orderProcessText);
+            this.orderProcessList = JSONArray.parseArray(processArr.toJSONString(), OrderProcessVo.class);
             sort_id = this.orderProcessList.size() + 1;
         }
         OrderProcessVo process = OrderProcessVo.builder()
                 .process_desc(desc)
-                .process_time(DateUtils.timeToUtcDate(new Date().getTime(), DateUtils.DATE_TIME_PATTERN))
+                .process_time(DateUtils.timeToStr(new Date().getTime(), DateUtils.DATE_TIME_PATTERN))
                 .sort_id(sort_id)
                 .build();
         this.orderProcessList.add(process);
