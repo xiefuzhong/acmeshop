@@ -245,14 +245,6 @@ public class OrderVo implements Serializable {
         return RefundType.parse(this.refund_type).getTitle();
     }
 
-    public String getOrderProcessText() {
-        if (StringUtils.isNotEmpty(this.orderProcessText)) {
-            List<OrderProcessVo> processList = JSONArray.parseArray(this.orderProcessText, OrderProcessVo.class);
-            return processList.get(0).getProcess_desc();
-        }
-        return orderProcessText;
-    }
-
     // 订单操作记录
     private String orderProcessText;
 
