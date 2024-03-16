@@ -11,7 +11,6 @@ import com.acme.acmemall.factory.OrderFactory;
 import com.acme.acmemall.factory.OrderRefundFactory;
 import com.acme.acmemall.model.enums.*;
 import com.acme.acmemall.utils.DateUtils;
-import com.acme.acmemall.utils.GsonUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -379,7 +378,7 @@ public class OrderVo implements Serializable {
                 .sort_id(sort_id)
                 .build();
         this.orderProcessList.add(process);
-        this.orderProcessText = GsonUtil.toJson(this.orderProcessList);
+        this.orderProcessText = JSON.toJSONString(this.orderProcessList);
     }
 
     /**
