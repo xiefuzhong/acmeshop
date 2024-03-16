@@ -221,19 +221,19 @@
     <select id="queryMerCartList" parameterType="java.lang.Long" resultType="com.acme.acmemall.model.MerCartVo">
         SELECT
         c.merchant_id as merchantId,
-        s.merchant_name as merchantName,
+        '阿可美商城+' as merchantName,
         sum(c.retail_price * c.NUMBER) as orderTotalPrice,
         ifnull(sum(g.extra_price * c.number), 0) as freightPrice
         FROM
         t_acme_mall_cart c
-        INNER JOIN sys_user s ON s.user_id = c.user_id
+        INNER JOIN t_acme_mall_user s ON s.id = c.user_id
         INNER JOIN t_acme_mall_goods g ON g.id = c.goods_id
         WHERE
         c.user_id = #{user_id}
         and c.checked = 1
         GROUP BY
         c.merchant_id,
-        s.merchant_name
+        merchantName
     </select>
     <select id="queryCheckedByUserIdAndMerId" parameterType="java.util.Map" resultMap="cartMap">
         select * from t_acme_mall_cart where user_id=#{user_id} and checked = 1 and merchant_id=#{merchantId}
