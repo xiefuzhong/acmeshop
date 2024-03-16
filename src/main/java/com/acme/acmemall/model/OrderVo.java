@@ -245,7 +245,6 @@ public class OrderVo implements Serializable {
     }
 
     // 订单操作记录
-    @Builder.Default
     private String orderProcessText = StringUtils.EMPTY;
 
     @Builder.Default
