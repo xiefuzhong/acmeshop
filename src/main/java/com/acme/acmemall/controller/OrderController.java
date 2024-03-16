@@ -18,8 +18,6 @@ import com.acme.acmemall.service.IUserService;
 import com.acme.acmemall.utils.PageUtils;
 import com.acme.acmemall.utils.wechat.WechatRefundApiResult;
 import com.acme.acmemall.utils.wechat.WechatUtil;
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -141,12 +139,6 @@ public class OrderController extends ApiBase {
         if (orderInfo == null) {
             return ResultMap.badArgument("查无此单:" + orderId);
         }
-        String orderProcessText = orderInfo.getOrderProcessText();
-        logger.info("orderProcessText--> " + orderProcessText);
-        if (StringUtils.isNotEmpty(orderProcessText)) {
-            JSONArray array = JSON.parseArray(orderProcessText);
-            logger.info("orderProcessText.size " + array.size());
-        }
         Map orderGoodsParam = Maps.newHashMap();
         orderGoodsParam.put("orderIds", Lists.newArrayList(orderId));
         //订单的商品
@@ -161,7 +153,6 @@ public class OrderController extends ApiBase {
         resultObj.put("orderGoods", orderGoods);
         resultObj.put("handleOption", orderInfo.getHandleOption());
         resultObj.put("orderRefund", refundVo);
-        resultObj.put("orderProcessList", orderInfo.getOrderProcessList());
         if (!StringUtils.isEmpty(orderInfo.getShipping_code()) && !StringUtils.isEmpty(orderInfo.getShipping_no())) {
             resultObj.put("shippingList", null);
         }
