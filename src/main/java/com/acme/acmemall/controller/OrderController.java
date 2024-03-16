@@ -171,7 +171,7 @@ public class OrderController extends ApiBase {
      * 取消订单，恢复优惠券，更新订单状态
      */
     @ApiOperation(value = "取消订单")
-    @RequestMapping("cancel")
+//    @RequestMapping("cancel")
     public Object cancelOrder(@LoginUser LoginUserVo loginUserVo, String orderId) {
         try {
             OrderVo orderVo = orderService.findOrder(orderId);
