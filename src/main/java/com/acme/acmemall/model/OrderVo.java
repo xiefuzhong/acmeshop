@@ -377,7 +377,7 @@ public class OrderVo implements Serializable {
         }
 
         OrderProcessVo process = new OrderProcessVo(DateUtils.timeToStr(new Date().getTime(), DateUtils.DATE_TIME_PATTERN), desc, sort_id);
-        processList.add(process);
+        processList.add(0, process);
         this.orderProcessText = JSON.toJSONString(processList);
         this.orderProcessList = processList;
     }
