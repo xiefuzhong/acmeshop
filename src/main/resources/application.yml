@@ -6,6 +6,8 @@ kuainiao:
     enable: true
     appId: 1831866
     appKey: 8240860b-dfb5-4921-ac2f-eea585885eb6
+    expressQueryUrl: https://api.kdniao.com/Ebusiness/EbusinessOrderHandle.aspx
+    requestType: 1002
 
 spring:
   datasource:

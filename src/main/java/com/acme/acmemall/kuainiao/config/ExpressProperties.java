@@ -18,6 +18,8 @@ public class ExpressProperties {
     private boolean enabled = false;
     private String appId;
     private String appKey;
+    private String expressQueryUrl;
+    private String requestType;
 
     private List<Map<String, String>> vendors = Lists.newArrayList();
 }

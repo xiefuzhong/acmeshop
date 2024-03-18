@@ -25,9 +25,9 @@ import java.util.Map;
  */
 @Slf4j
 public class ExpressService {
-    private static final String REQ_URL = "https://api.kdniao.com/Ebusiness/EbusinessOrderHandle.aspx";
+//    private static final String REQ_URL = "https://api.kdniao.com/Ebusiness/EbusinessOrderHandle.aspx";
 
-    private static final String REQUEST_TYPE = "8001";
+    //    private static final String REQUEST_TYPE = "1002";
     private ExpressProperties properties;
 
     public ExpressProperties getProperties() {
@@ -53,7 +53,7 @@ public class ExpressService {
         HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(param, headers);
         String response = null;
         try {
-            response = restTemplate.postForObject(REQ_URL, request, String.class);
+            response = restTemplate.postForObject(properties.getExpressQueryUrl(), request, String.class);
         } catch (RestClientException e) {
             log.error("查询报错:" + Throwables.getStackTraceAsString(e));
         }
@@ -75,7 +75,7 @@ public class ExpressService {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        param.add("RequestType", REQUEST_TYPE);
+        param.add("RequestType", properties.getRequestType());
         param.add("EBusinessID", properties.getAppId());
         param.add("RequestData", jsonStr);
         param.add("DataSign", DataSign);
