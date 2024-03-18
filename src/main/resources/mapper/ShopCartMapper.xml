@@ -212,6 +212,10 @@
           and user_id = #{user_id}
     </delete>
 
+    <delete id="deleteCartByUserId">
+        delete from t_acme_mall_cart where user_id = #{user_id}
+    </delete>
+
     <delete id="deleteByCart">
         delete from t_acme_mall_cart
         where  user_id = #{user_id} and  session_id = #{session_id} and  checked = #{checked}

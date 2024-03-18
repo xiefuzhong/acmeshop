@@ -61,6 +61,8 @@
         <result property="comment_time" column="comment_time"/>
         <!--        order_process_text-->
         <result property="orderProcessText" column="order_process_text"/>
+        <!--        after_service_expire_time-->
+        <result property="after_service_expire_time" column="after_service_expire_time"/>
     </resultMap>
 
     <select id="queryObject" resultMap="orderMap">
@@ -374,6 +376,8 @@
             <if test="invoiceHeaderId != null">`invoice_header_id` = #{invoiceHeaderId},</if>
             <if test="comment_status != null">`comment_status` = #{comment_status},</if>
             <if test="orderProcessText != null">`order_process_text` = #{orderProcessText},</if>
+            <if test="after_service_expire_time != null">`after_service_expire_time` = #{after_service_expire_time},
+            </if>
             <!--            申请退款-->
             <if test="refundVo != null">
                 <if test="refundVo.refund_status != null">`refund_status` = #{refundVo.refund_status},</if>
@@ -599,6 +603,14 @@
                 <foreach collection="list" item="item" index="index">
                     <if test="item.rog_time!=null">
                         when id=#{item.id} then #{item.rog_time}
+                    </if>
+                </foreach>
+            </trim>
+            <!--    售后失效时间        after_service_expire_time-->
+            <trim prefix="after_service_expire_time =case" suffix="end,">
+                <foreach collection="list" item="item" index="index">
+                    <if test="item.after_service_expire_time!=null">
+                        when id=#{item.id} then #{item.after_service_expire_time}
                     </if>
                 </foreach>
             </trim>

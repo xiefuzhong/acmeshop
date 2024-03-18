@@ -33,4 +33,6 @@ public interface IShopCartService {
     String queryMerchantName(Long merchantId);
 
     void updateCheck(String[] productIdArray, Integer isChecked, Long userId);
+
+    void deleteCartByUserId(Long userId);
 }

@@ -236,9 +236,13 @@ public class OrderVo implements Serializable {
     private Integer refund_type;
     private String refund_type_text;
 
-    // 收货时间
+    //  自动收货时间
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date rog_time;
+
+    // 售后过期时间
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    private Date after_service_expire_time;
 
     public String getRefund_type_text() {
         return RefundType.parse(this.refund_type).getTitle();
@@ -479,6 +483,8 @@ public class OrderVo implements Serializable {
         this.shipping_fee = BigDecimal.ZERO;
         // 收货确认过期时间
         this.rog_time = new Date(this.shipping_time.getTime() + TimeConstants.PAY_EXPIRE_TIME);
+        // 售后过期时间
+        this.after_service_expire_time = new Date(this.shipping_time.getTime() + TimeConstants.AFTER_SALES_EXPIRE_TIME);
         this.addProcess(String.format("您的订单%s", OrderStatusEnum.SHIPPED.getName()));
         return this;
     }

@@ -176,6 +176,8 @@ public class ShopCartController extends ApiBase {
         if (null == productInfo || !productInfo.verifyInventory(number)) {
             return ResultMap.error(400, "库存不足");
         }
+        // 清空购物车
+        cartService.deleteCartByUserId(loginUser.getUserId());
 
         //判断购物车中是否存在此规格商品
         Map cartParam = Maps.newHashMap();

@@ -132,4 +132,12 @@ public class ShopCartService implements IShopCartService {
         }
         mapper.batchUpdate(cartUpdateList);
     }
+
+    /**
+     * @param userId
+     */
+    @Override
+    public void deleteCartByUserId(Long userId) {
+        mapper.deleteCartByUserId(userId);
+    }
 }

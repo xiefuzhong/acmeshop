@@ -39,4 +39,6 @@ public interface ShopCartMapper extends BaseDao<ShopCartVo> {
     String queryMerchantName(Long merchantId);
 
     void batchUpdate(List<ShopCartVo> cartList);
+
+    void deleteCartByUserId(Long userId);
 }
