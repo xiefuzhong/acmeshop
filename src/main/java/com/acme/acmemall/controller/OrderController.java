@@ -278,7 +278,7 @@ public class OrderController extends ApiBase {
             }
 
             OrderVo orderVo = orderService.findOrder(object.getString("orderId"));
-            logger.info("用户取消订单 cancel before：" + orderVo.getOrderProcessText());
+//            logger.info("用户取消订单 cancel before：" + orderVo.getOrderProcessText());
             if (orderVo == null) {
                 return ResultMap.badArgument("查无此单,请确认订单信息");
             }
@@ -290,7 +290,7 @@ public class OrderController extends ApiBase {
                 return ResultMap.badArgument("当前状态下不能取消操作");
             }
             orderVo.cancle("用户取消");
-            logger.info("用户取消订单 cancel after：" + orderVo.getOrderProcessText());
+//            logger.info("用户取消订单 cancel after：" + orderVo.getOrderProcessText());
             orderService.updateOrder(orderVo);
         } catch (Exception e) {
             String errMsg = Throwables.getStackTraceAsString(e);
