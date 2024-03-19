@@ -76,15 +76,8 @@
         `refund_type` = #{refund_type},
         `refund_num` = #{refund_num},
         `refund_price` = #{refund_price},
-        `refunded_price` = #{refunded_price},
-        `refunded_time` = #{refunded_time},
-        `refund_phone` = #{refund_phone},
-        `refund_express` = #{refund_express},
-        `refund_express_name` = #{refund_express_name},
         `refund_explain` = #{refund_explain},
         `refund_reason` = #{refund_reason},
-        `refuse_reason` = #{refuse_reason},
-        `remark` = #{remark},
         `goods_info` = #{goods_info},
         `refund_status` = #{refund_status}
 
