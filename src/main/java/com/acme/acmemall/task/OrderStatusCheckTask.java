@@ -109,14 +109,24 @@ public class OrderStatusCheckTask {
      * 自动退款：仅退款且审批通过2天内未退款的订单自动退款，退货退款且确认退回的2天内未退款的订单自动退款<br>
      */
     @Scheduled(fixedRate = AUTO_TIMEOUT)
-    public void timeout() {
-        logger.info(String.format("timeout-- 执行开始时间：%s", DateUtils.currentDate(DateUtils.DATE_TIME_PATTERN)));
+    public void afterServiceTimeout() {
+        logger.info(String.format("售后自动失效任务-- 执行开始时间：%s", DateUtils.currentDate(DateUtils.DATE_TIME_PATTERN)));
         try {
             Map params = Maps.newHashMap();
-            params.put("data_type", "toTimeout");
+            List<Integer> status = Lists.newArrayList(OrderStatusEnum.SHIPPED.getCode(), OrderStatusEnum.ROG.getCode());
+            params.put("status", status);
+            params.put("data_type", "afterServiceTimeout");
+            List<OrderVo> orders = orderService.queryPendingDataByTask(params);
+            int size = CollectionUtils.isEmpty(orders) ? 0 : orders.size();
+            logger.info(String.format("查询出待处理数据条数：%s", size));
+            if (size == 0) {
+                return;
+            }
+            orders.stream().forEach(orderVo -> orderVo.autoEnd());
+            orderService.batchUpdate(orders);
         } catch (Exception e) {
-            logger.error(String.format("timeout-- Exception：%s", Throwables.getStackTraceAsString(e)));
+            logger.error(String.format("售后自动失效任务-- Exception：%s", Throwables.getStackTraceAsString(e)));
         }
-        logger.info(String.format("timeout-- 执行结束时间：%s", DateUtils.currentDate(DateUtils.DATE_TIME_PATTERN)));
+        logger.info(String.format("售后自动失效任务-- 执行结束时间：%s", DateUtils.currentDate(DateUtils.DATE_TIME_PATTERN)));
     }
 }

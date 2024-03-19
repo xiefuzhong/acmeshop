@@ -531,8 +531,8 @@
                         </if>
                         <![CDATA[ AND expire_time < now() ]]>
                     </when>
-                    <when test="data_type == 'toEnd'">
-
+                    <when test="data_type == 'afterServiceTimeout'">
+                        <![CDATA[ AND after_service_expire_time < now() ]]>
                     </when>
                 </choose>
             </if>
@@ -540,6 +540,7 @@
 
     </select>
 
+    <!--    批量更新-->
     <update id="batchUpdate" parameterType="list">
         update t_acme_mall_order
         <trim prefix="set" suffixOverrides=",">
@@ -611,6 +612,14 @@
                 <foreach collection="list" item="item" index="index">
                     <if test="item.after_service_expire_time!=null">
                         when id=#{item.id} then #{item.after_service_expire_time}
+                    </if>
+                </foreach>
+            </trim>
+            <!--            refund_status 售后失效-->
+            <trim prefix="refund_status =case" suffix="end,">
+                <foreach collection="list" item="item" index="index">
+                    <if test="item.refund_status!=null">
+                        when id=#{item.id} then #{item.refund_status}
                     </if>
                 </foreach>
             </trim>
