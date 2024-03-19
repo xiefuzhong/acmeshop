@@ -765,6 +765,7 @@ public class OrderVo implements Serializable {
                     } else if (refundVo.getRefund_type() == 2) {
                         this.order_status = OrderStatusEnum.REFUND_RETURNED.getCode();
                     }
+                    this.addProcess(String.format("您的订单%s", RefundStatusEnum.REFUND_PAID.getName()));
                     break;
                 }
                 case RECEIPT: {
