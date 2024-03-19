@@ -69,7 +69,7 @@
         #{refund_status}
         )
         ON DUPLICATE KEY UPDATE
-        `order_id` = #{order_id},
+        `order_id` = VALUES(order_id),
         `user_id` = #{user_id},
         `add_time` = #{add_time},
         `refund_type` = #{refund_type},
