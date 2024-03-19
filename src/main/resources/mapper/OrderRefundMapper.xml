@@ -27,8 +27,8 @@
     </resultMap>
 
     <insert id="save" parameterType="com.acme.acmemall.model.OrderRefundVo" useGeneratedKeys="true"
-            keyProperty="order_id">
-        REPLACE INTO `t_acme_mall_order_refund`
+            keyProperty="id">
+        INSERT INTO `t_acme_mall_order_refund`
         (
         `order_id`,
         `user_id`,
@@ -67,6 +67,25 @@
         #{remark},
         #{goods_info},
         #{refund_status}
+        )
+        ON DUPLICATE KEY UPDATE
+        `order_id` = #{order_id},
+        `user_id` = #{user_id},
+        `add_time` = #{add_time},
+        `refund_type` = #{refund_type},
+        `refund_num` = #{refund_num},
+        `refund_price` = #{refund_price},
+        `refunded_price` = #{refunded_price},
+        `refunded_time` = #{refunded_time},
+        `refund_phone` = #{refund_phone},
+        `refund_express` = #{refund_express},
+        `refund_express_name` = #{refund_express_name},
+        `refund_explain` = #{refund_explain},
+        `refund_reason` = #{refund_reason},
+        `refuse_reason` = #{refuse_reason},
+        `remark` = #{remark},
+        `goods_info` = #{goods_info},
+        `refund_status` = #{refund_status}
         )
     </insert>
 
