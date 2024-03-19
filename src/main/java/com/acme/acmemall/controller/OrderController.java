@@ -253,7 +253,9 @@ public class OrderController extends ApiBase {
     }
 
     @GetMapping("/express-track")
-    public Object expressTrack(@LoginUser LoginUserVo loginUserVo, @RequestParam("orderId") String orderId) {
+    public Object expressTrack(@LoginUser LoginUserVo loginUserVo,
+                               @RequestParam("orderId") String orderId,
+                               @RequestParam("type") String type) {
         OrderVo orderVo = orderService.findOrder(orderId);
         if (loginUserVo == null) {
             return ResultMap.error(400, "非有效用户操作");
@@ -261,7 +263,13 @@ public class OrderController extends ApiBase {
         if (orderVo == null) {
             return ResultMap.badArgument("查无此单,请确认订单信息");
         }
-        String result = expressService.query(orderVo.getShipping_code(), orderVo.getShipping_no());
+        String shippingCode = orderVo.getShipping_code();
+        String shippingNo = orderVo.getShipping_no();
+        if (StringUtils.equalsIgnoreCase("refund", type)) {
+            shippingCode = orderVo.getRefund_express();
+            shippingNo = orderVo.getRefund_express_code();
+        }
+        String result = expressService.query(shippingCode, shippingNo);
         return toResponsSuccess(result);
     }
 

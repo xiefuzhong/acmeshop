@@ -235,6 +235,8 @@ public class OrderVo implements Serializable {
     // 1-仅退款 2-退货退款 RefundType.class
     private Integer refund_type;
     private String refund_type_text;
+    private String refund_express;
+    private String refund_express_code;
 
     //  自动收货时间
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
