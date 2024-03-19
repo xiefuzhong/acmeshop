@@ -69,6 +69,7 @@
         #{refund_status}
         )
         ON DUPLICATE KEY UPDATE
+        `id` = VALUES(id),
         `order_id` = VALUES(order_id),
         `user_id` = #{user_id},
         `add_time` = #{add_time},
@@ -86,7 +87,7 @@
         `remark` = #{remark},
         `goods_info` = #{goods_info},
         `refund_status` = #{refund_status}
-        )
+
     </insert>
 
     <select id="findByOrderId" resultMap="orderRefundMap">
