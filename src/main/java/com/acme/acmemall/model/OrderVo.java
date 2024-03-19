@@ -722,9 +722,18 @@ public class OrderVo implements Serializable {
             return;
         }
         OrderStatusEnum orderStatus = OrderStatusEnum.parse(this.order_status);
+        RefundOptionEnum option = RefundOptionEnum.parse(refundOption);
+        // 提交售后申请
+        if (option == RefundOptionEnum.SUBMIT) {
+            this.refundVo.submit(this.user_id);
+            this.order_status = OrderStatusEnum.AFTER_SERVICE.getCode();
+            this.refund_status = RefundStatusEnum.REFUND_APPLY.getCode();
+            this.refund_type = refundVo.getRefund_type();
+            this.addProcess(String.format("您的订单%s", OrderStatusEnum.AFTER_SERVICE.getName()));
+            return;
+        }
         if (orderStatus == OrderStatusEnum.AFTER_SERVICE) {
             this.refundVo = refundVo;
-            RefundOptionEnum option = RefundOptionEnum.parse(refundOption);
             switch (option) {
                 case CANCEL: {
                     // 取消申请
@@ -755,12 +764,6 @@ public class OrderVo implements Serializable {
                     } else if (refundVo.getRefund_type() == 2) {
                         this.order_status = OrderStatusEnum.REFUND_RETURNED.getCode();
                     }
-                    break;
-                }
-                case SUBMIT: {
-                    this.refundVo.submit(this.user_id);
-                    this.refund_type = refundVo.getRefund_type();
-                    this.addProcess(String.format("您的订单%s", OrderStatusEnum.AFTER_SERVICE.getName()));
                     break;
                 }
                 case RECEIPT: {
