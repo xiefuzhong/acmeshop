@@ -757,7 +757,7 @@ public class OrderVo implements Serializable {
                 case SUBMIT: {
                     this.refundVo.submit(this.user_id);
                     this.refund_type = refundVo.getRefund_type();
-                    this.addProcess(String.format("您的订单提交申请%s", OrderStatusEnum.AFTER_SERVICE));
+                    this.addProcess(String.format("您的订单提交申请%s", OrderStatusEnum.AFTER_SERVICE.getName()));
                     break;
                 }
                 case RECEIPT: {
