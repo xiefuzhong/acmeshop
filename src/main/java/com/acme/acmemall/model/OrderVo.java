@@ -718,6 +718,9 @@ public class OrderVo implements Serializable {
      * @param refundVo
      */
     public void afterService(OrderRefundVo refundVo, String refundOption) {
+        if (refundVo == null) {
+            return;
+        }
         OrderStatusEnum orderStatus = OrderStatusEnum.parse(this.order_status);
         if (orderStatus == OrderStatusEnum.AFTER_SERVICE) {
             this.refundVo = refundVo;
@@ -757,7 +760,7 @@ public class OrderVo implements Serializable {
                 case SUBMIT: {
                     this.refundVo.submit(this.user_id);
                     this.refund_type = refundVo.getRefund_type();
-//                    this.addProcess(String.format("您的订单%s", OrderStatusEnum.AFTER_SERVICE.getName()));
+                    this.addProcess(String.format("您的订单%s", OrderStatusEnum.AFTER_SERVICE.getName()));
                     break;
                 }
                 case RECEIPT: {

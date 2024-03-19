@@ -55,10 +55,13 @@ public class OrderRefundServiceImpl implements IOrderRefundService {
         } else if (!refundVo.canApply()) {
             return ResultMap.error("售后中不能重复提交");
         }
+        if (refundVo == null) {
+            return ResultMap.error("无售后信息");
+        }
         log.info("request.getRefundOption: {}", request.getRefundOption());
         log.info("orderVo.afterService before: {}", orderVo);
         orderVo.afterService(refundVo, request.getRefundOption());
-        log.info("orderVo.afterService after: {}", orderVo.getRefundVo());
+        log.info("orderVo.afterService after: {}", orderVo);
         orderMapper.update(orderVo);
         orderRefundMapper.save(refundVo);
         return ResultMap.response(ResultCodeEnum.SUCCESS, refundVo);
