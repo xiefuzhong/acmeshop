@@ -725,6 +725,7 @@ public class OrderVo implements Serializable {
         RefundOptionEnum option = RefundOptionEnum.parse(refundOption);
         // 提交售后申请
         if (option == RefundOptionEnum.SUBMIT) {
+            this.refundVo = refundVo;
             this.refundVo.submit(this.user_id);
             this.order_status = OrderStatusEnum.AFTER_SERVICE.getCode();
             this.refund_status = RefundStatusEnum.REFUND_APPLY.getCode();
