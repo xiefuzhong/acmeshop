@@ -63,6 +63,10 @@
         <result property="orderProcessText" column="order_process_text"/>
         <!--        after_service_expire_time-->
         <result property="after_service_expire_time" column="after_service_expire_time"/>
+        <!--        refund_express-->
+        <result property="refund_express" column="refund_express"/>
+        <!--        refund_express_code-->
+        <result property="refund_express_code" column="refund_express_code"/>
     </resultMap>
 
     <select id="queryObject" resultMap="orderMap">
