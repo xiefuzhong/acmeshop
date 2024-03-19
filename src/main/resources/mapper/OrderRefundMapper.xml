@@ -26,7 +26,8 @@
 
     </resultMap>
 
-    <insert id="save" parameterType="com.acme.acmemall.model.OrderRefundVo" useGeneratedKeys="true" keyProperty="id">
+    <insert id="save" parameterType="com.acme.acmemall.model.OrderRefundVo" useGeneratedKeys="true"
+            keyProperty="order_id">
         REPLACE INTO `t_acme_mall_order_refund`
         (
         `order_id`,
