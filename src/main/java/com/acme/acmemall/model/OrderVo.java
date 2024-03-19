@@ -442,8 +442,11 @@ public class OrderVo implements Serializable {
         this.confirm_time = new Date();
         this.shipping_status = ShipStatusEnum.SHIP_ROG.getCode();
         this.shipping_status_text = ShipStatusEnum.SHIP_ROG.getName();
-        this.addProcess(String.format("您的订单%s", OrderStatusEnum.ROG.getName()));
+        // 自收货之日起,30天后不允许发起售后
         this.refund_expire_time = new Date(this.confirm_time.getTime() + TimeConstants.AFTER_SALES_EXPIRE_TIME);
+        // 自收货之日起，15天之后自动好评
+        this.comment_time = new Date(this.confirm_time.getTime() + TimeConstants.EVALUATE_EXPIRE_TIME);
+        this.addProcess(String.format("您的订单%s", OrderStatusEnum.ROG.getName()));
     }
 
     /**
@@ -754,6 +757,7 @@ public class OrderVo implements Serializable {
                 case SUBMIT: {
                     this.refundVo.submit(this.user_id);
                     this.refund_type = refundVo.getRefund_type();
+                    this.addProcess(String.format("您的订单提交申请%s", OrderStatusEnum.AFTER_SERVICE));
                     break;
                 }
                 case RECEIPT: {

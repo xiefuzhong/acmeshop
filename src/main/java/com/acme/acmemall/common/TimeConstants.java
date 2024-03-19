@@ -38,11 +38,11 @@ public abstract class TimeConstants implements Serializable {
     /**
      * 评价超时：15天后自动好评
      */
-    private final static Long EVALUATE_EXPIRE_TIME = TIME_DAY * 15;
+    public final static Long EVALUATE_EXPIRE_TIME = TIME_DAY * 15;
 
     /**
-     * 自动收货时间：自收货之日起10天后自动收货
+     * 自动确认收货时间：自发货之日起10天后自动确认收货
      */
-    private final static Long AUTO_RECEIPT_TIME = TIME_DAY * 10;
+    public final static Long AUTO_RECEIPT_TIME = TIME_DAY * 10;
 
 }
