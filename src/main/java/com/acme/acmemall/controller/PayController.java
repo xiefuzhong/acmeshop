@@ -283,14 +283,13 @@ public class PayController extends ApiBase {
         // 数字签证
         query.put("sign", sign);
         String xml = MapUtils.convertMap2Xml(query);
-        logger.info("xml:" + xml);
+//        logger.info("xml:" + xml);
         Map<String, Object> queryResult = null;
         try {
             String result = WechatUtil.requestOnce(ResourceUtil.getConfigByName("wx.orderquery"), xml);
             queryResult = XmlUtil.xmlStrToMap(result);
         } catch (Exception e) {
-            e.printStackTrace();
-            return ResultMap.error("查询失败,error=" + e.getMessage());
+            return ResultMap.error("查询失败,error=" + Throwables.getStackTraceAsString(e));
         }
         // 响应报文
         String resCode = MapUtils.getString("return_code", queryResult);
@@ -301,6 +300,7 @@ public class PayController extends ApiBase {
         }
         // @todo 支付订单查询成功后，可以通过事件触发做订单的状态更新以及后续的事情实现解耦。
         String tradeState = MapUtils.getString("trade_state", queryResult);
+        logger.info("查询订单状态：" + tradeState);
         if (StringUtils.equalsIgnoreCase(SUCCESS, tradeState)) {
             // 支付成功,业务处理
             orderVo.paid();
