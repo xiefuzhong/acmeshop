@@ -309,7 +309,7 @@ public class WechatUtil {
         httpPost.addHeader("Content-Type", "text/xml");
         httpPost.addHeader("User-Agent", "wxpay sdk java v1.0 " + ResourceUtil.getConfigByName("wx.mchId"));
 
-
+        logger.info(String.format(Locale.ROOT, "requestOnce.url==%s", url));
         HttpResponse httpResponse = httpClient.execute(httpPost);
         logger.info(httpResponse.getStatusLine());
         HttpEntity httpEntity = httpResponse.getEntity();
