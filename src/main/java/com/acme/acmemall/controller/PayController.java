@@ -256,6 +256,7 @@ public class PayController extends ApiBase {
     @ApiOperation(value = "查询订单状态")
     @GetMapping("query")
     public Object queryPayStatus(@LoginUser LoginUserVo loginUser, String orderId) {
+        logger.info(String.format("queryPayStatus.orderId==>%s", orderId));
         OrderVo orderVo = orderService.findOrder(orderId);
         if (orderVo == null) {
             return ResultMap.error(400, "订单不存在");
@@ -266,7 +267,7 @@ public class PayController extends ApiBase {
 
         // 已付款
         if (orderVo.paidCheck()) {
-            return ResultMap.ok("支付成");
+            return ResultMap.ok("支付成功");
         }
         Map<Object, Object> query = Maps.newHashMap();
         query.put("appid", ResourceUtil.getConfigByName("wx.appId"));
