@@ -124,6 +124,14 @@ public class PayController extends ApiBase {
                 String result_code = MapUtils.getString("result_code", resultUn);
                 String err_code_des = MapUtils.getString("err_code_des", resultUn);
                 if (result_code.equalsIgnoreCase("FAIL")) {
+                    String err_code = MapUtils.getString("err_code", resultUn);
+                    if ("ORDERPAID".equalsIgnoreCase(err_code)) {
+                        String prepay_id = MapUtils.getString("prepay_id", resultUn);
+                        // 该订单已支付
+                        OrderVo newOrder = OrderVo.builder().id(orderVo.getId()).pay_id(prepay_id).build();
+                        newOrder.paid();
+                        orderService.updateStatus(newOrder);
+                    }
                     return toResponsFail("支付失败," + err_code_des);
                 } else if (result_code.equalsIgnoreCase("SUCCESS")) {
                     String prepay_id = MapUtils.getString("prepay_id", resultUn);
