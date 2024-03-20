@@ -414,6 +414,7 @@
             <if test="pay_id != null">`pay_id` = #{pay_id},</if>
             <!--            comment_status-->
             <if test="comment_status != null">`comment_status` = #{comment_status},</if>
+            <if test="orderProcessText != null">`order_process_text` = #{orderProcessText},</if>
         </set>
         where id = #{id}
     </update>
