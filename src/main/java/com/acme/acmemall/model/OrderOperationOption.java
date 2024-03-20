@@ -157,12 +157,15 @@ public class OrderOperationOption {
                 break;
             }
             case CANCELED:
-            case CLOSED:
-            case COMPLETE: {
+            case CLOSED: {
                 // 交易关闭/完成/超时未支付关闭  可再次购买
                 this.buy = Boolean.TRUE;
                 // 可删除
                 this.delete = Boolean.TRUE;
+                break;
+            }
+            case COMPLETE: {
+                this.buy = Boolean.TRUE;
                 break;
             }
         }
