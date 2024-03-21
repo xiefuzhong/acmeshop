@@ -37,7 +37,7 @@ public class WeChatServiceImpl implements IWeChatService {
         Map<String, String> params = Maps.newHashMap();
         params.put("code", code);
         HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+        headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<Map<String, String>> request = new HttpEntity<>(params, headers);
         String response = null;
         try {
