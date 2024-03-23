@@ -56,9 +56,17 @@ public class CouponVo implements Serializable {
 
     private String send_type_title;
 
+    public BigDecimal getMin_amount() {
+        return min_amount == null ? null : min_amount.setScale(2, RoundingMode.HALF_UP);
+    }
+
     //最小金额 使用门槛 最低消费金额为0,即无门槛。大于0.0元，即达到这个金额可用。
     @JsonFormat(shape = JsonFormat.Shape.STRING)
     private BigDecimal min_amount;
+
+    public BigDecimal getMax_amount() {
+        return max_amount == null ? null : max_amount.setScale(2, RoundingMode.HALF_UP);
+    }
 
     //最大金额
     @JsonFormat(shape = JsonFormat.Shape.STRING)
