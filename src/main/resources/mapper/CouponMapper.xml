@@ -24,11 +24,19 @@
         <result property="coupon_status" column="coupon_status"/>
         <result property="merchantId" column="merchant_id"/>
         <result property="totalCount" column="total_count"/>
+        <!--        scope-->
+        <result property="scope" column="scope"/>
+        <!--        limit-->
+        <result property="limit" column="limit"/>
+        <!--        usageTime-->
+        <result property="usageTime" column="usage_time"/>
+        <!--        enabled-->
+        <result property="enabled" column="enabled"/>
     </resultMap>
 
     <select id="queryObject" resultMap="couponMap">
-		select * from t_acme_mall_coupon where id = #{value}
-	</select>
+        select * from t_acme_mall_coupon where id = #{value}
+    </select>
 
     <select id="queryList" resultMap="couponMap">
         select * from t_acme_mall_coupon a
@@ -57,33 +65,43 @@
     </select>
 
     <insert id="save" parameterType="com.acme.acmemall.model.CouponVo" useGeneratedKeys="true" keyProperty="id">
-		insert into t_acme_mall_coupon
-		(
-			`name`, 
-			`type_money`, 
-			`send_type`, 
-			`min_amount`, 
-			`max_amount`, 
-			`send_start_date`, 
-			`send_end_date`, 
-			`use_start_date`, 
-			`use_end_date`, 
-			`min_goods_amount`
-		)
-		values
-		(
-			#{name}, 
-			#{type_money},
-			#{send_type},
-			#{min_amount},
-			#{max_amount},
-			#{send_start_date},
-			#{send_end_date},
-			#{use_start_date},
-			#{use_end_date},
-			#{min_goods_amount}
-		)
-	</insert>
+        insert into t_acme_mall_coupon
+        (
+        `name`,
+        `type_money`,
+        `send_type`,
+        `min_amount`,
+        `max_amount`,
+        `send_start_date`,
+        `send_end_date`,
+        `use_start_date`,
+        `use_end_date`,
+        `min_goods_amount`,
+        `usage_time`,
+        `add_time`,
+        `limit`,
+        `total_count`,
+        `scope`
+        )
+        values
+        (
+        #{name},
+        #{type_money},
+        #{send_type},
+        #{min_amount},
+        #{max_amount},
+        #{send_start_date},
+        #{send_end_date},
+        #{use_start_date},
+        #{use_end_date},
+        #{min_goods_amount},
+        #{usageTime},
+        #{add_time},
+        #{limit},
+        #{totalCount},
+        #{scope}
+        )
+    </insert>
 
     <update id="update" parameterType="com.acme.acmemall.model.CouponVo">
         update t_acme_mall_coupon
@@ -112,8 +130,8 @@
     </update>
 
     <delete id="delete">
-		delete from t_acme_mall_coupon where id = #{value}
-	</delete>
+        delete from t_acme_mall_coupon where id = #{value}
+    </delete>
 
     <delete id="deleteBatch">
         delete from t_acme_mall_coupon where id in
@@ -149,7 +167,7 @@
             and b.source_key = #{source_key}
         </if>
         <if test="unUsed != null and unUsed == true">
-            and b.used_time is null and (b.order_id  is null or b.order_id =0)
+            and b.used_time is null and (b.order_id is null or b.order_id =0)
         </if>
         <choose>
             <when test="sidx != null and sidx.trim() != ''">

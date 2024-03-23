@@ -3,6 +3,8 @@ package com.acme.acmemall.service.impl;
 import com.acme.acmemall.common.ResultMap;
 import com.acme.acmemall.controller.reqeust.CouponRequest;
 import com.acme.acmemall.dao.CouponMapper;
+import com.acme.acmemall.exception.ResultCodeEnum;
+import com.acme.acmemall.factory.CouponFactory;
 import com.acme.acmemall.model.CouponVo;
 import com.acme.acmemall.model.LoginUserVo;
 import com.acme.acmemall.service.ICouponService;
@@ -111,7 +113,9 @@ public class CouponService implements ICouponService {
     @Transactional(rollbackFor = {RuntimeException.class, Exception.class})
     @Override
     public ResultMap createCoupon(CouponRequest couponRequest, LoginUserVo userVo) {
-
-        return null;
+        CouponVo couponVo = CouponFactory.buildCoupon(userVo.getUserId());
+        couponVo.create(couponRequest);
+        couponMapper.save(couponVo);
+        return ResultMap.response(ResultCodeEnum.SUCCESS, couponVo);
     }
 }

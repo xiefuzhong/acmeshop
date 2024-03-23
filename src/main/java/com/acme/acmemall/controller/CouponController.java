@@ -343,7 +343,9 @@ public class CouponController extends ApiBase {
         }
         JSONObject request = getJsonRequest();
         CouponRequest couponRequest = JSONObject.toJavaObject(request, CouponRequest.class);
-        couponRequest.checkRequest();
+        if (!couponRequest.checkRequest()) {
+            return ResultMap.error(400, "优惠券参数错误");
+        }
         return couponService.createCoupon(couponRequest, userVo);
     }
 }

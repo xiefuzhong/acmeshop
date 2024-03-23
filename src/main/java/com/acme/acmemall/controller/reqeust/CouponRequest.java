@@ -42,6 +42,8 @@ public class CouponRequest implements Serializable {
     // 发行量
     private Integer total;
 
+    private Long userId;
+
 
     public boolean checkRequest() {
         return Boolean.FALSE;
