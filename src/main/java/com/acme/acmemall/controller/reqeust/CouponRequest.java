@@ -56,7 +56,7 @@ public class CouponRequest implements Serializable {
     public boolean checkRequest() {
         Boolean result = CouponTypeEnum.verify(this.type)
                 && ScopeEnum.verify(this.scope)
-                && StringUtils.isNullOrEmpty(this.name);
+                && StringUtils.isNotEmpty(this.name);
         return result;
     }
 

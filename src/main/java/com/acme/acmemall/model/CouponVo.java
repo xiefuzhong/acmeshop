@@ -153,11 +153,21 @@ public class CouponVo implements Serializable {
         this.usageTime = request.getUsageTime();
     }
 
+    /**
+     * 发放优惠券
+     */
     public void send() {
 
     }
 
+    /**
+     * 用户领取优惠券
+     */
     public void receive() {
+
+    }
+
+    public void update() {
 
     }
 }
