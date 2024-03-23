@@ -40,20 +40,25 @@
 
     <select id="queryList" resultMap="couponMap">
         select * from t_acme_mall_coupon a
-        where 1 = 1
-        <if test="send_types != null">
-            and send_type in
-            <foreach item="item" collection="send_types" open="(" separator="," close=")">
-                #{item}
-            </foreach>
-        </if>
-        <if test="enabled != null and enabled == true">
-            and a.use_end_date >= now()
-            and now() >= a.use_start_date
-        </if>
-        <if test="merchantId != null and merchantId !=''">
-            and a.merchant_id = #{merchantId}
-        </if>
+        <where>
+            <if test="type != null">
+                AND a.type = #{type}
+            </if>
+            <if test="send_types != null">
+                and send_type in
+                <foreach item="item" collection="send_types" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="enabled != null and enabled == true">
+                and a.use_end_date >= now()
+                and now() >= a.use_start_date
+            </if>
+            <if test="merchantId != null and merchantId !=''">
+                and a.merchant_id = #{merchantId}
+            </if>
+        </where>
+
         <choose>
             <when test="sidx != null and sidx.trim() != ''">
                 order by ${sidx} ${order}

@@ -80,10 +80,14 @@ public class CouponController extends ApiBase {
      */
     @ApiOperation(value = "获取商户优惠券列表")
     @PostMapping("/listMer")
-    public Object listMer(@LoginUser LoginUserVo loginUser, @RequestBody GoodsVo goodsVo) {
+    public Object listMer(@LoginUser LoginUserVo loginUser,
+                          @RequestParam("merchantId") long merchantId,
+                          @RequestParam("type") Integer type) {
         Map param = Maps.newHashMap();
-        //param.put("user_id", loginUser.getUserId());
-        param.put("merchantId", goodsVo.getMerchantId());
+        param.put("merchantId", merchantId);
+        if (type != null && type > 0) {
+            param.put("type", type);
+        }
         List<CouponVo> couponVos = couponService.queryCouponList(param);
         return toResponsSuccess(couponVos);
     }
