@@ -2,8 +2,8 @@ package com.acme.acmemall.model.enums;
 
 public enum CouponTypeEnum {
 
-    DISCOUNT_PRICE(0, "满减券"),
-    DISCOUNT_RATE(1, "折扣券");
+    DISCOUNT_PRICE(1, "满减券"),
+    DISCOUNT_RATE(2, "折扣券");
 
     private final int type;
     private final String title;
