@@ -1,6 +1,8 @@
 package com.acme.acmemall.model;
 
 import com.acme.acmemall.controller.reqeust.CouponRequest;
+import com.acme.acmemall.model.enums.CouponTypeEnum;
+import com.acme.acmemall.model.enums.ScopeEnum;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -27,8 +29,12 @@ public class CouponVo implements Serializable {
     // 优惠券类型 0:满减 1:折扣
     private Integer type;
 
+    private String type_title;
+
     // 适用类型 通用券-0，商品券-1，品类券-2  商品券-需要指定适用商品，品类券-需要指定适用品类
     private Integer scope; //适用类型 0-通用 1-品类券 2-商品券
+
+    private String scope_title;
 
     // 用户优惠券主键
     private Integer user_coupon_id;
@@ -41,6 +47,8 @@ public class CouponVo implements Serializable {
 
     // 领取方式 手动领取(8用户主动领取优惠券)、后台发放  手动领取：用户需要在移动端的领券中心领取优惠券；后台发放：后台发放用于后台发放指定用户使用，移动端不能领取；
     private Integer send_type;
+
+    private String send_type_title;
 
     //最小金额 使用门槛 最低消费金额为0,即无门槛。大于0.0元，即达到这个金额可用。
     private BigDecimal min_amount;
@@ -85,6 +93,8 @@ public class CouponVo implements Serializable {
     //优惠券状态 1 可用 2 已用 3 过期
     private Integer coupon_status = 1;
 
+    private String coupon_status_text;
+
     //商户id
     private Long merchantId;
 
@@ -107,6 +117,22 @@ public class CouponVo implements Serializable {
         this.enabled = coupon_status;
     }
 
+    public String getType_title() {
+        return CouponTypeEnum.parse(type).getTitle();
+    }
+
+    public String getScope_title() {
+        return ScopeEnum.parse(scope).getTitle();
+    }
+
+    public String getSend_type_title() {
+        return send_type_title;
+    }
+
+    public String getCoupon_status_text() {
+        return coupon_status_text;
+    }
+
     /**
      * 创建优惠券
      *
@@ -125,5 +151,13 @@ public class CouponVo implements Serializable {
         this.min_amount = request.getMin_amount();
         this.min_goods_amount = request.getMin_amount();
         this.usageTime = request.getUsageTime();
+    }
+
+    public void send() {
+
+    }
+
+    public void receive() {
+
     }
 }

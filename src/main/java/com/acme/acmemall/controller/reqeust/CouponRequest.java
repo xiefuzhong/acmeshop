@@ -1,5 +1,8 @@
 package com.acme.acmemall.controller.reqeust;
 
+import com.acme.acmemall.model.enums.CouponTypeEnum;
+import com.acme.acmemall.model.enums.ScopeEnum;
+import com.acme.acmemall.utils.StringUtils;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -45,8 +48,16 @@ public class CouponRequest implements Serializable {
     private Long userId;
 
 
+    /**
+     * 校验请求参数
+     *
+     * @return
+     */
     public boolean checkRequest() {
-        return Boolean.FALSE;
+        Boolean result = CouponTypeEnum.verify(this.type)
+                && ScopeEnum.verify(this.scope)
+                && StringUtils.isNullOrEmpty(this.name);
+        return result;
     }
 
 }
