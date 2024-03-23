@@ -79,7 +79,7 @@ public class CouponController extends ApiBase {
      * 获取商户优惠券列表
      */
     @ApiOperation(value = "获取商户优惠券列表")
-    @PostMapping("/listMer")
+    @GetMapping("/listMer")
     public Object listMer(@LoginUser LoginUserVo loginUser,
                           @RequestParam("merchantId") long merchantId,
                           @RequestParam("type") Integer type) {
