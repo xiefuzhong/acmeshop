@@ -1,6 +1,9 @@
 package com.acme.acmemall.service;
 
+import com.acme.acmemall.common.ResultMap;
+import com.acme.acmemall.controller.reqeust.CouponRequest;
 import com.acme.acmemall.model.CouponVo;
+import com.acme.acmemall.model.LoginUserVo;
 
 import java.util.List;
 import java.util.Map;
@@ -45,4 +48,6 @@ public interface ICouponService {
     List<CouponVo> getValidUserCoupons(Map param);
 
     CouponVo queryObject(Integer couponId);
+
+    ResultMap createCoupon(CouponRequest couponRequest, LoginUserVo userVo);
 }

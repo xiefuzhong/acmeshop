@@ -3,6 +3,8 @@ package com.acme.acmemall.controller;
 import com.acme.acmemall.annotation.IgnoreAuth;
 import com.acme.acmemall.annotation.LoginUser;
 import com.acme.acmemall.common.ResultMap;
+import com.acme.acmemall.controller.reqeust.CouponRequest;
+import com.acme.acmemall.exception.ResultCodeEnum;
 import com.acme.acmemall.model.*;
 import com.acme.acmemall.service.*;
 import com.acme.acmemall.utils.CharUtil;
@@ -16,7 +18,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @description:优惠券服务
@@ -53,6 +58,7 @@ public class CouponController extends ApiBase {
 
     /**
      * 获取用户可用优惠券列表
+     *
      * @param loginUser
      * @param merchantId
      * @param goodsTotalPrice
@@ -60,12 +66,12 @@ public class CouponController extends ApiBase {
      */
     @ApiOperation(value = "获取用户可用优惠券列表")
     @GetMapping("/valid-coupon-list")
-    public Object getValidCouponList(@LoginUser LoginUserVo loginUser,Long merchantId, BigDecimal goodsTotalPrice ) {
+    public Object getValidCouponList(@LoginUser LoginUserVo loginUser, Long merchantId, BigDecimal goodsTotalPrice) {
         Map param = Maps.newHashMap();
         param.put("user_id", loginUser.getUserId());
         param.put("merchantId", merchantId);
-        param.put("goodsTotalPrice",goodsTotalPrice);
-        List<CouponVo> validCouponVos= couponService.getValidUserCoupons(param);
+        param.put("goodsTotalPrice", goodsTotalPrice);
+        List<CouponVo> validCouponVos = couponService.getValidUserCoupons(param);
         return toResponsSuccess(validCouponVos);
     }
 
@@ -74,7 +80,7 @@ public class CouponController extends ApiBase {
      */
     @ApiOperation(value = "获取商户优惠券列表")
     @PostMapping("/listMer")
-    public Object listMer(@LoginUser LoginUserVo loginUser,@RequestBody GoodsVo goodsVo) {
+    public Object listMer(@LoginUser LoginUserVo loginUser, @RequestBody GoodsVo goodsVo) {
         Map param = Maps.newHashMap();
         //param.put("user_id", loginUser.getUserId());
         param.put("merchantId", goodsVo.getMerchantId());
@@ -116,10 +122,10 @@ public class CouponController extends ApiBase {
         List<CouponVo> notUseCoupons = new ArrayList<>();
         for (CouponVo couponVo : couponVos) {
             if (goodsTotalPrice.compareTo(couponVo.getMin_goods_amount()) >= 0) { // 可用优惠券
-                couponVo.setEnabled(1);
+                couponVo.setCoupon_status(1);
                 useCoupons.add(couponVo);
             } else {
-                couponVo.setEnabled(0);
+                couponVo.setCoupon_status(0);
                 notUseCoupons.add(couponVo);
             }
         }
@@ -175,7 +181,7 @@ public class CouponController extends ApiBase {
         loginUser.setUserId(new Long(13));*/
         params.put("user_id", loginUser.getUserId());
         params.put("send_type", 8);
-        params.put("id",id);
+        params.put("id", id);
         List<CouponVo> couponVos = couponService.queryUserCoupons(params);
         if (null != couponVos && couponVos.size() > 0) {
             return toResponsFail("已经领取过，不能重复领取");
@@ -184,13 +190,13 @@ public class CouponController extends ApiBase {
         // 领取
         Map couponParam = Maps.newHashMap();
         couponParam.put("send_type", 8);
-        params.put("id",id);
+        params.put("id", id);
         CouponVo newCouponConfig = couponService.queryObject(Integer.parseInt(id));
         //判断优惠券是否被领完
         Map userParams = Maps.newHashMap();
-        userParams.put("coupon_id",id);
-        int count=  userCouponService.queryUserGetTotal(userParams);
-        if(newCouponConfig.getTotalCount()<=count){
+        userParams.put("coupon_id", id);
+        int count = userCouponService.queryUserGetTotal(userParams);
+        if (newCouponConfig.getTotalCount() <= count) {
             return toResponsFail("优惠券已领完");
         }
         if (null != newCouponConfig) {
@@ -203,7 +209,7 @@ public class CouponController extends ApiBase {
                     .build();
             userCouponService.save(userCouponVo);
             return toResponsSuccess(userCouponVo);
-        }else {
+        } else {
             return toResponsFail("领取失败");
         }
 
@@ -319,5 +325,25 @@ public class CouponController extends ApiBase {
             return ResultMap.ok();
         }
         return ResultMap.error("发送失败");
+    }
+
+    /**
+     * 商家创建优惠券
+     *
+     * @param userVo
+     * @return
+     */
+    @PostMapping("create")
+    public Object createCoupons(@LoginUser LoginUserVo userVo) {
+        if (userVo == null) {
+            return ResultMap.response(ResultCodeEnum.USER_NOT_LOGIN);
+        }
+        if (!userService.checkAdmin(userVo.getUserId())) {
+            return ResultMap.response(ResultCodeEnum.UNAUTHORIZED);
+        }
+        JSONObject request = getJsonRequest();
+        CouponRequest couponRequest = JSONObject.toJavaObject(request, CouponRequest.class);
+        couponRequest.checkRequest();
+        return couponService.createCoupon(couponRequest, userVo);
     }
 }

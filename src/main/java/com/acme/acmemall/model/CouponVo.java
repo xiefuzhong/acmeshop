@@ -1,18 +1,24 @@
 package com.acme.acmemall.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.Data;
+import lombok.*;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
-@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+@Getter
 public class CouponVo implements Serializable {
     private static final long serialVersionUID = 1L;
 
     // 优惠券主键
     private Integer id;
+
+    // 优惠券添加时间
+    private Date add_time;
     // 优惠券类型
     private Integer type; // 0:满减 1:折扣
     // 适用类型 通用券-0，商品券-1，品类券-2  商品券-需要指定适用商品，品类券-需要指定适用品类
@@ -33,13 +39,13 @@ public class CouponVo implements Serializable {
     //最大金额
     private BigDecimal max_amount;
     //发放时间
-    @JsonFormat(pattern = "yyyy.MM.dd")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date send_start_date;
     //发放时间
-    @JsonFormat(pattern = "yyyy.MM.dd")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date send_end_date;
     //使用开始时间
-    @JsonFormat(pattern = "yyyy.MM.dd")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date use_start_date;
     //使用结束时间
     @JsonFormat(pattern = "yyyy年MM月dd日")
@@ -48,11 +54,11 @@ public class CouponVo implements Serializable {
     private BigDecimal min_goods_amount;
     //优惠券说明(使用规则说明)
     private String coupon_txt;
-    //优惠券会员Id
+    //创建人
     private String user_id;
-    //优惠券编码
+    //优惠券编码-唯一，
     private String coupon_number;
-    //可用 1:可用 0：不可用
+    //优惠券状态 1 可用 2 已用 3 过期
     private Integer enabled = 0;
     //转发次数
     private Integer min_transmit_num;
@@ -61,6 +67,19 @@ public class CouponVo implements Serializable {
     //商户id
     private Long merchantId;
 
-    // 0不限量，大于0:数量限制
+    // 发行量：>1000
     private Integer totalCount;
+
+    // 剩余量
+    private Integer remainCount;
+
+    // 已使用
+    private Integer useCount;
+
+    // 限制使用次数
+    private Integer limit;
+
+    public void setCoupon_status(Integer coupon_status) {
+        this.enabled = coupon_status;
+    }
 }

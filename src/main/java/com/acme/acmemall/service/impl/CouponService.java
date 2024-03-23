@@ -1,11 +1,15 @@
 package com.acme.acmemall.service.impl;
 
+import com.acme.acmemall.common.ResultMap;
+import com.acme.acmemall.controller.reqeust.CouponRequest;
 import com.acme.acmemall.dao.CouponMapper;
 import com.acme.acmemall.model.CouponVo;
+import com.acme.acmemall.model.LoginUserVo;
 import com.acme.acmemall.service.ICouponService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.Resource;
 import java.util.List;
 import java.util.Map;
 
@@ -17,8 +21,8 @@ import java.util.Map;
 @Service
 public class CouponService implements ICouponService {
 
-    @Autowired
-    CouponMapper mapper;
+    @Resource
+    CouponMapper couponMapper;
 
     /**
      * @param map
@@ -26,7 +30,7 @@ public class CouponService implements ICouponService {
      */
     @Override
     public List<CouponVo> queryCouponList(Map<String, Object> map) {
-        return mapper.queryList(map);
+        return couponMapper.queryList(map);
     }
 
     /**
@@ -37,7 +41,7 @@ public class CouponService implements ICouponService {
      */
     @Override
     public List<CouponVo> queryUserCoupons(Map<String, Object> params) {
-        return mapper.queryUserCoupons(params);
+        return couponMapper.queryUserCoupons(params);
     }
 
     /**
@@ -48,7 +52,7 @@ public class CouponService implements ICouponService {
      */
     @Override
     public CouponVo getUserCoupon(Integer id) {
-        return mapper.getUserCoupon(id);
+        return couponMapper.getUserCoupon(id);
     }
 
     /**
@@ -59,7 +63,7 @@ public class CouponService implements ICouponService {
      */
     @Override
     public CouponVo queryMaxUserEnableCoupon(Map<String, Object> params) {
-        return mapper.queryMaxUserEnableCoupon(params);
+        return couponMapper.queryMaxUserEnableCoupon(params);
     }
 
     /**
@@ -70,7 +74,7 @@ public class CouponService implements ICouponService {
      */
     @Override
     public List<CouponVo> queryUserCouponList(Map<String, Object> params) {
-        return mapper.queryUserCouponList(params);
+        return couponMapper.queryUserCouponList(params);
     }
 
     /**
@@ -88,7 +92,7 @@ public class CouponService implements ICouponService {
      */
     @Override
     public List<CouponVo> getValidUserCoupons(Map param) {
-        return mapper.getValidUserCoupons(param);
+        return couponMapper.getValidUserCoupons(param);
     }
 
     /**
@@ -97,6 +101,17 @@ public class CouponService implements ICouponService {
      */
     @Override
     public CouponVo queryObject(Integer couponId) {
-        return mapper.queryObject(couponId);
+        return couponMapper.queryObject(couponId);
+    }
+
+    /**
+     * @param couponRequest
+     * @return
+     */
+    @Transactional(rollbackFor = {RuntimeException.class, Exception.class})
+    @Override
+    public ResultMap createCoupon(CouponRequest couponRequest, LoginUserVo userVo) {
+
+        return null;
     }
 }
