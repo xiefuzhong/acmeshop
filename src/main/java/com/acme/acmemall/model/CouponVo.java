@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Date;
 
 @AllArgsConstructor
@@ -41,8 +42,13 @@ public class CouponVo implements Serializable {
 
     //优惠券名称
     private String name;
-    //金额/面值  优惠券类型-0-满减券-金额数值，优惠券类型-1-折扣券-百分比
 
+    public BigDecimal getType_money() {
+        return type_money == null ? null : type_money.setScale(2, RoundingMode.HALF_UP);
+    }
+
+    //金额/面值  优惠券类型-0-满减券-金额数值，优惠券类型-1-折扣券-百分比
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
     private BigDecimal type_money;
 
     // 领取方式 手动领取(8用户主动领取优惠券)、后台发放  手动领取：用户需要在移动端的领券中心领取优惠券；后台发放：后台发放用于后台发放指定用户使用，移动端不能领取；
@@ -51,9 +57,11 @@ public class CouponVo implements Serializable {
     private String send_type_title;
 
     //最小金额 使用门槛 最低消费金额为0,即无门槛。大于0.0元，即达到这个金额可用。
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
     private BigDecimal min_amount;
 
     //最大金额
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
     private BigDecimal max_amount;
 
     //发放时间
@@ -72,7 +80,12 @@ public class CouponVo implements Serializable {
     @JsonFormat(pattern = "yyyy年MM月dd日")
     private Date use_end_date;
 
+    public BigDecimal getMin_goods_amount() {
+        return min_goods_amount == null ? null : min_goods_amount.setScale(2, RoundingMode.HALF_UP);
+    }
+
     //最小商品金额
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
     private BigDecimal min_goods_amount;
 
     //优惠券说明(使用规则说明)
