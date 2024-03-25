@@ -1,7 +1,11 @@
 package com.acme.acmemall.model;
 
+import com.acme.acmemall.common.TimeConstants;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -54,8 +58,13 @@ public class UserCouponVo implements Serializable {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date expired_time;
 
-    public void exchange(long user_id){
+    public void exchange(long user_id) {
         this.add_time = new Date();
         this.user_id = user_id;
+    }
+
+    public void receive(CouponVo couponVo) {
+        this.add_time = new Date();
+        this.expired_time = new Date(this.add_time.getTime() + TimeConstants.TIME_DAY * couponVo.getUsageTime());
     }
 }

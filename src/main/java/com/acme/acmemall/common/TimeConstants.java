@@ -23,7 +23,7 @@ public abstract class TimeConstants implements Serializable {
     /**
      * 时间单位：1天=24小时
      */
-    private final static Long TIME_DAY = TIME_HOUR * 24;
+    public final static Long TIME_DAY = TIME_HOUR * 24;
 
     /**
      * 支付过期时间：自提交订单起30分钟后自动取消

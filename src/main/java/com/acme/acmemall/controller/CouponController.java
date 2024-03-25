@@ -218,7 +218,7 @@ public class CouponController extends ApiBase {
                     .coupon_price(couponVo.getType_money())
                     .build();
             userCouponService.save(userCouponVo);
-            couponVo.receive();
+            userCouponVo.receive(couponVo);
             couponService.updateUserCoupon(couponVo);
             return toResponsSuccess(userCouponVo);
         } else {
