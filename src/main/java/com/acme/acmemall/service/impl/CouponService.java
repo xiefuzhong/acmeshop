@@ -9,9 +9,9 @@ import com.acme.acmemall.factory.CouponFactory;
 import com.acme.acmemall.model.CouponVo;
 import com.acme.acmemall.model.LoginUserVo;
 import com.acme.acmemall.model.UserCouponVo;
-import com.acme.acmemall.model.enums.CouponSendType;
 import com.acme.acmemall.service.ICouponService;
 import com.google.common.collect.Lists;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -130,6 +130,9 @@ public class CouponService implements ICouponService {
     @Transactional(rollbackFor = {RuntimeException.class, Exception.class})
     @Override
     public ResultMap updateCoupon(CouponVo couponVo, List<Long> userIds) {
+        if (CollectionUtils.isEmpty(userIds)) {
+            return ResultMap.error("请选择用户");
+        }
         List<UserCouponVo> userCouponVoList = Lists.newArrayList();
         for (int i = 0; i < userIds.size(); i++) {
             UserCouponVo userCouponVo = UserCouponVo.builder()
@@ -142,15 +145,10 @@ public class CouponService implements ICouponService {
                     .build();
             userCouponVoList.add(userCouponVo);
         }
-        if (CouponSendType.getByCode(couponVo.getSend_type()) == CouponSendType.SEND_TYPE_USER) {
-            userCouponVoList.stream().forEach(userCouponVo -> userCouponVo.receive(couponVo));
-            userCouponMapper.saveBatch(userCouponVoList);
-            couponVo.receive();
-            couponMapper.update(couponVo);
-            return ResultMap.ok();
-        } else if (CouponSendType.getByCode(couponVo.getSend_type()) == CouponSendType.SEND_TYPE_MERCHANT) {
-
-        }
-        return ResultMap.error("领取失败");
+        userCouponVoList.stream().forEach(userCouponVo -> userCouponVo.receive(couponVo));
+        userCouponMapper.saveBatch(userCouponVoList);
+        couponVo.receive();
+        couponMapper.update(couponVo);
+        return ResultMap.ok();
     }
 }
