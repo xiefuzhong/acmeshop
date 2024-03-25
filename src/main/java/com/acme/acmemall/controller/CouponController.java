@@ -82,9 +82,9 @@ public class CouponController extends ApiBase {
     @GetMapping("/listMer")
     @IgnoreAuth
     public Object listMer(@LoginUser LoginUserVo loginUser,
-                          @RequestParam(value = "merchantId", defaultValue = 0) long merchantId,
-                          @RequestParam(value = "send_type", defaultValue = 0) Integer send_type,
-                          @RequestParam(value = "type", defaultValue = 0) Integer type) {
+                          @RequestParam(value = "merchantId", defaultValue = "0") long merchantId,
+                          @RequestParam(value = "send_type", defaultValue = "0") Integer send_type,
+                          @RequestParam(value = "type", defaultValue = "0") Integer type) {
         Map param = Maps.newHashMap();
         param.put("merchantId", merchantId);
         if (type != null && type > 0) {
