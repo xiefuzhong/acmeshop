@@ -82,13 +82,17 @@ public class CouponController extends ApiBase {
     @GetMapping("/listMer")
     @IgnoreAuth
     public Object listMer(@LoginUser LoginUserVo loginUser,
-                          @RequestParam("merchantId") long merchantId,
-                          @RequestParam("type") Integer type) {
+                          @RequestParam(value = "merchantId", defaultValue = 0) long merchantId,
+                          @RequestParam(value = "send_type", defaultValue = 0) Integer send_type,
+                          @RequestParam(value = "type", defaultValue = 0) Integer type) {
         Map param = Maps.newHashMap();
         param.put("merchantId", merchantId);
         if (type != null && type > 0) {
             param.put("type", type);
         }
+        if (send_type != null && send_type > 0) {
+            param.put("send_types", Lists.newArrayList(send_type));
+        })
         // 查询用户是否领取过优惠券
         if (loginUser != null && loginUser.getUserId() > 0) {
             param.put("userId", loginUser.getUserId());
