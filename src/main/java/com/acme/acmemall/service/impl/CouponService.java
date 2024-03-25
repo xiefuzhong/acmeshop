@@ -144,6 +144,6 @@ public class CouponService implements ICouponService {
             couponMapper.update(couponVo);
             return ResultMap.ok();
         }
-        return ResultMap.error("无数据更新");
+        return ResultMap.error("领取失败");
     }
 }
