@@ -26,11 +26,16 @@ public class UserCouponVo implements Serializable {
     //会员Id
     private Long user_id;
     //使用时间
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date used_time;
+
     //领取时间/发放时间
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date add_time;
+
     //订单Id
     private Integer order_id;
+
     //来源key
     private String source_key;
     //分享人
@@ -45,13 +50,9 @@ public class UserCouponVo implements Serializable {
     //最小使用金额
     private BigDecimal min_goods_amount;
 
-    //使用开始时间
+    // 过期时间
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    private Date use_start_date;
-
-    //使用结束时间
-    @JsonFormat(pattern = "yyyy年MM月dd日")
-    private Date use_end_date;
+    private Date expired_time;
 
     public void exchange(long user_id){
         this.add_time = new Date();
