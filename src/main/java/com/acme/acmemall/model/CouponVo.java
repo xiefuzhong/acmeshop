@@ -116,6 +116,9 @@ public class CouponVo implements Serializable {
 
     private String coupon_status_text;
 
+    // 0-未领取，1-已领取
+    private Integer used_status;
+
     //商户id
     private Long merchantId;
 

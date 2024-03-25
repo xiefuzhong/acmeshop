@@ -32,6 +32,8 @@
         <result property="usageTime" column="usage_time"/>
         <!--        enabled-->
         <result property="enabled" column="enabled"/>
+        <!--        used_status-->
+        <result property="used_status" column="used_status"/>
     </resultMap>
 
     <select id="queryObject" resultMap="couponMap">
