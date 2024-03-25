@@ -91,7 +91,7 @@ public class CouponController extends ApiBase {
         }
         // 查询用户是否领取过优惠券
         if (loginUser != null && loginUser.getUserId() > 0) {
-            param.put("userId", loginUser.getUserId())
+            param.put("userId", loginUser.getUserId());
         }
         List<CouponVo> couponVos = couponService.queryCouponList(param);
         return toResponsSuccess(couponVos);
