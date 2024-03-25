@@ -6,6 +6,7 @@ import com.acme.acmemall.common.ResultMap;
 import com.acme.acmemall.controller.reqeust.CouponRequest;
 import com.acme.acmemall.exception.ResultCodeEnum;
 import com.acme.acmemall.model.*;
+import com.acme.acmemall.model.enums.ConponSendType;
 import com.acme.acmemall.service.*;
 import com.acme.acmemall.utils.CharUtil;
 import com.acme.acmemall.utils.StringUtils;
@@ -177,7 +178,6 @@ public class CouponController extends ApiBase {
     /**
      * 用户主动领取商户领取优惠券
      */
-    @IgnoreAuth
     @ApiOperation(value = "用户主动领取商户领取优惠券")
     @PostMapping("getMerCoupon")
     public Object getMerCoupon(@LoginUser LoginUserVo loginUser) {
@@ -186,10 +186,9 @@ public class CouponController extends ApiBase {
         JSONObject jsonParam = getJsonRequest();
         String id = jsonParam.getString("id");
         Map params = Maps.newHashMap();
-        /*loginUser=new UserVo();
-        loginUser.setUserId(new Long(13));*/
+
         params.put("user_id", loginUser.getUserId());
-        params.put("send_type", 8);
+        params.put("send_type", ConponSendType.SEND_TYPE_USER.getCode());
         params.put("id", id);
         List<CouponVo> couponVos = couponService.queryUserCoupons(params);
         if (null != couponVos && couponVos.size() > 0) {
@@ -197,9 +196,6 @@ public class CouponController extends ApiBase {
         }
 
         // 领取
-        Map couponParam = Maps.newHashMap();
-        couponParam.put("send_type", 8);
-        params.put("id", id);
         CouponVo couponVo = couponService.queryObject(Integer.parseInt(id));
         //判断优惠券是否被领完
         Map userParams = Maps.newHashMap();
