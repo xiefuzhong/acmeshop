@@ -23,6 +23,8 @@
         <result property="user_coupon_id" column="user_coupon_id"/>
         <result property="coupon_status" column="coupon_status"/>
         <result property="merchantId" column="merchant_id"/>
+        <!--        remainCount-->
+        <result property="remainCount" column="remain_count"/>
         <result property="totalCount" column="total_count"/>
         <!--        scope-->
         <result property="scope" column="scope"/>
@@ -94,8 +96,8 @@
         `limit`,
         `total_count`,
         `scope`,
-        `coupon_number`
-
+        `coupon_number`,
+        `remain_count`
         )
         values
         (
@@ -114,7 +116,8 @@
         #{limit},
         #{totalCount},
         #{scope},
-        #{coupon_number}
+        #{coupon_number},
+        #{remainCount}
         )
     </insert>
 
