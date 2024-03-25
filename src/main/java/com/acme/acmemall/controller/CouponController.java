@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @description:优惠券服务
@@ -293,9 +294,7 @@ public class CouponController extends ApiBase {
         JSONObject request = getJsonRequest();
         String userIds = request.getString("userIds");
         String[] uids = userIds.split(",");
-        List<Long> ids = Arrays.stream(kayArrays).map {
-            id -> Long.parseLang(id.trim())
-        }.collect(Collectors.toList());
+        List<Long> ids = Arrays.stream(uids).map(id -> Long.parseLong(id.trim())).collect(Collectors.toList());
         Integer coupon_id = request.getInteger("coupon_id");
         CouponVo couponVo = couponService.queryObject(coupon_id);
         if (couponVo == null) {
