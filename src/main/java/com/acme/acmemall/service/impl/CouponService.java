@@ -135,6 +135,7 @@ public class CouponService implements ICouponService {
                 .order_id(0)
                 .user_id(userVo.getUserId())
                 .coupon_price(couponVo.getType_money())
+                .merchantId(couponVo.getMerchantId())
                 .build();
         if (CouponSendType.getByCode(couponVo.getSend_type()) == CouponSendType.SEND_TYPE_USER) {
             userCouponVo.receive(couponVo);
@@ -143,6 +144,6 @@ public class CouponService implements ICouponService {
             couponMapper.update(couponVo);
             return ResultMap.ok();
         }
-        return ResultMap.error("没有任何更新");
+        return ResultMap.error("无数据更新");
     }
 }
