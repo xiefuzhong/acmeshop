@@ -15,6 +15,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.jsoup.select.Evaluator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -204,7 +205,7 @@ public class CouponController extends ApiBase {
         if (couponVo.getTotalCount() <= count) {
             return toResponsFail("优惠券已领完");
         }
-        return couponService.updateCoupon(couponVo, loginUser);
+        return couponService.updateCoupon(couponVo, Lists.newArrayList(loginUser.getUserId()));
     }
 
     /**
@@ -281,7 +282,7 @@ public class CouponController extends ApiBase {
     }
 
     @PostMapping("/hand-out")
-    public Object handOutCoupon(@LoginUser LoginUserVo userVo) {
+    public Object SendCoupons(@LoginUser LoginUserVo userVo) {
         if (userVo == null) {
             return ResultMap.error(400, "非有效用户操作");
         }
@@ -292,8 +293,17 @@ public class CouponController extends ApiBase {
         JSONObject request = getJsonRequest();
         String userIds = request.getString("userIds");
         String[] uids = userIds.split(",");
+        List<Long> ids = Arrays.stream(kayArrays).map {
+            id -> Long.parseLang(id.trim())
+        }.collect(Collectors.toList());
         Integer coupon_id = request.getInteger("coupon_id");
         CouponVo couponVo = couponService.queryObject(coupon_id);
+        if (couponVo == null) {
+            return toResponsFail("优惠券不存在");
+        }
+        if (couponVo.getSend_type() == 8) {
+            return toResponsFail("该优惠券不能手动发放");
+        }
         //判断优惠券是否被领完
         Map userParams = Maps.newHashMap();
         userParams.put("coupon_id", coupon_id);
@@ -301,22 +311,7 @@ public class CouponController extends ApiBase {
         if (couponVo.getTotalCount() <= count) {
             return toResponsFail("优惠券已领完");
         }
-        if (null != couponVo) {
-            List<UserCouponVo> userCouponVoList = Lists.newArrayList();
-            for (int i = 0; i < uids.length; i++) {
-                UserCouponVo userCouponVo = UserCouponVo.builder()
-                        .add_time(new Date())
-                        .coupon_id(couponVo.getId())
-                        .coupon_number(CharUtil.getRandomString(12))
-                        .user_id(Long.parseLong(uids[i]))
-                        .coupon_price(couponVo.getType_money())
-                        .build();
-                userCouponVoList.add(userCouponVo);
-            }
-            userCouponService.batchSave(userCouponVoList);
-            return ResultMap.ok();
-        }
-        return ResultMap.error("发送失败");
+        return couponService.updateCoupon(couponVo, ids);
     }
 
     /**

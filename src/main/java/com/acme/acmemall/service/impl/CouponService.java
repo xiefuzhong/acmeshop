@@ -11,6 +11,7 @@ import com.acme.acmemall.model.LoginUserVo;
 import com.acme.acmemall.model.UserCouponVo;
 import com.acme.acmemall.model.enums.CouponSendType;
 import com.acme.acmemall.service.ICouponService;
+import com.google.common.collect.Lists;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -128,21 +129,27 @@ public class CouponService implements ICouponService {
 
     @Transactional(rollbackFor = {RuntimeException.class, Exception.class})
     @Override
-    public ResultMap updateCoupon(CouponVo couponVo, LoginUserVo userVo) {
-        UserCouponVo userCouponVo = UserCouponVo.builder()
-                .coupon_id(couponVo.getId())
-                .coupon_number(couponVo.getCoupon_number())
-                .order_id(0)
-                .user_id(userVo.getUserId())
-                .coupon_price(couponVo.getType_money())
-                .merchantId(couponVo.getMerchantId())
-                .build();
+    public ResultMap updateCoupon(CouponVo couponVo, List<Long> userIds) {
+        List<UserCouponVo> userCouponVoList = Lists.newArrayList();
+        for (int i = 0; i < userIds.size(); i++) {
+            UserCouponVo userCouponVo = UserCouponVo.builder()
+                    .coupon_id(couponVo.getId())
+                    .coupon_number(couponVo.getCoupon_number())
+                    .order_id(0)
+                    .user_id(userIds.get(i))
+                    .coupon_price(couponVo.getType_money())
+                    .merchantId(couponVo.getMerchantId())
+                    .build();
+            userCouponVoList.add(userCouponVo);
+        }
         if (CouponSendType.getByCode(couponVo.getSend_type()) == CouponSendType.SEND_TYPE_USER) {
-            userCouponVo.receive(couponVo);
+            userCouponVoList.stream().forEach(userCouponVo -> userCouponVo.receive(couponVo));
+            userCouponMapper.saveBatch(userCouponVoList);
             couponVo.receive();
-            userCouponMapper.save(userCouponVo);
             couponMapper.update(couponVo);
             return ResultMap.ok();
+        } else if (CouponSendType.getByCode(couponVo.getSend_type()) == CouponSendType.SEND_TYPE_MERCHANT) {
+
         }
         return ResultMap.error("领取失败");
     }

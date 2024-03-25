@@ -51,5 +51,5 @@ public interface ICouponService {
 
     ResultMap createCoupon(CouponRequest couponRequest, LoginUserVo userVo);
 
-    ResultMap updateCoupon(CouponVo couponVo, LoginUserVo userVo);
+    ResultMap updateCoupon(CouponVo couponVo, List<Long> userIds);
 }
