@@ -19,10 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @description:优惠券服务
@@ -338,6 +335,7 @@ public class CouponController extends ApiBase {
         }
         JSONObject request = getJsonRequest();
         CouponRequest couponRequest = JSONObject.toJavaObject(request, CouponRequest.class);
+        logger.info(String.format(Locale.ROOT, "CouponRequest.toString==>%s", couponRequest.toString()));
         if (!couponRequest.checkRequest()) {
             return ResultMap.error(400, "优惠券参数错误");
         }
