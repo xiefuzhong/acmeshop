@@ -199,6 +199,9 @@ public class CouponController extends ApiBase {
         if (couponVo == null) {
             return toResponsFail("领取失败");
         }
+        if (couponVo.getSend_type() != 8) {
+            return toResponsFail("该优惠券不支持手动领取");
+        }
         //判断优惠券是否被领完
         params.clear();
         params.put("coupon_id", id);
@@ -300,8 +303,8 @@ public class CouponController extends ApiBase {
         if (couponVo == null) {
             return toResponsFail("优惠券不存在");
         }
-        if (couponVo.getSend_type() == 8) {
-            return toResponsFail("该优惠券不能手动发放");
+        if (couponVo.getSend_type() != 1) {
+            return toResponsFail("该优惠券不支持后台发放");
         }
         //判断优惠券是否被领完
         Map userParams = Maps.newHashMap();
