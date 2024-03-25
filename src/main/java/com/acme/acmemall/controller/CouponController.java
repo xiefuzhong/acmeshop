@@ -80,6 +80,7 @@ public class CouponController extends ApiBase {
      */
     @ApiOperation(value = "获取商户优惠券列表")
     @GetMapping("/listMer")
+    @IgnoreAuth
     public Object listMer(@LoginUser LoginUserVo loginUser,
                           @RequestParam("merchantId") long merchantId,
                           @RequestParam("type") Integer type) {
@@ -87,6 +88,10 @@ public class CouponController extends ApiBase {
         param.put("merchantId", merchantId);
         if (type != null && type > 0) {
             param.put("type", type);
+        }
+        // 查询用户是否领取过优惠券
+        if (loginUser != null && loginUser.getUserId() > 0) {
+            param.put("userId", loginUser.getUserId())
         }
         List<CouponVo> couponVos = couponService.queryCouponList(param);
         return toResponsSuccess(couponVos);
@@ -207,7 +212,7 @@ public class CouponController extends ApiBase {
             UserCouponVo userCouponVo = UserCouponVo.builder()
                     .add_time(new Date())
                     .coupon_id(newCouponConfig.getId())
-                    .coupon_number(CharUtil.getRandomString(12))
+                    .coupon_number(newCouponConfig.getCoupon_number())
                     .user_id(loginUser.getUserId())
                     .coupon_price(newCouponConfig.getType_money())
                     .build();
