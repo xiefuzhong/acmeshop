@@ -213,6 +213,7 @@ public class CouponController extends ApiBase {
                     .add_time(new Date())
                     .coupon_id(couponVo.getId())
                     .coupon_number(couponVo.getCoupon_number())
+                    .order_id(0)
                     .user_id(loginUser.getUserId())
                     .coupon_price(couponVo.getType_money())
                     .build();
