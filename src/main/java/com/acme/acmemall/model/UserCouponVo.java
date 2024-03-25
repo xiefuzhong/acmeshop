@@ -1,6 +1,7 @@
 package com.acme.acmemall.model;
 
 import com.acme.acmemall.common.TimeConstants;
+import com.acme.acmemall.model.enums.CouponStatusEnum;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -58,9 +59,15 @@ public class UserCouponVo implements Serializable {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date expired_time;
 
+    /**
+     * 核销使用
+     *
+     * @param user_id
+     */
     public void exchange(long user_id) {
         this.add_time = new Date();
         this.user_id = user_id;
+        this.coupon_status = CouponStatusEnum.COUPON_EXCHANGED.getCode();
     }
 
     public void receive(CouponVo couponVo) {

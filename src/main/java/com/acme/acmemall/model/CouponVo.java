@@ -195,7 +195,7 @@ public class CouponVo implements Serializable {
             this.remainCount -= 1;
         }
         if (this.remainCount <= 0) {
-            this.coupon_status = CouponStatusEnum.NO_AVAILABLE.getCode();
+            this.coupon_status = CouponStatusEnum.COUPON_NO_AVAILABLE.getCode();
         }
     }
 
