@@ -272,7 +272,6 @@ public class CouponController extends ApiBase {
         if (userVo == null) {
             return ResultMap.error(400, "非有效用户操作");
         }
-        LoginUserVo loginUserVo = userService.queryByUserId(userVo.getUserId());
         if (!userService.checkAdmin(userVo.getUserId())) {
             return ResultMap.response(ResultCodeEnum.UNAUTHORIZED);
         }
