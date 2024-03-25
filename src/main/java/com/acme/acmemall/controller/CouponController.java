@@ -6,7 +6,7 @@ import com.acme.acmemall.common.ResultMap;
 import com.acme.acmemall.controller.reqeust.CouponRequest;
 import com.acme.acmemall.exception.ResultCodeEnum;
 import com.acme.acmemall.model.*;
-import com.acme.acmemall.model.enums.ConponSendType;
+import com.acme.acmemall.model.enums.CouponSendType;
 import com.acme.acmemall.service.*;
 import com.acme.acmemall.utils.CharUtil;
 import com.acme.acmemall.utils.StringUtils;
@@ -188,7 +188,7 @@ public class CouponController extends ApiBase {
         Map params = Maps.newHashMap();
 
         params.put("user_id", loginUser.getUserId());
-        params.put("send_type", ConponSendType.SEND_TYPE_USER.getCode());
+        params.put("send_type", CouponSendType.SEND_TYPE_USER.getCode());
         params.put("id", id);
         List<CouponVo> couponVos = couponService.queryUserCoupons(params);
         if (null != couponVos && couponVos.size() > 0) {
@@ -197,30 +197,17 @@ public class CouponController extends ApiBase {
 
         // 领取
         CouponVo couponVo = couponService.queryObject(Integer.parseInt(id));
+        if (couponVo == null) {
+            return toResponsFail("领取失败");
+        }
         //判断优惠券是否被领完
-        Map userParams = Maps.newHashMap();
-        userParams.put("coupon_id", id);
-        int count = userCouponService.queryUserGetTotal(userParams);
+        params.clear();
+        params.put("coupon_id", id);
+        int count = userCouponService.queryUserGetTotal(params);
         if (couponVo.getTotalCount() <= count) {
             return toResponsFail("优惠券已领完");
         }
-        if (null != couponVo) {
-            UserCouponVo userCouponVo = UserCouponVo.builder()
-                    .add_time(new Date())
-                    .coupon_id(couponVo.getId())
-                    .coupon_number(couponVo.getCoupon_number())
-                    .order_id(0)
-                    .user_id(loginUser.getUserId())
-                    .coupon_price(couponVo.getType_money())
-                    .build();
-            userCouponService.save(userCouponVo);
-            userCouponVo.receive(couponVo);
-            couponService.updateUserCoupon(couponVo);
-            return toResponsSuccess(userCouponVo);
-        } else {
-            return toResponsFail("领取失败");
-        }
-
+        return couponService.updateCoupon(couponVo, loginUser);
     }
 
     /**

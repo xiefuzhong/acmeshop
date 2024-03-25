@@ -1,6 +1,7 @@
 package com.acme.acmemall.model;
 
 import com.acme.acmemall.controller.reqeust.CouponRequest;
+import com.acme.acmemall.model.enums.CouponStatusEnum;
 import com.acme.acmemall.model.enums.CouponTypeEnum;
 import com.acme.acmemall.model.enums.ScopeEnum;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -105,7 +106,7 @@ public class CouponVo implements Serializable {
     //优惠券编码-唯一，
     private String coupon_number;
 
-    //优惠券状态 1 可用 2 已用 3 过期
+    //优惠券状态 1 可用 2 已用 3 过期 4-已用完。
     private Integer enabled = 0;
 
     //转发次数
@@ -170,6 +171,8 @@ public class CouponVo implements Serializable {
         this.scope = request.getScope();
         this.enabled = request.getEnabled();
         this.totalCount = request.getTotal();
+        // 初始剩余量=发行量
+        this.remainCount = totalCount;
         this.limit = request.getLimit();
         // 使用门槛
         this.min_amount = request.getMin_amount();
@@ -188,7 +191,12 @@ public class CouponVo implements Serializable {
      * 用户领取优惠券
      */
     public void receive() {
-
+        if (this.remainCount > 0) {
+            this.remainCount -= 1;
+        }
+        if (this.remainCount <= 0) {
+            this.coupon_status = CouponStatusEnum.NO_AVAILABLE.getCode();
+        }
     }
 
     public void update() {

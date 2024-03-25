@@ -3,15 +3,19 @@ package com.acme.acmemall.service.impl;
 import com.acme.acmemall.common.ResultMap;
 import com.acme.acmemall.controller.reqeust.CouponRequest;
 import com.acme.acmemall.dao.CouponMapper;
+import com.acme.acmemall.dao.UserCouponMapper;
 import com.acme.acmemall.exception.ResultCodeEnum;
 import com.acme.acmemall.factory.CouponFactory;
 import com.acme.acmemall.model.CouponVo;
 import com.acme.acmemall.model.LoginUserVo;
+import com.acme.acmemall.model.UserCouponVo;
+import com.acme.acmemall.model.enums.CouponSendType;
 import com.acme.acmemall.service.ICouponService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -25,6 +29,9 @@ public class CouponService implements ICouponService {
 
     @Resource
     CouponMapper couponMapper;
+
+    @Resource
+    UserCouponMapper userCouponMapper;
 
     /**
      * @param map
@@ -117,5 +124,27 @@ public class CouponService implements ICouponService {
         couponVo.create(couponRequest);
         couponMapper.save(couponVo);
         return ResultMap.response(ResultCodeEnum.SUCCESS, couponVo);
+    }
+
+
+    @Transactional(rollbackFor = {RuntimeException.class, Exception.class})
+    @Override
+    public ResultMap updateCoupon(CouponVo couponVo, LoginUserVo userVo) {
+        UserCouponVo userCouponVo = UserCouponVo.builder()
+                .add_time(new Date())
+                .coupon_id(couponVo.getId())
+                .coupon_number(couponVo.getCoupon_number())
+                .order_id(0)
+                .user_id(userVo.getUserId())
+                .coupon_price(couponVo.getType_money())
+                .build();
+        if (CouponSendType.getByCode(couponVo.getSend_type()) == CouponSendType.SEND_TYPE_USER) {
+            userCouponVo.receive(couponVo);
+            couponVo.receive();
+            userCouponMapper.updateCouponStatus(userCouponVo);
+            couponMapper.update(couponVo);
+            return ResultMap.ok();
+        }
+        return ResultMap.error("没有任何更新");
     }
 }

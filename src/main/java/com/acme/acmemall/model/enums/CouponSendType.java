@@ -1,6 +1,6 @@
 package com.acme.acmemall.model.enums;
 
-public enum ConponSendType {
+public enum CouponSendType {
 
     SEND_TYPE_USER(8, "用户领取"),
     SEND_TYPE_MERCHANT(1, "商户赠送");
@@ -16,7 +16,7 @@ public enum ConponSendType {
         return title;
     }
 
-    ConponSendType(int code, String title) {
+    CouponSendType(int code, String title) {
         this.code = code;
         this.title = title;
     }
@@ -27,8 +27,8 @@ public enum ConponSendType {
      * @param code
      * @return
      */
-    public static ConponSendType getByCode(int code) {
-        for (ConponSendType type : ConponSendType.values()) {
+    public static CouponSendType getByCode(int code) {
+        for (CouponSendType type : CouponSendType.values()) {
             if (type.getCode() == code) {
                 return type;
             }

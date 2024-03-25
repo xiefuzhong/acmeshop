@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 public interface ICouponService {
-    List<CouponVo> queryCouponList(Map<String,Object> map);
+    List<CouponVo> queryCouponList(Map<String, Object> map);
 
     /**
      * 按条件查询用户优惠券
@@ -50,4 +50,6 @@ public interface ICouponService {
     CouponVo queryObject(Integer couponId);
 
     ResultMap createCoupon(CouponRequest couponRequest, LoginUserVo userVo);
+
+    ResultMap updateCoupon(CouponVo couponVo, LoginUserVo userVo);
 }
