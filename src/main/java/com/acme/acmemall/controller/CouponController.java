@@ -280,7 +280,7 @@ public class CouponController extends ApiBase {
         if (sendType == null) {
             sendType = 1;
         }
-        param.put("send_type", sendType);
+        param.put("send_types", Lists.newArrayList(sendType));
         List<CouponVo> couponVos = couponService.queryCouponList(param);
         return toResponsSuccess(couponVos);
     }
