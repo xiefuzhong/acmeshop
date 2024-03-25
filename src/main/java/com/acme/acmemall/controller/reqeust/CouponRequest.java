@@ -47,6 +47,8 @@ public class CouponRequest implements Serializable {
 
     private Long userId;
 
+    private Long merchantId;
+
 
     /**
      * 校验请求参数
