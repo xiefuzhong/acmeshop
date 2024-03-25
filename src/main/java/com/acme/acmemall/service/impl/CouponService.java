@@ -141,7 +141,7 @@ public class CouponService implements ICouponService {
         if (CouponSendType.getByCode(couponVo.getSend_type()) == CouponSendType.SEND_TYPE_USER) {
             userCouponVo.receive(couponVo);
             couponVo.receive();
-            userCouponMapper.updateCouponStatus(userCouponVo);
+            userCouponMapper.save(userCouponVo);
             couponMapper.update(couponVo);
             return ResultMap.ok();
         }

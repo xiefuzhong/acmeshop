@@ -72,6 +72,7 @@ public class UserCouponVo implements Serializable {
 
     public void receive(CouponVo couponVo) {
         this.add_time = new Date();
+        this.coupon_status = CouponStatusEnum.COUPON_AVAILABLE.getCode();
         this.expired_time = new Date(this.add_time.getTime() + TimeConstants.TIME_DAY * couponVo.getUsageTime());
     }
 }

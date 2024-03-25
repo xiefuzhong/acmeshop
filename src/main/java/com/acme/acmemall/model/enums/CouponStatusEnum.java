@@ -9,8 +9,8 @@
 package com.acme.acmemall.model.enums;
 
 public enum CouponStatusEnum {
-    COUPON_AVAILABLE(1, "可使用"),
-    COUPON_EXCHANGED(2, "已核销"),
+    COUPON_AVAILABLE(1, "未使用"),
+    COUPON_EXCHANGED(2, "已使用"),
     COUPON_NO_AVAILABLE(4, "已用完"),
     COUPON_EXPIRED(3, "已过期");
 
