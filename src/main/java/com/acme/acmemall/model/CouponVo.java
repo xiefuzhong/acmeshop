@@ -178,6 +178,7 @@ public class CouponVo implements Serializable {
         this.min_amount = request.getMin_amount();
         this.min_goods_amount = request.getMin_amount();
         this.usageTime = request.getUsageTime();
+        this.merchantId = request.getMerchantId();
     }
 
     /**
