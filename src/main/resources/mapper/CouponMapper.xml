@@ -34,6 +34,8 @@
         <result property="usageTime" column="usage_time"/>
         <!--        enabled-->
         <result property="enabled" column="enabled"/>
+        <!--        type-->
+        <result property="type" column="type"/>
         <!--        used_status-->
         <result property="used_status" column="used_status"/>
     </resultMap>
@@ -82,6 +84,7 @@
         insert into t_acme_mall_coupon
         (
         `name`,
+        `type`,
         `type_money`,
         `send_type`,
         `min_amount`,
@@ -97,11 +100,13 @@
         `total_count`,
         `scope`,
         `coupon_number`,
-        `remain_count`
+        `remain_count`,
+        `merchant_id`
         )
         values
         (
         #{name},
+        #{type},
         #{type_money},
         #{send_type},
         #{min_amount},
@@ -117,7 +122,8 @@
         #{totalCount},
         #{scope},
         #{coupon_number},
-        #{remainCount}
+        #{remainCount},
+        #{merchantId}
         )
     </insert>
 
