@@ -20,6 +20,8 @@
         <result property="use_end_date" column="use_end_date"/>
         <result property="min_goods_amount" column="min_goods_amount"/>
         <result property="coupon_price" column="coupon_price"/>
+        <!--        expired_time-->
+        <result property="expired_time" column="expired_time"/>
     </resultMap>
 
     <select id="queryObject" resultMap="userCouponMap">
@@ -101,7 +103,6 @@
         `merchant_id`,
         `coupon_price`,
         `expired_time`
-
         )
         values
         (
