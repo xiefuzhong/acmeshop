@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -131,7 +130,6 @@ public class CouponService implements ICouponService {
     @Override
     public ResultMap updateCoupon(CouponVo couponVo, LoginUserVo userVo) {
         UserCouponVo userCouponVo = UserCouponVo.builder()
-                .add_time(new Date())
                 .coupon_id(couponVo.getId())
                 .coupon_number(couponVo.getCoupon_number())
                 .order_id(0)

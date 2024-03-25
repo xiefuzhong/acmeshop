@@ -23,11 +23,11 @@
     </resultMap>
 
     <select id="queryObject" resultMap="userCouponMap">
-		SELECT u.*,c.use_start_date,c.use_end_date, c.min_goods_amount 
-		FROM t_acme_mall_user_coupon u LEFT JOIN t_acme_mall_coupon c 
-		ON u.coupon_id=c.id 
-		where u.id = #{value}
-	</select>
+        SELECT u.*,c.use_start_date,c.use_end_date, c.min_goods_amount
+        FROM t_acme_mall_user_coupon u LEFT JOIN t_acme_mall_coupon c
+        ON u.coupon_id=c.id
+        where u.id = #{value}
+    </select>
 
     <select id="queryByCouponNumber" resultMap="userCouponMap">
         select * from t_acme_mall_user_coupon where coupon_number = #{coupon_number}
@@ -84,38 +84,40 @@
     </select>
 
     <select id="queryTotal" resultType="int">
-		select count(*) from t_acme_mall_user_coupon
-	</select>
+        select count(*) from t_acme_mall_user_coupon
+    </select>
 
     <insert id="save" parameterType="com.acme.acmemall.model.UserCouponVo" useGeneratedKeys="true" keyProperty="id">
-		insert into t_acme_mall_user_coupon
-		(
-			`coupon_id`, 
-			`coupon_number`, 
-			`user_id`, 
-			`used_time`, 
-			`order_id`,
-			`add_time`,
-			`source_key`,
-			`referrer`,
-			`merchant_id`,
-			`coupon_price`
+        insert into t_acme_mall_user_coupon
+        (
+        `coupon_id`,
+        `coupon_number`,
+        `user_id`,
+        `used_time`,
+        `order_id`,
+        `add_time`,
+        `source_key`,
+        `referrer`,
+        `merchant_id`,
+        `coupon_price`,
+        `expired_time`
 
-		)
-		values
-		(
-            #{coupon_id},
-			#{coupon_number},
-			#{user_id},
-			#{used_time},
-			#{order_id},
-			#{add_time},
-			#{source_key},
-			#{referrer},
-			#{merchantId},
-			#{coupon_price}
-		)
-	</insert>
+        )
+        values
+        (
+        #{coupon_id},
+        #{coupon_number},
+        #{user_id},
+        #{used_time},
+        #{order_id},
+        #{add_time},
+        #{source_key},
+        #{referrer},
+        #{merchantId},
+        #{coupon_price},
+        #{expired_time}
+        )
+    </insert>
 
     <insert id="saveBatch" parameterType="list">
         insert into t_acme_mall_user_coupon
@@ -129,7 +131,8 @@
         `source_key`,
         `referrer`,
         `merchant_id`,
-        `coupon_price`
+        `coupon_price`,
+        `expired_time`
         )
         values
         <foreach collection="list" item="item" separator=",">
@@ -143,7 +146,8 @@
             #{item.source_key},
             #{item.referrer},
             #{item.merchantId},
-            #{item.coupon_price}
+            #{item.coupon_price},
+            #{expired_time}
             )
         </foreach>
     </insert>
@@ -162,19 +166,19 @@
         </set>
         where `id`= #{id}
     </update>
-    
+
     <update id="updateCouponStatus" parameterType="com.acme.acmemall.model.UserCouponVo">
         update t_acme_mall_user_coupon
         <set>
-        	<if test="used_time != null">`used_time` = #{used_time},</if>
+            <if test="used_time != null">`used_time` = #{used_time},</if>
             <if test="coupon_status != null">`coupon_status` = #{coupon_status}</if>
         </set>
         where `id` = #{id}
     </update>
 
     <delete id="delete">
-		delete from t_acme_mall_user_coupon where `id` = #{value}
-	</delete>
+        delete from t_acme_mall_user_coupon where `id` = #{value}
+    </delete>
 
     <delete id="deleteBatch">
         delete from t_acme_mall_user_coupon where `id`in
