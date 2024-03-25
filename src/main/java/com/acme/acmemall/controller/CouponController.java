@@ -200,23 +200,25 @@ public class CouponController extends ApiBase {
         Map couponParam = Maps.newHashMap();
         couponParam.put("send_type", 8);
         params.put("id", id);
-        CouponVo newCouponConfig = couponService.queryObject(Integer.parseInt(id));
+        CouponVo couponVo = couponService.queryObject(Integer.parseInt(id));
         //判断优惠券是否被领完
         Map userParams = Maps.newHashMap();
         userParams.put("coupon_id", id);
         int count = userCouponService.queryUserGetTotal(userParams);
-        if (newCouponConfig.getTotalCount() <= count) {
+        if (couponVo.getTotalCount() <= count) {
             return toResponsFail("优惠券已领完");
         }
-        if (null != newCouponConfig) {
+        if (null != couponVo) {
             UserCouponVo userCouponVo = UserCouponVo.builder()
                     .add_time(new Date())
-                    .coupon_id(newCouponConfig.getId())
-                    .coupon_number(newCouponConfig.getCoupon_number())
+                    .coupon_id(couponVo.getId())
+                    .coupon_number(couponVo.getCoupon_number())
                     .user_id(loginUser.getUserId())
-                    .coupon_price(newCouponConfig.getType_money())
+                    .coupon_price(couponVo.getType_money())
                     .build();
             userCouponService.save(userCouponVo);
+            couponVo.receive();
+            couponService.updateUserCoupon(couponVo);
             return toResponsSuccess(userCouponVo);
         } else {
             return toResponsFail("领取失败");
