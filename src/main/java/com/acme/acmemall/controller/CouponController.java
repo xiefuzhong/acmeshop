@@ -341,14 +341,6 @@ public class CouponController extends ApiBase {
         if (!couponRequest.checkRequest()) {
             return ResultMap.error(400, "优惠券参数错误");
         }
-        LoginUserVo sysUserVo = userService.queryByUserId(userVo.getUserId());
-        if (null == sysUserVo) {
-            return ResultMap.error(400, "用户不存在");
-        }
-        if (null == sysUserVo.getMerchantId()) {
-            return ResultMap.error(400, "请先绑定商家");
-        }
-        couponRequest.setMerchantId(sysUserVo.getMerchantId());
         return couponService.createCoupon(couponRequest, userVo);
     }
 }
