@@ -92,7 +92,7 @@ public class CouponController extends ApiBase {
         }
         if (send_type != null && send_type > 0) {
             param.put("send_types", Lists.newArrayList(send_type));
-        })
+        }
         // 查询用户是否领取过优惠券
         if (loginUser != null && loginUser.getUserId() > 0) {
             param.put("userId", loginUser.getUserId());
