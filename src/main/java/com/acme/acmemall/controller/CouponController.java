@@ -266,16 +266,18 @@ public class CouponController extends ApiBase {
 
     //    @IgnoreAuth
     @GetMapping("/giveable")
-    public Object getMerCouponList(@LoginUser LoginUserVo userVo, @RequestParam("send_type") Integer sendType) {
+    public Object getMerCouponList(@LoginUser LoginUserVo userVo,
+                                   @RequestParam("merchantId") Long merchantId,
+                                   @RequestParam("send_type") Integer sendType) {
         if (userVo == null) {
             return ResultMap.error(400, "非有效用户操作");
         }
         LoginUserVo loginUserVo = userService.queryByUserId(userVo.getUserId());
-        if (loginUserVo == null || loginUserVo.getUserId() == 0) {
-            return ResultMap.error(1001, "请先登录管理系统再操作!");
+        if (!userService.checkAdmin(userVo.getUserId())) {
+            return ResultMap.response(ResultCodeEnum.UNAUTHORIZED);
         }
         Map param = Maps.newHashMap();
-        param.put("merchantId", loginUserVo.getMerchantId());
+        param.put("merchantId", merchantId);
         // 按用户发放
         if (sendType == null) {
             sendType = 1;
