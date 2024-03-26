@@ -39,7 +39,7 @@ public class UserCouponVo implements Serializable {
     private Date add_time;
 
     //订单Id
-    private Integer order_id;
+    private String order_id;
 
     //来源key
     private String source_key;
@@ -64,9 +64,10 @@ public class UserCouponVo implements Serializable {
      *
      * @param user_id
      */
-    public void exchange(long user_id) {
-        this.add_time = new Date();
+    public void exchange(long user_id, String orderId) {
         this.user_id = user_id;
+        this.used_time = new Date();
+        this.order_id = orderId;
         this.coupon_status = CouponStatusEnum.COUPON_EXCHANGED.getCode();
     }
 

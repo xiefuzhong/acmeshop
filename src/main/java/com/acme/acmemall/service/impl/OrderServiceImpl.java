@@ -112,7 +112,7 @@ public class OrderServiceImpl implements IOrderService {
         orderItemMapper.saveBatch(order.getItems());
         // 释放优惠券信息
         UserCouponVo userCouponVo = userCouponMapper.queryObject(request.getUserCouponId());
-        userCouponVo.exchange(loginUser.getUserId());
+        userCouponVo.exchange(loginUser.getUserId(), order.getId());
         userCouponMapper.update(userCouponVo);
         // 删除购物车
         List<String> productIds = cartList.stream().map(cartVo -> cartVo.getProduct_id().toString()).collect(Collectors.toList());
