@@ -25,7 +25,7 @@ public class OrderSubmitRequest implements Serializable {
     // 提交方式cart-购物车
     private String type;
 
-    // 实付金额=订单金额+运费
+    // 实付金额=订单金额+运费-优惠券
     private String actualPrice;
 
     // 订单金额=商品总额-优惠

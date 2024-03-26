@@ -7,6 +7,7 @@ import com.acme.acmemall.exception.Assert;
 import com.acme.acmemall.exception.ResultCodeEnum;
 import com.acme.acmemall.factory.OrderFactory;
 import com.acme.acmemall.model.*;
+import com.acme.acmemall.model.enums.CouponStatusEnum;
 import com.acme.acmemall.model.enums.OrderStatusEnum;
 import com.acme.acmemall.service.IOrderService;
 import com.google.common.collect.Lists;
@@ -248,7 +249,7 @@ public class OrderServiceImpl implements IOrderService {
             Map paramMap = Maps.newHashMap();
             paramMap.put("user_id", loginUser.getUserId());
             // 可用
-            paramMap.put("coupon_status", 1);
+            paramMap.put("coupon_status", CouponStatusEnum.COUPON_AVAILABLE.getCode());
             paramMap.put("couponIds", couponIds);
             paramMap.put("selected", true);
             // 商品总额
