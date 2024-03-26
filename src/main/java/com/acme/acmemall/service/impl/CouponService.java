@@ -143,9 +143,9 @@ public class CouponService implements ICouponService {
                     .coupon_price(couponVo.getType_money())
                     .merchantId(couponVo.getMerchantId())
                     .build();
+            userCouponVo.receive(couponVo);
             userCouponVoList.add(userCouponVo);
         }
-        userCouponVoList.stream().forEach(userCouponVo -> userCouponVo.receive(couponVo));
         userCouponMapper.saveBatch(userCouponVoList);
         couponVo.receive();
         couponMapper.update(couponVo);

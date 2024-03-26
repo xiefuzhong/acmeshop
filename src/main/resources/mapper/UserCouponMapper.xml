@@ -148,7 +148,7 @@
             #{item.referrer},
             #{item.merchantId},
             #{item.coupon_price},
-            #{expired_time}
+            #{item.expired_time}
             )
         </foreach>
     </insert>
