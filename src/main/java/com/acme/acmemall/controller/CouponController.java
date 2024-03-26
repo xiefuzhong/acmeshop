@@ -50,12 +50,10 @@ public class CouponController extends ApiBase {
     @ApiOperation(value = "获取优惠券列表")
     @GetMapping("/list")
     public Object list(@LoginUser LoginUserVo loginUser,
-                       @RequestParam("status") Integer status) {
+                       @RequestParam(value = "status", defaultValue = "0") Integer status) {
         Map param = Maps.newHashMap();
         param.put("user_id", loginUser.getUserId());
-        if (status != null && status > 0) {
-            param.put("coupon_status", status);
-        }
+        param.put("coupon_status", status);
         List<CouponVo> couponVos = couponService.queryUserCoupons(param);
         return toResponsSuccess(couponVos);
     }
