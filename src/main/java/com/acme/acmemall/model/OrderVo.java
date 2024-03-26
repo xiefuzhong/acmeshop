@@ -313,6 +313,7 @@ public class OrderVo implements Serializable {
     public OrderVo submit(List<UserCouponVo> userCouponList, List<ShopCartVo> cartList, AddressVo address, InvoiceTitleVo invoiceTitleVo) {
         // 订单收件人信息
         setAddressInfo(address);
+        setInvoiceInfo(invoiceTitleVo);
         // 优惠信息
         if (CollectionUtils.isNotEmpty(userCouponList)) {
             UserCouponVo userCoupon = userCouponList.stream().findFirst().get();
@@ -341,6 +342,12 @@ public class OrderVo implements Serializable {
         cartList.stream().forEach(cartVo -> this.items.add(OrderFactory.buildOrderItem(cartVo, id)));
         this.addProcess("您的提交了订单," + OrderStatusEnum.NEW.getName());
         return this;
+    }
+
+    private void setInvoiceInfo(InvoiceTitleVo invoiceTitleVo) {
+        if (invoiceTitleVo != null) {
+            this.invoiceHeaderId = invoiceTitleVo.getId();
+        }
     }
 
     /**
