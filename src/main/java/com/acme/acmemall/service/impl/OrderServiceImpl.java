@@ -88,8 +88,19 @@ public class OrderServiceImpl implements IOrderService {
         }
 
         // 用户选择的优惠券信息
-        List<UserCouponVo> userCouponList = getUserCouponVos(request.getUserCouponId(), request.getGoodsTotalPrice(), loginUser);
+        Map params = Maps.newHashMap();
+        params.put("user_id", loginUser.getUserId());
+        params.put("coupon_status", CouponStatusEnum.COUPON_AVAILABLE.getCode());
+        params.put("couponIds", Lists.newArrayList(request.getUserCouponId()));
+        params.put("selected", true);
+        // 商品总额
+        params.put("goodsTotalPrice", request.getGoodsTotalPrice());
 
+        List<UserCouponVo> userCouponList = userCouponMapper.queryList(params);
+        if (CollectionUtils.isEmpty(userCouponList)) {
+            logger.info(String.format("订单%s:不能使用优惠券，优惠券信息错误或已使用"));
+            return ResultMap.badArgument(String.format("订单%s:不能使用优惠券"));
+        }
         // 购物车明细校验
         if (StringUtils.isEmpty(request.getCartIds())) {
             return ResultMap.response(ResultCodeEnum.FAILED);
