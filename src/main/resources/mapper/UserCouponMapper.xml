@@ -158,6 +158,7 @@
             <if test="coupon_id != null">`coupon_id` = #{coupon_id},</if>
             <if test="coupon_number != null">`coupon_number` = #{coupon_number},</if>
             <if test="user_id != null">`user_id` = #{user_id},</if>
+            <if test="coupon_status != null">`coupon_status` = #{coupon_status},</if>
             <if test="used_time != null">`used_time` = #{used_time},</if>
             <if test="order_id != null">`order_id` = #{order_id},</if>
             <if test="add_time != null">`add_time` = #{add_time},</if>
