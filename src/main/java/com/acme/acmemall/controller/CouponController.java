@@ -69,8 +69,8 @@ public class CouponController extends ApiBase {
     @ApiOperation(value = "获取用户可用优惠券列表")
     @GetMapping("/valid-coupon-list")
     public Object getValidCouponList(@LoginUser LoginUserVo loginUser,
-                                     Long merchantId,
-                                     BigDecimal goodsTotalPrice,
+                                     @RequestParam("merchantId", defaultValue = "0") Long merchantId,
+                                     @RequestParam("goodsTotalPrice", defaultValue = "0") BigDecimal goodsTotalPrice,
                                      @RequestParam("coupon_status", defaultValue = "0") Integer coupon_status) {
         Map param = Maps.newHashMap();
         param.put("user_id", loginUser.getUserId());
