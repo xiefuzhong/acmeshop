@@ -65,7 +65,6 @@
                     #{item}
                 </foreach>
             </if>
-            AND uc.expired_time >= now()
             <if test="merchantId != null and merchantId !=''">
                 and a.merchant_id = #{merchantId}
             </if>
