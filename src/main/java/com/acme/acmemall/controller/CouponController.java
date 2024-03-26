@@ -70,7 +70,7 @@ public class CouponController extends ApiBase {
     @GetMapping("/valid-coupon-list")
     public Object getValidCouponList(@LoginUser LoginUserVo loginUser,
                                      @RequestParam("merchantId", defaultValue = "0") Long merchantId,
-                                     @RequestParam("goodsTotalPrice", defaultValue = "0") BigDecimal goodsTotalPrice,
+                                     @RequestParam("goodsTotalPrice", defaultValue = "1") BigDecimal goodsTotalPrice,
                                      @RequestParam("coupon_status", defaultValue = "0") Integer coupon_status) {
         Map param = Maps.newHashMap();
         param.put("user_id", loginUser.getUserId());
