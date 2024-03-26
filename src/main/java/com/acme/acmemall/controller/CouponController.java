@@ -76,8 +76,6 @@ public class CouponController extends ApiBase {
         param.put("user_id", loginUser.getUserId());
         param.put("merchantId", merchantId);
         param.put("goodsTotalPrice", goodsTotalPrice);
-        // 未使用
-        param.put("coupon_status", coupon_status);
         List<CouponVo> validCouponVos = couponService.getValidUserCoupons(param);
         return toResponsSuccess(validCouponVos);
     }
