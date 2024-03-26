@@ -89,6 +89,12 @@ public class CouponVo implements Serializable {
     @JsonFormat(pattern = "yyyy年MM月dd日")
     private Date use_end_date;
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    private Date expired_time;
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    private Date received_time;
+
     public BigDecimal getMin_goods_amount() {
         return min_goods_amount == null ? null : min_goods_amount.setScale(2, RoundingMode.HALF_UP);
     }
