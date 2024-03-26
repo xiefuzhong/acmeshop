@@ -66,10 +66,6 @@
                 </foreach>
             </if>
             AND b.expired_time >= now()
-            <!--            <if test="enabled != null and enabled == true">-->
-            <!--                and a.use_end_date >= now()-->
-            <!--                and now() >= a.use_start_date-->
-            <!--            </if>-->
             <if test="merchantId != null and merchantId !=''">
                 and a.merchant_id = #{merchantId}
             </if>
