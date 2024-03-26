@@ -20,7 +20,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -106,16 +105,14 @@ public class OrderServiceImpl implements IOrderService {
         OrderVo order = OrderFactory.buildNewOrder(loginUser.getUserId(), request.getType());
         order.submit(userCouponList, cartList, addressVo, invoiceHeaderVo);
         order.checkSubmit();
-        logger.info("order.submit >> " + order);
+//        logger.info("order.submit >> " + order);
         // 保存order以及明细表
         orderMapper.save(order);
         orderItemMapper.saveBatch(order.getItems());
         // 释放优惠券信息
-        UserCouponVo uc = UserCouponVo.builder().coupon_id(order.getCoupon_id())
-                .coupon_status(2)
-                .used_time(new Date())
-                .build();
-        userCouponMapper.updateCouponStatus(uc);
+        UserCouponVo userCouponVo = userCouponMapper.queryObject(order.getCoupon_id());
+        userCouponVo.exchange(loginUser.getUserId());
+        userCouponMapper.update(userCouponVo);
         // 删除购物车
         List<String> productIds = cartList.stream().map(cartVo -> cartVo.getProduct_id().toString()).collect(Collectors.toList());
         cartMapper.deleteByUserAndProductIds(loginUser.getUserId(), productIds.toArray(new String[productIds.size()]));
