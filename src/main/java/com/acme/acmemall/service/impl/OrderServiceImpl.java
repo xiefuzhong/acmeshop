@@ -71,6 +71,7 @@ public class OrderServiceImpl implements IOrderService {
     @Transactional(rollbackFor = {RuntimeException.class, Exception.class})
     @Override
     public ResultMap submit(OrderSubmitRequest request, LoginUserVo loginUser) {
+        logger.info(String.format("订单提交: %s", request.toString()));
         // 提交方式:cart-购物车提交 2-直接购买;其他-团购购买
         if (!StringUtils.equals("cart", request.getType())) {
             return ResultMap.error(101, "请先添加到购物车,暂不支持其他方式");
