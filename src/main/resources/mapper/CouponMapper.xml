@@ -256,7 +256,7 @@
             AND b.order_id = 0
             AND b.coupon_status = 1
             AND a.send_type in(1,4,8)
-            <![CDATA[ AND b.expired_time <= now()]]>
+            <![CDATA[ AND b.expired_time >= now()]]>
             AND a.merchant_id=#{merchantId}
             AND a.min_goods_amount &lt;= #{goodsTotalPrice}
             AND b.user_id = #{user_id}
