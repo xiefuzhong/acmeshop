@@ -178,7 +178,7 @@ public class CouponController extends ApiBase {
         if (null == couponVo || null == couponVo.getUse_end_date() || couponVo.getUse_end_date().before(new Date())) {
             return toResponsFail("当前优惠码已经过期");
         }
-        userCouponVo.exchange(loginUser.getUserId());
+        userCouponVo.exchange(loginUser.getUserId(), "0");
         userCouponService.update(userCouponVo);
         return toResponsSuccess(userCouponVo);
     }

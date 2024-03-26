@@ -138,7 +138,7 @@ public class CouponService implements ICouponService {
             UserCouponVo userCouponVo = UserCouponVo.builder()
                     .coupon_id(couponVo.getId())
                     .coupon_number(couponVo.getCoupon_number())
-                    .order_id(0)
+                    .order_id("0")
                     .user_id(userIds.get(i))
                     .coupon_price(couponVo.getType_money())
                     .merchantId(couponVo.getMerchantId())
