@@ -62,8 +62,7 @@
                 and a.coupon_status = #{coupon_status}
             </if>
             <if test="selected != null and selected == true">
-                AND b.use_end_date >= now()
-                AND now() >= b.use_start_date
+                AND a.expired_time >= now()
                 AND b.min_goods_amount &lt;= #{goodsTotalPrice}
             </if>
 
