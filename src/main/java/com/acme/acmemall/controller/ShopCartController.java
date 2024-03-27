@@ -339,7 +339,11 @@ public class ShopCartController extends ApiBase {
      */
     @ApiOperation(value = "订单提交前的检验和填写相关订单信息")
     @GetMapping("checkout")
-    public Object checkout(@LoginUser LoginUserVo loginUser, Integer couponId, @RequestParam(defaultValue = "cart") String type, Integer addressId, Integer headerId, String activityType) {
+    public Object checkout(@LoginUser LoginUserVo loginUser, Integer couponId,
+                           @RequestParam(defaultValue = "cart") String type,
+                           Integer addressId,
+                           Integer headerId,
+                           String activityType) {
         //activityType="2";
         Map<String, Object> resultObj = Maps.newHashMap();
 
@@ -369,11 +373,23 @@ public class ShopCartController extends ApiBase {
 
         // * 获取要购买的商品和总价
         ArrayList checkedGoodsList = Lists.newArrayList();
+        CouponVo couponVo = null;
+        if (couponId != null && couponId > 0) {
+            couponVo = couponService.getUserCoupon(couponId);
+            if (couponVo != null) {
+                //  优惠券类型 1:满减 2:折扣
+//                if (couponVo.getType() == 1) {
+//                    couponPrice = couponVo.getType_money();
+//                } else if (couponVo.getType() == 2) {
+//                    couponPrice = orderTotalPrice.multiply(couponVo.getType_money()).divide(new BigDecimal(100));
+//                }
 
+            }
+        }
         List<MerCartVo> merCartVoList = Lists.newArrayList();
         // 购物车下单
         if (type.equals("cart")) {
-            Map<String, Object> cartData = (Map<String, Object>) this.getCart(loginUser);
+//            Map<String, Object> cartData = (Map<String, Object>) this.getCart(loginUser);
             List<ShopCartVo> cartVoList = Lists.newArrayList();
 
             //查询用户购物车信息
@@ -381,7 +397,21 @@ public class ShopCartController extends ApiBase {
             for (MerCartVo merCartVo : merCartVos) {
                 freightPrice = freightPrice.add(merCartVo.getFreightPrice());
                 goodsTotalPrice = goodsTotalPrice.add(merCartVo.getOrderTotalPrice());
-                merCartVo.setActualPrice(merCartVo.getFreightPrice().add(merCartVo.getOrderTotalPrice()));
+                // 获取优惠金额
+                // 订单的总价
+                BigDecimal orderTotalPrice = goodsTotalPrice.add(freightPrice);
+                BigDecimal couponPrice = new BigDecimal("0.00");
+                if (couponVo != null) {
+                    //  优惠券类型 1:满减 2:折扣
+                    if (couponVo.getType() == 1) {
+                        couponPrice = couponVo.getType_money();
+                    } else if (couponVo.getType() == 2) {
+                        couponPrice = orderTotalPrice.multiply(couponVo.getType_money()).divide(new BigDecimal(100));
+                    }
+                }
+                BigDecimal actualPrice = orderTotalPrice.subtract(couponPrice);  //减去其它支付的金额后，要实际支付的金额
+                merCartVo.setCouponPrice(couponPrice);
+                merCartVo.setActualPrice(actualPrice);
                 Map map = Maps.newHashMap();
                 map.put("user_id", loginUser.getUserId());
                 map.put("merchantId", merCartVo.getMerchantId());
@@ -389,12 +419,10 @@ public class ShopCartController extends ApiBase {
                 cartVoList = cartService.queryCheckedByUserIdAndMerId(map);
                 merCartVo.setCartVoList(cartVoList);
                 //获取用户可用优惠券列表
-                List<CouponVo> couponVos = couponService.queryUserCoupons(map);
                 List<CouponVo> validCouponVos = couponService.getValidUserCoupons(map);
                 merCartVo.setUserCouponList(validCouponVos);
                 merCartVoList.add(merCartVo);
             }
-            //goodsTotalPrice = (BigDecimal) ((HashMap) cartData.get("cartTotal")).get("checkedGoodsAmount");
         } else { // 是直接购买的
             BuyGoodsVo goodsVO = new BuyGoodsVo();
             ProductVo productInfo = productService.queryObject(goodsVO.getProductId());
@@ -438,20 +466,15 @@ public class ShopCartController extends ApiBase {
         BigDecimal orderTotalPrice = goodsTotalPrice.add(freightPrice);
         //获取可用的优惠券信息
         BigDecimal couponPrice = new BigDecimal("0.00");
-        if (couponId != null && couponId != 0) {
-            // 查询用户优惠券
-            CouponVo couponVo = couponService.getUserCoupon(couponId);
-            if (couponVo != null) {
-                //  优惠券类型 1:满减 2:折扣
-                if (couponVo.getType() == 1) {
-                    couponPrice = couponVo.getType_money();
-                } else if (couponVo.getType() == 2) {
-                    couponPrice = orderTotalPrice.multiply(couponVo.getType_money()).divide(new BigDecimal(100));
-                }
-
+        if (couponVo != null) {
+            //  优惠券类型 1:满减 2:折扣
+            if (couponVo.getType() == 1) {
+                couponPrice = couponVo.getType_money();
+            } else if (couponVo.getType() == 2) {
+                couponPrice = orderTotalPrice.multiply(couponVo.getType_money()).divide(new BigDecimal(100));
             }
-        }
 
+        }
 
         BigDecimal actualPrice = orderTotalPrice.subtract(couponPrice);  //减去其它支付的金额后，要实际支付的金额
         resultObj.put("freightPrice", freightPrice);
