@@ -174,7 +174,7 @@ public class UserController extends ApiBase {
             return ResultMap.badArgumentValue();
         }
         userService.updateUser(updater);
-        return ResultMap.ok();
+        return toResponsSuccess(updater);
     }
 
     @PostMapping("/management")
