@@ -123,6 +123,10 @@ public class CouponVo implements Serializable {
 
     private String coupon_status_text;
 
+    public void updateUsed_status(Integer used_status) {
+        this.used_status = used_status;
+    }
+
     // 0-未领取，1-已领取
     private Integer used_status;
 

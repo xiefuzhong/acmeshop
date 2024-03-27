@@ -89,9 +89,10 @@ public class CouponController extends ApiBase {
     public Object listMer(@LoginUser LoginUserVo loginUser,
                           @RequestParam(value = "merchantId", defaultValue = "0") long merchantId,
                           @RequestParam(value = "send_type", defaultValue = "0") Integer send_type,
+                          @RequestParam("page") String page,
                           @RequestParam(value = "type", defaultValue = "0") Integer type) {
         Map param = Maps.newHashMap();
-        param.put("user_id", loginUser.getUserId());
+
         param.put("merchantId", merchantId);
         if (type != null && type > 0) {
             param.put("type", type);
@@ -100,6 +101,17 @@ public class CouponController extends ApiBase {
             param.put("send_types", Lists.newArrayList(send_type));
         }
         List<CouponVo> couponVos = couponService.queryCouponList(param);
+        if (org.apache.commons.lang.StringUtils.equalsIgnoreCase("goods", page)) {
+            Map param = Maps.newHashMap();
+            param.put("user_id", loginUser.getUserId());
+            param.put("user_id", coupon_number);
+            List<UserCouponVo> userCouponList = userCouponService.queryUserCouponList(param);
+            if (CollectionUtils.isNotEmpty(userCouponList)) {
+                Map<String, Integer> userCouponMap = userCouponList.stream().collect(Collectors.toMap(UserCouponVo::getCoupon_id, UserCouponVo::getCoupon_id, (ke1, ke2) -> ke1));
+                couponVos.forEach(couponVo -> couponVo.updateUsed_status(userCouponMap.containsKey(couponVo.getId()) ? 1 :));
+            }
+        }
+
         return toResponsSuccess(couponVos);
     }
 
