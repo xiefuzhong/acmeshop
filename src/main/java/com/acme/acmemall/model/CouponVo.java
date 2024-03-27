@@ -28,7 +28,7 @@ public class CouponVo implements Serializable {
     // 优惠券添加时间
     private Date add_time;
 
-    // 优惠券类型 0:满减 1:折扣
+    // 优惠券类型 1:满减 2:折扣
     private Integer type;
 
     private String type_title;

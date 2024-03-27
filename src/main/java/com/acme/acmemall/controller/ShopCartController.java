@@ -116,8 +116,7 @@ public class ShopCartController extends ApiBase {
             BigDecimal minAmount = new BigDecimal(100000);
             for (CouponVo couponVo : couponVos) {
                 BigDecimal difDec = couponVo.getMin_goods_amount().subtract(checkedGoodsAmount).setScale(2, RoundingMode.HALF_UP);
-                if (couponVo.getSend_type() == 0 && difDec.doubleValue() > 0.0
-                        && minAmount.compareTo(couponVo.getMin_goods_amount()) > 0) {
+                if (couponVo.getSend_type() == 0 && difDec.doubleValue() > 0.0 && minAmount.compareTo(couponVo.getMin_goods_amount()) > 0) {
                     fullCutDec = couponVo.getType_money();
                     minAmount = couponVo.getMin_goods_amount();
                     fullCutVo.setType(1);
@@ -340,11 +339,7 @@ public class ShopCartController extends ApiBase {
      */
     @ApiOperation(value = "订单提交前的检验和填写相关订单信息")
     @GetMapping("checkout")
-    public Object checkout(@LoginUser LoginUserVo loginUser, Integer couponId,
-                           @RequestParam(defaultValue = "cart") String type,
-                           Integer addressId,
-                           Integer headerId,
-                           String activityType) {
+    public Object checkout(@LoginUser LoginUserVo loginUser, Integer couponId, @RequestParam(defaultValue = "cart") String type, Integer addressId, Integer headerId, String activityType) {
         //activityType="2";
         Map<String, Object> resultObj = Maps.newHashMap();
 
@@ -413,12 +408,7 @@ public class ShopCartController extends ApiBase {
             }
             goodsTotalPrice = productInfo.getRetail_price().multiply(new BigDecimal(goodsVO.getNumber()));
 
-            ShopCartVo cartVo = ShopCartVo.builder()
-                    .goods_name(productInfo.getGoods_name())
-                    .number(goodsVO.getNumber())
-                    .retail_price(productInfo.getRetail_price())
-                    .list_pic_url(productInfo.getList_pic_url())
-                    .build();
+            ShopCartVo cartVo = ShopCartVo.builder().goods_name(productInfo.getGoods_name()).number(goodsVO.getNumber()).retail_price(productInfo.getRetail_price()).list_pic_url(productInfo.getList_pic_url()).build();
             checkedGoodsList.add(cartVo);
 
             //计算运费
@@ -444,27 +434,29 @@ public class ShopCartController extends ApiBase {
             merCartVo.setUserCouponList(validCouponVos);
             merCartVoList.add(merCartVo);
         }
-
+        // 订单的总价
+        BigDecimal orderTotalPrice = goodsTotalPrice.add(freightPrice);
         //获取可用的优惠券信息
         BigDecimal couponPrice = new BigDecimal("0.00");
         if (couponId != null && couponId != 0) {
             // 查询用户优惠券
             CouponVo couponVo = couponService.getUserCoupon(couponId);
             if (couponVo != null) {
-                couponPrice = couponVo.getType_money();
+                //  优惠券类型 1:满减 2:折扣
+                if (couponVo.getType() == 1) {
+                    couponPrice = couponVo.getType_money();
+                } else if (couponVo.getType() == 2) {
+                    couponPrice = orderTotalPrice.multiply(couponVo.getType_money()).divide(new BigDecimal(100));
+                }
+
             }
         }
 
-        //订单的总价
-        BigDecimal orderTotalPrice = goodsTotalPrice.add(freightPrice);
 
         BigDecimal actualPrice = orderTotalPrice.subtract(couponPrice);  //减去其它支付的金额后，要实际支付的金额
-
         resultObj.put("freightPrice", freightPrice);
-
         resultObj.put("couponPrice", couponPrice);
         resultObj.put("checkedGoodsList", merCartVoList);
-//        resultObj.put("checkedGoodsList", checkedGoodsList);
         resultObj.put("goodsTotalPrice", goodsTotalPrice);
         resultObj.put("orderTotalPrice", orderTotalPrice);
         resultObj.put("actualPrice", actualPrice);
