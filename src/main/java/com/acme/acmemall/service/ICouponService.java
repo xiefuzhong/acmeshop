@@ -47,7 +47,7 @@ public interface ICouponService {
 
     List<CouponVo> getValidUserCoupons(Map param);
 
-    CouponVo queryObject(Integer couponId);
+    CouponVo queryObject(Long couponId);
 
     ResultMap createCoupon(CouponRequest couponRequest, LoginUserVo userVo);
 

@@ -161,7 +161,7 @@ public class OrderVo implements Serializable {
     @Builder.Default
     private BigDecimal freight_price = BigDecimal.ZERO;
     //使用的优惠券id
-    private Integer coupon_id;
+    private Long coupon_id;
     //
     private Integer parent_id;
     //优惠价格

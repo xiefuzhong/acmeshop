@@ -23,7 +23,7 @@ public class CouponVo implements Serializable {
     private static final long serialVersionUID = 1L;
 
     // 优惠券主键
-    private Integer id;
+    private Long id;
 
     // 优惠券添加时间
     private Date add_time;

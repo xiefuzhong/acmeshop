@@ -23,9 +23,9 @@ import java.util.Date;
 @AllArgsConstructor
 public class UserCouponVo implements Serializable {
     //主键
-    private Integer id;
+    private Long id;
     //优惠券Id
-    private Integer coupon_id;
+    private Long coupon_id;
     //优惠券数量
     private String coupon_number;
     //会员Id

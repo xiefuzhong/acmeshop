@@ -17,6 +17,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.jsoup.select.Evaluator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
@@ -89,7 +90,7 @@ public class CouponController extends ApiBase {
     public Object listMer(@LoginUser LoginUserVo loginUser,
                           @RequestParam(value = "merchantId", defaultValue = "0") long merchantId,
                           @RequestParam(value = "send_type", defaultValue = "0") Integer send_type,
-                          @RequestParam("page") String page,
+                          @RequestParam(value = "page") String page,
                           @RequestParam(value = "type", defaultValue = "0") Integer type) {
         Map param = Maps.newHashMap();
 
@@ -102,12 +103,11 @@ public class CouponController extends ApiBase {
         }
         List<CouponVo> couponVos = couponService.queryCouponList(param);
         if (org.apache.commons.lang.StringUtils.equalsIgnoreCase("goods", page)) {
-            Map param = Maps.newHashMap();
+            param.clear();
             param.put("user_id", loginUser.getUserId());
-            param.put("user_id", coupon_number);
             List<UserCouponVo> userCouponList = userCouponService.queryUserCouponList(param);
-            if (CollectionUtils.isNotEmpty(userCouponList)) {
-                Map<String, Integer> userCouponMap = userCouponList.stream().collect(Collectors.toMap(UserCouponVo::getCoupon_id, UserCouponVo::getCoupon_id, (ke1, ke2) -> ke1));
+            if (org.apache.commons.collections.CollectionUtils.isNotEmpty(userCouponList)) {
+                Map<String, Long> userCouponMap = userCouponList.stream().collect(Collectors.toMap(UserCouponVo::getCoupon_id, UserCouponVo::getCoupon_id, (ke1, ke2) -> ke1));
                 couponVos.forEach(couponVo -> couponVo.updateUsed_status(userCouponMap.containsKey(couponVo.getId()) ? 1 : 0));
             }
         }
@@ -213,7 +213,7 @@ public class CouponController extends ApiBase {
         }
 
         // 领取
-        CouponVo couponVo = couponService.queryObject(Integer.parseInt(id));
+        CouponVo couponVo = couponService.queryObject(Long.parseLong(id));
         if (couponVo == null) {
             return toResponsFail("领取失败");
         }
@@ -317,7 +317,7 @@ public class CouponController extends ApiBase {
         String userIds = request.getString("userIds");
         String[] uids = userIds.split(",");
         List<Long> ids = Arrays.stream(uids).map(id -> Long.parseLong(id.trim())).collect(Collectors.toList());
-        Integer coupon_id = request.getInteger("coupon_id");
+        Long coupon_id = request.getLong("coupon_id");
         CouponVo couponVo = couponService.queryObject(coupon_id);
         if (couponVo == null) {
             return toResponsFail("优惠券不存在");

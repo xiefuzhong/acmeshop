@@ -109,7 +109,7 @@ public class CouponService implements ICouponService {
      * @return
      */
     @Override
-    public CouponVo queryObject(Integer couponId) {
+    public CouponVo queryObject(Long couponId) {
         return couponMapper.queryObject(couponId);
     }
 
