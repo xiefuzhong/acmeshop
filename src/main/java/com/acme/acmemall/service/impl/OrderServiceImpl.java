@@ -18,6 +18,7 @@ import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
@@ -31,33 +32,30 @@ import java.util.stream.Collectors;
  */
 @Service
 public class OrderServiceImpl implements IOrderService {
-    private final UserCouponMapper userCouponMapper;
-    private final AddressMapper addressMapper;
-    private final ShopCartMapper cartMapper;
 
-    private final OrderMapper orderMapper;
+    @Resource
+    UserCouponMapper userCouponMapper;
 
-    private final OrderGoodsMapper orderItemMapper;
+    @Resource
+    CouponMapper couponMapper;
 
-    private final InvoiceTitleMapper invoiceHeaderMapper;
+    @Resource
+    AddressMapper addressMapper;
 
-    private final OrderRefundMapper orderRefundMapper;
+    @Resource
+    ShopCartMapper cartMapper;
 
-    public OrderServiceImpl(UserCouponMapper userCouponMapper,
-                            AddressMapper addressMapper,
-                            ShopCartMapper cartMapper,
-                            OrderMapper orderMapper,
-                            InvoiceTitleMapper invoiceHeaderMapper,
-                            OrderRefundMapper orderRefundMapper,
-                            OrderGoodsMapper orderItemMapper) {
-        this.userCouponMapper = userCouponMapper;
-        this.addressMapper = addressMapper;
-        this.cartMapper = cartMapper;
-        this.orderMapper = orderMapper;
-        this.orderItemMapper = orderItemMapper;
-        this.invoiceHeaderMapper = invoiceHeaderMapper;
-        this.orderRefundMapper = orderRefundMapper;
-    }
+    @Resource
+    OrderMapper orderMapper;
+
+    @Resource
+    OrderGoodsMapper orderItemMapper;
+
+    @Resource
+    InvoiceTitleMapper invoiceHeaderMapper;
+
+    @Resource
+    OrderRefundMapper orderRefundMapper;
 
     protected Logger logger = Logger.getLogger(getClass());
 
@@ -113,8 +111,10 @@ public class OrderServiceImpl implements IOrderService {
             logger.error("Order.submit-->cartList is empty");
             return ResultMap.response(ResultCodeEnum.FAILED);
         }
+
+        CouponVo couponVo = couponMapper.queryObject(request.getUserCouponId());
         OrderVo order = OrderFactory.buildNewOrder(loginUser.getUserId(), request.getType());
-        order.submit(userCouponList, cartList, addressVo, invoiceHeaderVo);
+        order.submit(couponVo, cartList, addressVo, invoiceHeaderVo);
         order.checkSubmit();
 //        logger.info("order.submit >> " + order);
         // 保存order以及明细表

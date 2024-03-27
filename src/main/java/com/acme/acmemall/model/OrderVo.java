@@ -304,33 +304,41 @@ public class OrderVo implements Serializable {
     /**
      * 订单提交
      *
-     * @param userCouponList 用户优惠优惠
+     * @param couponVo       优惠优惠
      * @param cartList       购物车明细
      * @param address        收件人地址
      * @param invoiceTitleVo 发票信息
      * @return
      */
-    public OrderVo submit(List<UserCouponVo> userCouponList, List<ShopCartVo> cartList, AddressVo address, InvoiceTitleVo invoiceTitleVo) {
+    public OrderVo submit(CouponVo couponVo, List<ShopCartVo> cartList, AddressVo address, InvoiceTitleVo invoiceTitleVo) {
         // 订单收件人信息
         setAddressInfo(address);
         setInvoiceInfo(invoiceTitleVo);
-        // 优惠信息
-        if (CollectionUtils.isNotEmpty(userCouponList)) {
-            UserCouponVo userCoupon = userCouponList.stream().findFirst().get();
-            this.coupon_id = userCoupon.getCoupon_id();
-            this.coupon_price = userCoupon.getCoupon_price();
-            this.full_cut_price = userCoupon.getCoupon_price();
-        }
+
         // 商品数量
         this.goodsCount = cartList.stream().mapToInt(ShopCartVo::getNumber).sum();
         // 商品总价
         this.goods_price = BigDecimal.valueOf(cartList.stream().mapToDouble(cart -> cart.getGoodsTotalAmount().doubleValue()).sum());
         // 运费
         this.freight_price = BigDecimal.valueOf(cartList.stream().mapToDouble(cart -> cart.getExtraPrice().doubleValue()).sum());
-        // 订单实付金额
-        this.actual_price = goods_price.add(freight_price).subtract(coupon_price);
         // 订单总价=商品总价+运费
         this.order_price = goods_price.add(freight_price);
+        // 订单实付金额
+        this.actual_price = order_price.subtract(coupon_price);
+
+        // 优惠信息
+        if (couponVo != null) {
+            this.coupon_id = couponVo.getId();
+            this.coupon_price = couponVo.getType_money();
+            this.full_cut_price = coupon_price;
+            if (couponVo.getType() == 2) {
+                // 折扣
+                this.actual_price = order_price.multiply(couponVo.getType_money()).divide(new BigDecimal(100));
+                this.coupon_price = order_price.subtract(this.actual_price);
+                this.full_cut_price = coupon_price;
+            }
+        }
+
         // 总付款金额
         this.all_price = actual_price;
         this.handleOption = OrderOperationOption.builder().build().buyerOption(this.order_status);
