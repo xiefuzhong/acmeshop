@@ -108,7 +108,7 @@ public class CouponController extends ApiBase {
             List<UserCouponVo> userCouponList = userCouponService.queryUserCouponList(param);
             if (CollectionUtils.isNotEmpty(userCouponList)) {
                 Map<String, Integer> userCouponMap = userCouponList.stream().collect(Collectors.toMap(UserCouponVo::getCoupon_id, UserCouponVo::getCoupon_id, (ke1, ke2) -> ke1));
-                couponVos.forEach(couponVo -> couponVo.updateUsed_status(userCouponMap.containsKey(couponVo.getId()) ? 1 :));
+                couponVos.forEach(couponVo -> couponVo.updateUsed_status(userCouponMap.containsKey(couponVo.getId()) ? 1 : 0));
             }
         }
 
