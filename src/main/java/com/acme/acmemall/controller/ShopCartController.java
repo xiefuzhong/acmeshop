@@ -457,6 +457,15 @@ public class ShopCartController extends ApiBase {
         return toResponsSuccess(resultObj);
     }
 
+    /**
+     * 获取优惠券金额<br>
+     * 1.满减-直接返回优惠券金额<br>
+     * 2.折扣-计算折扣金额
+     *
+     * @param couponVo        优惠券信息
+     * @param orderTotalPrice 订单金额
+     * @return couponPrice
+     */
     private static BigDecimal getCouponPrice(CouponVo couponVo, BigDecimal orderTotalPrice) {
         BigDecimal couponPrice = new BigDecimal("0.00");
         if (couponVo != null) {
@@ -464,7 +473,7 @@ public class ShopCartController extends ApiBase {
             if (couponVo.getType() == 1) {
                 couponPrice = couponVo.getType_money();
             } else if (couponVo.getType() == 2) {
-                couponPrice = orderTotalPrice.multiply(couponVo.getType_money()).divide(new BigDecimal(100));
+                couponPrice = orderTotalPrice.multiply(new BigDecimal(100).subtract(couponVo.getType_money())).divide(new BigDecimal(100));
             }
         }
         return couponPrice;
