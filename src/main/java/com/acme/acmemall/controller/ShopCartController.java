@@ -376,22 +376,10 @@ public class ShopCartController extends ApiBase {
         CouponVo couponVo = null;
         if (couponId != null && couponId > 0) {
             couponVo = couponService.getUserCoupon(couponId);
-            if (couponVo != null) {
-                //  优惠券类型 1:满减 2:折扣
-//                if (couponVo.getType() == 1) {
-//                    couponPrice = couponVo.getType_money();
-//                } else if (couponVo.getType() == 2) {
-//                    couponPrice = orderTotalPrice.multiply(couponVo.getType_money()).divide(new BigDecimal(100));
-//                }
-
-            }
         }
         List<MerCartVo> merCartVoList = Lists.newArrayList();
         // 购物车下单
         if (type.equals("cart")) {
-//            Map<String, Object> cartData = (Map<String, Object>) this.getCart(loginUser);
-            List<ShopCartVo> cartVoList = Lists.newArrayList();
-
             //查询用户购物车信息
             List<MerCartVo> merCartVos = cartService.queryMerCartList(loginUser.getUserId());
             for (MerCartVo merCartVo : merCartVos) {
@@ -400,15 +388,7 @@ public class ShopCartController extends ApiBase {
                 // 获取优惠金额
                 // 订单的总价
                 BigDecimal orderTotalPrice = goodsTotalPrice.add(freightPrice);
-                BigDecimal couponPrice = new BigDecimal("0.00");
-                if (couponVo != null) {
-                    //  优惠券类型 1:满减 2:折扣
-                    if (couponVo.getType() == 1) {
-                        couponPrice = couponVo.getType_money();
-                    } else if (couponVo.getType() == 2) {
-                        couponPrice = orderTotalPrice.multiply(couponVo.getType_money()).divide(new BigDecimal(100));
-                    }
-                }
+                BigDecimal couponPrice = getCouponPrice(couponVo, orderTotalPrice);
                 BigDecimal actualPrice = orderTotalPrice.subtract(couponPrice);  //减去其它支付的金额后，要实际支付的金额
                 merCartVo.setCouponPrice(couponPrice);
                 merCartVo.setActualPrice(actualPrice);
@@ -416,7 +396,7 @@ public class ShopCartController extends ApiBase {
                 map.put("user_id", loginUser.getUserId());
                 map.put("merchantId", merCartVo.getMerchantId());
                 map.put("goodsTotalPrice", merCartVo.getOrderTotalPrice());
-                cartVoList = cartService.queryCheckedByUserIdAndMerId(map);
+                List<ShopCartVo> cartVoList = cartService.queryCheckedByUserIdAndMerId(map);
                 merCartVo.setCartVoList(cartVoList);
                 //获取用户可用优惠券列表
                 List<CouponVo> validCouponVos = couponService.getValidUserCoupons(map);
@@ -457,7 +437,6 @@ public class ShopCartController extends ApiBase {
             map.put("user_id", loginUser.getUserId());
             map.put("merchantId", merCartVo.getMerchantId());
             map.put("goodsTotalPrice", merCartVo.getOrderTotalPrice());
-            List<CouponVo> couponVos = couponService.queryUserCoupons(map);
             List<CouponVo> validCouponVos = couponService.getValidUserCoupons(map);
             merCartVo.setUserCouponList(validCouponVos);
             merCartVoList.add(merCartVo);
@@ -465,16 +444,7 @@ public class ShopCartController extends ApiBase {
         // 订单的总价
         BigDecimal orderTotalPrice = goodsTotalPrice.add(freightPrice);
         //获取可用的优惠券信息
-        BigDecimal couponPrice = new BigDecimal("0.00");
-        if (couponVo != null) {
-            //  优惠券类型 1:满减 2:折扣
-            if (couponVo.getType() == 1) {
-                couponPrice = couponVo.getType_money();
-            } else if (couponVo.getType() == 2) {
-                couponPrice = orderTotalPrice.multiply(couponVo.getType_money()).divide(new BigDecimal(100));
-            }
-
-        }
+        BigDecimal couponPrice = getCouponPrice(couponVo, orderTotalPrice);
 
         BigDecimal actualPrice = orderTotalPrice.subtract(couponPrice);  //减去其它支付的金额后，要实际支付的金额
         resultObj.put("freightPrice", freightPrice);
@@ -484,6 +454,19 @@ public class ShopCartController extends ApiBase {
         resultObj.put("orderTotalPrice", orderTotalPrice);
         resultObj.put("actualPrice", actualPrice);
         return toResponsSuccess(resultObj);
+    }
+
+    private static BigDecimal getCouponPrice(CouponVo couponVo, BigDecimal orderTotalPrice) {
+        BigDecimal couponPrice = new BigDecimal("0.00");
+        if (couponVo != null) {
+            //  优惠券类型 1:满减 2:折扣
+            if (couponVo.getType() == 1) {
+                couponPrice = couponVo.getType_money();
+            } else if (couponVo.getType() == 2) {
+                couponPrice = orderTotalPrice.multiply(couponVo.getType_money()).divide(new BigDecimal(100));
+            }
+        }
+        return couponPrice;
     }
 
     /**
