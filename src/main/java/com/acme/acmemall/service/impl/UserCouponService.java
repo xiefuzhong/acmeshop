@@ -18,14 +18,14 @@ import java.util.Map;
 public class UserCouponService implements IUserCouponService {
 
     @Autowired
-    UserCouponMapper mapper;
+    UserCouponMapper userCouponMapper;
 
     /**
      * @param userCouponVo
      */
     @Override
     public void save(UserCouponVo userCouponVo) {
-        mapper.save(userCouponVo);
+        userCouponMapper.save(userCouponVo);
     }
 
     /**
@@ -34,7 +34,7 @@ public class UserCouponService implements IUserCouponService {
      */
     @Override
     public List<UserCouponVo> queryUserCouponList(Map param) {
-        return mapper.queryList(param);
+        return userCouponMapper.queryList(param);
     }
 
     /**
@@ -42,7 +42,7 @@ public class UserCouponService implements IUserCouponService {
      */
     @Override
     public void update(UserCouponVo userCouponVo) {
-        mapper.update(userCouponVo);
+        userCouponMapper.update(userCouponVo);
     }
 
     /**
@@ -51,7 +51,7 @@ public class UserCouponService implements IUserCouponService {
      */
     @Override
     public int queryUserGetTotal(Map userParams) {
-        return mapper.queryUserGetTotal(userParams);
+        return userCouponMapper.queryUserGetTotal(userParams);
     }
 
     /**
@@ -59,6 +59,6 @@ public class UserCouponService implements IUserCouponService {
      */
     @Override
     public void batchSave(List<UserCouponVo> userCouponVos) {
-        mapper.saveBatch(userCouponVos);
+        userCouponMapper.saveBatch(userCouponVos);
     }
 }

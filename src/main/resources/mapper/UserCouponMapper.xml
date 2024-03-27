@@ -66,10 +66,12 @@
                 AND b.min_goods_amount &lt;= #{goodsTotalPrice}
             </if>
 
-            AND a.id in
-            <foreach item="couponId" collection="couponIds" open="(" separator="," close=")">
-                #{couponId}
-            </foreach>
+            <if test="couponIds != null and couponIds.size() > 0">
+                AND a.id in
+                <foreach item="couponId" collection="couponIds" open="(" separator="," close=")">
+                    #{couponId}
+                </foreach>
+            </if>
         </where>
         <choose>
             <when test="sidx != null and sidx.trim() != ''">
