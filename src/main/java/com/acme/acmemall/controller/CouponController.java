@@ -107,6 +107,7 @@ public class CouponController extends ApiBase {
             param.clear();
             param.put("user_id", loginUser.getUserId());
             List<UserCouponVo> userCouponList = userCouponService.queryUserCouponList(param);
+            couponVos.forEach(couponVo -> couponVo.updateUsed_status(0));
             if (org.apache.commons.collections.CollectionUtils.isNotEmpty(userCouponList)) {
                 Map<Long, String> userCouponMap = userCouponList.stream().collect(Collectors.toMap(UserCouponVo::getCoupon_id, UserCouponVo::getCoupon_number, (v1, v2) -> v1));
                 couponVos.forEach(couponVo -> couponVo.updateUsed_status(userCouponMap.containsKey(couponVo.getId()) ? 1 : 0));
