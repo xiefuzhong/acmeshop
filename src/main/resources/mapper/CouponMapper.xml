@@ -50,10 +50,9 @@
 
     <select id="queryList" resultMap="couponMap">
         select
-        distinct a.*
+        a.*
         from
         t_acme_mall_coupon a
-        left JOIN t_acme_mall_user_coupon uc on a.id = uc.coupon_id
         <where>
             <if test="type != null">
                 AND a.type = #{type}
