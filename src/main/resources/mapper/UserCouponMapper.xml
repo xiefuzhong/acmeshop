@@ -67,7 +67,7 @@
             </if>
 
             <if test="couponIds != null and couponIds.size() > 0">
-                AND a.id in
+                AND a.coupon_id in
                 <foreach item="couponId" collection="couponIds" open="(" separator="," close=")">
                     #{couponId}
                 </foreach>

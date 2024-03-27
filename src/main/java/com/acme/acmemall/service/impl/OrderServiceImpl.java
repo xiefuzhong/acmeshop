@@ -98,8 +98,7 @@ public class OrderServiceImpl implements IOrderService {
 
         List<UserCouponVo> userCouponList = userCouponMapper.queryList(params);
         if (CollectionUtils.isEmpty(userCouponList)) {
-            logger.info(String.format("订单%s:不能使用优惠券，优惠券信息错误或已使用"));
-            return ResultMap.badArgument(String.format("订单%s:不能使用优惠券"));
+            return ResultMap.badArgument("订单不能使用优惠券，优惠券信息错误或已使用");
         }
         // 购物车明细校验
         if (StringUtils.isEmpty(request.getCartIds())) {
