@@ -91,6 +91,7 @@ public class CouponController extends ApiBase {
                           @RequestParam(value = "send_type", defaultValue = "0") Integer send_type,
                           @RequestParam(value = "type", defaultValue = "0") Integer type) {
         Map param = Maps.newHashMap();
+        param.put("user_id", loginUser.getUserId());
         param.put("merchantId", merchantId);
         if (type != null && type > 0) {
             param.put("type", type);
