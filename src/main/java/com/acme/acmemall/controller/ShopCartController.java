@@ -339,7 +339,8 @@ public class ShopCartController extends ApiBase {
      */
     @ApiOperation(value = "订单提交前的检验和填写相关订单信息")
     @GetMapping("checkout")
-    public Object checkout(@LoginUser LoginUserVo loginUser, Integer couponId,
+    public Object checkout(@LoginUser LoginUserVo loginUser,
+                           Long couponId,
                            @RequestParam(defaultValue = "cart") String type,
                            Integer addressId,
                            Integer headerId,
@@ -375,7 +376,7 @@ public class ShopCartController extends ApiBase {
         ArrayList checkedGoodsList = Lists.newArrayList();
         CouponVo couponVo = null;
         if (couponId != null && couponId > 0) {
-            couponVo = couponService.getUserCoupon(couponId);
+            couponVo = couponService.queryObject(couponId);
         }
         List<MerCartVo> merCartVoList = Lists.newArrayList();
         // 购物车下单

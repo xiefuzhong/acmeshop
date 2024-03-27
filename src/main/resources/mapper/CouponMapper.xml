@@ -245,7 +245,7 @@
         from t_acme_mall_coupon a
         left join t_acme_mall_user_coupon b on a.id = b.coupon_id
         where 1 = 1
-        and b.id = #{id}
+        and a.id = #{id}
     </select>
 
     <!--  获取用户可用优惠券列表  -->
