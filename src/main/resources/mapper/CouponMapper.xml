@@ -269,7 +269,7 @@
         insert into t_acme_mall_coupon_goods (coupon_id,goods_id))
         values
         <foreach collection="list" item="item" index="index" separator=",">
-            (#{item.coupon_id},#{item.goods_id})
+            (#{item.couponId},#{item.goodsId})
         </foreach>
     </insert>
 
