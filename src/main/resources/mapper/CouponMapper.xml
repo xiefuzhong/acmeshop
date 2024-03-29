@@ -259,7 +259,7 @@
             AND a.send_type in(1,4,8)
             <![CDATA[ AND b.expired_time >= now()]]>
             AND a.merchant_id=#{merchantId}
-            AND a.min_goods_amount >= #{goodsTotalPrice}
+            <![CDATA[ AND a.min_goods_amount <= #{goodsTotalPrice}]]>
             AND b.user_id = #{user_id}
         </where>
 
