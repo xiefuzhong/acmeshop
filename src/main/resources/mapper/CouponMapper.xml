@@ -265,12 +265,34 @@
 
     </select>
 
-    <insert id="batchSave">
+    <insert id="batchSave" parameterType="list">
         insert into t_acme_mall_coupon_goods (coupon_id,goods_id)
         values
         <foreach collection="list" item="item" index="index" separator=",">
             (#{item.couponId},#{item.goodsId})
         </foreach>
     </insert>
+
+    <!--    t_acme_mall_coupon_goods-->
+    <select id="selectGoodsCoupon" resultType="com.acme.acmemall.model.GoodsCouponVo">
+        select
+        a.*
+        from
+        t_acme_mall_coupon_goods a
+        <where>
+            <if test="goods_ids != null and goods_ids.size()>0">
+                AND a.goods_id in
+                <foreach item="item" collection="goods_ids" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="coupon_ids != null and coupon_ids.size()>0">
+                AND a.coupon_id in
+                <foreach item="item" collection="coupon_ids" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
+    </select>
 
 </mapper>

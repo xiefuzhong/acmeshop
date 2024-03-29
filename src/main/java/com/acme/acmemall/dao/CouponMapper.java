@@ -48,4 +48,13 @@ public interface CouponMapper extends BaseDao<CouponVo> {
 
     void batchSave(List<GoodsCouponVo> goodsCouponList);
 
+
+    /**
+     * 查询商品优惠券
+     *
+     * @param params
+     * @return
+     */
+    List<GoodsCouponVo> selectGoodsCoupon(Map<String, Object> params);
+
 }

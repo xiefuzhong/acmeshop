@@ -6,17 +6,17 @@ import com.acme.acmemall.dao.CouponMapper;
 import com.acme.acmemall.dao.UserCouponMapper;
 import com.acme.acmemall.exception.ResultCodeEnum;
 import com.acme.acmemall.factory.CouponFactory;
-import com.acme.acmemall.model.CouponVo;
-import com.acme.acmemall.model.GoodsCouponVo;
-import com.acme.acmemall.model.LoginUserVo;
-import com.acme.acmemall.model.UserCouponVo;
+import com.acme.acmemall.model.*;
+import com.acme.acmemall.model.enums.ScopeEnum;
 import com.acme.acmemall.service.ICouponService;
+import com.acme.acmemall.utils.StringUtils;
 import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -103,7 +103,43 @@ public class CouponService implements ICouponService {
      */
     @Override
     public List<CouponVo> getValidUserCoupons(Map param) {
-        return couponMapper.getValidUserCoupons(param);
+        String goodsIds = (String) param.get("goodsIds");
+        param.remove("goodsIds");
+        List<CouponVo> validCouponVos = couponMapper.getValidUserCoupons(param);
+        // 按优惠券适用类型分组
+        Map<Integer, List<CouponVo>> couponMap = validCouponVos.stream().collect(Collectors.groupingBy(CouponVo::getScope));
+        List<CouponVo> coupons = couponMap.get(ScopeEnum.GOODS.getScope());
+        if (CollectionUtils.isEmpty(coupons)) {
+            return validCouponVos;
+        }
+        // 过滤商品券
+        if (CollectionUtils.isEmpty(coupons)) {
+            return validCouponVos;
+        }
+        List<CouponVo> resultList = couponMap.get(ScopeEnum.ALL.getScope());
+        if (StringUtils.isNotEmpty(goodsIds)) {
+            List<Long> goods_ids = Arrays.stream(goodsIds.split(",")).map(Long::parseLong).collect(Collectors.toList());
+            param.clear();
+            List<Long> coupon_ids = coupons.stream().map(CouponVo::getId).collect(Collectors.toList());
+            param.put("goods_ids", goods_ids);
+            param.put("coupon_ids", coupon_ids);
+            List<GoodsCouponVo> goodsCouponList = couponMapper.selectGoodsCoupon(param);
+            // 如果没有分组有，查询没有，要剔除
+            if (CollectionUtils.isEmpty(goodsCouponList)) {
+                return couponMap.get(ScopeEnum.ALL.getScope());
+            }
+            List<CouponVo> couponList = Lists.newArrayList();
+            for (int i = 0; i < goodsCouponList.size(); i++) {
+                GoodsCouponVo goodsCouponVo = goodsCouponList.get(i);
+                for (int j = 0; j < coupons.size(); j++) {
+                    if (goodsCouponVo.getCouponId() == coupons.get(j).getId()) {
+                        couponList.add(coupons.get(j));
+                    }
+                }
+            }
+            resultList.addAll(couponList);
+        }
+        return resultList;
     }
 
     /**

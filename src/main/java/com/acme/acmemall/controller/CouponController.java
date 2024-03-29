@@ -7,6 +7,7 @@ import com.acme.acmemall.controller.reqeust.CouponRequest;
 import com.acme.acmemall.exception.ResultCodeEnum;
 import com.acme.acmemall.model.*;
 import com.acme.acmemall.model.enums.CouponSendType;
+import com.acme.acmemall.model.enums.ScopeEnum;
 import com.acme.acmemall.service.*;
 import com.acme.acmemall.utils.CharUtil;
 import com.acme.acmemall.utils.StringUtils;
@@ -74,11 +75,13 @@ public class CouponController extends ApiBase {
     public Object getValidCouponList(@LoginUser LoginUserVo loginUser,
                                      Long merchantId,
                                      BigDecimal goodsTotalPrice,
+                                     String goodsIds,
                                      Integer coupon_status) {
         Map param = Maps.newHashMap();
         param.put("user_id", loginUser.getUserId());
         param.put("merchantId", merchantId);
         param.put("goodsTotalPrice", goodsTotalPrice);
+        param.put("goodsIds", goodsIds);
         List<CouponVo> validCouponVos = couponService.getValidUserCoupons(param);
         return toResponsSuccess(validCouponVos);
     }

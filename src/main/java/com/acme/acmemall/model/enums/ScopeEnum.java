@@ -5,9 +5,9 @@ public enum ScopeEnum {
     GOODS(1, "商品券"),
     CATEGORY(2, "品类券");
 
-    private int scope;
+    private final int scope;
 
-    private String title;
+    private final String title;
 
     ScopeEnum(int scope, String title) {
         this.scope = scope;
