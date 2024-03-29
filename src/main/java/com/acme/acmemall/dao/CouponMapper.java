@@ -1,6 +1,7 @@
 package com.acme.acmemall.dao;
 
 import com.acme.acmemall.model.CouponVo;
+import com.acme.acmemall.model.GoodsCouponVo;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -43,4 +44,8 @@ public interface CouponMapper extends BaseDao<CouponVo> {
     int updateUserCoupon(CouponVo couponVo);
 
     List<CouponVo> getValidUserCoupons(Map param);
+
+
+    void batchSave(List<GoodsCouponVo> goodsCouponList);
+
 }

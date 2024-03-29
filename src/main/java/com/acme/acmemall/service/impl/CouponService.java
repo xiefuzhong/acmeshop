@@ -7,6 +7,7 @@ import com.acme.acmemall.dao.UserCouponMapper;
 import com.acme.acmemall.exception.ResultCodeEnum;
 import com.acme.acmemall.factory.CouponFactory;
 import com.acme.acmemall.model.CouponVo;
+import com.acme.acmemall.model.GoodsCouponVo;
 import com.acme.acmemall.model.LoginUserVo;
 import com.acme.acmemall.model.UserCouponVo;
 import com.acme.acmemall.service.ICouponService;
@@ -18,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @description:优惠券
@@ -123,6 +125,15 @@ public class CouponService implements ICouponService {
         CouponVo couponVo = CouponFactory.buildCoupon(userVo.getUserId());
         couponVo.create(couponRequest);
         couponMapper.save(couponVo);
+        if (CollectionUtils.isNotEmpty(couponRequest.getGoodsIds())) {
+            List<GoodsCouponVo> goodsCoupons = couponRequest.getGoodsIds().stream().map(goodsId -> {
+                GoodsCouponVo coupon = new GoodsCouponVo(couponVo.getId(), goodsId);
+                coupon.setCouponId(couponVo.getId());
+                coupon.setGoodsId(goodsId);
+                return coupon;
+            }).collect(Collectors.toList());
+            couponMapper.batchSave(goodsCoupons);
+        }
         return ResultMap.response(ResultCodeEnum.SUCCESS, couponVo);
     }
 
