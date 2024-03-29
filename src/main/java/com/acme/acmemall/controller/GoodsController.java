@@ -415,7 +415,7 @@ public class GoodsController extends ApiBase {
         resultObj.put("bannerInfo", bannerInfo);
         Map<String, Object> param = Maps.newHashMap();
         param.put("adPositionId", 1);
-        AdVo banner = adService.queryAdList(param).get(0);
+//        AdVo banner = adService.queryAdList(param).get(0);
 
         return ResultMap.ok(resultObj);
     }
