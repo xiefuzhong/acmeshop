@@ -10,6 +10,7 @@ import com.acme.acmemall.model.enums.CouponSendType;
 import com.acme.acmemall.service.*;
 import com.acme.acmemall.utils.CharUtil;
 import com.acme.acmemall.utils.StringUtils;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -352,6 +353,8 @@ public class CouponController extends ApiBase {
             return ResultMap.response(ResultCodeEnum.UNAUTHORIZED);
         }
         JSONObject request = getJsonRequest();
+//        JSONArray array = request.getJSONArray("goodsIds");
+//        List<Long> goodsIds = JSONArray.parseArray(array.toJSONString(), Long.class);
         CouponRequest couponRequest = JSONObject.toJavaObject(request, CouponRequest.class);
         logger.info(String.format(Locale.ROOT, "CouponRequest.toString==>%s", couponRequest.toString()));
         if (!couponRequest.checkRequest()) {

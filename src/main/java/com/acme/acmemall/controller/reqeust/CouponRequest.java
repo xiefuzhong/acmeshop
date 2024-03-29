@@ -7,6 +7,7 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.List;
 
 /**
  * @description:
@@ -48,6 +49,8 @@ public class CouponRequest implements Serializable {
     private Long userId;
 
     private Long merchantId;
+
+    private List<Long> goodsIds;
 
 
     /**
