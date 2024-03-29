@@ -276,7 +276,8 @@
     <!--    t_acme_mall_coupon_goods-->
     <select id="selectGoodsCoupon" resultType="com.acme.acmemall.model.GoodsCouponVo">
         select
-        a.*
+        a.coupon_id as couponId,
+        a.goods_id as goodsId
         from
         t_acme_mall_coupon_goods a
         <where>
