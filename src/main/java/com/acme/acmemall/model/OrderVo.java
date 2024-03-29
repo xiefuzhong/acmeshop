@@ -323,8 +323,6 @@ public class OrderVo implements Serializable {
         this.freight_price = BigDecimal.valueOf(cartList.stream().mapToDouble(cart -> cart.getExtraPrice().doubleValue()).sum());
         // 订单总价=商品总价+运费
         this.order_price = goods_price.add(freight_price);
-        // 订单实付金额
-        this.actual_price = order_price.subtract(coupon_price);
 
         // 优惠信息
         if (couponVo != null) {
@@ -337,6 +335,9 @@ public class OrderVo implements Serializable {
                 this.coupon_price = order_price.subtract(this.actual_price);
                 this.full_cut_price = coupon_price;
             }
+        } else {
+            // 订单实付金额
+            this.actual_price = order_price.subtract(coupon_price);
         }
 
         // 总付款金额

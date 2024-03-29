@@ -117,7 +117,7 @@ public class OrderServiceImpl implements IOrderService {
         OrderVo order = OrderFactory.buildNewOrder(loginUser.getUserId(), request.getType());
         order.submit(couponVo, cartList, addressVo, invoiceHeaderVo);
         order.checkSubmit();
-//        logger.info("order.submit >> " + order);
+        logger.info("order.submit >> " + order);
         // 保存order以及明细表
         orderMapper.save(order);
         orderItemMapper.saveBatch(order.getItems());
