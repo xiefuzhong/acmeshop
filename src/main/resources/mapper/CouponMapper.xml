@@ -266,7 +266,7 @@
     </select>
 
     <insert id="batchSave">
-        insert into t_acme_mall_coupon_goods (coupon_id,goods_id))
+        insert into t_acme_mall_coupon_goods (coupon_id,goods_id)
         values
         <foreach collection="list" item="item" index="index" separator=",">
             (#{item.couponId},#{item.goodsId})
