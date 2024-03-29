@@ -213,4 +213,23 @@ public class CouponVo implements Serializable {
     public void update() {
 
     }
+
+
+    /**
+     * 获取优惠券金额<br>
+     * 1.满减-直接返回优惠券金额<br>
+     * 2.折扣-计算折扣金额
+     *
+     * @param orderTotalPrice 订单金额
+     * @return couponPrice
+     */
+    public BigDecimal getCouponPrice(BigDecimal orderTotalPrice) {
+        BigDecimal couponPrice = new BigDecimal("0.00");
+        if (type == 1) {
+            couponPrice = this.type_money;
+        } else if (type == 2) {
+            couponPrice = orderTotalPrice.multiply(new BigDecimal(100).subtract(type_money)).divide(new BigDecimal(100));
+        }
+        return couponPrice;
+    }
 }

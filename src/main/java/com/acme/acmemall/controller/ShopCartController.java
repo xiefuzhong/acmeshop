@@ -389,7 +389,7 @@ public class ShopCartController extends ApiBase {
                 // 获取优惠金额
                 // 订单的总价
                 BigDecimal orderTotalPrice = goodsTotalPrice.add(freightPrice);
-                BigDecimal couponPrice = getCouponPrice(couponVo, orderTotalPrice);
+                BigDecimal couponPrice = couponVo.getCouponPrice(goodsTotalPrice);
                 BigDecimal actualPrice = orderTotalPrice.subtract(couponPrice);  //减去其它支付的金额后，要实际支付的金额
                 merCartVo.setCouponPrice(couponPrice);
                 merCartVo.setActualPrice(actualPrice);
@@ -447,7 +447,7 @@ public class ShopCartController extends ApiBase {
         // 订单的总价
         BigDecimal orderTotalPrice = goodsTotalPrice.add(freightPrice);
         //获取可用的优惠券信息
-        BigDecimal couponPrice = getCouponPrice(couponVo, orderTotalPrice);
+        BigDecimal couponPrice = couponVo.getCouponPrice(goodsTotalPrice);
 
         BigDecimal actualPrice = orderTotalPrice.subtract(couponPrice);  //减去其它支付的金额后，要实际支付的金额
         resultObj.put("freightPrice", freightPrice);
@@ -457,28 +457,6 @@ public class ShopCartController extends ApiBase {
         resultObj.put("orderTotalPrice", orderTotalPrice);
         resultObj.put("actualPrice", actualPrice);
         return toResponsSuccess(resultObj);
-    }
-
-    /**
-     * 获取优惠券金额<br>
-     * 1.满减-直接返回优惠券金额<br>
-     * 2.折扣-计算折扣金额
-     *
-     * @param couponVo        优惠券信息
-     * @param orderTotalPrice 订单金额
-     * @return couponPrice
-     */
-    private static BigDecimal getCouponPrice(CouponVo couponVo, BigDecimal orderTotalPrice) {
-        BigDecimal couponPrice = new BigDecimal("0.00");
-        if (couponVo != null) {
-            //  优惠券类型 1:满减 2:折扣
-            if (couponVo.getType() == 1) {
-                couponPrice = couponVo.getType_money();
-            } else if (couponVo.getType() == 2) {
-                couponPrice = orderTotalPrice.multiply(new BigDecimal(100).subtract(couponVo.getType_money())).divide(new BigDecimal(100));
-            }
-        }
-        return couponPrice;
     }
 
     /**

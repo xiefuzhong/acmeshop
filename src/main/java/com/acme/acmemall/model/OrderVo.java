@@ -326,15 +326,11 @@ public class OrderVo implements Serializable {
 
         // 优惠信息
         if (couponVo != null) {
+            this.coupon_price = couponVo.getCouponPrice(order_price);
+            //减去其它支付的金额后，要实际支付的金额
+            this.actual_price = order_price.subtract(coupon_price);
             this.coupon_id = couponVo.getId();
-            this.coupon_price = couponVo.getType_money();
             this.full_cut_price = coupon_price;
-            if (couponVo.getType() == 2) {
-                // 折扣
-                this.actual_price = order_price.multiply(couponVo.getType_money()).divide(new BigDecimal(100));
-                this.coupon_price = order_price.subtract(this.actual_price);
-                this.full_cut_price = coupon_price;
-            }
         } else {
             // 订单实付金额
             this.actual_price = order_price.subtract(coupon_price);
