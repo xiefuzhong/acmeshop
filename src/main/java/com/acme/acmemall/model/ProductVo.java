@@ -13,11 +13,11 @@ import java.math.BigDecimal;
 @Data
 public class ProductVo implements Serializable {
     //主键
-    private Integer id;
+    private Long id;
     //商品Id
-    private Integer goods_id;
+    private Long goods_id;
     //产品Id
-    private Integer product_id;
+    private Long product_id;
     //商品规格ids
     private String goods_specification_ids;
     // 规格名称

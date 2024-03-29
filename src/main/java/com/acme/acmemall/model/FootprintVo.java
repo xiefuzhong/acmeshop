@@ -24,7 +24,7 @@ public class FootprintVo implements Serializable {
     //会员Id
     private Long user_id;
     //商品id
-    private Integer goods_id;
+    private Long goods_id;
     //记录时间
     private Long add_time;
     //推荐人

@@ -27,7 +27,7 @@ import java.util.List;
 @Getter
 public class GoodsVo implements Serializable {
     //主键
-    private Integer id;
+    private Long id;
     //商品类型Id
     private Integer category_id;
     //商品序列号

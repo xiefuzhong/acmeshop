@@ -30,11 +30,11 @@ public class ShopCartVo implements Serializable {
     //sessionId
     private String session_id;
     //商品Id
-    private Integer goods_id;
+    private Long goods_id;
     //商品序列号
     private String goods_sn;
     //产品Id
-    private Integer product_id;
+    private Long product_id;
     //产品名称
     private String goods_name;
     //市场价

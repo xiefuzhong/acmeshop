@@ -19,6 +19,9 @@ public class MerCartVo implements Serializable {
     public BigDecimal couponPrice;
     public List<CouponVo> userCouponList;//用户可用优惠券列表
 
+    // 商品ID集合
+    public List<Long> goodsIds;
+
     /**
      * 实际支付金额计算
      * @return 实际支付金额

@@ -14,7 +14,7 @@ public class GoodsGalleryVo implements Serializable {
     //主键
     private Integer id;
     //商品id
-    private Integer goods_id;
+    private Long goods_id;
     //图片
     private String img_url;
     //描述

@@ -398,6 +398,7 @@ public class ShopCartController extends ApiBase {
                 map.put("merchantId", merCartVo.getMerchantId());
                 map.put("goodsTotalPrice", merCartVo.getOrderTotalPrice());
                 List<ShopCartVo> cartVoList = cartService.queryCheckedByUserIdAndMerId(map);
+                List<Long> goodsIds = cartVoList.stream().map(ShopCartVo::getGoods_id).collect(Collectors.toList());
                 merCartVo.setCartVoList(cartVoList);
                 //获取用户可用优惠券列表
                 List<CouponVo> validCouponVos = couponService.getValidUserCoupons(map);

@@ -14,7 +14,7 @@ public class GoodsSpecificationVo implements Serializable {
     //主键
     private Integer id;
     //商品
-    private Integer goods_id;
+    private Long goods_id;
     //规范Id
     private Integer specification_id;
     //规范说明
