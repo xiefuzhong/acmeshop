@@ -31,6 +31,7 @@ public class GoodsFactory {
                 .keywords(request.getKeyword())
                 .add_time(new Date())
                 .is_delete(0)
+                .goods_number(0l)
                 .goods_desc(request.getGoodsDesc())
                 .build();
     }
