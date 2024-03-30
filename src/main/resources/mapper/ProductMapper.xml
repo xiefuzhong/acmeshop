@@ -111,14 +111,14 @@
         <trim prefix="set" suffixOverrides=",">
             <trim prefix="goods_number =case" suffix="end,">
                 <foreach collection="list" item="item" index="index">
-                    <if test="item.goods_number!=null">
+                    <if test="item.goods_number!=null and item.goods_number>0">
                         when id=#{item.id} then #{item.goods_number}
                     </if>
                 </foreach>
             </trim>
             <trim prefix="retail_price =case" suffix="end,">
                 <foreach collection="list" item="item" index="index">
-                    <if test="item.retail_price!=null">
+                    <if test="item.retail_price!=null and item.retail_price>0">
                         when id=#{item.id} then #{item.retail_price}
                     </if>
                 </foreach>

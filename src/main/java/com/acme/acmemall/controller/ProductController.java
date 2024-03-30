@@ -5,11 +5,13 @@ import com.acme.acmemall.common.ResultMap;
 import com.acme.acmemall.model.LoginUserVo;
 import com.acme.acmemall.model.ProductVo;
 import com.acme.acmemall.service.IProductService;
+import com.acme.acmemall.service.IUserService;
 import com.acme.acmemall.utils.GsonUtil;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.base.Throwables;
 import com.google.common.collect.Maps;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -28,6 +30,8 @@ public class ProductController extends ApiBase {
     @Resource
     IProductService productService;
 
+    @Resource
+    IUserService userService;
 
     @GetMapping("/list")
     public Object getProduct(@LoginUser LoginUserVo loginUser, @RequestParam("goods_id") Long goodsId) {
@@ -40,15 +44,27 @@ public class ProductController extends ApiBase {
 
     @PostMapping("/update")
     public Object update(@LoginUser LoginUserVo loginUser) {
-        JSONObject parameters = super.getJsonRequest();
-        if (parameters == null) {
+        if (loginUser == null) {
+            return ResultMap.error("未登录");
+        }
+        if (!userService.checkAdmin(loginUser.getUserId())) {
+            return ResultMap.error("没有权限");
+        }
+        JSONObject jsonRequest = super.getJsonRequest();
+        if (jsonRequest == null) {
             ResultMap.badArgument();
         }
-        JSONArray array = parameters.getJSONArray("products");
+        logger.info("batchUpdate.before == jsonRequest ==>" + jsonRequest.toJSONString());
+        String handle = jsonRequest.getString("handle");
+        JSONArray array = jsonRequest.getJSONArray("products");
         List<ProductVo> productVoList = JSONArray.parseArray(array.toJSONString(), ProductVo.class);
+
+        if (CollectionUtils.isEmpty(productVoList)) {
+            return ResultMap.badArgument("参数错误");
+        }
         try {
-            logger.info("productVoList==>" + GsonUtil.toJson(productVoList));
             productService.batchUpdate(productVoList);
+            logger.info("batchUpdate.after == productVoList ==>" + GsonUtil.toJson(productVoList));
         } catch (Exception e) {
             String errMsg = Throwables.getStackTraceAsString(e);
             return ResultMap.error("update failed!,error details >> " + errMsg);

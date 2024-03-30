@@ -37,7 +37,7 @@ public class GoodsVo implements Serializable {
     //品牌Id
     private Integer brand_id;
     //商品序列号
-    private Integer goods_number;
+    private Long goods_number;
     //关键字
     private String keywords;
     //简明介绍
@@ -205,6 +205,7 @@ public class GoodsVo implements Serializable {
     public void updateStock(ProductVo product) {
         this.goods_number = product.getGoods_number();
         this.goods_sn = product.getGoods_sn();
+        this.retail_price = product.getRetail_price();
     }
 
     /**
@@ -213,7 +214,7 @@ public class GoodsVo implements Serializable {
      * @param products
      */
     public void calSku(List<ProductVo> products) {
-        this.goods_number = products.stream().mapToInt(product -> product.getGoods_number()).sum();
+        this.goods_number = products.stream().mapToLong(product -> product.getGoods_number()).sum();
         this.goods_sn = products.stream().findFirst().get().getGoods_sn();
         this.retail_price = BigDecimal.valueOf(products.stream().mapToDouble(product -> product.getRetail_price().doubleValue()).min().getAsDouble());
     }
