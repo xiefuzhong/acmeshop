@@ -145,7 +145,7 @@ public class UserController extends ApiBase {
         }
         userVo2.parseLabel();
         Map param = Maps.newHashMap();
-        param.put("user_id", loginUser.getUserId());
+        param.put("user_id", userId);
         List<CouponVo> couponVos = couponService.queryUserCoupons(param);
         userVo2.setCouponList(couponVos);
 
