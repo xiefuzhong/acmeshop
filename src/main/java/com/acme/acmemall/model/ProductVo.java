@@ -26,7 +26,7 @@ public class ProductVo implements Serializable {
     //商品序列号
     private String goods_sn;
     //商品库存
-    private long goods_number;
+    private Long goods_number;
     //零售价格
     private BigDecimal market_price;
     //时长价

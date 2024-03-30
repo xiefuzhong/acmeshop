@@ -11,10 +11,12 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.apache.commons.collections.CollectionUtils;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -214,12 +216,26 @@ public class GoodsVo implements Serializable {
      * @param products
      */
     public void calSku(List<ProductVo> products) {
-        Long sum_goods_number = products.stream().mapToLong(product -> product.getGoods_number()).sum();
+        if (CollectionUtils.isEmpty(products)) {
+            return;
+        }
+        // 使用流来计算商品总数，增加了空值检查
+        Long sum_goods_number = products.stream()
+                .filter(product -> product.getGoods_number() != null)
+                .mapToLong(product -> product.getGoods_number())
+                .sum();
         if (sum_goods_number > 0) {
             this.goods_number = sum_goods_number;
         }
         this.goods_sn = products.stream().findFirst().get().getGoods_sn();
-        BigDecimal min_retail_price = BigDecimal.valueOf(products.stream().mapToDouble(product -> product.getRetail_price().doubleValue()).min().getAsDouble());
+
+        // 优化最小零售价的计算，增加了对null的检查并避免了潜在的最小值错误
+        BigDecimal min_retail_price = products.stream()
+                .filter(product -> product.getRetail_price() != null)
+                .map(product -> product.getRetail_price())
+                .min(Comparator.naturalOrder())
+                .orElse(BigDecimal.ZERO);
+        // 仅当最小价格大于0时，更新零售价
         if (min_retail_price.compareTo(BigDecimal.ZERO) > 0) {
             this.retail_price = min_retail_price;
         }
