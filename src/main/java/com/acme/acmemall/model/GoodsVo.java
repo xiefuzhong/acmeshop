@@ -214,9 +214,15 @@ public class GoodsVo implements Serializable {
      * @param products
      */
     public void calSku(List<ProductVo> products) {
-        this.goods_number = products.stream().mapToLong(product -> product.getGoods_number()).sum();
+        Long sum_goods_number = products.stream().mapToLong(product -> product.getGoods_number()).sum();
+        if (sum_goods_number > 0) {
+            this.goods_number = sum_goods_number;
+        }
         this.goods_sn = products.stream().findFirst().get().getGoods_sn();
-        this.retail_price = BigDecimal.valueOf(products.stream().mapToDouble(product -> product.getRetail_price().doubleValue()).min().getAsDouble());
+        BigDecimal min_retail_price = BigDecimal.valueOf(products.stream().mapToDouble(product -> product.getRetail_price().doubleValue()).min().getAsDouble());
+        if (min_retail_price.compareTo(BigDecimal.ZERO) > 0) {
+            this.retail_price = min_retail_price;
+        }
     }
 
     public void relatedDetails(String type, List<?> items) {
