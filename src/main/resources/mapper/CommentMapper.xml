@@ -22,7 +22,7 @@
         <result property="goods_spec" column="goods_spec"/>
         <result property="goods_pic" column="goods_pic"/>
 
-        <result property="nick_name" column="nick_name"/>
+        <result property="nick_name" column="nickname"/>
         <result property="avatar" column="avatar"/>
         <!--        score-->
         <result property="score" column="score"/>
