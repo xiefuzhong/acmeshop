@@ -24,6 +24,7 @@ public class GoodsFactory {
                 .brand_id(request.getBrand_id())
                 .category_id(request.getCategory_id())
                 .is_on_sale(request.getStatus())
+                .retail_price(BigDecimal.ZERO)
                 .extra_price(BigDecimal.valueOf(request.getExtra_price()))
                 .merchantId(request.getMerchantId())
                 .primary_pic_url(request.getPrimary_pic_url())

@@ -39,7 +39,8 @@ public class GoodsVo implements Serializable {
     //品牌Id
     private Integer brand_id;
     //商品序列号
-    private Long goods_number;
+    @Builder.Default
+    private Long goods_number = 0l;
     //关键字
     private String keywords;
     //简明介绍
@@ -72,11 +73,14 @@ public class GoodsVo implements Serializable {
     //商品列表图
     private String list_pic_url;
     //市场价
-    private BigDecimal market_price;
+    @Builder.Default
+    private BigDecimal market_price = BigDecimal.ZERO;
     //零售价格(现价)
-    private BigDecimal retail_price;
+    @Builder.Default
+    private BigDecimal retail_price = BigDecimal.ZERO;
     //销售量
-    private Integer sell_volume;
+    @Builder.Default
+    private Integer sell_volume = 0;
     //主sku　product_id
     private Integer primary_product_id;
     //单位价格，单价
@@ -86,7 +90,8 @@ public class GoodsVo implements Serializable {
     //推广标签
     private String promotion_tag;
     //APP专享价
-    private BigDecimal app_exclusive_price;
+    @Builder.Default
+    private BigDecimal app_exclusive_price = BigDecimal.ZERO;
     //是否是APP专属
     private Integer is_app_exclusive;
     //限购
