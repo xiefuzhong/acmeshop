@@ -190,6 +190,6 @@ public class UserService implements IUserService {
             UserLabel label = JSONObject.toJavaObject(obj, UserLabel.class);
             userDao.batchAddLabel(Lists.newArrayList(label));
         }
-    })
+    }
 
 }

@@ -3,7 +3,10 @@ package com.acme.acmemall.controller;
 import com.acme.acmemall.annotation.LoginUser;
 import com.acme.acmemall.common.ResultMap;
 import com.acme.acmemall.exception.ResultCodeEnum;
-import com.acme.acmemall.model.*;
+import com.acme.acmemall.model.CouponVo;
+import com.acme.acmemall.model.LoginUserVo;
+import com.acme.acmemall.model.OrderVo;
+import com.acme.acmemall.model.UserGoods;
 import com.acme.acmemall.service.ICouponService;
 import com.acme.acmemall.service.IOrderService;
 import com.acme.acmemall.service.IUserService;
@@ -18,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -221,11 +225,12 @@ public class UserController extends ApiBase {
         if (!userService.checkAdmin(userVo.getUserId())) {
             return ResultMap.error(1001, "请先登录管理系统再操作!");
         }
-        JSONObject requestJson = super.getJsonRequest();
-        if (requestJson == null) {
+        JSONObject request = super.getJsonRequest();
+        if (request == null) {
             return ResultMap.badArgument();
         }
-        userService.addSet(requestJson);
+        logger.info(String.format(Locale.ROOT, "新增用户分组:%s", request.toString()));
+        userService.addSet(request);
         return ResultMap.ok();
     }
 
