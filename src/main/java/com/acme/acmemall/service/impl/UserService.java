@@ -162,11 +162,12 @@ public class UserService implements IUserService {
     @Override
     public void addSet(JSONObject object) {
         String type = object.getString("type");
+        JSONObject obj = object.getJSONObject("data");
         if ("group".equals(type)) {
-            UserGroup group = object.getObject("data", UserGroup.class);
+            UserGroup group = JSONObject.toJavaObject(obj, UserGroup.class);
             userDao.batchAddGroup(Lists.newArrayList(group));
         } else {
-            UserLabel label = object.getObject("data", UserLabel.class);
+            UserLabel label = JSONObject.toJavaObject(obj, UserLabel.class);
             userDao.batchAddLabel(Lists.newArrayList(label));
         }
     }
