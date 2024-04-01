@@ -216,8 +216,18 @@ public class UserController extends ApiBase {
         return toResponsSuccess(resultMap);
     }
 
-    @PostMapping("/save-share-goods")
-    public Object saveGoods(@LoginUser LoginUserVo userVo) {
+    @PostMapping("/set-add")
+    public Object addUserSet(@LoginUser LoginUserVo userVo) {
+        if (userVo == null) {
+            return ResultMap.error(400, "非有效用户操作");
+        }
+        if (!userService.checkAdmin(userVo.getUserId())) {
+            return ResultMap.error(1001, "请先登录管理系统再操作!");
+        }
+        JSONObject requestJson = super.getJsonRequest();
+        if (requestJson == null) {
+            return ResultMap.badArgument();
+        }
 
         return ResultMap.ok();
     }

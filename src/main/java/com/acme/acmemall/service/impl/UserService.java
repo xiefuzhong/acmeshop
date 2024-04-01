@@ -4,8 +4,12 @@ import com.acme.acmemall.dao.UserMapper;
 import com.acme.acmemall.exception.ApiCusException;
 import com.acme.acmemall.model.LoginUserVo;
 import com.acme.acmemall.model.UserGoods;
+import com.acme.acmemall.model.UserGroup;
+import com.acme.acmemall.model.UserLabel;
 import com.acme.acmemall.service.IUserService;
 import com.acme.acmemall.utils.GsonUtil;
+import com.alibaba.fastjson.JSONObject;
+import com.google.common.collect.Lists;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
@@ -150,6 +154,21 @@ public class UserService implements IUserService {
     @Override
     public List<Map> countByUserId(long userId) {
         return userDao.countByUserId(userId);
+    }
+
+    /**
+     * @param object
+     */
+    @Override
+    public void addSet(JSONObject object) {
+        String type = object.getString("type");
+        if ("group".equals(type)) {
+            UserGroup group = object.getObject("data", UserGroup.class);
+            userDao.batchAddGroup(Lists.newArrayList(group));
+        } else {
+            UserLabel label = object.getObject("data", UserLabel.class);
+            userDao.batchAddLabel(Lists.newArrayList(label));
+        }
     }
 
 }

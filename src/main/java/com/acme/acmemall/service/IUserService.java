@@ -2,6 +2,7 @@ package com.acme.acmemall.service;
 
 import com.acme.acmemall.model.LoginUserVo;
 import com.acme.acmemall.model.UserGoods;
+import com.alibaba.fastjson.JSONObject;
 
 import java.util.List;
 import java.util.Map;
@@ -39,4 +40,6 @@ public interface IUserService {
     void updateUserGroup(String[] userIds, LoginUserVo user);
 
     List<Map> countByUserId(long userId);
+
+    void addSet(JSONObject object);
 }

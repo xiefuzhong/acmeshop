@@ -2,6 +2,8 @@ package com.acme.acmemall.dao;
 
 import com.acme.acmemall.model.LoginUserVo;
 import com.acme.acmemall.model.UserGoods;
+import com.acme.acmemall.model.UserGroup;
+import com.acme.acmemall.model.UserLabel;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -47,5 +49,9 @@ public interface UserMapper extends BaseDao<LoginUserVo> {
     int updateUserGroup(@Param("userIds") String[] userIds, @Param("user") LoginUserVo vo);
 
     List<Map> countByUserId(@Param("userId") Long userId);
+
+    void batchAddGroup(List<UserGroup> groups);
+
+    void batchAddLabel(List<UserLabel> labels);
 }
 
