@@ -344,4 +344,33 @@
             #{userId}
         </foreach>
     </update>
+    <!--    t_acme_mall_user_group-->
+    <insert id="batchAddGroup" parameterType="list">
+        insert into t_acme_mall_user_group(group_name)
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            ( #{item.group_name})
+        </foreach>
+        ON DUPLICATE KEY UPDATE
+        group_name = VALUES(group_name)
+    </insert>
+
+    <!--    t_acme_mall_user_label-->
+    <insert id="batchAddLabel" parameterType="list">
+        insert into t_acme_mall_user_label(title)
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            ( #{item.title})
+        </foreach>
+        ON DUPLICATE KEY UPDATE
+        title = VALUES(title)
+    </insert>
+
+    <select id="queryLabel" resultType="com.acme.acmemall.model.UserLabel">
+        select
+        id,
+        title
+        from
+        t_acme_mall_user_label
+    </select>
 </mapper>

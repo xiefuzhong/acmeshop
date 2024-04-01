@@ -190,15 +190,9 @@ public class UserController extends ApiBase {
         if (updater == null) {
             return ResultMap.badArgumentValue();
         }
-//        JSONArray labels = requestJson.getJSONArray("labels");
-//        List<UserLabel> userLabels = JSONArray.parseArray(labels.toJSONString(), UserLabel.class);
         logger.info("更新用户【分组、标签】==>" + requestJson.toJSONString());
         String userIds = requestJson.getString("userIds");
         String[] uids = userIds.split(",");
-//        updater.setLabels(userLabels);
-//        if (CollectionUtils.isNotEmpty(updater.getLabels())) {
-//            updater.buildLabel();
-//        }
         userService.updateUserGroup(uids, updater);
         return ResultMap.ok();
     }
@@ -220,6 +214,12 @@ public class UserController extends ApiBase {
         List<Map> result = userService.countByUserId(userId);
         Map resultMap = result.stream().collect(Collectors.toMap(s -> s.get("title"), s -> s.get("value")));
         return toResponsSuccess(resultMap);
+    }
+
+    @PostMapping("/save-share-goods")
+    public Object saveGoods(@LoginUser LoginUserVo userVo) {
+
+        return ResultMap.ok();
     }
 
 }
