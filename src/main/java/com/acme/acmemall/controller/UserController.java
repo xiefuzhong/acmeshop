@@ -228,7 +228,7 @@ public class UserController extends ApiBase {
         if (requestJson == null) {
             return ResultMap.badArgument();
         }
-
+        userService.addSet(requestJson);
         return ResultMap.ok();
     }
 
