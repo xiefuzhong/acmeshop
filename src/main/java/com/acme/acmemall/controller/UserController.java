@@ -3,10 +3,7 @@ package com.acme.acmemall.controller;
 import com.acme.acmemall.annotation.LoginUser;
 import com.acme.acmemall.common.ResultMap;
 import com.acme.acmemall.exception.ResultCodeEnum;
-import com.acme.acmemall.model.CouponVo;
-import com.acme.acmemall.model.LoginUserVo;
-import com.acme.acmemall.model.OrderVo;
-import com.acme.acmemall.model.UserGoods;
+import com.acme.acmemall.model.*;
 import com.acme.acmemall.service.ICouponService;
 import com.acme.acmemall.service.IOrderService;
 import com.acme.acmemall.service.IUserService;
@@ -230,6 +227,11 @@ public class UserController extends ApiBase {
         }
         userService.addSet(requestJson);
         return ResultMap.ok();
+    }
+
+    @GetMapping("/set-get")
+    public Object loadSet(@LoginUser LoginUserVo userVo) {
+        return toResponsSuccess(userService.loadSet());
     }
 
 }

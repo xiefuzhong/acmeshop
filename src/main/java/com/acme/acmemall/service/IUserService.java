@@ -42,4 +42,6 @@ public interface IUserService {
     List<Map> countByUserId(long userId);
 
     void addSet(JSONObject object);
+
+    List<Object> loadSet();
 }
