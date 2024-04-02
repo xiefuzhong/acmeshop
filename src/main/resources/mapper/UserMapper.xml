@@ -331,13 +331,22 @@
         title
 
     </select>
+    <update id="updateUserLabels">
+        update t_acme_mall_user
+        <set>
+            <if test="labels != null">`labels` = #{labels},</if>
+        </set>
+        where id in
+        <foreach item="userId" collection="userIds" open="(" separator="," close=")">
+            #{userId}
+        </foreach>
+    </update>
 
     <update id="updateUserGroup">
         update t_acme_mall_user
         <set>
-            <if test="user.groupId != null">`group_id` = #{user.groupId},</if>
-            <if test="user.groupName != null">`group_name` = #{user.groupName},</if>
-            <if test="user.labels != null">`label` = #{user.labels},</if>
+            <if test="group != null">`group_id` = #{group.id},</if>
+            <if test="group != null">`group_name` = #{group.group_name},</if>
         </set>
         where id in
         <foreach item="userId" collection="userIds" open="(" separator="," close=")">
@@ -354,6 +363,16 @@
         ON DUPLICATE KEY UPDATE
         group_name = VALUES(group_name)
     </insert>
+    <select id="queryGroup" resultType="com.acme.acmemall.model.UserGroup">
+        select
+        id,
+        group_name
+        from
+        t_acme_mall_user_group
+        <where>
+            id > 0
+        </where>
+    </select>
 
     <!--    t_acme_mall_user_label-->
     <insert id="batchAddLabel" parameterType="list">
@@ -372,5 +391,8 @@
         title
         from
         t_acme_mall_user_label
+        <where>
+            id > 0
+        </where>
     </select>
 </mapper>

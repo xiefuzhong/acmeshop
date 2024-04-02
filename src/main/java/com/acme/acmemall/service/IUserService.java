@@ -1,5 +1,6 @@
 package com.acme.acmemall.service;
 
+import com.acme.acmemall.common.ResultMap;
 import com.acme.acmemall.model.LoginUserVo;
 import com.acme.acmemall.model.UserGoods;
 import com.alibaba.fastjson.JSONObject;
@@ -37,11 +38,11 @@ public interface IUserService {
 
     void updateUser(LoginUserVo user);
 
-    void updateUserGroup(String[] userIds, LoginUserVo user);
+    ResultMap updateSet(JSONObject object);
 
     List<Map> countByUserId(long userId);
 
     void addSet(JSONObject object);
 
-    List<Object> loadSet();
+    List<Map> loadSet(String handle);
 }

@@ -17,6 +17,7 @@ import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Maps;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -183,18 +184,15 @@ public class UserController extends ApiBase {
         if (userVo == null) {
             return ResultMap.error(400, "非有效用户操作");
         }
-        JSONObject requestJson = super.getJsonRequest();
-        if (requestJson == null) {
+        if (!userService.checkAdmin(userVo.getUserId())) {
+            return ResultMap.error(1001, "请先登录管理系统再操作!");
+        }
+        JSONObject req = super.getJsonRequest();
+        if (req == null) {
             return ResultMap.badArgument();
         }
-        LoginUserVo updater = JSONObject.parseObject(requestJson.toJSONString(), LoginUserVo.class);
-        if (updater == null) {
-            return ResultMap.badArgumentValue();
-        }
-        logger.info("更新用户【分组、标签】==>" + requestJson.toJSONString());
-        String userIds = requestJson.getString("userIds");
-        String[] uids = userIds.split(",");
-        userService.updateUserGroup(uids, updater);
+        logger.info("更新用户【分组、标签】==>" + req.toJSONString());
+        userService.updateSet(req);
         return ResultMap.ok();
     }
 
@@ -229,14 +227,23 @@ public class UserController extends ApiBase {
         if (request == null) {
             return ResultMap.badArgument();
         }
-        logger.info(String.format(Locale.ROOT, "新增用户分组:%s", request.toString()));
+        logger.info(String.format(Locale.ROOT, "新增用户分组:%s", request));
         userService.addSet(request);
         return ResultMap.ok();
     }
 
     @GetMapping("/set-get")
-    public Object loadSet(@LoginUser LoginUserVo userVo) {
-        return toResponsSuccess(userService.loadSet());
+    public Object loadSet(@LoginUser LoginUserVo userVo, @RequestParam("handle") String handle) {
+        if (userVo == null) {
+            return ResultMap.error(400, "非有效用户操作");
+        }
+        if (!userService.checkAdmin(userVo.getUserId())) {
+            return ResultMap.error(1001, "请先登录管理系统再操作!");
+        }
+        if (StringUtils.isBlank(handle)) {
+            return ResultMap.badArgumentValue("handle参数值不对");
+        }
+        return toResponsSuccess(userService.loadSet(handle));
     }
 
 }

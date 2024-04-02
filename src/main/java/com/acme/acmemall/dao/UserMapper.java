@@ -46,12 +46,18 @@ public interface UserMapper extends BaseDao<LoginUserVo> {
 
     List<Map> findRoleByUserId(@Param("userId") Long userId);
 
-    int updateUserGroup(@Param("userIds") String[] userIds, @Param("user") LoginUserVo vo);
+    int updateUserGroup(@Param("userIds") String[] userIds, @Param("group") UserGroup group);
+
+    int updateUserLabels(@Param("userIds") String[] userIds, @Param("labels") String labels);
 
     List<Map> countByUserId(@Param("userId") Long userId);
 
     void batchAddGroup(List<UserGroup> groups);
 
     void batchAddLabel(List<UserLabel> labels);
+
+    List<Map> queryGroup();
+
+    List<Map> queryLabel();
 }
 

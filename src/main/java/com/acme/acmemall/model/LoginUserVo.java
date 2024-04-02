@@ -69,8 +69,7 @@ public class LoginUserVo implements Serializable {
 
     private Long merchantId; // 商户ID
 
-    private Long groupId;
-    private String groupName;
+    private UserGroup group;
     private String labels;
 
     private List<UserLabel> userLabels = Lists.newArrayList();

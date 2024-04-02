@@ -1,5 +1,6 @@
 package com.acme.acmemall.service.impl;
 
+import com.acme.acmemall.common.ResultMap;
 import com.acme.acmemall.dao.UserMapper;
 import com.acme.acmemall.exception.ApiCusException;
 import com.acme.acmemall.model.LoginUserVo;
@@ -8,9 +9,11 @@ import com.acme.acmemall.model.UserGroup;
 import com.acme.acmemall.model.UserLabel;
 import com.acme.acmemall.service.IUserService;
 import com.acme.acmemall.utils.GsonUtil;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Lists;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 
@@ -139,12 +142,26 @@ public class UserService implements IUserService {
     }
 
     /**
-     * @param userIds
-     * @param user
+     * @param object
      */
     @Override
-    public void updateUserGroup(String[] userIds, LoginUserVo user) {
-        userDao.updateUserGroup(userIds, user);
+    public ResultMap updateSet(JSONObject object) {
+        String userIds = object.getString("userIds");
+        String[] ids = userIds.split(",");
+        if (StringUtils.equalsIgnoreCase("group", object.getString("handle"))) {
+            JSONObject obj = object.getJSONObject("group");
+            if (obj == null) {
+                return ResultMap.error("参数错误");
+            }
+            userDao.updateUserGroup(ids, JSONObject.toJavaObject(obj, UserGroup.class));
+        } else {
+            JSONArray jsonArray = object.getJSONArray("labels");
+            if (jsonArray == null) {
+                return ResultMap.error("参数错误");
+            }
+//            userDao.updateUserGroup(ids, JSONObject.toJavaObject(obj, UserGroup.class));
+        }
+        return ResultMap.ok();
     }
 
     /**
@@ -176,7 +193,12 @@ public class UserService implements IUserService {
      * @return
      */
     @Override
-    public List<Object> loadSet() {
+    public List<Map> loadSet(String handle) {
+        if ("group".equals(handle)) {
+            return userDao.queryGroup();
+        } else if ("label".equals(handle)) {
+            return userDao.queryLabel();
+        }
         return null;
     }
 

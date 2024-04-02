@@ -14,4 +14,5 @@ public class UserLabel implements Serializable {
     private String title;
     // 标签分类
     private long category_name;
+    private long category_id;
 }
