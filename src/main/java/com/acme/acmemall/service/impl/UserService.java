@@ -3,15 +3,13 @@ package com.acme.acmemall.service.impl;
 import com.acme.acmemall.common.ResultMap;
 import com.acme.acmemall.dao.UserMapper;
 import com.acme.acmemall.exception.ApiCusException;
-import com.acme.acmemall.model.LoginUserVo;
-import com.acme.acmemall.model.UserGoods;
-import com.acme.acmemall.model.UserGroup;
-import com.acme.acmemall.model.UserLabel;
+import com.acme.acmemall.model.*;
 import com.acme.acmemall.service.IUserService;
 import com.acme.acmemall.utils.GsonUtil;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -199,7 +197,15 @@ public class UserService implements IUserService {
         if ("group".equals(handle)) {
             return userDao.queryGroup();
         } else if ("label".equals(handle)) {
-            return userDao.queryLabel();
+            List<Map> datas = userDao.queryLabel();
+            Map<String, List<Map>> datasMap = datas.stream().collect(Collectors.groupingBy(map -> map.get("category_id").toString()));
+            List<Map> dataList = Lists.newArrayList();
+            for (Map.Entry entry : datasMap.entrySet()) {
+                Map temp = Maps.newConcurrentMap();
+                temp.put(entry.getKey(), entry.getValue());
+                dataList.add(temp);
+            }
+            return dataList;
         }
         return null;
     }

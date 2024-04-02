@@ -389,10 +389,10 @@
 
     <!--    t_acme_mall_user_label-->
     <insert id="batchAddLabel" parameterType="list">
-        insert into t_acme_mall_user_label(title)
+        insert into t_acme_mall_user_label(title,category_id,category_name)
         values
         <foreach collection="list" item="item" index="index" separator=",">
-            ( #{item.title})
+            ( #{item.title},#{category_id},#{category_name})
         </foreach>
         ON DUPLICATE KEY UPDATE
         title = VALUES(title)
@@ -407,7 +407,9 @@
     <select id="queryLabel" resultType="com.acme.acmemall.model.UserLabel">
         select
         id,
-        title
+        title,
+        category_id,
+        category_name
         from
         t_acme_mall_user_label
         <where>
