@@ -208,6 +208,7 @@ public class UserService implements IUserService {
                 String[] keys = keyStr.split(",");
                 CategoryLabel categoryLabel = new CategoryLabel();
                 categoryLabel.setCategory_id(Long.parseLong(keys[0]));
+                categoryLabel.setCategory_name(String.valueOf(keys[1]));
                 categoryLabel.setLabels((List<UserLabel>) entry.getValue());
                 dataList.add(categoryLabel);
             }
