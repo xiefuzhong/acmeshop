@@ -201,14 +201,14 @@ public class UserService implements IUserService {
         } else if ("label".equals(handle)) {
             List<UserLabel> datas = userDao.queryLabel();
             List<Map> mapList = datas.stream().map(item -> MapUtils.getMap(item)).collect(Collectors.toList());
-            Map<String, List<Map>> datasMap = mapList.stream().collect(Collectors.groupingBy(map -> map.get("category_id") + "," + map.get("catetory_name")));
+            Map<String, List<Map>> datasMap = mapList.stream().collect(Collectors.groupingBy(map -> map.get("category_id") + "," + map.get("category_name")));
             List<CategoryLabel> dataList = Lists.newArrayList();
             for (Map.Entry entry : datasMap.entrySet()) {
                 String keyStr = (String) entry.getKey();
                 String[] keys = keyStr.split(",");
                 CategoryLabel categoryLabel = new CategoryLabel();
                 categoryLabel.setCategory_id(Long.parseLong(keys[0]));
-                categoryLabel.setCategory_name(keys[1]);
+                categoryLabel.setLabels((List<UserLabel>) entry.getValue());
                 dataList.add(categoryLabel);
             }
             return dataList.stream().map(item -> MapUtils.getMap(item)).collect(Collectors.toList());
