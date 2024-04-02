@@ -6,6 +6,7 @@ import com.acme.acmemall.exception.ApiCusException;
 import com.acme.acmemall.model.*;
 import com.acme.acmemall.service.IUserService;
 import com.acme.acmemall.utils.GsonUtil;
+import com.acme.acmemall.utils.MapUtils;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Lists;
@@ -195,10 +196,13 @@ public class UserService implements IUserService {
     @Override
     public List<Map> loadSet(String handle) {
         if ("group".equals(handle)) {
-            return userDao.queryGroup();
+            List<UserGroup> datas = userDao.queryGroup();
+            List<Map> mapList = datas.stream().map(item -> MapUtils.getMap(item)).collect(Collectors.toList());
+            return mapList;
         } else if ("label".equals(handle)) {
-            List<Map> datas = userDao.queryLabel();
-            Map<String, List<Map>> datasMap = datas.stream().collect(Collectors.groupingBy(map -> map.get("category_id").toString()));
+            List<UserLabel> datas = userDao.queryLabel();
+            List<Map> mapList = datas.stream().map(item -> MapUtils.getMap(item)).collect(Collectors.toList());
+            Map<String, List<Map>> datasMap = mapList.stream().collect(Collectors.groupingBy(map -> map.get("category_id") + ""));
             List<Map> dataList = Lists.newArrayList();
             for (Map.Entry entry : datasMap.entrySet()) {
                 Map temp = Maps.newConcurrentMap();

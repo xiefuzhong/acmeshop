@@ -56,9 +56,9 @@ public interface UserMapper extends BaseDao<LoginUserVo> {
 
     void batchAddLabel(List<UserLabel> labels);
 
-    List<Map> queryGroup();
+    List<UserGroup> queryGroup();
 
-    List<Map> queryLabel();
+    List<UserLabel> queryLabel();
 
     int batchDeleteGroup(List<Long> id);
 
