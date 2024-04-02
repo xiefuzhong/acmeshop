@@ -36,7 +36,7 @@
     </resultMap>
 
     <select id="queryObject" resultMap="userMap">
-        select *,group_id as group.id,group_name as group.group_name from t_acme_mall_user where id = #{value}
+        select * from t_acme_mall_user where id = #{value}
     </select>
 
     <select id="queryByOpenId" resultMap="userMap">
