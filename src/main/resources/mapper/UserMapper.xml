@@ -33,6 +33,12 @@
         <result property="group.id" column="group_id"/>
         <result property="group.group_name" column="group_name"/>
         <result property="labels" column="label"/>
+
+
+        <association property="group" javaType="com.acme.acmemall.model.UserGroup">
+            <id property="id" column="group_id"></id>
+            <result property="group_name" column="group_name"></result>
+        </association>
     </resultMap>
 
     <select id="queryObject" resultMap="userMap">
