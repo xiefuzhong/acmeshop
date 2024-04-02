@@ -369,6 +369,13 @@
         ON DUPLICATE KEY UPDATE
         group_name = VALUES(group_name)
     </insert>
+
+    <delete id="batchDeleteGroup">
+        delete from t_acme_mall_user_group where id in
+        <foreach item="id" collection="list" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
     <select id="queryGroup" resultType="com.acme.acmemall.model.UserGroup">
         select
         id,
@@ -390,6 +397,12 @@
         ON DUPLICATE KEY UPDATE
         title = VALUES(title)
     </insert>
+    <delete id="batchDeleteLabel">
+        delete from t_acme_mall_user_label where id in
+        <foreach item="id" collection="list" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
 
     <select id="queryLabel" resultType="com.acme.acmemall.model.UserLabel">
         select

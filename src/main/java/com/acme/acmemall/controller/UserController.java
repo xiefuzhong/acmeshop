@@ -246,4 +246,20 @@ public class UserController extends ApiBase {
         return toResponsSuccess(userService.loadSet(handle));
     }
 
+    @PostMapping("/set-update")
+    public Object setUpdate(@LoginUser LoginUserVo userVo) {
+        if (userVo == null) {
+            return ResultMap.error(400, "非有效用户操作");
+        }
+        if (!userService.checkAdmin(userVo.getUserId())) {
+            return ResultMap.error(1001, "请先登录管理系统再操作!");
+        }
+        JSONObject request = super.getJsonRequest();
+        if (request == null) {
+            return ResultMap.badArgument();
+        }
+        logger.info(String.format(Locale.ROOT, "更新用户设置:%s", request));
+        return toResponsSuccess(userService.deleteSet(request));
+    }
+
 }

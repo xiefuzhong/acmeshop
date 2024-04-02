@@ -45,4 +45,6 @@ public interface IUserService {
     void addSet(JSONObject object);
 
     List<Map> loadSet(String handle);
+
+    ResultMap deleteSet(JSONObject request);
 }

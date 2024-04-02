@@ -18,8 +18,10 @@ import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService implements IUserService {
@@ -200,6 +202,25 @@ public class UserService implements IUserService {
             return userDao.queryLabel();
         }
         return null;
+    }
+
+    /**
+     * @param request
+     * @return
+     */
+    @Override
+    public ResultMap deleteSet(JSONObject request) {
+        String type = request.getString("type");
+        String ids = request.getString("ids");
+        String[] id = ids.split(",");
+        List<Long> idList = Arrays.stream(id).map(Long::parseLong).collect(Collectors.toList());
+        int result = -1;
+        if ("group".equals(type)) {
+            result = userDao.batchDeleteGroup(idList);
+        } else if ("label".equals(type)) {
+            result = userDao.batchDeleteLabel(idList);
+        }
+        return result >= 0 ? ResultMap.ok() : ResultMap.error();
     }
 
 }
