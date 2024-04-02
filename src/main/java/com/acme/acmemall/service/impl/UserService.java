@@ -10,7 +10,6 @@ import com.acme.acmemall.utils.MapUtils;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -202,14 +201,17 @@ public class UserService implements IUserService {
         } else if ("label".equals(handle)) {
             List<UserLabel> datas = userDao.queryLabel();
             List<Map> mapList = datas.stream().map(item -> MapUtils.getMap(item)).collect(Collectors.toList());
-            Map<String, List<Map>> datasMap = mapList.stream().collect(Collectors.groupingBy(map -> map.get("category_id") + ""));
-            List<Map> dataList = Lists.newArrayList();
+            Map<String, List<Map>> datasMap = mapList.stream().collect(Collectors.groupingBy(map -> map.get("category_id") + "," + map.get("catetory_name")));
+            List<CategoryLabel> dataList = Lists.newArrayList();
             for (Map.Entry entry : datasMap.entrySet()) {
-                Map temp = Maps.newConcurrentMap();
-                temp.put(entry.getKey(), entry.getValue());
-                dataList.add(temp);
+                String keyStr = (String) entry.getKey();
+                String[] keys = keyStr.split(",");
+                CategoryLabel categoryLabel = new CategoryLabel();
+                categoryLabel.setCategory_id(Long.parseLong(keys[0]));
+                categoryLabel.setCategory_name(keys[1]);
+                dataList.add(categoryLabel);
             }
-            return dataList;
+            return dataList.stream().map(item -> MapUtils.getMap(item)).collect(Collectors.toList());
         }
         return null;
     }
