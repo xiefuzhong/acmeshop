@@ -155,7 +155,7 @@ public class UserService implements IUserService {
             }
             result = userDao.updateUserGroup(ids, JSONObject.toJavaObject(obj, UserGroup.class));
         } else {
-            result = userDao.updateUserLabels(ids, object.getString("labels"));
+            result = userDao.updateUserLabels(ids, object.getJSONArray("labels").toJSONString());
         }
         return result > 0 ? ResultMap.ok() : ResultMap.error();
     }
