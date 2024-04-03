@@ -107,7 +107,9 @@ public class UserController extends ApiBase {
     public Object findByMerchantId(@LoginUser LoginUserVo loginUser,
                                    @RequestParam("merchant_id") Integer merchant_id,
                                    @RequestParam("page") Integer page,
-                                   @RequestParam("size") Integer size) {
+                                   @RequestParam("size") Integer size,
+                                   @RequestParam("userId") Long userId,
+                                   @RequestParam("mobile") String mobile) {
         if (loginUser == null) {
             return ResultMap.error(400, "非有效用户操作");
         }
@@ -122,6 +124,12 @@ public class UserController extends ApiBase {
         paramMap.put("merchantId", userVo.getMerchantId());
         Map params = Maps.newHashMap();
         params.put("merchant_id", merchant_id);
+        if (userId != null && userId > 0) {
+            params.put("userId", userId);
+        }
+        if (StringUtils.isNotBlank(mobile)) {
+            params.put("mobile", mobile);
+        }
         params.put("page", page);
         params.put("limit", size);
         params.put("sidx", "id");

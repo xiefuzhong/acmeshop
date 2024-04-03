@@ -55,6 +55,14 @@
 
     <select id="queryList" resultMap="userMap">
         select * from t_acme_mall_user
+        <where>
+            <if test="userId != null">
+                and `id` = #{userId}
+            </if>
+            <if test="mobile != null">
+                and `mobile` = #{mobile}
+            </if>
+        </where>
         <choose>
             <when test="sidx != null and sidx.trim() != ''">
                 order by ${sidx} ${order}
