@@ -192,8 +192,7 @@ public class UserController extends ApiBase {
             return ResultMap.badArgument();
         }
         logger.info("更新用户【分组、标签】==>" + req.toJSONString());
-        userService.updateSet(req);
-        return ResultMap.ok();
+        return userService.updateSet(req);
     }
 
     @GetMapping("/get-user-consumption")

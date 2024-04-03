@@ -7,7 +7,6 @@ import com.acme.acmemall.model.*;
 import com.acme.acmemall.service.IUserService;
 import com.acme.acmemall.utils.GsonUtil;
 import com.acme.acmemall.utils.MapUtils;
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Lists;
 import org.apache.commons.codec.digest.DigestUtils;
@@ -148,20 +147,17 @@ public class UserService implements IUserService {
     public ResultMap updateSet(JSONObject object) {
         String userIds = object.getString("userIds");
         String[] ids = userIds.split(",");
+        int result = -1;
         if (StringUtils.equalsIgnoreCase("group", object.getString("handle"))) {
             JSONObject obj = object.getJSONObject("group");
             if (obj == null) {
                 return ResultMap.error("参数错误");
             }
-            userDao.updateUserGroup(ids, JSONObject.toJavaObject(obj, UserGroup.class));
+            result = userDao.updateUserGroup(ids, JSONObject.toJavaObject(obj, UserGroup.class));
         } else {
-            JSONArray jsonArray = object.getJSONArray("labels");
-            if (jsonArray == null) {
-                return ResultMap.error("参数错误");
-            }
-//            userDao.updateUserGroup(ids, JSONObject.toJavaObject(obj, UserGroup.class));
+            result = userDao.updateUserLabels(ids, object.getString("labels"));
         }
-        return ResultMap.ok();
+        return result > 0 ? ResultMap.ok() : ResultMap.error();
     }
 
     /**

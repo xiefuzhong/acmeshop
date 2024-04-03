@@ -340,7 +340,7 @@
     <update id="updateUserLabels">
         update t_acme_mall_user
         <set>
-            <if test="labels != null">`labels` = #{labels},</if>
+            <if test="labels != null">`label` = #{labels},</if>
         </set>
         where id in
         <foreach item="userId" collection="userIds" open="(" separator="," close=")">
