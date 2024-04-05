@@ -47,10 +47,9 @@
 
     <select id="queryByOpenId" resultMap="userMap">
         select * from t_acme_mall_user
-        where 1 = 1
-        <if test="openId != null">
+        <where>
             and `weixin_openid` = #{openId}
-        </if>
+        </where>
     </select>
 
     <select id="queryList" resultMap="userMap">
