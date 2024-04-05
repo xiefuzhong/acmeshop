@@ -51,16 +51,18 @@
     <select id="queryTotal" resultType="int">
         select count(*)
         from t_acme_mall_collect c
-        where 1 = 1
-        <if test="user_id != null and user_id != ''">
-            and c.user_id = #{user_id}
-        </if>
-        <if test="value_id != null and value_id != ''">
-            and c.value_id = #{value_id}
-        </if>
-        <if test="type_id != null and type_id != ''">
-            and c.type_id = #{type_id}
-        </if>
+        <where>
+            <if test="user_id != null and user_id != ''">
+                and c.user_id = #{user_id}
+            </if>
+            <if test="value_id != null and value_id != ''">
+                and c.value_id = #{value_id}
+            </if>
+            <if test="type_id != null and type_id != ''">
+                and c.type_id = #{type_id}
+            </if>
+        </where>
+
     </select>
 
     <insert id="save" parameterType="com.acme.acmemall.model.CollectVo" useGeneratedKeys="true" keyProperty="id">

@@ -77,19 +77,21 @@
 
     <select id="queryTotal" resultType="int">
         select count(*) from t_acme_mall_cart a
-        where 1 = 1
-        <if test="user_id != null">
-            AND a.user_id = #{user_id}
-        </if>
-        <if test="goods_id != null">
-            AND a.goods_id = #{goods_id}
-        </if>
-        <if test="product_id != product_id">
-            AND a.product_id = #{product_id}
-        </if>
-        <if test="checked != null">
-            AND a.checked = #{checked}
-        </if>
+        <where>
+            <if test="user_id != null">
+                AND a.user_id = #{user_id}
+            </if>
+            <if test="goods_id != null">
+                AND a.goods_id = #{goods_id}
+            </if>
+            <if test="product_id != product_id">
+                AND a.product_id = #{product_id}
+            </if>
+            <if test="checked != null">
+                AND a.checked = #{checked}
+            </if>
+        </where>
+
     </select>
 
     <insert id="save" parameterType="com.acme.acmemall.model.ShopCartVo" useGeneratedKeys="true" keyProperty="id">

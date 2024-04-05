@@ -50,7 +50,6 @@
         expire_time,
         update_time
         from tb_token
-        WHERE 1=1
         <choose>
             <when test="sidx != null and sidx.trim() != ''">
                 order by ${sidx} ${order}
@@ -66,7 +65,6 @@
 
     <select id="queryTotal" resultType="int">
         select count(*) from tb_token
-        WHERE 1=1
     </select>
 
     <insert id="save" parameterType="com.acme.acmemall.model.Token">
