@@ -52,9 +52,9 @@ public interface UserMapper extends BaseDao<LoginUserVo> {
 
     List<Map> countByUserId(@Param("userId") Long userId);
 
-    void batchAddGroup(List<UserGroup> groups);
+    int batchAddGroup(List<UserGroup> groups);
 
-    void batchAddLabel(List<UserLabel> labels);
+    int batchAddLabel(List<UserLabel> labels);
 
     List<UserGroup> queryGroup();
 

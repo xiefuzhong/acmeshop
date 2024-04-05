@@ -235,8 +235,7 @@ public class UserController extends ApiBase {
             return ResultMap.badArgument();
         }
         logger.info(String.format(Locale.ROOT, "新增用户分组:%s", request));
-        userService.addSet(request);
-        return ResultMap.ok();
+        return userService.addSet(request);
     }
 
     @GetMapping("/set-get")

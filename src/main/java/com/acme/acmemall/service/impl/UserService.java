@@ -173,16 +173,18 @@ public class UserService implements IUserService {
      * @param object
      */
     @Override
-    public void addSet(JSONObject object) {
+    public ResultMap addSet(JSONObject object) {
         String type = object.getString("type");
         JSONObject obj = object.getJSONObject("data");
+        int result = -1;
         if ("group".equals(type)) {
             UserGroup group = JSONObject.toJavaObject(obj, UserGroup.class);
-            userDao.batchAddGroup(Lists.newArrayList(group));
-        } else {
+            result = userDao.batchAddGroup(Lists.newArrayList(group));
+        } else if ("label".equals(type)) {
             UserLabel label = JSONObject.toJavaObject(obj, UserLabel.class);
-            userDao.batchAddLabel(Lists.newArrayList(label));
+            result = userDao.batchAddLabel(Lists.newArrayList(label));
         }
+        return result > 0 ? ResultMap.ok() : ResultMap.error();
     }
 
     /**
