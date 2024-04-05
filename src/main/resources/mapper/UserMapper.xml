@@ -54,13 +54,14 @@
     </select>
 
     <select id="queryList" resultMap="userMap">
-        select * from t_acme_mall_user
+        SELECT * FROM t_acme_mall_user
         <where>
             <if test="userId != null">
-                and `id` = #{userId}
+                AND `id` = #{userId}
+                OR `mobile` = #{userId}
             </if>
             <if test="mobile != null">
-                and `mobile` = #{mobile}
+                AND `mobile` = #{mobile}
             </if>
         </where>
         <choose>
