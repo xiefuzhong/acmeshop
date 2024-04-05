@@ -168,7 +168,7 @@
         received_time
         from t_acme_mall_coupon a
         left join t_acme_mall_user_coupon b on a.id = b.coupon_id
-        where 1 = 1 and a.merchant_id=b.merchant_id
+        where a.merchant_id=b.merchant_id
         <if test="id != null">
             and a.`id` = #{id}
         </if>
