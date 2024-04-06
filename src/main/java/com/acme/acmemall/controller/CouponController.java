@@ -22,6 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.util.*;
 import java.util.function.Function;
@@ -37,15 +38,15 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/coupon")
 public class CouponController extends ApiBase {
 
-    @Autowired
+    @Resource
     IUserService userService;
-    @Autowired
+    @Resource
     ICouponService couponService;
-    @Autowired
+    @Resource
     IUserCouponService userCouponService;
-    @Autowired
+    @Resource
     IProductService productService;
-    @Autowired
+    @Resource
     IShopCartService cartService;
 
     /**
