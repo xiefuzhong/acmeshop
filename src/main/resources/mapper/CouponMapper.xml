@@ -183,7 +183,13 @@
             and a.merchant_id = #{merchantId}
         </if>
         <if test="coupon_status != null">
-            and b.coupon_status = #{coupon_status}
+            <if test="coupon_status != 1 ">
+                <![CDATA[ AND b.coupon_status=IF(b.expired_time < now(),2,0)]]>
+            </if>
+            <if test="coupon_status == 1">
+                and b.coupon_status = 1
+            </if>
+
         </if>
         <if test="coupon_number != null">
             and b.coupon_number = #{coupon_number}
