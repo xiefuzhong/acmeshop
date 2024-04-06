@@ -354,6 +354,12 @@ public class ShopCartController extends ApiBase {
         //订单总金额
         BigDecimal goodsTotalPrice = BigDecimal.ZERO;
 
+        // 优惠金额
+        BigDecimal couponPrice = BigDecimal.ZERO;
+
+        // 实付金额 =  goodsTotalPrice+freightPrice-actualPrice
+        BigDecimal actualPrice = BigDecimal.ZERO;
+
         //默认收货地址
         AddressVo checkedAddress = null;
         if (StringUtils.isNullOrEmpty(addressId) || addressId == 0) {
@@ -389,11 +395,11 @@ public class ShopCartController extends ApiBase {
                 // 获取优惠金额
                 // 订单的总价
                 BigDecimal orderTotalPrice = goodsTotalPrice.add(freightPrice);
-                BigDecimal couponPrice = BigDecimal.ZERO;
+//                BigDecimal couponPrice = BigDecimal.ZERO;
                 if (couponVo != null) {
                     couponPrice = couponVo.getCouponPrice(goodsTotalPrice);
                 }
-                BigDecimal actualPrice = orderTotalPrice.subtract(couponPrice);  //减去其它支付的金额后，要实际支付的金额
+                actualPrice = orderTotalPrice.subtract(couponPrice);  //减去其它支付的金额后，要实际支付的金额
                 merCartVo.setCouponPrice(couponPrice);
                 merCartVo.setActualPrice(actualPrice);
                 Map map = Maps.newHashMap();
@@ -450,9 +456,9 @@ public class ShopCartController extends ApiBase {
         // 订单的总价
         BigDecimal orderTotalPrice = goodsTotalPrice.add(freightPrice);
         //获取可用的优惠券信息
-        BigDecimal couponPrice = couponVo.getCouponPrice(goodsTotalPrice);
+//        BigDecimal couponPrice = couponVo.getCouponPrice(goodsTotalPrice);
 
-        BigDecimal actualPrice = orderTotalPrice.subtract(couponPrice);  //减去其它支付的金额后，要实际支付的金额
+//        BigDecimal actualPrice = orderTotalPrice.subtract(couponPrice);  //减去其它支付的金额后，要实际支付的金额
         resultObj.put("freightPrice", freightPrice);
         resultObj.put("couponPrice", couponPrice);
         resultObj.put("checkedGoodsList", merCartVoList);
