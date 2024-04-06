@@ -99,8 +99,12 @@ public class OrderServiceImpl implements IOrderService {
             return ResultMap.response(ResultCodeEnum.FAILED);
         }
 
-        CouponVo couponVo = couponMapper.queryObject(request.getUserCouponId());
-//        Assert.isNull(couponVo, "未查询到有效的优惠券");
+        CouponVo couponVo = null;
+        if (request.getUserCouponId() > 0) {
+            couponVo = couponMapper.queryObject(request.getUserCouponId());
+            Assert.isNull(couponVo, "未查询到有效的优惠券");
+        }
+
         OrderVo order = OrderFactory.buildNewOrder(loginUser.getUserId(), request.getType());
         order.submit(couponVo, cartList, addressVo, invoiceHeaderVo);
         order.checkSubmit();
