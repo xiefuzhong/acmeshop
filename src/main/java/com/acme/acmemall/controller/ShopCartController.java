@@ -389,7 +389,10 @@ public class ShopCartController extends ApiBase {
                 // 获取优惠金额
                 // 订单的总价
                 BigDecimal orderTotalPrice = goodsTotalPrice.add(freightPrice);
-                BigDecimal couponPrice = couponVo.getCouponPrice(goodsTotalPrice);
+                BigDecimal couponPrice = BigDecimal.ZERO;
+                if (couponVo != null) {
+                    couponPrice = couponVo.getCouponPrice(goodsTotalPrice);
+                }
                 BigDecimal actualPrice = orderTotalPrice.subtract(couponPrice);  //减去其它支付的金额后，要实际支付的金额
                 merCartVo.setCouponPrice(couponPrice);
                 merCartVo.setActualPrice(actualPrice);
