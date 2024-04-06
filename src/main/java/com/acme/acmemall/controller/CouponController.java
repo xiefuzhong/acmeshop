@@ -59,6 +59,10 @@ public class CouponController extends ApiBase {
         param.put("user_id", loginUser.getUserId());
         param.put("coupon_status", status);
         List<CouponVo> couponVos = couponService.queryUserCoupons(param);
+        if (CollectionUtils.isNotEmpty(couponVos)) {
+            couponVos = couponVos.stream().map(couponVo -> {
+            }).collect(Collectors.toList());
+        }
         return toResponsSuccess(couponVos);
     }
 
