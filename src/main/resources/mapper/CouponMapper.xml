@@ -42,6 +42,8 @@
         <result property="expired_time" column="expired_time"/>
         <!--        received_time-->
         <result property="received_time" column="received_time"/>
+        <!--        usable-->
+        <result property="usable" column="usable"/>
     </resultMap>
 
     <select id="queryObject" resultMap="couponMap">

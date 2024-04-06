@@ -148,6 +148,8 @@ public class CouponVo implements Serializable {
     // 使用时间(天-根据领取和发放计算领取和使用有效期)
     private Integer usageTime;
 
+    private Integer usable;
+
     public void setCoupon_status(Integer coupon_status) {
         this.enabled = coupon_status;
     }
