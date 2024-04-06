@@ -186,14 +186,14 @@
         <if test="coupon_status != null">
             <choose>
                 <when test="coupon_status ==0">
-                    AND coupon_status = 0
+                    AND b.coupon_status = 0
                     AND #{coupon_status} = <![CDATA[ IF(b.expired_time < now(),2,0)]]>
                 </when>
                 <when test="coupon_status ==1">
                     AND b.coupon_status = #{coupon_status}
                 </when>
                 <when test="coupon_status ==2">
-                    AND coupon_status = 0
+                    AND b.coupon_status = 0
                     AND #{coupon_status} = <![CDATA[ IF(b.expired_time < now(),2,0)]]>
                 </when>
             </choose>
