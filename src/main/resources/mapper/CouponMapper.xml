@@ -166,8 +166,8 @@
 
     <select id="queryUserCoupons" resultMap="couponMap">
         select a.*,b.coupon_number,b.user_id,b.coupon_status as used_status,b.id as
-        user_coupon_id,b.expired_time,b.add_time as received_time,
-        <![CDATA[ IF(b.expired_time< NOW(),2,0) as usable]]>
+        user_coupon_id,b.expired_time,b.add_time as received_time
+        <!--    ,    <![CDATA[ IF(b.expired_time< NOW(),2,0) as usable]]>-->
         from t_acme_mall_coupon a
         left join t_acme_mall_user_coupon b on a.id = b.coupon_id
         where a.merchant_id=b.merchant_id
@@ -184,13 +184,13 @@
             and a.merchant_id = #{merchantId}
         </if>
         <if test="coupon_status != null">
-            <if test="coupon_status != 1 ">
-                <![CDATA[ AND #{coupon_status}=IF(b.expired_time < now(),2,0)]]>
-            </if>
-            <if test="coupon_status == 1">
-                and b.coupon_status = 1
-            </if>
-
+            <!--            <if test="coupon_status != 1 ">-->
+            <!--                <![CDATA[ AND #{coupon_status}=IF(b.expired_time < now(),2,0)]]>-->
+            <!--            </if>-->
+            <!--            <if test="coupon_status == 1">-->
+            <!--                and b.coupon_status = 1-->
+            <!--            </if>-->
+            AND b.coupon_status = #{coupon_status}
         </if>
         <if test="coupon_number != null">
             and b.coupon_number = #{coupon_number}
