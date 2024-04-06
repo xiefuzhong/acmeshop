@@ -185,7 +185,7 @@
         </if>
         <if test="coupon_status != null">
             <if test="coupon_status != 1 ">
-                <![CDATA[ AND b.coupon_status=IF(b.expired_time < now(),2,0)]]>
+                <![CDATA[ AND #{coupon_status}=IF(b.expired_time < now(),2,0)]]>
             </if>
             <if test="coupon_status == 1">
                 and b.coupon_status = 1
