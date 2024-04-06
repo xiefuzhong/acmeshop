@@ -85,19 +85,6 @@ public class OrderServiceImpl implements IOrderService {
             invoiceHeaderVo = invoiceHeaderMapper.queryObject(request.getHeaderId());
         }
 
-        // 用户选择的优惠券信息
-        Map params = Maps.newHashMap();
-        params.put("user_id", loginUser.getUserId());
-        params.put("coupon_status", CouponStatusEnum.COUPON_AVAILABLE.getCode());
-        params.put("couponIds", Lists.newArrayList(request.getUserCouponId()));
-        params.put("selected", true);
-        // 商品总额
-        params.put("goodsTotalPrice", request.getGoodsTotalPrice());
-
-        List<UserCouponVo> userCouponList = userCouponMapper.queryList(params);
-        if (CollectionUtils.isEmpty(userCouponList)) {
-            return ResultMap.badArgument("订单不能使用优惠券，优惠券信息错误或已使用");
-        }
         // 购物车明细校验
         if (StringUtils.isEmpty(request.getCartIds())) {
             return ResultMap.response(ResultCodeEnum.FAILED);
@@ -123,9 +110,25 @@ public class OrderServiceImpl implements IOrderService {
         orderItemMapper.saveBatch(order.getItems());
 
         // 释放优惠券信息
-        UserCouponVo userCouponVo = userCouponList.get(0);
-        userCouponVo.exchange(loginUser.getUserId(), order.getId());
-        userCouponMapper.update(userCouponVo);
+        // 用户选择的优惠券信息
+        if (request.getUserCouponId() > 0) {
+            Map params = Maps.newHashMap();
+            params.put("user_id", loginUser.getUserId());
+            params.put("coupon_status", CouponStatusEnum.COUPON_AVAILABLE.getCode());
+            params.put("couponIds", Lists.newArrayList(request.getUserCouponId()));
+            params.put("selected", true);
+            // 商品总额
+            params.put("goodsTotalPrice", request.getGoodsTotalPrice());
+
+            List<UserCouponVo> userCouponList = userCouponMapper.queryList(params);
+            if (CollectionUtils.isEmpty(userCouponList)) {
+                return ResultMap.badArgument("订单不能使用优惠券，优惠券信息错误或已使用");
+            }
+            UserCouponVo userCouponVo = userCouponList.get(0);
+            userCouponVo.exchange(loginUser.getUserId(), order.getId());
+            userCouponMapper.update(userCouponVo);
+        }
+
         // 删除购物车
         List<String> productIds = cartList.stream().map(cartVo -> cartVo.getProduct_id().toString()).collect(Collectors.toList());
         cartMapper.deleteByUserAndProductIds(loginUser.getUserId(), productIds.toArray(new String[productIds.size()]));
