@@ -543,8 +543,8 @@
             <if test="keywords != null">keywords = #{keywords},</if>
             <if test="goods_desc != null">goods_desc = #{goods_desc},</if>
             <if test="is_on_sale != null">is_on_sale = #{is_on_sale},</if>
-            <if test="goods_number != null and goods_number >= 0">goods_number = #{goods_number},</if>
-            <if test="retail_price != null and retail_price >=0">retail_price = #{retail_price},</if>
+            <if test="goods_number != null and goods_number > 0">goods_number = #{goods_number},</if>
+            <if test="retail_price != null and retail_price >0">retail_price = #{retail_price},</if>
         </set>
         <where>
             id = #{id}
