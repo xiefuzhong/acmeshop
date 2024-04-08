@@ -1,6 +1,5 @@
 package com.acme.acmemall.model;
 
-import lombok.Builder;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -27,12 +26,10 @@ public class ProductVo implements Serializable {
     //商品序列号
     private String goods_sn;
     //商品库存
-    @Builder.Default
     private Long goods_number = 0L;
     //零售价格
     private BigDecimal market_price;
     //时长价
-    @Builder.Default
     private BigDecimal retail_price = BigDecimal.ZERO;
     //商品名称
     private String goods_name;
