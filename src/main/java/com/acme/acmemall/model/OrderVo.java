@@ -861,6 +861,13 @@ public class OrderVo implements Serializable {
         this.order_status = OrderStatusEnum.AFTER_SERVICE.getCode();
         this.order_status_text = OrderStatusEnum.AFTER_SERVICE.getName();
         this.refund_status = RefundStatusEnum.REFUND_APPLY.getCode();
+        // 自动修复售后类型
+        ShipStatusEnum shipStatus = ShipStatusEnum.parse(this.shipping_status);
+        if (shipStatus == ShipStatusEnum.SHIP_NO) {
+            request.setRefundType(RefundType.REFUND_ONLY.getCode());
+        } else if (shipStatus == ShipStatusEnum.SHIP_YES || shipStatus == ShipStatusEnum.SHIP_ROG) {
+            request.setRefundType(RefundType.REFUND_RETURN.getCode());
+        }
         this.refundVo = OrderRefundFactory.build(request, this.user_id);
         refundVo.submit(this.user_id);
     }
@@ -905,11 +912,11 @@ public class OrderVo implements Serializable {
             return Boolean.FALSE;
         }
         if (refundVo.getRefund_type() == 1) {
-            // 仅退款(审核通过&&已付款)
+            // 仅退款(审核通过&&已付款 && 未发货)
             return this.refund_status == RefundStatusEnum.REFUND_PASS.getCode()
                     && this.pay_status == PayStatusEnum.PAY_YES.getCode();
         } else if (refundVo.getRefund_type() == 2) {
-            // 货物退回 && 商家签收
+            // 货物退回 && 商家签收 && 已发货
             if (this.shipping_status == ShipStatusEnum.SHIP_RETURN.getCode()
                     && this.refund_status == RefundStatusEnum.REFUND_RETURNED.getCode()
                     && this.pay_status == PayStatusEnum.PAY_YES.getCode()) {

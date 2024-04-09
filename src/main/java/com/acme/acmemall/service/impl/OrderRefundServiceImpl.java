@@ -10,6 +10,7 @@ import com.acme.acmemall.model.LoginUserVo;
 import com.acme.acmemall.model.OrderRefundVo;
 import com.acme.acmemall.model.OrderVo;
 import com.acme.acmemall.model.enums.RefundOptionEnum;
+import com.acme.acmemall.model.enums.ShipStatusEnum;
 import com.acme.acmemall.service.IOrderRefundService;
 import com.acme.acmemall.utils.wechat.WechatRefundApiResult;
 import com.acme.acmemall.utils.wechat.WechatUtil;
@@ -48,6 +49,7 @@ public class OrderRefundServiceImpl implements IOrderRefundService {
         if (!orderVo.checkOwner(loginUser.getUserId())) {
             return ResultMap.error("订单不属于该用户");
         }
+
         OrderRefundVo refundVo = orderRefundMapper.findByOrderId(request.getOrderId());
         if (refundVo == null) {
             refundVo = OrderRefundFactory.build(request, loginUser.getUserId());
@@ -58,6 +60,7 @@ public class OrderRefundServiceImpl implements IOrderRefundService {
         if (refundVo == null) {
             return ResultMap.error("无售后信息");
         }
+
         log.info("request.getRefundOption: {}", request.getRefundOption());
         log.info("orderVo.afterService before: {}", orderVo);
         orderVo.afterService(refundVo, request.getRefundOption());
