@@ -114,23 +114,32 @@ public class OrderVo implements Serializable {
     private String pay_name;
     //快递费用
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "##0.00")
     @Builder.Default
     private BigDecimal shipping_fee = BigDecimal.ZERO;
+
     //实际需要支付的金额
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "##0.00")
     @Builder.Default
     private BigDecimal actual_price = BigDecimal.ZERO;
     // 积分
     private Integer integral;
+
     // 积分抵扣金额
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "##0.00")
     @Builder.Default
     private BigDecimal integral_money = BigDecimal.ZERO;
+
     //订单总价
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "##0.00")
     @Builder.Default
     private BigDecimal order_price = BigDecimal.ZERO;
 
-    @Builder.Default
     //商品总价
+    @Builder.Default
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "##0.00")
     private BigDecimal goods_price = BigDecimal.ZERO;
+
     //新增时间-下单时间
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date add_time;
@@ -157,14 +166,18 @@ public class OrderVo implements Serializable {
     //付款时间
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date pay_time;
+
     //配送费用
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "##0.00")
     @Builder.Default
     private BigDecimal freight_price = BigDecimal.ZERO;
     //使用的优惠券id
     private Long coupon_id;
     //
     private Integer parent_id;
+
     //优惠价格
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "##0.00")
     @Builder.Default
     private BigDecimal coupon_price = BigDecimal.ZERO;
     //
@@ -174,6 +187,7 @@ public class OrderVo implements Serializable {
     private String order_status_text;//订单状态的处理
     private Map handleOption; //可操作的选项
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "##0.00")
     @Builder.Default
     private BigDecimal full_cut_price = BigDecimal.ZERO; //订单满减
     private String full_region;//区县
@@ -183,13 +197,16 @@ public class OrderVo implements Serializable {
     private String list_pic_url;//图片地址
     private String goods_id;//商品ID
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "##0.00")
     @Builder.Default
     private BigDecimal all_price = BigDecimal.ZERO;//全部总价
     private String all_order_id;//总订单ID
     //新增
     //推广人id
     private int promoter_id;
+
     //本订单佣金
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "##0.00")
     @Builder.Default
     private BigDecimal brokerage = BigDecimal.ZERO;
     //fx状态 默认为0是没有分润金额，已分润状态变成1

@@ -1,5 +1,6 @@
 package com.acme.acmemall.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -30,10 +31,15 @@ public class OrderGoodsVo implements Serializable {
     private Long product_id;
     //商品数量
     private Integer number;
+
     //市场价
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "##0.00")
     private BigDecimal market_price;
+
     //零售价格
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "##0.00")
     private BigDecimal retail_price;
+
     //商品规格详情
     private String goods_specifition_name_value;
     //虚拟商品

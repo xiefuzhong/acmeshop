@@ -73,6 +73,15 @@ public class OrderRefundVo implements Serializable {
     //    RefundOptionEnum 操作
     private String refundOption;
 
+    public BigDecimal getRefund_price() {
+
+        return refund_price == null ? null : refund_price.setScale(2, BigDecimal.ROUND_HALF_UP);
+    }
+
+    public BigDecimal getRefunded_price() {
+        return refunded_price == null ? null : refunded_price.setScale(2, BigDecimal.ROUND_HALF_UP);
+    }
+
     /**
      * 提交申请
      *
