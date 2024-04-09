@@ -398,8 +398,8 @@ public class ShopCartController extends ApiBase {
                     couponPrice = couponVo.getCouponPrice(goodsTotalPrice);
                 }
                 actualPrice = orderTotalPrice.subtract(couponPrice);  //减去其它支付的金额后，要实际支付的金额
-                merCartVo.setCouponPrice(couponPrice);
-                merCartVo.setActualPrice(actualPrice);
+                merCartVo.setCouponPrice(couponPrice.setScale(2, RoundingMode.HALF_UP));
+                merCartVo.setActualPrice(actualPrice.setScale(2, RoundingMode.HALF_UP));
                 Map map = Maps.newHashMap();
                 map.put("user_id", loginUser.getUserId());
                 map.put("merchantId", merCartVo.getMerchantId());
