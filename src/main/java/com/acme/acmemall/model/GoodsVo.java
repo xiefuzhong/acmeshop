@@ -6,6 +6,7 @@ import com.acme.acmemall.controller.reqeust.GoodsManageRequest;
 import com.acme.acmemall.utils.DateUtils;
 import com.acme.acmemall.utils.GsonUtil;
 import com.acme.acmemall.utils.StringUtils;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.google.common.collect.Lists;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,6 +16,7 @@ import org.apache.commons.collections.CollectionUtils;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.sql.Timestamp;
 import java.util.Comparator;
 import java.util.Date;
@@ -40,7 +42,7 @@ public class GoodsVo implements Serializable {
     private Integer brand_id;
     //商品序列号
     @Builder.Default
-    private Long goods_number = 0l;
+    private Long goods_number = 0L;
     //关键字
     private String keywords;
     //简明介绍
@@ -60,9 +62,13 @@ public class GoodsVo implements Serializable {
     private Integer is_delete;
     //属性类别
     private Integer attribute_category;
+
     //专柜价格
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "##0.00")
     private BigDecimal counter_price;
+
     //附加价格
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "##0.00")
     private BigDecimal extra_price;
     //是否新商品
     private Integer is_new;
@@ -72,25 +78,33 @@ public class GoodsVo implements Serializable {
     private String primary_pic_url;
     //商品列表图
     private String list_pic_url;
+
     //市场价
     @Builder.Default
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "##0.00")
     private BigDecimal market_price = BigDecimal.ZERO;
+
     //零售价格(现价)
     @Builder.Default
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "##0.00")
     private BigDecimal retail_price = BigDecimal.ZERO;
     //销售量
     @Builder.Default
     private Integer sell_volume = 0;
     //主sku　product_id
     private Integer primary_product_id;
+
     //单位价格，单价
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "##0.00")
     private BigDecimal unit_price;
     //推广描述
     private String promotion_desc;
     //推广标签
     private String promotion_tag;
+
     //APP专享价
     @Builder.Default
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "##0.00")
     private BigDecimal app_exclusive_price = BigDecimal.ZERO;
     //是否是APP专属
     private Integer is_app_exclusive;
@@ -123,6 +137,8 @@ public class GoodsVo implements Serializable {
     private Timestamp end_time;//活动结束时间
     private Integer success_time;//成团时间 单位分钟
     private Integer success_people;//成团人数
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "##0.00")
     private BigDecimal group_price;//团购价格(元)
 
     //产品小程序链接
@@ -132,6 +148,34 @@ public class GoodsVo implements Serializable {
     private List<GoodsGalleryVo> galleryList = Lists.newArrayList();
     private List<GoodsSpecificationVo> specList = Lists.newArrayList();
     private List<ProductVo> products = Lists.newArrayList();
+
+    public BigDecimal getCounter_price() {
+        return counter_price == null ? BigDecimal.ZERO : counter_price.setScale(2, RoundingMode.HALF_UP);
+    }
+
+    public BigDecimal getExtra_price() {
+        return extra_price == null ? BigDecimal.ZERO : extra_price.setScale(2, RoundingMode.HALF_UP);
+    }
+
+    public BigDecimal getMarket_price() {
+        return market_price == null ? BigDecimal.ZERO : market_price.setScale(2, RoundingMode.HALF_UP);
+    }
+
+    public BigDecimal getRetail_price() {
+        return retail_price == null ? BigDecimal.ZERO : retail_price.setScale(2, RoundingMode.HALF_UP);
+    }
+
+    public BigDecimal getUnit_price() {
+        return unit_price == null ? BigDecimal.ZERO : unit_price.setScale(2, RoundingMode.HALF_UP);
+    }
+
+    public BigDecimal getApp_exclusive_price() {
+        return app_exclusive_price == null ? BigDecimal.ZERO : app_exclusive_price.setScale(2, RoundingMode.HALF_UP);
+    }
+
+    public BigDecimal getGroup_price() {
+        return group_price == null ? BigDecimal.ZERO : group_price.setScale(2, RoundingMode.HALF_UP);
+    }
 
     /**
      * 更新商品

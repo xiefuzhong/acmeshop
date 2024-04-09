@@ -24,6 +24,7 @@ import org.apache.commons.lang.StringUtils;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -272,6 +273,38 @@ public class OrderVo implements Serializable {
 
     @Builder.Default
     private List<OrderProcessVo> orderProcessList = Lists.newArrayList();
+
+    public BigDecimal getShipping_fee() {
+        return shipping_fee == null ? BigDecimal.ZERO : shipping_fee.setScale(2, RoundingMode.HALF_UP);
+    }
+
+    public BigDecimal getIntegral_money() {
+        return integral_money == null ? BigDecimal.ZERO : integral_money.setScale(2, RoundingMode.HALF_UP);
+    }
+
+    public BigDecimal getOrder_price() {
+        return order_price == null ? BigDecimal.ZERO : order_price.setScale(2, RoundingMode.HALF_UP);
+    }
+
+    public BigDecimal getGoods_price() {
+        return goods_price == null ? BigDecimal.ZERO : goods_price.setScale(2, RoundingMode.HALF_UP);
+    }
+
+    public BigDecimal getFreight_price() {
+        return freight_price == null ? BigDecimal.ZERO : freight_price.setScale(2, RoundingMode.HALF_UP);
+    }
+
+    public BigDecimal getCoupon_price() {
+        return coupon_price == null ? BigDecimal.ZERO : coupon_price.setScale(2, RoundingMode.HALF_UP);
+    }
+
+    public BigDecimal getFull_cut_price() {
+        return full_cut_price == null ? BigDecimal.ZERO : full_cut_price.setScale(2, RoundingMode.HALF_UP);
+    }
+
+    public BigDecimal getBrokerage() {
+        return brokerage == null ? BigDecimal.ZERO : brokerage.setScale(2, RoundingMode.HALF_UP);
+    }
 
     public List<OrderProcessVo> getOrderProcessList() {
         if (StringUtils.isNotEmpty(this.orderProcessText)) {

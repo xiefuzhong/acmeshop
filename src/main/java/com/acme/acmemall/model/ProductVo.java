@@ -1,9 +1,11 @@
 package com.acme.acmemall.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 /**
  * @description:
@@ -28,8 +30,10 @@ public class ProductVo implements Serializable {
     //商品库存
     private Long goods_number = 0L;
     //零售价格
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "##0.00")
     private BigDecimal market_price;
-    //时长价
+    //市场价
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "##0.00")
     private BigDecimal retail_price = BigDecimal.ZERO;
     //商品名称
     private String goods_name;
@@ -38,6 +42,7 @@ public class ProductVo implements Serializable {
     //商户id
     private Long merchant_id;
     //活动价格
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "##0.00")
     private BigDecimal group_price;
 
     // 规格图
@@ -46,11 +51,22 @@ public class ProductVo implements Serializable {
     private String specValue;
     private Integer specTypeId;
 
-    public String getCheckedKey() {
-        StringBuffer buffer = new StringBuffer();
-        buffer.append(goods_id).append(specValue);
-        return buffer.toString();
+    public BigDecimal getMarket_price() {
+        return market_price == null ? BigDecimal.ZERO : market_price.setScale(2, RoundingMode.HALF_UP);
     }
+
+    public BigDecimal getRetail_price() {
+        return retail_price == null ? BigDecimal.ZERO : retail_price.setScale(2, RoundingMode.HALF_UP);
+    }
+
+    public BigDecimal getGroup_price() {
+        return group_price == null ? BigDecimal.ZERO : group_price.setScale(2, RoundingMode.HALF_UP);
+    }
+
+    public String getCheckedKey() {
+        return goods_id + specValue;
+    }
+
     public boolean verifyInventory(Integer goods_number) {
         return this.goods_number > goods_number;
     }

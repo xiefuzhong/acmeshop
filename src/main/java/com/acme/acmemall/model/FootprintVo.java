@@ -1,6 +1,7 @@
 package com.acme.acmemall.model;
 
 import com.acme.acmemall.utils.DateUtils;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -35,7 +36,8 @@ public class FootprintVo implements Serializable {
     private String name;
     private String list_pic_url;
     private String goods_brief;
-    //
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "##0.00")
     private BigDecimal retail_price;
     // 会员
     private String nickname;

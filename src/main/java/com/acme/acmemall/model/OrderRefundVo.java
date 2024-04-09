@@ -74,7 +74,6 @@ public class OrderRefundVo implements Serializable {
     private String refundOption;
 
     public BigDecimal getRefund_price() {
-
         return refund_price == null ? null : refund_price.setScale(2, BigDecimal.ROUND_HALF_UP);
     }
 
