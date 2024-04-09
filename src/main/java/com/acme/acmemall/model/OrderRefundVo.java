@@ -3,6 +3,8 @@ package com.acme.acmemall.model;
 import com.acme.acmemall.controller.reqeust.OrderRefundRequest;
 import com.acme.acmemall.exception.Assert;
 import com.acme.acmemall.model.enums.RefundStatusEnum;
+import com.acme.acmemall.model.enums.RefundType;
+import com.acme.acmemall.model.enums.ShipStatusEnum;
 import com.acme.acmemall.utils.GsonUtil;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
@@ -12,6 +14,7 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Date;
 
 /**
@@ -66,6 +69,7 @@ public class OrderRefundVo implements Serializable {
     private String remark;
     private Integer refund_status;
     private String refund_status_text;
+
     public String getRefund_status_text() {
         return RefundStatusEnum.parse(this.refund_status).getName();
     }
@@ -74,11 +78,11 @@ public class OrderRefundVo implements Serializable {
     private String refundOption;
 
     public BigDecimal getRefund_price() {
-        return refund_price == null ? null : refund_price.setScale(2, BigDecimal.ROUND_HALF_UP);
+        return refund_price == null ? null : refund_price.setScale(2, RoundingMode.HALF_UP);
     }
 
     public BigDecimal getRefunded_price() {
-        return refunded_price == null ? null : refunded_price.setScale(2, BigDecimal.ROUND_HALF_UP);
+        return refunded_price == null ? null : refunded_price.setScale(2, RoundingMode.HALF_UP);
     }
 
     /**
@@ -152,6 +156,16 @@ public class OrderRefundVo implements Serializable {
 
     public boolean canApply() {
         return RefundStatusEnum.canApply(this.refund_status);
+    }
+
+    public void resetRefundType(int shipping_status) {
+        // 自动修复售后类型
+        ShipStatusEnum shipStatus = ShipStatusEnum.parse(shipping_status);
+        if (shipStatus == ShipStatusEnum.SHIP_NO) {
+            this.refund_type = RefundType.REFUND_ONLY.getCode();
+        } else if (shipStatus == ShipStatusEnum.SHIP_YES || shipStatus == ShipStatusEnum.SHIP_ROG) {
+            this.refund_type = RefundType.REFUND_ONLY.getCode();
+        }
     }
 
     @Override

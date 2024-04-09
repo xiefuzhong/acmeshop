@@ -10,7 +10,6 @@ import com.acme.acmemall.model.LoginUserVo;
 import com.acme.acmemall.model.OrderRefundVo;
 import com.acme.acmemall.model.OrderVo;
 import com.acme.acmemall.model.enums.RefundOptionEnum;
-import com.acme.acmemall.model.enums.ShipStatusEnum;
 import com.acme.acmemall.service.IOrderRefundService;
 import com.acme.acmemall.utils.wechat.WechatRefundApiResult;
 import com.acme.acmemall.utils.wechat.WechatUtil;
@@ -53,7 +52,7 @@ public class OrderRefundServiceImpl implements IOrderRefundService {
         OrderRefundVo refundVo = orderRefundMapper.findByOrderId(request.getOrderId());
         if (refundVo == null) {
             refundVo = OrderRefundFactory.build(request, loginUser.getUserId());
-            orderVo.refundRequest(request);
+//            orderVo.refundRequest(request);
         } else if (!refundVo.canApply()) {
             return ResultMap.error("售后中不能重复提交");
         }

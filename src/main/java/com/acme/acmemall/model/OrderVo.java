@@ -791,6 +791,7 @@ public class OrderVo implements Serializable {
         RefundOptionEnum option = RefundOptionEnum.parse(refundOption);
         // 提交售后申请
         if (option == RefundOptionEnum.SUBMIT) {
+            refundVo.resetRefundType(this.shipping_status);
             this.refundVo = refundVo;
             this.refundVo.submit(this.user_id);
             this.order_status = OrderStatusEnum.AFTER_SERVICE.getCode();
@@ -861,13 +862,6 @@ public class OrderVo implements Serializable {
         this.order_status = OrderStatusEnum.AFTER_SERVICE.getCode();
         this.order_status_text = OrderStatusEnum.AFTER_SERVICE.getName();
         this.refund_status = RefundStatusEnum.REFUND_APPLY.getCode();
-        // 自动修复售后类型
-        ShipStatusEnum shipStatus = ShipStatusEnum.parse(this.shipping_status);
-        if (shipStatus == ShipStatusEnum.SHIP_NO) {
-            request.setRefundType(RefundType.REFUND_ONLY.getCode());
-        } else if (shipStatus == ShipStatusEnum.SHIP_YES || shipStatus == ShipStatusEnum.SHIP_ROG) {
-            request.setRefundType(RefundType.REFUND_RETURN.getCode());
-        }
         this.refundVo = OrderRefundFactory.build(request, this.user_id);
         refundVo.submit(this.user_id);
     }
