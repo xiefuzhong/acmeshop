@@ -38,7 +38,7 @@ public class OrderSubmitRequest implements Serializable {
     // 购物车明细
     private String cartIds;
 
-    private String cusMark;
+    private String cusRemark;
 
     @Override
     public String toString() {

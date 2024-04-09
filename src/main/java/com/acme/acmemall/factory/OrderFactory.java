@@ -20,7 +20,7 @@ public class OrderFactory {
                 .order_sn(String.format("wx%s", id))
                 .order_status(0)
                 .order_type(request.getType())
-                .cusRemark(request.getCusMark())
+                .cusRemark(request.getCusRemark())
                 .pay_status(0)
                 .user_id(userId)
                 .shipping_status(0)
