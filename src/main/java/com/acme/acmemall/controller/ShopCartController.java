@@ -13,6 +13,7 @@ import com.acme.acmemall.common.ResultMap;
 import com.acme.acmemall.dto.CouponInfoVo;
 import com.acme.acmemall.model.*;
 import com.acme.acmemall.service.*;
+import com.acme.acmemall.utils.GsonUtil;
 import com.acme.acmemall.utils.StringUtils;
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Lists;
@@ -463,6 +464,7 @@ public class ShopCartController extends ApiBase {
         resultObj.put("goodsTotalPrice", goodsTotalPrice.setScale(2, RoundingMode.HALF_UP));
         resultObj.put("orderTotalPrice", orderTotalPrice.setScale(2, RoundingMode.HALF_UP));
         resultObj.put("actualPrice", actualPrice.setScale(2, RoundingMode.HALF_UP));
+        logger.info("checkout.response == >" + GsonUtil.toJson(resultObj));
         return toResponsSuccess(resultObj);
     }
 
