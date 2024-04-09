@@ -280,7 +280,8 @@
         `goods_count`,
         `invoice_header_id`,
         `expire_time`,
-        `order_process_text`
+        `order_process_text`,
+        `cus_remark`
         )
         values
         (
@@ -328,7 +329,8 @@
         #{goodsCount},
         #{invoiceHeaderId},
         #{expire_time},
-        #{orderProcessText}
+        #{orderProcessText},
+        #{cusRemark}
         )
     </insert>
 
