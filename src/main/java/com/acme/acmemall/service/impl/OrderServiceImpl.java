@@ -105,7 +105,7 @@ public class OrderServiceImpl implements IOrderService {
             Assert.isNull(couponVo, "未查询到有效的优惠券");
         }
 
-        OrderVo order = OrderFactory.buildNewOrder(loginUser.getUserId(), request.getType());
+        OrderVo order = OrderFactory.buildNewOrder(loginUser.getUserId(), request);
         order.submit(couponVo, cartList, addressVo, invoiceHeaderVo);
         order.checkSubmit();
         logger.info("order.submit >> " + order);

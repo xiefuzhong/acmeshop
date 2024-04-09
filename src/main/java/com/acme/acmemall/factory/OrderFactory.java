@@ -1,5 +1,6 @@
 package com.acme.acmemall.factory;
 
+import com.acme.acmemall.controller.reqeust.OrderSubmitRequest;
 import com.acme.acmemall.model.OrderGoodsVo;
 import com.acme.acmemall.model.OrderVo;
 import com.acme.acmemall.model.ShopCartVo;
@@ -12,13 +13,14 @@ import com.acme.acmemall.utils.SnowFlakeGenerateIdWorker;
  */
 public class OrderFactory {
 
-    public static OrderVo buildNewOrder(long userId,String type) {
+    public static OrderVo buildNewOrder(long userId, OrderSubmitRequest request) {
         String id = SnowFlakeGenerateIdWorker.generateId();
         return OrderVo.builder()
                 .id(id)
                 .order_sn(String.format("wx%s", id))
                 .order_status(0)
-                .order_type(type)
+                .order_type(request.getType())
+                .cusRemark(request.getCusMark())
                 .pay_status(0)
                 .user_id(userId)
                 .shipping_status(0)
