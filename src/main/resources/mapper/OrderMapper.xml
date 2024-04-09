@@ -68,7 +68,7 @@
         <!--        refund_express_code-->
         <result property="refund_express_code" column="refund_express_code"/>
         <!--        cusMark-->
-        <result property="cusMark" column="cus_remark"/>
+        <result property="cusRemark" column="cus_remark"/>
     </resultMap>
 
     <select id="queryObject" resultMap="orderMap">
