@@ -646,7 +646,9 @@ public class OrderVo implements Serializable {
                 }
                 case REFUND_PASS: {
                     // 审批通过填写退货物流信息
-                    optionMap.put("fillInLogistics", Boolean.TRUE);
+                    if (this.refund_type.equals(2)) {
+                        optionMap.put("fillInLogistics", Boolean.TRUE);
+                    }
                     break;
                 }
                 default: {
