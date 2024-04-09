@@ -457,12 +457,12 @@ public class ShopCartController extends ApiBase {
 //        BigDecimal couponPrice = couponVo.getCouponPrice(goodsTotalPrice);
 
 //        BigDecimal actualPrice = orderTotalPrice.subtract(couponPrice);  //减去其它支付的金额后，要实际支付的金额
-        resultObj.put("freightPrice", freightPrice);
-        resultObj.put("couponPrice", couponPrice);
+        resultObj.put("freightPrice", freightPrice.setScale(2, RoundingMode.HALF_UP));
+        resultObj.put("couponPrice", couponPrice.setScale(2, RoundingMode.HALF_UP));
         resultObj.put("checkedGoodsList", merCartVoList);
-        resultObj.put("goodsTotalPrice", goodsTotalPrice);
-        resultObj.put("orderTotalPrice", orderTotalPrice);
-        resultObj.put("actualPrice", actualPrice);
+        resultObj.put("goodsTotalPrice", goodsTotalPrice.setScale(2, RoundingMode.HALF_UP));
+        resultObj.put("orderTotalPrice", orderTotalPrice.setScale(2, RoundingMode.HALF_UP));
+        resultObj.put("actualPrice", actualPrice.setScale(2, RoundingMode.HALF_UP));
         return toResponsSuccess(resultObj);
     }
 

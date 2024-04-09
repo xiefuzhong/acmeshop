@@ -1,5 +1,6 @@
 package com.acme.acmemall.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import org.apache.commons.collections.CollectionUtils;
 
@@ -13,9 +14,17 @@ public class MerCartVo implements Serializable {
     public  Long merchantId;
     public String merchantName;
     public List<ShopCartVo> cartVoList;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "##0.00")
     public BigDecimal freightPrice;//运费
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "##0.00")
     public BigDecimal orderTotalPrice;//订单总金额
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "##0.00")
     public BigDecimal actualPrice;//实际支付金额
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "##0.00")
     public BigDecimal couponPrice;
     public List<CouponVo> userCouponList;//用户可用优惠券列表
 

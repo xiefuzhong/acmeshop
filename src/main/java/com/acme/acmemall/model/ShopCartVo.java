@@ -1,5 +1,6 @@
 package com.acme.acmemall.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -38,10 +39,15 @@ public class ShopCartVo implements Serializable {
     //产品名称
     private String goods_name;
     //市场价
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "##0.00")
     private BigDecimal market_price;
     //零售价格
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "##0.00")
     private BigDecimal retail_price;
     //product表中的零售价格
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "##0.00")
     private BigDecimal retail_product_price;
     //数量
     private Integer number;
@@ -52,6 +58,7 @@ public class ShopCartVo implements Serializable {
     // 1-选中
     private Integer checked;
     // 节省金额
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "##0.00")
     private BigDecimal crash_save_price;
 
     //商品图片
@@ -61,6 +68,7 @@ public class ShopCartVo implements Serializable {
     private Long merchant_id;
 
     // 运费
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "##0.00")
     private BigDecimal extra_price;
 
     /**
