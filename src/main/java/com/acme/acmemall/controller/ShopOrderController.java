@@ -84,7 +84,11 @@ public class ShopOrderController extends ApiBase {
                               @RequestParam(value = "handleType") String type,
                               @RequestParam(value = "remarkText") String remarkText) {
         OrderVo orderVo = orderService.findOrder(orderId);
-        OrderVo updateOrderVo = OrderVo.builder().handleType(type).merRemark(remarkText).build();
+        OrderVo updateOrderVo = OrderVo.builder()
+                .id(orderId)
+                .handleType(type)
+                .merRemark(remarkText)
+                .build();
         orderVo.handle(updateOrderVo);
         orderService.handleOrderByMer(orderVo);
         return ResultMap.ok();
