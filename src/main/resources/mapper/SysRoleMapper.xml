@@ -21,7 +21,7 @@
     <select id="queryList" resultMap="roleMap">
         select * from sys_role a
         <where>
-            <if test="stat != null and stat != ''">
+            <if test="status != null and status != ''">
                 AND a.status = #{status}
             </if>
             <if test="name != null and name.trim() != ''">
