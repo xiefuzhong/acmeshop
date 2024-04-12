@@ -113,6 +113,9 @@ public class SystemAdminController extends ApiBase {
             return toResponsFail("参数错误");
         }
         Long roleId = reqObj.getLong("roleId");
+        if (roleId == null) {
+            return toResponsFail("参数错误");
+        }
         return sysRoleService.deleteRole(roleId);
     }
 }
