@@ -97,7 +97,7 @@ public class UserService implements IUserService {
     public LoginUserVo login(String mobile, String password) {
         String pwd = DigestUtils.sha256Hex(password);
         LoginUserVo loginUserVo = userDao.queryByMobile(mobile, pwd);
-        logger.info(GsonUtil.getGson().toJson(loginUserVo));
+        logger.info(GsonUtil.toJson(loginUserVo));
         if (loginUserVo == null || !loginUserVo.checkLogin(pwd)) {
             throw new ApiCusException("登录失败!");
         }
