@@ -14,11 +14,11 @@
         <result property="operatorId" column="create_user_id"/>
     </resultMap>
 
-    <select id="queryObject" resultMap="regionMap">
+    <select id="queryObject" resultMap="roleMap">
         select * from sys_role where role_id = #{value}
     </select>
 
-    <select id="queryList" resultMap="regionMap">
+    <select id="queryList" resultMap="roleMap">
         select * from sys_role a
         <where>
             <if test="stat != null and stat != ''">
