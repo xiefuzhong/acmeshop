@@ -16,7 +16,6 @@ import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Maps;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
@@ -44,9 +43,9 @@ public class SystemAdminController extends ApiBase {
 
     @RequestMapping("/get-role")
     public Object getSystemRole(@LoginUser LoginUserVo loginUser,
-                                @RequestParam("roleName") String roleName,
-                                @RequestParam("page") Integer page,
-                                @RequestParam("size") Integer size) {
+                                String roleName,
+                                Integer page,
+                                Integer size) {
         if (loginUser == null) {
             return toResponsFail("您未登录");
         }
