@@ -41,4 +41,15 @@ public class RoleVo {
         this.operatorId = userId;
         this.status = 1;
     }
+
+    @Override
+    public String toString() {
+        final StringBuffer sb = new StringBuffer("RoleVo{");
+        sb.append("roleName='").append(roleName).append('\'');
+        sb.append(", description='").append(description).append('\'');
+        sb.append(", addTime=").append(addTime);
+        sb.append(", operatorId=").append(operatorId);
+        sb.append('}');
+        return sb.toString();
+    }
 }
