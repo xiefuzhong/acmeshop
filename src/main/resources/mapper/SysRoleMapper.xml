@@ -12,6 +12,7 @@
         <result property="updateTime" column="update_time"/>
         <result property="status" column="status"/>
         <result property="operatorId" column="create_user_id"/>
+        <result property="adminFlag" column="is_admin"/>
     </resultMap>
 
     <select id="queryObject" resultMap="roleMap">

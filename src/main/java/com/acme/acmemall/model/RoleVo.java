@@ -20,6 +20,8 @@ public class RoleVo {
     private Integer status;
     //创建时间
     private Long addTime;
+    // 是否为管理员
+    private Integer adminFlag;
 
     public String getFmtAddTime() {
         if (this.addTime != null && this.addTime > 0) {
