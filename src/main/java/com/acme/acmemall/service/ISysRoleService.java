@@ -15,4 +15,6 @@ public interface ISysRoleService {
     ResultMap updateRole(RoleVo roleVo);
 
     ResultMap deleteRole(Long roleId);
+
+    RoleVo getRoleById(Long roleId);
 }

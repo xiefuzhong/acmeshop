@@ -14,10 +14,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Maps;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -85,7 +82,7 @@ public class SystemAdminController extends ApiBase {
             return toResponsFail("参数错误");
         }
         roleVo.addRole(loginUser.getUserId());
-        logger.info("addRole: " + roleVo.toString());
+        logger.info("addRole: " + roleVo);
         return sysRoleService.addRole(roleVo);
     }
 
@@ -123,4 +120,23 @@ public class SystemAdminController extends ApiBase {
         }
         return sysRoleService.deleteRole(roleId);
     }
+
+    @GetMapping("/get")
+    public Object get(@LoginUser LoginUserVo loginUser, @RequestParam(value = "roleId", defaultValue = "0") Long roleId) {
+        if (loginUser == null) {
+            return toResponsFail("您未登录");
+        }
+        if (!userService.checkAdmin(loginUser.getUserId())) {
+            return toResponsFail("您不是管理员");
+        }
+        if (roleId == 0) {
+            return toResponsFail("参数错误");
+        }
+        RoleVo roleVo = sysRoleService.getRoleById(roleId);
+        if (roleVo == null) {
+            return toResponsFail("角色不存在");
+        }
+        return toResponsSuccess(roleVo);
+    }
+
 }

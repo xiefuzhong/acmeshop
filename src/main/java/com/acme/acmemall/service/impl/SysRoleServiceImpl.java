@@ -55,4 +55,13 @@ public class SysRoleServiceImpl implements ISysRoleService {
     public ResultMap deleteRole(Long roleId) {
         return roleMapper.delete(roleId) > 0 ? ResultMap.ok() : ResultMap.error();
     }
+
+    /**
+     * @param roleId
+     * @return
+     */
+    @Override
+    public RoleVo getRoleById(Long roleId) {
+        return roleMapper.queryObject(roleId);
+    }
 }
