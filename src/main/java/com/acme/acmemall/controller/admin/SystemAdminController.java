@@ -81,6 +81,10 @@ public class SystemAdminController extends ApiBase {
             return toResponsFail("参数错误");
         }
         RoleVo roleVo = reqObj.toJavaObject(RoleVo.class);
+        if (roleVo == null) {
+            return toResponsFail("参数错误");
+        }
+        roleVo.addRole(loginUser.getUserId());
         return sysRoleService.addRole(roleVo);
     }
 

@@ -23,4 +23,10 @@ public class RoleVo {
     private Long updateTime;
     // 操作人ID
     private Long operatorId;
+
+    public void addRole(Long userId) {
+        this.addTime = System.currentTimeMillis();
+        this.operatorId = userId;
+        this.status = 1;
+    }
 }
