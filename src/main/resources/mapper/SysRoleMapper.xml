@@ -74,7 +74,10 @@
     <update id="update" parameterType="com.acme.acmemall.model.RoleVo">
         update sys_role
         <set>
+            <!--        roleName    -->
             <if test="roleName != null">`role_name` = #{roleName},</if>
+            <!--            description-->
+            <if test="description != null">`remark` = #{description},</if>
             <if test="status != null">`status` = #{status},</if>
             <if test="updateTime != null">`update_time` = #{updateTime},</if>
         </set>
