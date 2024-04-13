@@ -1,6 +1,7 @@
 package com.acme.acmemall.model;
 
 import lombok.Data;
+import com.acme.acmemall.utils.DateUtils;
 
 /**
  * @description:角色VO
@@ -19,13 +20,24 @@ public class RoleVo {
     private Integer status;
     //创建时间
     private Long addTime;
+
+    public String getFmtAddTime() {
+        if (this.addTime != null && this.addTime > 0) {
+            this.fmtAddTime = DateUtils.timeToStr(this.addTime, DateUtils.DATE_TIME_PATTERN);
+        }
+        return fmtAddTime;
+    }
+
+    // 创建时间字符串
+    private String fmtAddTime;
     // 更新时间
     private Long updateTime;
     // 操作人ID
     private Long operatorId;
 
     public void addRole(Long userId) {
-        this.addTime = System.currentTimeMillis();
+        this.addTime = System.currentTimeMillis() / 1000;
+        this.fmtAddTime = DateUtils.timeToStr(this.addTime, DateUtils.DATE_TIME_PATTERN);
         this.operatorId = userId;
         this.status = 1;
     }
