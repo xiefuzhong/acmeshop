@@ -44,6 +44,11 @@ public class RoleVo {
         this.status = 1;
     }
 
+    public void updateRole(Long userId) {
+        this.updateTime = System.currentTimeMillis() / 1000;
+        this.operatorId = userId;
+    }
+
     @Override
     public String toString() {
         final StringBuffer sb = new StringBuffer("RoleVo{");
