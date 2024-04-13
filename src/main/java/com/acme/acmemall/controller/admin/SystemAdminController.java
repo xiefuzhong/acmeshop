@@ -59,7 +59,7 @@ public class SystemAdminController extends ApiBase {
         }
         params.put("page", page);
         params.put("limit", size);
-        params.put("sidx", "add_time");
+        params.put("sidx", "create_time");
         params.put("order", "desc");
         PageHelper.startPage(page, size, true);
         List<RoleVo> roles = sysRoleService.getAllRoles(params);

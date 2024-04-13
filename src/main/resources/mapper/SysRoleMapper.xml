@@ -24,7 +24,7 @@
             <if test="status != null and status != ''">
                 AND a.status = #{status}
             </if>
-            <if test="name != null and name.trim() != ''">
+            <if test="roleName != null and roleName.trim() != ''">
                 AND a.role_name LIKE concat('%',#{roleName},'%')
             </if>
         </where>
@@ -42,13 +42,12 @@
     </select>
 
     <select id="queryTotal" resultType="int">
-        select count(*)
-        from sys_role a
+        select count(*) from sys_role a
         <where>
-            <if test="stat != null and stat != ''">
+            <if test="status != null and status != ''">
                 AND a.status = #{status}
             </if>
-            <if test="name != null and name.trim() != ''">
+            <if test="roleName != null and roleName.trim() != ''">
                 AND a.role_name LIKE concat('%',#{roleName},'%')
             </if>
         </where>
