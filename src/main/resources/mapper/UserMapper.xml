@@ -439,7 +439,7 @@
         </collection>
     </resultMap>
 
-    <select id="querySysMembers" resultType="com.acme.acmemall.model.MembersVo">
+    <select id="querySysMembers" resultMap="memberMap">
         SELECT
         a.user_id as userId,
         a.username as userName,
