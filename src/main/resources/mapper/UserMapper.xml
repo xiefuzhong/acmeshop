@@ -434,21 +434,15 @@
         <collection property="roles" ofType="com.acme.acmemall.model.RoleVo">
             <id property="id" column="role_id"/>
             <result property="roleName" column="role_name"/>
-            <!--            <result property="roleType" column="is_admin"/>-->
+            <result property="roleType" column="is_admin"/>
             <result property="description" column="remark"/>
         </collection>
     </resultMap>
 
     <select id="querySysMembers" resultMap="memberMap">
         SELECT
-        a.user_id as userId,
-        a.username as userName,
-        a.email as email,
-        a.mobile as mobile,
-        b.role_id as roleId,
-        c.role_name as roleName,
-        c.is_admin as roleType,
-        c.remark as roleDesc
+        a.*,
+        c.*
         from
         sys_user a
         left JOIN sys_user_role b on a.user_id = b.user_id
