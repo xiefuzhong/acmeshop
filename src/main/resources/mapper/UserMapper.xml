@@ -470,7 +470,7 @@
         VALUES
         (
         #{userId},
-        #{username},
+        #{userName},
         #{password},
         #{mobile},
         #{status},
