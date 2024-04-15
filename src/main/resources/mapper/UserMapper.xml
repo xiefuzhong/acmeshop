@@ -434,7 +434,7 @@
         b.role_id as roleId,
         c.role_name as roleName,
         c.is_admin as roleType,
-        c.discription as roleDesc
+        c.remark as roleDesc
         from
         sys_user a
         left JOIN sys_user_role b on a.user_id = b.user_id
@@ -443,5 +443,16 @@
             AND a.status = 1
             AND c.is_admin = 1
         </where>
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+            <otherwise>
+                order by a.role_id desc
+            </otherwise>
+        </choose>
+        <if test="offset != null and limit != null">
+            limit #{offset}, #{limit}
+        </if>
     </select>
 </mapper>
