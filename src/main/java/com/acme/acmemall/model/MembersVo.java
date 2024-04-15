@@ -18,10 +18,10 @@ public class MembersVo implements Serializable {
     private String email;
     private String mobile;
     private String password;
-    private long roleId;
-    private String roleName;
-    private String roleDesc;
-    private Integer roleType;
+    //    private long roleId;
+//    private String roleName;
+//    private String roleDesc;
+//    private Integer roleType;
     private Long addTime;
     private Long updateTime;
     private Long operatorId;
@@ -38,8 +38,8 @@ public class MembersVo implements Serializable {
     public void grantPermissions() {
         this.updateTime = System.currentTimeMillis() / 1000;
         this.operatorId = 0L;
-        this.roleId = 0L;
-        this.roleName = "";
+//        this.roleId = 0L;
+//        this.roleName = "";
     }
 
 }
