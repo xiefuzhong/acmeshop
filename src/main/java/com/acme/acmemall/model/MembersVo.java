@@ -32,13 +32,13 @@ public class MembersVo implements Serializable {
         this.addTime = System.currentTimeMillis() / 1000;
         this.password = pwd;
         this.operatorId = userId;
-        this.status = status;
+        this.status = status == null ? 0 : status;
     }
 
     public void grantPermissions() {
         this.updateTime = System.currentTimeMillis() / 1000;
-        this.operatorId = 0l;
-        this.roleId = 0l;
+        this.operatorId = 0L;
+        this.roleId = 0L;
         this.roleName = "";
     }
 
