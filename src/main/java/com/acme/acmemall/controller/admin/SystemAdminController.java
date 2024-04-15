@@ -54,7 +54,7 @@ public class SystemAdminController extends ApiBase {
             return toResponsFail("参数错误");
         }
         String pwd = DigestUtils.sha256Hex(reqObj.getString("password"));
-        String comfirmPwd = DigestUtils.sha256Hex(reqObj.getString("comfirmPassword"));
+        String comfirmPwd = DigestUtils.sha256Hex(reqObj.getString("confirmPassword"));
         if (!Objects.equals(pwd, comfirmPwd)) {
             return toResponsFail("两次密码输入不一致");
         }
