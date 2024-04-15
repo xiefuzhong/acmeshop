@@ -474,7 +474,7 @@
         #{password},
         #{mobile},
         #{status},
-        #{createTime},
+        #{addTime},
         #{operatorId}
         )
     </insert>
