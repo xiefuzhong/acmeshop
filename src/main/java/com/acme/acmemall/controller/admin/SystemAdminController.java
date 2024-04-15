@@ -5,6 +5,7 @@ import com.acme.acmemall.common.ResultMap;
 import com.acme.acmemall.controller.ApiBase;
 import com.acme.acmemall.exception.ResultCodeEnum;
 import com.acme.acmemall.model.LoginUserVo;
+import com.acme.acmemall.model.MembersVo;
 import com.acme.acmemall.model.RoleVo;
 import com.acme.acmemall.service.ISysRoleService;
 import com.acme.acmemall.service.IUserService;
@@ -35,8 +36,29 @@ public class SystemAdminController extends ApiBase {
     IUserService userService;
 
     @RequestMapping("/get-admin")
-    public Object getSystemAdmin(@LoginUser LoginUserVo loginUser) {
-        return toResponsSuccess(loginUser);
+    public Object getSystemAdmin(@LoginUser LoginUserVo loginUser,
+                                 @RequestParam(value = "roleName", defaultValue = "") String roleName,
+                                 @RequestParam(value = "page", defaultValue = "1") Integer page,
+                                 @RequestParam(value = "size", defaultValue = "10") Integer size) {
+        if (loginUser == null) {
+            return toResponsFail("您未登录");
+        }
+        if (!userService.checkAdmin(loginUser.getUserId())) {
+            return toResponsFail("您不是管理员");
+        }
+        Map params = Maps.newHashMap();
+        if (StringUtils.isNotEmpty(roleName)) {
+            params.put("roleName", roleName);
+        }
+        params.put("page", page);
+        params.put("limit", size);
+        params.put("sidx", "create_time");
+        params.put("order", "desc");
+        PageHelper.startPage(page, size, true);
+        List<MembersVo> members = userService.getAdminUsers(params);
+        PageInfo pageInfo = new PageInfo(members);
+        PageUtils pager = new PageUtils(pageInfo);
+        return ResultMap.response(ResultCodeEnum.SUCCESS, pager);
     }
 
     @RequestMapping("/get-role")

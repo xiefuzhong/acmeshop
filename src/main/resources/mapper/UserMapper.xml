@@ -424,4 +424,24 @@
             id > 0
         </where>
     </select>
+
+    <select id="querySysMembers" resultType="com.acme.acmemall.model.MembersVo">
+        SELECT
+        a.user_id as userId,
+        a.username as userName,
+        a.email as email,
+        a.mobile as mobile,
+        b.role_id as roleId,
+        c.role_name as roleName,
+        c.is_admin as roleType,
+        c.discription as roleDesc
+        from
+        sys_user a
+        left JOIN sys_user_role b on a.user_id = b.user_id
+        left JOIN sys_role c on b.role_id = c.role_id
+        <where>
+            AND a.status = 1
+            AND c.is_admin = 1
+        </where>
+    </select>
 </mapper>

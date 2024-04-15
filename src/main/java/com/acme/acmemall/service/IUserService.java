@@ -2,6 +2,7 @@ package com.acme.acmemall.service;
 
 import com.acme.acmemall.common.ResultMap;
 import com.acme.acmemall.model.LoginUserVo;
+import com.acme.acmemall.model.MembersVo;
 import com.acme.acmemall.model.UserGoods;
 import com.alibaba.fastjson.JSONObject;
 
@@ -47,4 +48,6 @@ public interface IUserService {
     List<Map> loadSet(String handle);
 
     ResultMap deleteSet(JSONObject request);
+
+    List<MembersVo> getAdminUsers(Map params);
 }

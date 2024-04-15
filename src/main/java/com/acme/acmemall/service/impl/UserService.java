@@ -234,4 +234,13 @@ public class UserService implements IUserService {
         return result >= 0 ? ResultMap.ok() : ResultMap.error();
     }
 
+    /**
+     * @param params
+     * @return
+     */
+    @Override
+    public List<MembersVo> getAdminUsers(Map params) {
+        return userDao.querySysMembers(params);
+    }
+
 }

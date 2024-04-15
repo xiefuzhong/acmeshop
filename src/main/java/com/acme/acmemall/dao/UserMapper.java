@@ -1,9 +1,6 @@
 package com.acme.acmemall.dao;
 
-import com.acme.acmemall.model.LoginUserVo;
-import com.acme.acmemall.model.UserGoods;
-import com.acme.acmemall.model.UserGroup;
-import com.acme.acmemall.model.UserLabel;
+import com.acme.acmemall.model.*;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -19,6 +16,7 @@ public interface UserMapper extends BaseDao<LoginUserVo> {
 
     /**
      * w微信用户查询
+     *
      * @param openId
      * @return
      */
@@ -31,6 +29,7 @@ public interface UserMapper extends BaseDao<LoginUserVo> {
 
     /**
      * 更新分销比例
+     *
      * @param vo
      * @return
      */
@@ -63,5 +62,7 @@ public interface UserMapper extends BaseDao<LoginUserVo> {
     int batchDeleteGroup(List<Long> id);
 
     int batchDeleteLabel(List<Long> id);
+
+    List<MembersVo> querySysMembers(Map<String, Object> params);
 }
 
