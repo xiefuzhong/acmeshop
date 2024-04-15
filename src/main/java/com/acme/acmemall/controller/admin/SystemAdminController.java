@@ -52,7 +52,6 @@ public class SystemAdminController extends ApiBase {
         }
         params.put("page", page);
         params.put("limit", size);
-        params.put("sidx", "create_time");
         params.put("order", "desc");
         PageHelper.startPage(page, size, true);
         List<MembersVo> members = userService.getAdminUsers(params);
