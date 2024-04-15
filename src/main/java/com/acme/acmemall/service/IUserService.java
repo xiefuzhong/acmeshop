@@ -50,4 +50,6 @@ public interface IUserService {
     ResultMap deleteSet(JSONObject request);
 
     List<MembersVo> getAdminUsers(Map params);
+
+    ResultMap addMember(MembersVo membersVo);
 }

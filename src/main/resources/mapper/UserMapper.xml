@@ -455,4 +455,27 @@
             limit #{offset}, #{limit}
         </if>
     </select>
+
+    <insert id="addSysMember" parameterType="com.acme.acmemall.model.MembersVo">
+        INSERT INTO sys_user
+        (
+        `user_id`,
+        `username`,
+        `password`,
+        `mobile`,
+        `status`,
+        `create_time`,
+        `create_user_id`
+        )
+        VALUES
+        (
+        #{userId},
+        #{username},
+        #{password},
+        #{mobile},
+        #{status},
+        #{createTime},
+        #{operatorId}
+        )
+    </insert>
 </mapper>

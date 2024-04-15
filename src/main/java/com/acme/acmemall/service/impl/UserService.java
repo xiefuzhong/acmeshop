@@ -1,6 +1,7 @@
 package com.acme.acmemall.service.impl;
 
 import com.acme.acmemall.common.ResultMap;
+import com.acme.acmemall.dao.SysRoleMapper;
 import com.acme.acmemall.dao.UserMapper;
 import com.acme.acmemall.exception.ApiCusException;
 import com.acme.acmemall.model.*;
@@ -9,9 +10,9 @@ import com.acme.acmemall.utils.GsonUtil;
 import com.acme.acmemall.utils.MapUtils;
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Lists;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -20,14 +21,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 public class UserService implements IUserService {
 
     @Resource
     private UserMapper userDao;
 
-    protected Logger logger = Logger.getLogger(getClass());
-
+    @Resource
+    private SysRoleMapper sysRoleMapper;
 
     /**
      * @param openId
@@ -97,7 +99,7 @@ public class UserService implements IUserService {
     public LoginUserVo login(String mobile, String password) {
         String pwd = DigestUtils.sha256Hex(password);
         LoginUserVo loginUserVo = userDao.queryByMobile(mobile, pwd);
-        logger.info(GsonUtil.toJson(loginUserVo));
+        log.info(GsonUtil.toJson(loginUserVo));
         if (loginUserVo == null || !loginUserVo.checkLogin(pwd)) {
             throw new ApiCusException("登录失败!");
         }
@@ -241,6 +243,16 @@ public class UserService implements IUserService {
     @Override
     public List<MembersVo> getAdminUsers(Map params) {
         return userDao.querySysMembers(params);
+    }
+
+    /**
+     * @param membersVo
+     * @return
+     */
+    @Override
+    public ResultMap addMember(MembersVo membersVo) {
+        int result = userDao.addSysMember(membersVo);
+        return result > 0 ? ResultMap.ok() : ResultMap.error();
     }
 
 }

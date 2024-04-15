@@ -64,5 +64,13 @@ public interface UserMapper extends BaseDao<LoginUserVo> {
     int batchDeleteLabel(List<Long> id);
 
     List<MembersVo> querySysMembers(Map<String, Object> params);
+
+    int addSysMembers(MembersVo membersVo);
+
+    int updateSysMembers(MembersVo membersVo);
+
+    int deleteSysMembers(Long id);
+
+    int addSysMember(MembersVo membersVo);
 }
 

@@ -15,11 +15,13 @@ import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Maps;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * @description:
@@ -34,6 +36,31 @@ public class SystemAdminController extends ApiBase {
     ISysRoleService sysRoleService;
     @Resource
     IUserService userService;
+
+    @PostMapping("/add-member")
+    public Object addMember(@LoginUser LoginUserVo loginUser) {
+        if (loginUser == null) {
+            return toResponsFail("您未登录");
+        }
+        if (!userService.checkAdmin(loginUser.getUserId())) {
+            return toResponsFail("您不是管理员");
+        }
+        JSONObject reqObj = getJsonRequest();
+        if (reqObj == null) {
+            return toResponsFail("参数错误");
+        }
+        MembersVo membersVo = reqObj.toJavaObject(MembersVo.class);
+        if (membersVo == null) {
+            return toResponsFail("参数错误");
+        }
+        String pwd = DigestUtils.sha256Hex(reqObj.getString("password"));
+        String comfirmPwd = DigestUtils.sha256Hex(reqObj.getString("comfirmPassword"));
+        if (!Objects.equals(pwd, comfirmPwd)) {
+            return toResponsFail("两次密码输入不一致");
+        }
+        membersVo.addMember(loginUser.getUserId(), pwd, reqObj.getInteger("status"));
+        return userService.addMember(membersVo);
+    }
 
     @RequestMapping("/get-admin")
     public Object getSystemAdmin(@LoginUser LoginUserVo loginUser,
