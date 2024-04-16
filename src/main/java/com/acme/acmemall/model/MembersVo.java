@@ -50,4 +50,6 @@ public class MembersVo implements Serializable {
 //        this.roleName = "";
     }
 
+    public void updateMember(Long userId) {
+    }
 }

@@ -37,6 +37,63 @@ public class SystemAdminController extends ApiBase {
     @Resource
     IUserService userService;
 
+    @RequestMapping("/get-member")
+    public Object getMember(@LoginUser LoginUserVo loginUser,
+                            @RequestParam(value = "userId", defaultValue = "0") Long userId) {
+        if (loginUser == null) {
+            return toResponsFail("您未登录");
+        }
+        if (!userService.checkAdmin(loginUser.getUserId())) {
+            return toResponsFail("您不是管理员");
+        }
+        if (userId == 0) {
+            return toResponsFail("参数错误");
+        }
+        MembersVo membersVo = userService.getMemberById(userId);
+        if (membersVo == null) {
+            return toResponsFail("成员不存在");
+        }
+        return toResponsSuccess(membersVo);
+    }
+
+    @PostMapping("/update-member")
+    public Object updateMember(@LoginUser LoginUserVo loginUser) {
+        if (loginUser == null) {
+            return toResponsFail("您未登录");
+        }
+        if (!userService.checkAdmin(loginUser.getUserId())) {
+            return toResponsFail("您不是管理员");
+        }
+        JSONObject reqObj = getJsonRequest();
+        if (reqObj == null) {
+            return toResponsFail("参数错误");
+        }
+        MembersVo membersVo = reqObj.toJavaObject(MembersVo.class);
+        if (membersVo == null) {
+            return toResponsFail("参数错误");
+        }
+        membersVo.updateMember(loginUser.getUserId());
+        return userService.updateMember(membersVo);
+    }
+
+    @PostMapping("/delete-member")
+    public Object deleteMember(@LoginUser LoginUserVo loginUser) {
+        if (loginUser == null) {
+        }
+        if (!userService.checkAdmin(loginUser.getUserId())) {
+            return toResponsFail("您不是管理员");
+        }
+        JSONObject reqObj = getJsonRequest();
+        if (reqObj == null) {
+            return toResponsFail("参数错误");
+        }
+        Long userId = reqObj.getLong("userId");
+        if (userId == null) {
+            return toResponsFail("参数错误");
+        }
+        return userService.deleteMember(userId);
+    }
+
     @PostMapping("/add-member")
     public Object addMember(@LoginUser LoginUserVo loginUser) {
         if (loginUser == null) {

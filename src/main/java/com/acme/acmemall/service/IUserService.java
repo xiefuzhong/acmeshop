@@ -52,4 +52,10 @@ public interface IUserService {
     List<MembersVo> getAdminUsers(Map params);
 
     ResultMap addMember(MembersVo membersVo);
+
+    ResultMap deleteMember(Long userId);
+
+    ResultMap updateMember(MembersVo membersVo);
+
+    MembersVo getMemberById(Long userId);
 }
