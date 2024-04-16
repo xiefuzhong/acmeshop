@@ -102,7 +102,7 @@
         `role_id`
         )
         values
-        <foreach item="item" collection="list" separator=",">
+        <foreach item="item" collection="roles" separator=",">
             (
             #{userId},
             #{item.roleId}
