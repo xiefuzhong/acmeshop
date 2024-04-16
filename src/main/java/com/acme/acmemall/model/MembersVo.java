@@ -1,5 +1,6 @@
 package com.acme.acmemall.model;
 
+import com.acme.acmemall.utils.DateUtils;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -23,10 +24,21 @@ public class MembersVo implements Serializable {
 //    private String roleDesc;
 //    private Integer roleType;
     private Long addTime;
+
+    // 创建时间字符串
+    private String fmtAddTime;
+
     private Long updateTime;
     private Long operatorId;
     private Integer status;
     List<RoleVo> roles;
+
+    public String getFmtAddTime() {
+        if (this.addTime != null && this.addTime > 0) {
+            this.fmtAddTime = DateUtils.timeToStr(this.addTime, DateUtils.DATE_TIME_PATTERN);
+        }
+        return fmtAddTime;
+    }
 
     public void addMember(Long userId, String pwd, Integer status) {
         this.addTime = System.currentTimeMillis() / 1000;
