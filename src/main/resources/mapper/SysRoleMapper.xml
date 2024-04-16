@@ -105,7 +105,7 @@
         <foreach item="item" collection="roles" separator=",">
             (
             #{userId},
-            #{item.roleId}
+            #{item.id}
             )
         </foreach>
     </insert>
