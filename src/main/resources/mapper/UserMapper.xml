@@ -434,7 +434,7 @@
         <collection property="roles" ofType="com.acme.acmemall.model.RoleVo">
             <id property="id" column="role_id"/>
             <result property="roleName" column="role_name"/>
-            <result property="roleType" column="is_admin"/>
+            <!--            <result property="roleType" column="is_admin"/>-->
             <result property="description" column="remark"/>
         </collection>
     </resultMap>
