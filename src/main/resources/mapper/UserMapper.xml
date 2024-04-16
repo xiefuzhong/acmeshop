@@ -442,8 +442,16 @@
             <result property="description" column="remark"/>
         </collection>
     </resultMap>
-    <!--    querySysMemberById-->
 
+    <!--    deleteSysMembers-->
+    <delete id="deleteSysMembers">
+        delete from sys_user where user_id in
+        <foreach item="userId" collection="userIds" open="(" separator="," close=")">
+            #{userId}
+        </foreach>
+    </delete>
+
+    <!--    querySysMemberById-->
     <select id="querySysMemberById" resultMap="memberMap">
         SELECT
         a.*,
