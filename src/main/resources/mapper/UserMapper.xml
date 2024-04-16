@@ -449,7 +449,6 @@
         left JOIN sys_role c on b.role_id = c.role_id
         <where>
             AND a.status = 1
-            AND c.is_admin = 1
         </where>
         <choose>
             <when test="sidx != null and sidx.trim() != ''">
