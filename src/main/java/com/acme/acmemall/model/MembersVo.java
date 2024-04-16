@@ -19,10 +19,6 @@ public class MembersVo implements Serializable {
     private String email;
     private String mobile;
     private String password;
-    //    private long roleId;
-//    private String roleName;
-//    private String roleDesc;
-//    private Integer roleType;
     private Long addTime;
 
     // 创建时间字符串
