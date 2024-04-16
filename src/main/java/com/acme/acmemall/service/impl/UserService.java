@@ -262,4 +262,31 @@ public class UserService implements IUserService {
         return result > 0 ? ResultMap.ok() : ResultMap.error();
     }
 
+    /**
+     * @param userId
+     * @return
+     */
+    @Override
+    public ResultMap deleteMember(Long userId) {
+        return null;
+    }
+
+    /**
+     * @param membersVo
+     * @return
+     */
+    @Override
+    public ResultMap updateMember(MembersVo membersVo) {
+        return null;
+    }
+
+    /**
+     * @param userId
+     * @return
+     */
+    @Override
+    public MembersVo getMemberById(Long userId) {
+        return userDao.querySysMemberById(userId);
+    }
+
 }

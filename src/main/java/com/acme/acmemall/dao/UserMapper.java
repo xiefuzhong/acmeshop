@@ -72,5 +72,7 @@ public interface UserMapper extends BaseDao<LoginUserVo> {
     int deleteSysMembers(Long id);
 
     int addSysMember(MembersVo membersVo);
+
+    MembersVo querySysMemberById(Long userId);
 }
 
