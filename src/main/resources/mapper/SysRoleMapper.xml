@@ -95,4 +95,19 @@
         </foreach>
     </delete>
 
+    <insert id="batchSaveUserRole">
+        insert into sys_user_role
+        (
+        `user_id`,
+        `role_id`
+        )
+        values
+        <foreach item="item" collection="list" separator=",">
+            (
+            #{userId},
+            #{item.roleId}
+            )
+        </foreach>
+    </insert>
+
 </mapper>

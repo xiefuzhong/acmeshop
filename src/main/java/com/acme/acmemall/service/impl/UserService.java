@@ -12,8 +12,10 @@ import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.Arrays;
@@ -249,8 +251,13 @@ public class UserService implements IUserService {
      * @param membersVo
      * @return
      */
+    @Transactional(rollbackFor = {RuntimeException.class, Exception.class})
     @Override
     public ResultMap addMember(MembersVo membersVo) {
+        if (CollectionUtils.isEmpty(membersVo.getRoles())) {
+            return ResultMap.error("请选择角色");
+        }
+        sysRoleMapper.batchSaveUserRole(membersVo.getRoles(), membersVo.getUserId());
         int result = userDao.addSysMember(membersVo);
         return result > 0 ? ResultMap.ok() : ResultMap.error();
     }
