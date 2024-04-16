@@ -59,6 +59,7 @@ public class SystemAdminController extends ApiBase {
             return toResponsFail("两次密码输入不一致");
         }
         membersVo.addMember(loginUser.getUserId(), pwd, reqObj.getInteger("status"));
+        logger.info("addMember: " + membersVo);
         return userService.addMember(membersVo);
     }
 
