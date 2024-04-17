@@ -6,6 +6,7 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @description:
@@ -53,7 +54,7 @@ public class MembersVo implements Serializable {
 
     public void updateMember(Long userId, JSONObject json) {
         this.updateTime = System.currentTimeMillis() / 1000;
-        if (json.containsKey("password")) {
+        if (json.containsKey("password") && json.containsKey("confirmPassword") && Objects.equals(json.getString("password"), json.getString("confirmPassword"))) {
             this.password = json.getString("password");
         }
         if (json.containsKey("status")) {
