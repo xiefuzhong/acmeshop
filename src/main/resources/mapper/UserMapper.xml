@@ -443,6 +443,17 @@
         </collection>
     </resultMap>
 
+    <!--    updateSysMembers-->
+    <update id="updateSysMembers" parameterType="com.acme.acmemall.model.MembersVo">
+        update sys_user
+        <set>
+            <if test="userName != null">`username` = #{userName},</if>
+            <if test="email != null">`email` = #{email},</if>
+            <if test="mobile != null">`mobile` = #{mobile},</if>
+        </set>
+        where user_id = #{userId}
+    </update>
+
     <!--    deleteSysMembers-->
     <delete id="deleteSysMembers">
         delete from sys_user where user_id in
