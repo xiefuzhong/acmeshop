@@ -1,6 +1,7 @@
 package com.acme.acmemall.model;
 
 import com.acme.acmemall.utils.DateUtils;
+import com.alibaba.fastjson.JSONObject;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -50,6 +51,14 @@ public class MembersVo implements Serializable {
 //        this.roleName = "";
     }
 
-    public void updateMember(Long userId) {
+    public void updateMember(Long userId, JSONObject json) {
+        this.updateTime = System.currentTimeMillis() / 1000;
+        if (json.containsKey("password")) {
+            this.password = json.getString("password");
+        }
+        if (json.containsKey("status")) {
+            this.status = json.getInteger("status");
+        }
+        this.operatorId = userId;
     }
 }

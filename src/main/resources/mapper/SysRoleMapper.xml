@@ -110,4 +110,9 @@
         </foreach>
     </insert>
 
+    <!--    deleteUserRoleByUserId-->
+    <delete id="deleteUserRoleByUserId">
+        delete from sys_user_role where user_id = #{userId}
+    </delete>
+
 </mapper>

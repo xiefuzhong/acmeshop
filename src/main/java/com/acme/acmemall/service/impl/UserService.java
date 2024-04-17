@@ -275,9 +275,16 @@ public class UserService implements IUserService {
      * @param membersVo
      * @return
      */
+    @Transactional(rollbackFor = {RuntimeException.class, Exception.class})
     @Override
     public ResultMap updateMember(MembersVo membersVo) {
-        return null;
+        if (CollectionUtils.isEmpty(membersVo.getRoles())) {
+            return ResultMap.error("请选择角色");
+        }
+        sysRoleMapper.deleteUserRoleByUserId(membersVo.getUserId());
+        sysRoleMapper.batchSaveUserRole(membersVo.getRoles(), membersVo.getUserId());
+        int result = userDao.updateSysMembers(membersVo);
+        return result > 0 ? ResultMap.ok() : ResultMap.error();
     }
 
     /**

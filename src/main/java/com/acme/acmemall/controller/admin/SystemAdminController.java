@@ -72,7 +72,7 @@ public class SystemAdminController extends ApiBase {
         if (membersVo == null) {
             return toResponsFail("参数错误");
         }
-        membersVo.updateMember(loginUser.getUserId());
+        membersVo.updateMember(loginUser.getUserId(), reqObj);
         return userService.updateMember(membersVo);
     }
 

@@ -9,4 +9,6 @@ import java.util.List;
 public interface SysRoleMapper extends BaseDao<RoleVo> {
 
     int batchSaveUserRole(List<RoleVo> roles, Long userId);
+
+    int deleteUserRoleByUserId(Long userId);
 }
