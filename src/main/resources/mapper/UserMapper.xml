@@ -450,6 +450,8 @@
             <if test="userName != null">`username` = #{userName},</if>
             <if test="email != null">`email` = #{email},</if>
             <if test="mobile != null">`mobile` = #{mobile},</if>
+            <if test="password != null">`password` = #{password},</if>
+            <if test="status != null">`status` = #{status},</if>
         </set>
         where user_id = #{userId}
     </update>
