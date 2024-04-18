@@ -288,7 +288,6 @@
         sys_user_role
         where
         user_id = #{userId}
-        and role_id = 5
     </select>
 
 
