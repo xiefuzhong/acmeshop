@@ -2,6 +2,7 @@ package com.acme.acmemall.model;
 
 import com.acme.acmemall.model.enums.PayType;
 import com.acme.acmemall.model.enums.TradeType;
+import com.acme.acmemall.utils.DateUtils;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -24,6 +25,7 @@ public class CapitalFlowVo implements java.io.Serializable {
     private String trade_type_title;
 
     private Long add_time; // 交易时间
+    private String fmt_add_time; // 交易时间字符串
 
     private Long user_id; // 用户id
 
@@ -47,5 +49,9 @@ public class CapitalFlowVo implements java.io.Serializable {
     public String getTrade_type_title() {
         TradeType type = TradeType.parse(this.trade_type);
         return type == null ? "" : type.getTitle();
+    }
+
+    public String getFmt_add_time() {
+        return DateUtils.timeToStr(this.add_time, DateUtils.DATE_TIME_PATTERN);
     }
 }
