@@ -69,7 +69,7 @@
         </where>
     </select>
 
-    <select id="queryObject" resultMap="attributeMap">
+    <select id="queryObject" resultMap="flowMap">
         select * from t_acme_mall_capital_flow where id = #{value}
     </select>
 
