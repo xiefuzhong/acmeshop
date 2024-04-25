@@ -11,6 +11,7 @@ import com.acme.acmemall.factory.OrderFactory;
 import com.acme.acmemall.factory.OrderRefundFactory;
 import com.acme.acmemall.model.enums.*;
 import com.acme.acmemall.utils.DateUtils;
+import com.acme.acmemall.utils.SnowFlakeGenerateIdWorker;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -274,6 +275,9 @@ public class OrderVo implements Serializable {
     @Builder.Default
     private List<OrderProcessVo> orderProcessList = Lists.newArrayList();
 
+    @Builder.Default
+    private List<CapitalFlowVo> flowList = Lists.newArrayList();
+
     public BigDecimal getShipping_fee() {
         return shipping_fee == null ? BigDecimal.ZERO : shipping_fee.setScale(2, RoundingMode.HALF_UP);
     }
@@ -424,7 +428,7 @@ public class OrderVo implements Serializable {
      *
      * @return
      */
-    public OrderVo paid() {
+    public void paid() {
         this.pay_status = PayStatusEnum.PAY_YES.getCode();
         this.order_status = OrderStatusEnum.PAID.getCode();
         this.order_status_text = OrderStatusEnum.PAID.getName();
@@ -432,7 +436,17 @@ public class OrderVo implements Serializable {
         this.shipping_status_text = ShipStatusEnum.SHIP_NO.getName();
         this.pay_time = new Date();
         this.addProcess(String.format("您的订单已支付成功", OrderStatusEnum.PAID.getName()));
-        return this;
+        String flow_id = SnowFlakeGenerateIdWorker.generateId();
+        CapitalFlowVo capitalFlow = CapitalFlowVo.builder()
+                .flow_id(String.format("TR%s", flow_id))
+                .order_id(this.id)
+                .trade_type(TradeType.ORDER_PAYMENT.getType())
+                .trade_amount(this.actual_price)
+                .add_time(this.pay_time.getTime() / 1000)
+                .pay_type(PayType.WECHAT.getCode())
+                .user_id(this.user_id)
+                .build();
+        flowList.add(capitalFlow);
     }
 
     private void addProcess(String desc) {

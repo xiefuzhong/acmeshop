@@ -3,16 +3,24 @@ package com.acme.acmemall.model;
 import com.acme.acmemall.model.enums.PayType;
 import com.acme.acmemall.model.enums.TradeType;
 import com.acme.acmemall.utils.DateUtils;
-import lombok.Data;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 /**
  * @description: 资金流水o
  * @author: ihpangzi
  * @time: 2024/4/21 13:44
  */
-@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Builder
 public class CapitalFlowVo implements java.io.Serializable {
     private Long id;
 
@@ -33,6 +41,7 @@ public class CapitalFlowVo implements java.io.Serializable {
 
     private String mobile; // 手机号
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "##0.00")
     private BigDecimal trade_amount; //   交易金额
 
     private Integer pay_type; // 支付方式  微信支付、支付宝、银行卡、余额支付
@@ -54,4 +63,9 @@ public class CapitalFlowVo implements java.io.Serializable {
     public String getFmt_add_time() {
         return DateUtils.timeToStr(this.add_time, DateUtils.DATE_TIME_PATTERN);
     }
+
+    public BigDecimal getTrade_amount() {
+        return trade_amount == null ? BigDecimal.ZERO : trade_amount.setScale(2, RoundingMode.HALF_UP);
+    }
+
 }

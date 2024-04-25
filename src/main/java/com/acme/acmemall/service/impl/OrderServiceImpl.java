@@ -57,6 +57,9 @@ public class OrderServiceImpl implements IOrderService {
     @Resource
     OrderRefundMapper orderRefundMapper;
 
+    @Resource
+    CapitalFlowMapper capitalFlowMapper;
+
     protected Logger logger = Logger.getLogger(getClass());
 
     /**
@@ -190,8 +193,13 @@ public class OrderServiceImpl implements IOrderService {
     /**
      * @param newOrder
      */
+    @Transactional(rollbackFor = {RuntimeException.class, Exception.class})
     @Override
     public void updateStatus(OrderVo newOrder) {
+        if (CollectionUtils.isNotEmpty(newOrder.getFlowList())) {
+            // 更新订单流水
+            capitalFlowMapper.save(newOrder.getFlowList().get(0));
+        }
         orderMapper.updateStatus(newOrder);
     }
 
