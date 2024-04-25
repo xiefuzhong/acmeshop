@@ -25,6 +25,7 @@
         <!--        remark-->
         <result property="remark" column="remark"/>
     </resultMap>
+
     <select id="queryList">
         SELECT
         <if test="fields != null and fields != ''">
@@ -38,13 +39,10 @@
             <if test="order_id != null and order_id.trim() != ''">
                 AND order_id = #{order_id}
             </if>
-            <if test="trade_type != null and trade_type.trim() != ''">
+            <if test="trade_type != null ">
                 AND trade_type = #{trade_type}
             </if>
-            <if test="add_time != null and add_time.trim() != ''">
-                AND add_time = #{add_time}
-            </if>
-            <if test="user_id != null and user_id.trim() != ''">
+            <if test="user_id != null and user_id > 0">
                 AND user_id = #{user_id}
             </if>
             <if test="nick_name != null and nick_name.trim() != ''">
