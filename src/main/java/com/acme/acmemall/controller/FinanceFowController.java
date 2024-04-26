@@ -54,7 +54,9 @@ public class FinanceFowController extends ApiBase {
             Date daysAgo = new Date(System.currentTimeMillis() - timeRange * DAY_TIME);
             params.put("add_time", daysAgo.getTime() / 1000);
         }
-        params.put("tradeType", tradeType);
+        if (tradeType != null && tradeType > 0) {
+            params.put("tradeType", tradeType);
+        }
         params.put("page", page);
         params.put("limit", size);
         params.put("order", "desc");
