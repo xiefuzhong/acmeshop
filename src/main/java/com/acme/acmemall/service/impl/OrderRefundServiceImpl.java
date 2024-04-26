@@ -6,16 +6,22 @@ import com.acme.acmemall.dao.OrderMapper;
 import com.acme.acmemall.dao.OrderRefundMapper;
 import com.acme.acmemall.exception.ResultCodeEnum;
 import com.acme.acmemall.factory.OrderRefundFactory;
+import com.acme.acmemall.model.CapitalFlowVo;
 import com.acme.acmemall.model.LoginUserVo;
 import com.acme.acmemall.model.OrderRefundVo;
 import com.acme.acmemall.model.OrderVo;
+import com.acme.acmemall.model.enums.PayType;
 import com.acme.acmemall.model.enums.RefundOptionEnum;
+import com.acme.acmemall.model.enums.TradeType;
+import com.acme.acmemall.service.IFinanceFowService;
 import com.acme.acmemall.service.IOrderRefundService;
+import com.acme.acmemall.utils.SnowFlakeGenerateIdWorker;
 import com.acme.acmemall.utils.wechat.WechatRefundApiResult;
 import com.acme.acmemall.utils.wechat.WechatUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 
@@ -33,6 +39,9 @@ public class OrderRefundServiceImpl implements IOrderRefundService {
 
     @Resource
     OrderMapper orderMapper;
+
+    @Resource
+    IFinanceFowService financeFowService;
 
     /**
      * @param request
@@ -82,6 +91,7 @@ public class OrderRefundServiceImpl implements IOrderRefundService {
      * @param request
      * @return
      */
+    @Transactional(rollbackFor = {RuntimeException.class, Exception.class})
     @Override
     public ResultMap updateRefund(OrderRefundRequest request) {
         OrderRefundVo refundVo = orderRefundMapper.findByOrderId(request.getOrderId());
@@ -102,6 +112,21 @@ public class OrderRefundServiceImpl implements IOrderRefundService {
                 orderVo.afterService(refundVo, request.getRefundOption());
                 orderMapper.update(orderVo);
                 orderRefundMapper.update(orderVo.getRefundVo());
+                // TODO: 2024/4/26 微信退款成功后，需要给用户发送通知,这里暂时不做处理。记录资金流水即可
+                // 记录资金流水
+                String flowId = SnowFlakeGenerateIdWorker.generateId();
+                CapitalFlowVo flowVo = CapitalFlowVo.builder()
+                        .flow_id(String.format("TR%s", flowId))
+                        .order_id(orderVo.getId())
+                        .trade_type(TradeType.ORDER_REFUND.getType())
+                        .trade_amount(refundVo.getRefund_price())
+                        .pay_type(PayType.WECHAT.getCode())
+                        .add_time(System.currentTimeMillis() / 1000)
+                        .user_id(refundVo.getUser_id())
+                        .remark("微信退款")
+                        .build();
+                financeFowService.saveCapitalFlow(flowVo);
+                log.info("微信退款成功，资金流水记录成功");
                 return ResultMap.ok("操作成功，请查看账户");
             }
             return ResultMap.error(result.getErr_code_des());
