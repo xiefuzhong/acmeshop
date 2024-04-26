@@ -46,7 +46,7 @@
                 AND user_id = #{user_id}
             </if>
             <if test="nick_name != null and nick_name.trim() != ''">
-                AND nick_name = #{nick_name}
+                AND nick_name = #{nickname}
             </if>
             <if test="mobile != null and mobile.trim() != ''">
                 AND mobile = #{mobile}
