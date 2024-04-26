@@ -48,6 +48,6 @@ public class FinanceFowServiceImpl implements IFinanceFowService {
     public List<CapitalFlowVo> getFinanceFlowList(Map<String, Object> params) {
         // TODO: get capital flow data from database
         List<CapitalFlowVo> capitalFlowList = capitalFlowMapper.queryList(params);
-        return null;
+        return capitalFlowList;
     }
 }

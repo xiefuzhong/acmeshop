@@ -29,6 +29,7 @@ import java.util.Map;
  * @ClassName: ApiBase
  */
 public class ApiBase {
+    protected static final long DAY_TIME = 86400000;
     protected Logger logger = Logger.getLogger(getClass());
     /**
      * 得到request对象

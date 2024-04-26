@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -49,7 +50,10 @@ public class FinanceFowController extends ApiBase {
             return toResponsFail("您不是管理员");
         }
         Map<String, Object> params = Maps.newHashMap();
-        params.put("timeRange", timeRange);
+        if (timeRange != null && timeRange > 0) {
+            Date daysAgo = new Date(System.currentTimeMillis() - timeRange * DAY_TIME);
+            params.put("add_time", daysAgo.getTime() / 1000);
+        }
         params.put("tradeType", tradeType);
         params.put("page", page);
         params.put("limit", size);
