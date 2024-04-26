@@ -54,19 +54,18 @@
             <if test="add_time != null and add_time > 0">
                 AND add_time > #{add_time}
             </if>
-
-            <choose>
-                <when test="sidx != null and sidx.trim() != ''">
-                    order by ${sidx} ${order}
-                </when>
-                <otherwise>
-                    order by id desc
-                </otherwise>
-            </choose>
-            <if test="offset != null and limit != null">
-                limit #{offset}, #{limit}
-            </if>
         </where>
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+            <otherwise>
+                order by id desc
+            </otherwise>
+        </choose>
+        <if test="offset != null and limit != null">
+            limit #{offset}, #{limit}
+        </if>
     </select>
 
     <select id="queryObject" resultMap="flowMap">
