@@ -30,6 +30,15 @@ public class FinanceFowServiceImpl implements IFinanceFowService {
     CapitalFlowMapper capitalFlowMapper;
 
     /**
+     * @param capitalFlowVo
+     * @return
+     */
+    @Override
+    public int saveCapitalFlow(CapitalFlowVo capitalFlowVo) {
+        return capitalFlowMapper.save(capitalFlowVo);
+    }
+
+    /**
      * Get capital flow data
      *
      * @param params

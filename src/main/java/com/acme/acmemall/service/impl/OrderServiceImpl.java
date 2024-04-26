@@ -9,6 +9,7 @@ import com.acme.acmemall.factory.OrderFactory;
 import com.acme.acmemall.model.*;
 import com.acme.acmemall.model.enums.CouponStatusEnum;
 import com.acme.acmemall.model.enums.OrderStatusEnum;
+import com.acme.acmemall.service.IFinanceFowService;
 import com.acme.acmemall.service.IOrderService;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -59,6 +60,9 @@ public class OrderServiceImpl implements IOrderService {
 
     @Resource
     CapitalFlowMapper capitalFlowMapper;
+
+    @Resource
+    IFinanceFowService financeFowService;
 
     protected Logger logger = Logger.getLogger(getClass());
 
@@ -198,7 +202,8 @@ public class OrderServiceImpl implements IOrderService {
     public void updateStatus(OrderVo newOrder) {
         if (CollectionUtils.isNotEmpty(newOrder.getFlowList())) {
             // 更新订单流水
-            capitalFlowMapper.save(newOrder.getFlowList().get(0));
+//                        capitalFlowMapper.save(newOrder.getFlowList().get(0));
+            financeFowService.saveCapitalFlow(newOrder.getFlowList().get(0));
         }
         orderMapper.updateStatus(newOrder);
     }

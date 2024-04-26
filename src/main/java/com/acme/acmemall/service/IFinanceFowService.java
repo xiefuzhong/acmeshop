@@ -7,6 +7,8 @@ import java.util.Map;
 
 public interface IFinanceFowService {
 
+    int saveCapitalFlow(CapitalFlowVo capitalFlowVo);
+
     /**
      * Get capital flow data
      *
