@@ -37,7 +37,7 @@ public class CapitalFlowVo implements java.io.Serializable {
 
     private Long user_id; // 用户id
 
-    private String nickname; // 昵称
+    private String nick_name; // 昵称
 
     private String mobile; // 手机号
 
