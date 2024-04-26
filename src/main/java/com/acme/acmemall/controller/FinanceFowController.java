@@ -55,7 +55,7 @@ public class FinanceFowController extends ApiBase {
             params.put("add_time", daysAgo.getTime() / 1000);
         }
         if (tradeType != null && tradeType > 0) {
-            params.put("tradeType", tradeType);
+            params.put("trade_type", tradeType);
         }
         params.put("page", page);
         params.put("limit", size);
