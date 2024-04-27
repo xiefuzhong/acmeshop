@@ -202,7 +202,7 @@
                 <configuration>
                     <layers>
                         <enabled>true</enabled>
-                        <configuration>${project.basedir}/src/layers.xml</configuration>
+                        <configuration>${project.basedir}/src/main/resources/layers.xml</configuration>
                     </layers>
                     <excludes>
                         <exclude>
