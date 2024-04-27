@@ -11,6 +11,7 @@ package com.acme.acmemall.service.impl;
 import com.acme.acmemall.dao.CapitalFlowMapper;
 import com.acme.acmemall.model.CapitalFlowVo;
 import com.acme.acmemall.service.IFinanceFowService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -22,7 +23,7 @@ import java.util.Map;
  * @author: ihpangzi
  * @time: 2024/4/25 18:01
  */
-
+@Slf4j
 @Service
 public class FinanceFowServiceImpl implements IFinanceFowService {
 
@@ -47,6 +48,7 @@ public class FinanceFowServiceImpl implements IFinanceFowService {
     @Override
     public List<CapitalFlowVo> getFinanceFlowList(Map<String, Object> params) {
         // TODO: get capital flow data from database
+        log.info("Get capital flow data from database", params);
         List<CapitalFlowVo> capitalFlowList = capitalFlowMapper.queryList(params);
         return capitalFlowList;
     }
