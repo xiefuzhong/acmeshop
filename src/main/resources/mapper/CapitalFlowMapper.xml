@@ -69,6 +69,32 @@
         </if>
     </select>
 
+    <select id="queryTotal" resultType="int">
+        SELECT COUNT(*) FROM t_acme_mall_capital_flow
+        <where>
+            <if test="order_id != null and order_id.trim() != ''">
+                AND order_id = #{order_id}
+            </if>
+            <if test="trade_type != null ">
+                AND trade_type = #{trade_type}
+            </if>
+            <if test="user_id != null and user_id > 0">
+                AND user_id = #{user_id}
+            </if>
+            <if test="nick_name != null and nick_name.trim() != ''">
+                AND nick_name = #{nick_name}
+            </if>
+            <if test="mobile != null and mobile.trim() != ''">
+                AND mobile = #{mobile}
+            </if>
+            <!--            查询近些天的记录-->
+            <if test="add_time != null and add_time > 0">
+                <![CDATA[ AND add_time >= #{add_time} ]]>
+            </if>
+        </where>
+    </select>
+
+
     <select id="queryObject" resultMap="flowMap">
         select * from t_acme_mall_capital_flow where id = #{value}
     </select>
