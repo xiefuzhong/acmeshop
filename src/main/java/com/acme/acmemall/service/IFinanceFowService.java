@@ -16,4 +16,6 @@ public interface IFinanceFowService {
      * @return
      */
     List<CapitalFlowVo> getFinanceFlowList(Map<String, Object> params);
+
+    List<Map<String, Object>> statistics(Map<String, Object> params);
 }

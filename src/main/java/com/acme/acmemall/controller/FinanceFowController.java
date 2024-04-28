@@ -27,7 +27,7 @@ import java.util.Map;
  * @time: 2024/4/25 17:48
  */
 @RestController
-@RequestMapping("/api/finance/flow")
+@RequestMapping("/api/finance")
 public class FinanceFowController extends ApiBase {
 
     @Resource
@@ -36,7 +36,7 @@ public class FinanceFowController extends ApiBase {
     @Resource
     private IFinanceFowService financeFlowService;
 
-    @GetMapping(value = "get-list")
+    @GetMapping(value = "/flow/get-list")
     public Object getFinanceFlow(@LoginUser LoginUserVo loginUser,
                                  @RequestParam(value = "timeRange", defaultValue = "3") Integer timeRange,
                                  @RequestParam(value = "tradeType", defaultValue = "-1") Integer tradeType,
@@ -66,4 +66,23 @@ public class FinanceFowController extends ApiBase {
         PageUtils pager = new PageUtils(pageInfo);
         return ResultMap.response(ResultCodeEnum.SUCCESS, pager);
     }
+
+    @RequestMapping("statistics")
+    public Object statistics(@LoginUser LoginUserVo loginUser, @RequestParam(value = "timeRange", defaultValue = "3") Integer timeRange) {
+        // TODO: 实现财务流水总金额查询
+        if (loginUser == null) {
+            return toResponsFail("您未登录");
+        }
+        if (!userService.checkAdmin(loginUser.getUserId())) {
+            return toResponsFail("您不是管理员");
+        }
+        Map<String, Object> params = Maps.newHashMap();
+        if (timeRange != null && timeRange > 0) {
+            Date daysAgo = new Date(System.currentTimeMillis() - timeRange * DAY_TIME);
+            params.put("add_time", daysAgo.getTime() / 1000);
+        }
+        List<Map<String, Object>> result = financeFlowService.statistics(params);
+        return ResultMap.ok().put("statistics", result);
+    }
+
 }

@@ -128,4 +128,15 @@
         FROM t_acme_mall_capital_flow
         WHERE user_id = #{user_id}
     </select>
+
+
+    <!--    交易统计-->
+    <select id="statistics" resultType="com.acme.acmemall.model.StatisticsVo">
+        <include refid="toShipped"/>
+        UNION ALL
+        <include refid="topay"/>
+        UNION ALL
+        <include refid="afterSales"/>
+    </select>
+
 </mapper>

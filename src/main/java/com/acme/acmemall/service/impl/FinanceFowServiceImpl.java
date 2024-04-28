@@ -52,4 +52,13 @@ public class FinanceFowServiceImpl implements IFinanceFowService {
         List<CapitalFlowVo> capitalFlowList = capitalFlowMapper.queryList(params);
         return capitalFlowList;
     }
+
+    /**
+     * @param params
+     * @return
+     */
+    @Override
+    public List<Map<String, Object>> statistics(Map<String, Object> params) {
+        return capitalFlowMapper.statistics(params);
+    }
 }
