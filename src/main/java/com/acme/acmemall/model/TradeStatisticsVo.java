@@ -1,5 +1,6 @@
 package com.acme.acmemall.model;
 
+import com.acme.acmemall.model.enums.Statisticsdimension;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
@@ -15,6 +16,7 @@ import java.math.RoundingMode;
 @Data
 public class TradeStatisticsVo implements Serializable {
     private String type; //   交易类型
+
     private String title; //   交易标题
     private Integer num; //   交易数量
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "##0.00")
@@ -32,6 +34,9 @@ public class TradeStatisticsVo implements Serializable {
         }
         return amount.multiply(new BigDecimal(100)).longValue();
     }
-
+    
+    public String getTitle() {
+        return Statisticsdimension.getTitle(type);
+    }
 
 }
