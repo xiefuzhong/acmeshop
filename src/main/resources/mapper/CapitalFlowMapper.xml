@@ -131,19 +131,19 @@
 
 
     <!--    交易统计-->
-    <select id="statistics" resultType="com.acme.acmemall.model.StatisticsVo">
-        <include refid="paidCount"/>
+    <select id="statistics" resultType="com.acme.acmemall.model.TradeStatisticsVo">
+        <include refid="paidAmount"/>
         UNION ALL
-        <include refid="refundCount"/>
+        <include refid="refundAmount"/>
     </select>
 
-    <sql id="paidCount">
-        SELECT 'paid' AS type, COUNT(*) AS num FROM t_acme_mall_capital_flow WHERE trade_type = 0
+    <sql id="paidAmount">
+        SELECT 'paid' AS type, sum(trade_amount) AS amount FROM t_acme_mall_capital_flow WHERE trade_type = 0
         <![CDATA[ AND add_time >= #{add_time} ]]>
     </sql>
 
-    <sql id="refundCount">
-        SELECT 'refund' AS type, COUNT(*) AS num FROM t_acme_mall_capital_flow WHERE trade_type = 1
+    <sql id="refundAmount">
+        SELECT 'refund' AS type, sum(trade_amount) AS amount FROM t_acme_mall_capital_flow WHERE trade_type = 1
         <![CDATA[ AND add_time >= #{add_time} ]]>
     </sql>
 
