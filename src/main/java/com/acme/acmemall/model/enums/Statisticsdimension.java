@@ -6,6 +6,8 @@ import org.apache.commons.lang.StringUtils;
  * 统计维度
  */
 public enum Statisticsdimension {
+    ORDER_PAYMENT_count("paidCount", "支付订单数量"),
+    ORDER_REFUND_count("refundCount", "退款订单数量"),
     ORDER_PAYMENT("paid", "订单收款"),
     ORDER_REFUND("refund", "订单退款");
     private final String type;
