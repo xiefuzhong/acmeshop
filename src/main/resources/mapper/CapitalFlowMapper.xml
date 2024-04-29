@@ -132,11 +132,19 @@
 
     <!--    交易统计-->
     <select id="statistics" resultType="com.acme.acmemall.model.StatisticsVo">
-        <include refid="toShipped"/>
+        <include refid="payidCount"/>
         UNION ALL
-        <include refid="topay"/>
-        UNION ALL
-        <include refid="afterSales"/>
+        <include refid="refundCount"/>
     </select>
+
+    <sql id="payidCount">
+        SELECT 'payid' AS type, COUNT(*) AS num FROM t_acme_mall_capital_flow WHERE trade_type = 0
+        <![CDATA[ AND add_time >= #{add_time} ]]>
+    </sql>
+
+    <sql id="refundCount">
+        SELECT 'payid' AS type, COUNT(*) AS num FROM t_acme_mall_capital_flow WHERE trade_type = 1
+        <![CDATA[ AND add_time >= #{add_time} ]]>
+    </sql>
 
 </mapper>
