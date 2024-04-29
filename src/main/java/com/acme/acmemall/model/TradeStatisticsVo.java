@@ -25,7 +25,10 @@ public class TradeStatisticsVo implements Serializable {
     private long amountRate; //交易金额
 
     public BigDecimal getAmount() {
-        return amount == null ? BigDecimal.ZERO : amount.setScale(2, RoundingMode.HALF_UP);
+        if (amount == null) {
+            this.amount = BigDecimal.ZERO;
+        }
+        return amount.setScale(2, RoundingMode.HALF_UP);
     }
 
     public long getAmountRate() {
@@ -34,7 +37,7 @@ public class TradeStatisticsVo implements Serializable {
         }
         return amount.multiply(new BigDecimal(100)).longValue();
     }
-    
+
     public String getTitle() {
         return Statisticsdimension.getTitle(type);
     }
