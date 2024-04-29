@@ -142,22 +142,24 @@
     </select>
 
     <sql id="paidAmount">
-        SELECT 'paid' AS type, sum(trade_amount) AS amount FROM t_acme_mall_capital_flow WHERE trade_type = 0
+        SELECT 'paid' AS type, ifnull(sum(trade_amount),0) AS amount,0 AS num FROM t_acme_mall_capital_flow WHERE
+        trade_type = 0
         <![CDATA[ AND add_time >= #{add_time} ]]>
     </sql>
 
     <sql id="refundAmount">
-        SELECT 'refund' AS type, sum(trade_amount) AS amount FROM t_acme_mall_capital_flow WHERE trade_type = 1
+        SELECT 'refund' AS type, ifnull(sum(trade_amount),0) AS amount,0 AS num FROM t_acme_mall_capital_flow WHERE
+        trade_type = 1
         <![CDATA[ AND add_time >= #{add_time} ]]>
     </sql>
     <!--    付款订单数量-->
     <sql id="paidCount">
-        SELECT 'paidCount' AS type, count(1) AS num FROM t_acme_mall_capital_flow WHERE trade_type = 0
+        SELECT 'paidCount' AS type,0.00 AS amount, count(1) AS num FROM t_acme_mall_capital_flow WHERE trade_type = 0
         <![CDATA[ AND add_time >= #{add_time} ]]>
     </sql>
 
     <sql id="refundCount">
-        SELECT 'refundCount' AS type, count(1) AS num FROM t_acme_mall_capital_flow WHERE trade_type = 1
+        SELECT 'refundCount' AS type,0.00 AS amount, count(1) AS num FROM t_acme_mall_capital_flow WHERE trade_type = 1
         <![CDATA[ AND add_time >= #{add_time} ]]>
     </sql>
 </mapper>
