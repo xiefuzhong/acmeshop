@@ -135,6 +135,10 @@
         <include refid="paidAmount"/>
         UNION ALL
         <include refid="refundAmount"/>
+        UNION ALL
+        <include refid="paidCount"/>
+        UNION ALL
+        <include refid="refundCount"/>
     </select>
 
     <sql id="paidAmount">
@@ -146,5 +150,14 @@
         SELECT 'refund' AS type, sum(trade_amount) AS amount FROM t_acme_mall_capital_flow WHERE trade_type = 1
         <![CDATA[ AND add_time >= #{add_time} ]]>
     </sql>
+    <!--    付款订单数量-->
+    <sql id="paidCount">
+        SELECT 'paidCount' AS type, count(1) AS num FROM t_acme_mall_capital_flow WHERE trade_type = 0
+        <![CDATA[ AND add_time >= #{add_time} ]]>
+    </sql>
 
+    <sql id="refundCount">
+        SELECT 'refundCount' AS type, count(1) AS num FROM t_acme_mall_capital_flow WHERE trade_type = 1
+        <![CDATA[ AND add_time >= #{add_time} ]]>
+    </sql>
 </mapper>
