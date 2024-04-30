@@ -1,7 +1,6 @@
 package com.acme.acmemall.model;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 import java.io.Serializable;
 import java.util.List;
@@ -11,8 +10,7 @@ import java.util.List;
  * @author: ihpangzi
  * @time: 2024/1/23 20:18
  */
-@Getter
-@Setter
+@Data
 public class LogisticsOrder implements Serializable {
     private String order_id;
 
