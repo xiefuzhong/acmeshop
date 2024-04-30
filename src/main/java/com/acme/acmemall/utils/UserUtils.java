@@ -35,6 +35,12 @@ public class UserUtils {
         return String.format(ResourceUtil.getConfigByName("wx.getWXACodeUnlimit"), accessToken, scene);
     }
 
+    /**
+     * 微信物流助手-生成运单
+     *
+     * @param accessToken
+     * @return
+     */
     public static String getWxAddLogisticsOrder(String accessToken) {
         return String.format(ResourceUtil.getConfigByName("wx.addLogisticsOrder"), accessToken);
     }
@@ -43,4 +49,43 @@ public class UserUtils {
         return String.format(ResourceUtil.getConfigByName("wx.getuserphonenumber"), accessToken);
     }
 
+    /**
+     * 获取电子面单余额-获取电子面单余额
+     *
+     * @param accessToken
+     * @return
+     */
+    public static String getWxLogistisQuota(String accessToken) {
+        return String.format(ResourceUtil.getConfigByName("wx.getWxExpressQuota"), accessToken);
+    }
+
+    /**
+     * 获取电子面单余额-获取运单数据
+     *
+     * @param accessToken
+     * @return
+     */
+    public static String getWxExpressOrder(String accessToken) {
+        return String.format(ResourceUtil.getConfigByName("wx.getWxExpressOrder"), accessToken);
+    }
+
+    /**
+     * 获取电子面单余额-查询运单轨迹
+     *
+     * @param accessToken
+     * @return
+     */
+    public static String getWxExpressTrack(String accessToken) {
+        return String.format(ResourceUtil.getConfigByName("wx.getWxExpressTrack"), accessToken);
+    }
+
+    /**
+     * 获取电子面单余额-模拟更新订单状态
+     *
+     * @param accessToken
+     * @return
+     */
+    public static String testUpdateExpressOrder(String accessToken) {
+        return String.format(ResourceUtil.getConfigByName("wx.testUpdateExpressOrder"), accessToken);
+    }
 }

@@ -42,4 +42,13 @@ public class LogisticsHelperServiceImpl implements ILogisticsHelperService {
         logger.info("res==" + res);
         return res;
     }
+
+    public Object getQuota(long userId) {
+        Map result = tokenService.getTokens(userId);
+        String accessToken = MapUtils.getString("token", result);
+        String requestUrl = UserUtils.getWxLogistisQuota(accessToken);
+        String res = restTemplate.getForObject(requestUrl, String.class);
+        logger.info("res==" + res);
+        return res;
+    }
 }
