@@ -174,12 +174,20 @@ public class OrderOperationOption {
     }
 
 
+    /**
+     * 卖家可操作
+     *
+     * @param status 订单状态
+     * @return 卖家可操作
+     */
     public Map<String, Boolean> merchantOperation(Integer status) {
         OrderStatusEnum statusEnum = OrderStatusEnum.parse(status);
         switch (statusEnum) {
             case PAID: {
                 // 已付款,可发货
                 this.toShipping = Boolean.TRUE;
+                // 打印面单
+                this.print = Boolean.TRUE;
                 break;
             }
             case NEW: {
