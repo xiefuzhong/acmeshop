@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -54,9 +55,8 @@ public class LogisticsOrder implements Serializable {
         setReceiverInfo(orderVo);
         setSenderInfo(orderVo.getShippingAddress());
         setShopInfo(orderVo, orderGoodsList);
+        setCargoInfo();
         this.service = Service.builder().build();
-//        this.add_source = 0;
-
     }
 
     private void setShopInfo(OrderVo orderVo, List<OrderGoodsVo> orderGoodsList) {
@@ -87,6 +87,16 @@ public class LogisticsOrder implements Serializable {
                 .area(orderVo.getDistrict())
                 .address(orderVo.getAddress())
                 .mobile(orderVo.getMobile())
+                .build();
+    }
+
+    public void setCargoInfo() {
+        this.cargo = Cargo.builder()
+                .count(1)
+                .weight(BigDecimal.ONE)
+                .space_x(BigDecimal.TEN)
+                .space_y(BigDecimal.TEN)
+                .space_z(BigDecimal.TEN)
                 .build();
     }
 }

@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
+
 /**
  * @description:包裹信息，将传递给快递公司
  * @author: ihpangzi
@@ -16,13 +18,13 @@ import lombok.NoArgsConstructor;
 @Getter
 public class Cargo {
 
-    private String count;
+    private Integer count;
 
-    private String weight;
+    private BigDecimal weight;
 
-    private String space_x;
+    private BigDecimal space_x;
 
-    private String space_y;
+    private BigDecimal space_y;
 
-    private String space_z;
+    private BigDecimal space_z;
 }
