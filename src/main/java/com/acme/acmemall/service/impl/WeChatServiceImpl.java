@@ -57,6 +57,7 @@ public class WeChatServiceImpl implements IWeChatService {
      */
     @Override
     public String addOrder(String requestUrl, Map<String, Object> param) {
+        log.info("请求参数：{}", param);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<Map<String, Object>> request = new HttpEntity<>(param, headers);
