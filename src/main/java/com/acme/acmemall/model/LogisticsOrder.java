@@ -59,7 +59,7 @@ public class LogisticsOrder implements Serializable {
         setCargoInfo();
         this.service = Service.builder()
                 .service_type(jsonObject.getInteger("service_type"))
-                .service_type_name(jsonObject.getString("service_name"))
+                .service_name(jsonObject.getString("service_name"))
                 .build();
     }
 
