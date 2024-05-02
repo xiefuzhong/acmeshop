@@ -78,13 +78,13 @@ public class WeChatController extends ApiBase {
                 .build();
         OrderVo orderVo = orderService.findOrder(logisticsOrder.getOrder_id());
         // 发货地址
-        Map addressParam = Maps.newHashMap();
-        addressParam.put("user_id", json.getLong("merchantId"));
-        addressParam.put("type", 0);
-        List<AddressVo> addressEntities = addressService.queryaddressUserlist(addressParam);
+        Map param = Maps.newHashMap();
+        param.put("user_id", json.getLong("merchantId"));
+        param.put("type", Integer.valueOf(0));
+        List<AddressVo> addressEntities = addressService.queryaddressUserlist(param);
         logisticsOrder.addOrder(orderVo, addressEntities.get(0), json);
-        Map param = MapUtils.beanToMap(logisticsOrder);
-        String res = weChatService.addOrder(requestUrl, param);
+        Map requestParams = MapUtils.beanToMap(logisticsOrder);
+        String res = weChatService.addOrder(requestUrl, requestParams);
         return toResponsSuccess(res);
     }
 
