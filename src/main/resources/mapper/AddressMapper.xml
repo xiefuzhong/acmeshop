@@ -20,8 +20,8 @@
     </resultMap>
 
     <select id="queryObject" resultMap="addressMap">
-		select * from t_acme_mall_address where id = #{value}
-	</select>
+        select * from t_acme_mall_address where id = #{value}
+    </select>
 
     <select id="queryList" resultMap="addressMap">
         select * from t_acme_mall_address
@@ -44,8 +44,8 @@
     </select>
 
     <select id="queryTotal" resultType="int">
-		select count(*) from t_acme_mall_address 
-	</select>
+        select count(*) from t_acme_mall_address
+    </select>
 
     <select id="queryaddressUserlist" resultMap="addressMap">
         SELECT
@@ -72,7 +72,7 @@
         </if>
     </select>
     <select id="queryaddressUserTotal" resultType="int">
-         SELECT
+        SELECT
         count(1)
         FROM
         t_acme_mall_address
@@ -109,43 +109,43 @@
 
 
     <insert id="save" parameterType="com.acme.acmemall.model.AddressVo" useGeneratedKeys="true" keyProperty="id">
-		insert into t_acme_mall_address(
-			`user_id`,
-			`user_name`,
-			`tel_number`,
-			`postal_Code`,
-			`national_Code`,
-			`province_Name`,
-			`city_Name`,
-			`county_Name`,
-			`detail_Info`,
+        insert into t_acme_mall_address(
+        `user_id`,
+        `user_name`,
+        `tel_number`,
+        `postal_Code`,
+        `national_Code`,
+        `province_Name`,
+        `city_Name`,
+        `county_Name`,
+        `detail_Info`,
         `user_type`,
-			`is_default`)
-		values(
-			#{userId},
-			#{userName},
-			#{telNumber},
-			#{postalCode},
-			#{nationalCode},
-			#{provinceName},
-			#{cityName},
-			#{countyName},
-			#{detailInfo},
+        `is_default`)
+        values(
+        #{userId},
+        #{userName},
+        #{telNumber},
+        #{postalCode},
+        #{nationalCode},
+        #{provinceName},
+        #{cityName},
+        #{countyName},
+        #{detailInfo},
         #{type},
-			#{is_default})
-	</insert>
+        #{is_default})
+    </insert>
 
     <update id="update" parameterType="com.acme.acmemall.model.AddressVo">
         update t_acme_mall_address
         <set>
-            <if test="userId != null">`user_id` = #{userId}, </if>
-            <if test="userName != null">`user_name` = #{userName}, </if>
-            <if test="telNumber != null">`tel_number` = #{telNumber}, </if>
-            <if test="postalCode != null">`postal_Code` = #{postalCode}, </if>
-            <if test="nationalCode != null">`national_Code` = #{nationalCode}, </if>
-            <if test="provinceName != null">`province_Name` = #{provinceName}, </if>
-            <if test="cityName != null">`city_Name` = #{cityName}, </if>
-            <if test="countyName != null">`county_Name` = #{countyName}, </if>
+            <if test="userId != null">`user_id` = #{userId},</if>
+            <if test="userName != null">`user_name` = #{userName},</if>
+            <if test="telNumber != null">`tel_number` = #{telNumber},</if>
+            <if test="postalCode != null">`postal_Code` = #{postalCode},</if>
+            <if test="nationalCode != null">`national_Code` = #{nationalCode},</if>
+            <if test="provinceName != null">`province_Name` = #{provinceName},</if>
+            <if test="cityName != null">`city_Name` = #{cityName},</if>
+            <if test="countyName != null">`county_Name` = #{countyName},</if>
             <if test="detailInfo != null">`detail_Info` = #{detailInfo},</if>
             <if test="is_default != null">`is_default` = #{is_default}</if>
         </set>
@@ -156,8 +156,8 @@
         where user_id = #{userId}
     </update>
     <delete id="delete">
-		delete from t_acme_mall_address where id = #{value}
-	</delete>
+        delete from t_acme_mall_address where id = #{value}
+    </delete>
 
     <delete id="deleteBatch">
         delete from t_acme_mall_address where id in

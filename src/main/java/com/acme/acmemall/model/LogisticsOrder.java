@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.List;
 
 /**
  * @description:
@@ -52,10 +51,10 @@ public class LogisticsOrder implements Serializable {
 
     private long take_mode; // 分单策略，【0：线下网点签约，1：总部签约结算】，不传默认线下网点签约。目前支持圆通。
 
-    public void addOrder(OrderVo orderVo, List<OrderGoodsVo> orderGoodsList, JSONObject jsonObject) {
+    public void addOrder(OrderVo orderVo, AddressVo addressVo, JSONObject jsonObject) {
         setReceiverInfo(orderVo);
         setSenderInfo(orderVo.getShippingAddress());
-        setShopInfo(orderVo, orderGoodsList);
+        setShopInfo(orderVo);
         setCargoInfo();
         this.service = Service.builder()
                 .service_type(jsonObject.getInteger("service_type"))
@@ -63,12 +62,12 @@ public class LogisticsOrder implements Serializable {
                 .build();
     }
 
-    private void setShopInfo(OrderVo orderVo, List<OrderGoodsVo> orderGoodsList) {
+    private void setShopInfo(OrderVo orderVo) {
         this.shop = Shop.builder()
                 .wxa_path("")
                 .goods_count(orderVo.getGoodsCount())
                 .goods_name(orderVo.getGoods_name())
-                .img_url(orderGoodsList.get(0).getList_pic_url())
+                .img_url(orderVo.getItems().get(0).getList_pic_url())
                 .build();
     }
 

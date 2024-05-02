@@ -1,9 +1,11 @@
 package com.acme.acmemall.controller;
 
 import com.acme.acmemall.annotation.LoginUser;
+import com.acme.acmemall.model.AddressVo;
 import com.acme.acmemall.model.LoginUserVo;
 import com.acme.acmemall.model.LogisticsOrder;
 import com.acme.acmemall.model.OrderVo;
+import com.acme.acmemall.service.IAddressService;
 import com.acme.acmemall.service.IOrderService;
 import com.acme.acmemall.service.ITokenService;
 import com.acme.acmemall.service.IWeChatService;
@@ -14,6 +16,7 @@ import com.google.common.collect.Maps;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -33,6 +36,9 @@ public class WeChatController extends ApiBase {
 
     @Resource
     IOrderService orderService;
+
+    @Resource
+    IAddressService addressService;
 
     /**
      * 获取用户手机号
@@ -71,7 +77,12 @@ public class WeChatController extends ApiBase {
                 .openid(loginUser.getWeixin_openid())
                 .build();
         OrderVo orderVo = orderService.findOrder(logisticsOrder.getOrder_id());
-        logisticsOrder.addOrder(orderVo, orderVo.getItems(), json);
+        // 发货地址
+        Map addressParam = Maps.newHashMap();
+        addressParam.put("userId", json.getLongValue("merchantId"));
+        addressParam.put("type", 0);
+        List<AddressVo> addressEntities = addressService.queryaddressUserlist(addressParam);
+        logisticsOrder.addOrder(orderVo, addressEntities.get(0), json);
         Map param = MapUtils.beanToMap(logisticsOrder);
         String res = weChatService.addOrder(requestUrl, param);
         return toResponsSuccess(res);
