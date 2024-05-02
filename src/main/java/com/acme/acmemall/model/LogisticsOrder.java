@@ -53,7 +53,7 @@ public class LogisticsOrder implements Serializable {
 
     public void addOrder(OrderVo orderVo, AddressVo addressVo, JSONObject jsonObject) {
         setReceiverInfo(orderVo);
-        setSenderInfo(orderVo.getShippingAddress());
+        setSenderInfo(addressVo);
         setShopInfo(orderVo);
         setCargoInfo();
         this.service = Service.builder()
