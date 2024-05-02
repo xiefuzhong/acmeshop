@@ -1,6 +1,7 @@
 package com.acme.acmemall.service.impl;
 
 import com.acme.acmemall.service.IWeChatService;
+import com.acme.acmemall.utils.GsonUtil;
 import com.google.common.base.Throwables;
 import com.google.common.collect.Maps;
 import lombok.extern.slf4j.Slf4j;
@@ -57,7 +58,7 @@ public class WeChatServiceImpl implements IWeChatService {
      */
     @Override
     public String addOrder(String requestUrl, Map<String, Object> param) {
-        log.info("请求参数：{}", param);
+        log.info("请求参数：{}", GsonUtil.toJson(param));
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<Map<String, Object>> request = new HttpEntity<>(param, headers);
