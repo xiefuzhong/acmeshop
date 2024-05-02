@@ -1,5 +1,6 @@
 package com.acme.acmemall.model;
 
+import com.alibaba.fastjson.JSONObject;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -51,12 +52,15 @@ public class LogisticsOrder implements Serializable {
 
     private long take_mode; // 分单策略，【0：线下网点签约，1：总部签约结算】，不传默认线下网点签约。目前支持圆通。
 
-    public void addOrder(OrderVo orderVo, List<OrderGoodsVo> orderGoodsList) {
+    public void addOrder(OrderVo orderVo, List<OrderGoodsVo> orderGoodsList, JSONObject jsonObject) {
         setReceiverInfo(orderVo);
         setSenderInfo(orderVo.getShippingAddress());
         setShopInfo(orderVo, orderGoodsList);
         setCargoInfo();
-        this.service = Service.builder().build();
+        this.service = Service.builder()
+                .service_type(jsonObject.getInteger("service_type"))
+                .service_type_name(jsonObject.getString("service_name"))
+                .build();
     }
 
     private void setShopInfo(OrderVo orderVo, List<OrderGoodsVo> orderGoodsList) {

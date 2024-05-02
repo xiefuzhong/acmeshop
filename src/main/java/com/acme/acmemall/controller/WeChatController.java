@@ -69,7 +69,7 @@ public class WeChatController extends ApiBase {
                 .openid(loginUser.getWeixin_openid())
                 .build();
         OrderVo orderVo = orderService.findOrder(logisticsOrder.getOrder_id());
-        logisticsOrder.addOrder(orderVo, orderVo.getItems());
+        logisticsOrder.addOrder(orderVo, orderVo.getItems(), json);
         Map param = MapUtils.beanToMap(logisticsOrder);
         String res = weChatService.addOrder(requestUrl, param);
         return toResponsSuccess(res);
