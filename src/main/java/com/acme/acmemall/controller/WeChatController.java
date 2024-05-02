@@ -79,7 +79,7 @@ public class WeChatController extends ApiBase {
         OrderVo orderVo = orderService.findOrder(logisticsOrder.getOrder_id());
         // 发货地址
         Map addressParam = Maps.newHashMap();
-        addressParam.put("userId", json.getLong("merchantId"));
+        addressParam.put("user_id", json.getLong("merchantId"));
         addressParam.put("type", 0);
         List<AddressVo> addressEntities = addressService.queryaddressUserlist(addressParam);
         logisticsOrder.addOrder(orderVo, addressEntities.get(0), json);
