@@ -1,5 +1,6 @@
 package com.acme.acmemall.utils;
 
+import com.google.common.collect.Maps;
 import org.apache.commons.beanutils.PropertyUtilsBean;
 import org.apache.commons.lang.ArrayUtils;
 
@@ -7,7 +8,6 @@ import java.beans.PropertyDescriptor;
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.Timestamp;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
@@ -266,7 +266,7 @@ public class MapUtils {
      * @return
      */
     public static Map<String, Object> beanToMap(Object beanObj) {
-        Map<String, Object> params = new HashMap<String, Object>(0);
+        Map<String, Object> params = Maps.newHashMap();
         try {
             PropertyUtilsBean propertyUtilsBean = new PropertyUtilsBean();
             PropertyDescriptor[] descriptors = propertyUtilsBean.getPropertyDescriptors(beanObj);

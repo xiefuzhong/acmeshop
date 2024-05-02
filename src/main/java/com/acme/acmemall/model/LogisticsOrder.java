@@ -1,6 +1,9 @@
 package com.acme.acmemall.model;
 
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.util.List;
@@ -10,7 +13,10 @@ import java.util.List;
  * @author: ihpangzi
  * @time: 2024/1/23 20:18
  */
-@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Builder
 public class LogisticsOrder implements Serializable {
     private String order_id; // 必填
 
@@ -36,21 +42,20 @@ public class LogisticsOrder implements Serializable {
 
     private Shop shop; // 收件人信息
 
-    private Insured insured; // 收件人信息
+    private Insured insured; // 	保价信息
 
     private Service service; // 服务类型
 
-    private long expect_time; // 分单策略，【0：线下网点签约，1：总部签约结算】，不传默认线下网点签约。目前支持圆通。
+    private long expect_time; // 顺丰必须传。 预期的上门揽件时间，0表示已事先约定取件时间；否则请传预期揽件时间戳，需大于当前时间，收件员会在预期时间附近上门。
 
     private long take_mode; // 分单策略，【0：线下网点签约，1：总部签约结算】，不传默认线下网点签约。目前支持圆通。
 
-    public void addOrder(OrderVo orderVo, List<OrderGoodsVo> orderGoodsList, LoginUserVo userVo) {
+    public void addOrder(OrderVo orderVo, List<OrderGoodsVo> orderGoodsList) {
         setReceiverInfo(orderVo);
         setSenderInfo(orderVo.getShippingAddress());
         setShopInfo(orderVo, orderGoodsList);
-        this.openid = userVo.getWeixin_openid();
         this.service = Service.builder().build();
-        this.add_source = 0;
+//        this.add_source = 0;
 
     }
 

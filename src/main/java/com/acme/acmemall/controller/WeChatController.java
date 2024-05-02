@@ -2,10 +2,14 @@ package com.acme.acmemall.controller;
 
 import com.acme.acmemall.annotation.LoginUser;
 import com.acme.acmemall.model.LoginUserVo;
+import com.acme.acmemall.model.LogisticsOrder;
+import com.acme.acmemall.model.OrderVo;
+import com.acme.acmemall.service.IOrderService;
 import com.acme.acmemall.service.ITokenService;
 import com.acme.acmemall.service.IWeChatService;
 import com.acme.acmemall.utils.MapUtils;
 import com.acme.acmemall.utils.UserUtils;
+import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Maps;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,6 +30,9 @@ public class WeChatController extends ApiBase {
 
     @Resource
     ITokenService tokenService;
+
+    @Resource
+    IOrderService orderService;
 
     /**
      * 获取用户手机号
@@ -54,7 +61,16 @@ public class WeChatController extends ApiBase {
         String accessToken = MapUtils.getString("token", result);
         String requestUrl = UserUtils.getWxAddLogisticsOrder(accessToken);
         logger.info("》》》requestUrl为：" + requestUrl);
-        Map param = Maps.newHashMap();
+        JSONObject json = getJsonRequest();
+        logger.info("》》》json为：" + json);
+        LogisticsOrder logisticsOrder = LogisticsOrder.builder()
+                .order_id(json.getString("orderId"))
+                .add_source(0) // 小程序
+                .openid(loginUser.getWeixin_openid())
+                .build();
+        OrderVo orderVo = orderService.findOrder(logisticsOrder.getOrder_id());
+        logisticsOrder.addOrder(orderVo, orderVo.getItems());
+        Map param = MapUtils.beanToMap(logisticsOrder);
         String res = weChatService.addOrder(requestUrl, param);
         return toResponsSuccess(res);
     }
