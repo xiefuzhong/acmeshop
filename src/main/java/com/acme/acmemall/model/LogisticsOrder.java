@@ -1,6 +1,8 @@
 package com.acme.acmemall.model;
 
 import com.alibaba.fastjson.JSONObject;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -8,6 +10,7 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Map;
 
 /**
  * @description:
@@ -47,18 +50,30 @@ public class LogisticsOrder implements Serializable {
 
     private Service service; // 服务类型
 
-    private long expect_time; // 顺丰必须传。 预期的上门揽件时间，0表示已事先约定取件时间；否则请传预期揽件时间戳，需大于当前时间，收件员会在预期时间附近上门。
+    private Long expect_time = null; // 顺丰必须传。 预期的上门揽件时间，0表示已事先约定取件时间；否则请传预期揽件时间戳，需大于当前时间，收件员会在预期时间附近上门。
 
-    private long take_mode; // 分单策略，【0：线下网点签约，1：总部签约结算】，不传默认线下网点签约。目前支持圆通。
+    private Long take_mode = null; // 分单策略，【0：线下网点签约，1：总部签约结算】，不传默认线下网点签约。目前支持圆通。
 
     public void addOrder(OrderVo orderVo, AddressVo addressVo, JSONObject jsonObject) {
         setReceiverInfo(orderVo);
         setSenderInfo(addressVo);
         setShopInfo(orderVo);
-        setCargoInfo();
+        setCargoInfo(orderVo);
+        setInsuredInfo(orderVo);
+        setService(jsonObject);
+    }
+
+    private void setService(JSONObject jsonObject) {
         this.service = Service.builder()
                 .service_type(jsonObject.getInteger("service_type"))
                 .service_name(jsonObject.getString("service_name"))
+                .build();
+    }
+
+    private void setInsuredInfo(OrderVo orderVo) {
+        this.insured = Insured.builder()
+                .use_insured(1)
+                .insured_value(orderVo.getActual_price().multiply(new BigDecimal(100)).longValue())
                 .build();
     }
 
@@ -93,13 +108,17 @@ public class LogisticsOrder implements Serializable {
                 .build();
     }
 
-    public void setCargoInfo() {
+    public void setCargoInfo(OrderVo orderVo) {
+        Map<String, Object> objectMap = Maps.newHashMap();
+        objectMap.put("count", orderVo.getGoodsCount());
+        objectMap.put("name", orderVo.getGoods_name());
         this.cargo = Cargo.builder()
                 .count(1)
                 .weight(BigDecimal.ONE)
                 .space_x(BigDecimal.TEN)
                 .space_y(BigDecimal.TEN)
                 .space_z(BigDecimal.TEN)
+                .detail_list(Lists.newArrayList(objectMap))
                 .build();
     }
 }
