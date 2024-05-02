@@ -12,37 +12,37 @@ import java.util.List;
  */
 @Data
 public class LogisticsOrder implements Serializable {
-    private String order_id;
+    private String order_id; // 必填
 
-    private String openid;
+    private String openid; // 用户openid add_source =0必填,订单来源，0为小程序订单，2为App或H5订单，填2则不发送物流服务通知
 
-    private String delivery_id;
+    private String delivery_id; // 快递公司ID，参见getAllDelivery
 
-    private String biz_id;
+    private String biz_id; // 快递客户编码或者现付编码
 
-    private String custom_remark;
+    private String custom_remark; // 快递备注信息，比如"易碎物品"，不超过1024字节
 
-    private long tagid;
+    private long tagid; // 订单标签id，用于平台型小程序区分平台上的入驻方，tagid须与入驻方账号一一对应，非平台型小程序无需填写该字段
 
-    private int add_source;
+    private int add_source = 0; // 订单来源，0为小程序订单，2为App或H5订单，填2则不发送物流服务通知
 
     private String wx_appid;
 
-    private Sender sender;
+    private Sender sender; // 发件人信息
 
-    private Receiver receiver;
+    private Receiver receiver; // 收件人信息
 
-    private Cargo cargo;
+    private Cargo cargo; // 收件人信息
 
-    private Shop shop;
+    private Shop shop; // 收件人信息
 
-    private Insured insured;
+    private Insured insured; // 收件人信息
 
-    private Service service;
+    private Service service; // 服务类型
 
-    private String expect_time;
+    private long expect_time; // 分单策略，【0：线下网点签约，1：总部签约结算】，不传默认线下网点签约。目前支持圆通。
 
-    private String take_mode;
+    private long take_mode; // 分单策略，【0：线下网点签约，1：总部签约结算】，不传默认线下网点签约。目前支持圆通。
 
     public void addOrder(OrderVo orderVo, List<OrderGoodsVo> orderGoodsList, LoginUserVo userVo) {
         setReceiverInfo(orderVo);

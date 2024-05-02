@@ -80,12 +80,22 @@ public class UserUtils {
     }
 
     /**
-     * 获取电子面单余额-模拟更新订单状态
+     * 微信小助手-模拟更新订单状态
      *
      * @param accessToken
      * @return
      */
     public static String testUpdateExpressOrder(String accessToken) {
         return String.format(ResourceUtil.getConfigByName("wx.testUpdateExpressOrder"), accessToken);
+    }
+
+    /**
+     * 合作网点账号信息
+     *
+     * @param accessToken
+     * @return
+     */
+    public static String getExpressAccount(String accessToken) {
+        return String.format(ResourceUtil.getConfigByName("wx.getAllAccount"), accessToken);
     }
 }

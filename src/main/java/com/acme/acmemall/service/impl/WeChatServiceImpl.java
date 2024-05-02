@@ -47,4 +47,56 @@ public class WeChatServiceImpl implements IWeChatService {
         }
         return response;
     }
+
+    /**
+     * 生成运单（物流助手）
+     *
+     * @param requestUrl
+     * @param param
+     * @return
+     */
+    @Override
+    public String addOrder(String requestUrl, Map<String, Object> param) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<Map<String, Object>> request = new HttpEntity<>(param, headers);
+        String response = null;
+        try {
+            response = restTemplate.postForObject(requestUrl, request, String.class);
+        } catch (RestClientException e) {
+            log.error("查询报错:" + Throwables.getStackTraceAsString(e));
+        }
+        return response;
+    }
+
+    /**
+     * @param requestUrl
+     * @return
+     */
+    @Override
+    public String getAllDelivery(String requestUrl) {
+        String response = null;
+        try {
+            response = restTemplate.getForObject(requestUrl, String.class);
+        } catch (RestClientException e) {
+            log.error("查询报错:" + Throwables.getStackTraceAsString(e));
+        }
+        return response;
+    }
+
+    /**
+     * @param requestUrl
+     * @return
+     */
+    @Override
+    public String getExpressAccount(String requestUrl) {
+        String response = null;
+        try {
+            response = restTemplate.getForObject(requestUrl, String.class);
+        } catch (RestClientException e) {
+            log.error("查询报错:" + Throwables.getStackTraceAsString(e));
+        }
+        return response;
+    }
+
 }

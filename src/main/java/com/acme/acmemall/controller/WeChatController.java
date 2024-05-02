@@ -7,10 +7,7 @@ import com.acme.acmemall.service.IWeChatService;
 import com.acme.acmemall.utils.MapUtils;
 import com.acme.acmemall.utils.UserUtils;
 import com.google.common.collect.Maps;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.Map;
@@ -47,6 +44,29 @@ public class WeChatController extends ApiBase {
         String requestUrl = UserUtils.getUserPhoneNumber(accessToken);//通过自定义工具类组合出小程序需要的登录凭证 code
         logger.info("》》》requestUrl为：" + requestUrl);
         String res = weChatService.getUserPhoneNumber(requestUrl, code);
+        return toResponsSuccess(res);
+    }
+
+    @PostMapping("/logistics/add-order")
+    public Object addOrder(@LoginUser LoginUserVo loginUser) {
+        logger.info("》》》物流助手>>>addOrder");
+        Map result = tokenService.getTokens(loginUser.getUserId());
+        String accessToken = MapUtils.getString("token", result);
+        String requestUrl = UserUtils.getWxAddLogisticsOrder(accessToken);
+        logger.info("》》》requestUrl为：" + requestUrl);
+        Map param = Maps.newHashMap();
+        String res = weChatService.addOrder(requestUrl, param);
+        return toResponsSuccess(res);
+    }
+
+    @GetMapping("/logistics/account-get")
+    public Object getAccount(@LoginUser LoginUserVo loginUser) {
+        logger.info("》》》物流助手>>>getAccount");
+        Map result = tokenService.getTokens(loginUser.getUserId());
+        String accessToken = MapUtils.getString("token", result);
+        String requestUrl = UserUtils.getExpressAccount(accessToken);
+        logger.info("》》》requestUrl为：" + requestUrl);
+        String res = weChatService.getExpressAccount(requestUrl);
         return toResponsSuccess(res);
     }
 }
