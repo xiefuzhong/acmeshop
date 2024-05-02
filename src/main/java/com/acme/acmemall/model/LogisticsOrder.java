@@ -58,7 +58,7 @@ public class LogisticsOrder implements Serializable {
         setReceiverInfo(orderVo);
         setSenderInfo(addressVo);
         setShopInfo(orderVo);
-        setCargoInfo(orderVo);
+        setCargo(orderVo);
         setInsuredInfo(orderVo);
         setService(jsonObject);
     }
@@ -108,7 +108,7 @@ public class LogisticsOrder implements Serializable {
                 .build();
     }
 
-    public void setCargoInfo(OrderVo orderVo) {
+    public void setCargo(OrderVo orderVo) {
         Map<String, Object> objectMap = Maps.newHashMap();
         objectMap.put("count", orderVo.getGoodsCount());
         objectMap.put("name", orderVo.getGoods_name());
