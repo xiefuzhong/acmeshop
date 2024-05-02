@@ -69,4 +69,15 @@ public class WeChatController extends ApiBase {
         String res = weChatService.getExpressAccount(requestUrl);
         return toResponsSuccess(res);
     }
+
+    @GetMapping("/logistics/all-delivery")
+    public Object getAllDelivery(@LoginUser LoginUserVo loginUser) {
+        logger.info("》》》物流助手>>>getAllDelivery");
+        Map result = tokenService.getTokens(loginUser.getUserId());
+        String accessToken = MapUtils.getString("token", result);
+        String requestUrl = UserUtils.getAllDelivery(accessToken);
+        logger.info("》》》requestUrl为：" + requestUrl);
+        String res = weChatService.getAllDelivery(requestUrl);
+        return toResponsSuccess(res);
+    }
 }

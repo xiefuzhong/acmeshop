@@ -50,7 +50,7 @@ public class UserUtils {
     }
 
     /**
-     * 获取电子面单余额-获取电子面单余额
+     * 微信物流助手-获取电子面单余额
      *
      * @param accessToken
      * @return
@@ -60,7 +60,7 @@ public class UserUtils {
     }
 
     /**
-     * 获取电子面单余额-获取运单数据
+     * 微信物流助手-获取运单数据
      *
      * @param accessToken
      * @return
@@ -70,7 +70,7 @@ public class UserUtils {
     }
 
     /**
-     * 获取电子面单余额-查询运单轨迹
+     * 微信物流助手-查询运单轨迹
      *
      * @param accessToken
      * @return
@@ -80,7 +80,7 @@ public class UserUtils {
     }
 
     /**
-     * 微信小助手-模拟更新订单状态
+     * 微信物流助手-模拟更新订单状态
      *
      * @param accessToken
      * @return
@@ -97,5 +97,9 @@ public class UserUtils {
      */
     public static String getExpressAccount(String accessToken) {
         return String.format(ResourceUtil.getConfigByName("wx.getAllAccount"), accessToken);
+    }
+
+    public static String getAllDelivery(String accessToken) {
+        return String.format(ResourceUtil.getConfigByName("wx.getAllDelivery"), accessToken);
     }
 }
