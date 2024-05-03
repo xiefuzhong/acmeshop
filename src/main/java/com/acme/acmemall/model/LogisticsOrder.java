@@ -82,7 +82,7 @@ public class LogisticsOrder implements Serializable {
                 .wxa_path("")
                 .goods_count(orderVo.getGoodsCount())
                 .goods_name(orderVo.getGoods_name())
-                .img_url(orderVo.getItems().get(0).getList_pic_url())
+                .img_url(orderVo.getList_pic_url())
                 .build();
     }
 
