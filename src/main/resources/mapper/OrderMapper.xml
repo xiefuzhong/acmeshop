@@ -74,8 +74,9 @@
     </resultMap>
 
     <select id="queryObject" resultMap="orderMap">
-        select a.*
+        select a.*,g.goods_name,g.list_pic_url
         from t_acme_mall_order a
+        LEFT JOIN t_acme_mall_order_goods g ON a.id = g.order_id
         <where>
             AND a.id = #{value}
             AND a.order_status != 102
