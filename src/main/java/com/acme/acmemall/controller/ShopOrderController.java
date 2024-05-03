@@ -115,8 +115,11 @@ public class ShopOrderController extends ApiBase {
         } else if (StringUtils.equalsIgnoreCase("receipt", request.getHandle())) {
             OrderRefundVo refundVo = refundService.findByOrderId(orderId);
             orderVo.merReceipt(refundVo);
+        } else if (StringUtils.equalsIgnoreCase("print", request.getHandle())) {
+            // 打印面单
+            orderVo.print(request);
         }
-        logger.info("mer.updateOrder ===>" + orderVo.toString());
+        logger.info("mer.updateOrder ===>" + orderVo);
         orderService.handleOrderByMer(orderVo);
         // 下单
         return toResponsSuccess(orderVo);

@@ -544,6 +544,15 @@ public class OrderVo implements Serializable {
         this.commentList.add(comment);
     }
 
+    /**
+     * 打印面单
+     *
+     * @param request
+     */
+    public void print(OrderShippedRequest request) {
+        this.setLogistics(request.getLogisticsInfo());
+    }
+
 
     /**
      * 发货
