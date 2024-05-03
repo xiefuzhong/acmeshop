@@ -69,6 +69,7 @@ public class WeChatController extends ApiBase {
         logger.info("》》》requestUrl为：" + requestUrl);
         JSONObject json = getJsonRequest();
         logger.info("》》》json为：" + json);
+        OrderVo orderVo = orderService.findOrder(json.getString("orderId"));
         LogisticsOrder logisticsOrder = LogisticsOrder.builder()
                 .order_id(json.getString("orderId"))
                 .add_source(0) // 小程序
@@ -76,8 +77,9 @@ public class WeChatController extends ApiBase {
                 .biz_id(json.getString("biz_id"))
                 .openid(loginUser.getWeixin_openid())
 //                .tagid(json.getLong("merchantId"))
+                .custom_remark(orderVo.getGoods_name() + "_" + orderVo.getMerRemark())
                 .build();
-        OrderVo orderVo = orderService.findOrder(logisticsOrder.getOrder_id());
+
 //        logger.info("》》》orderVo为：" + orderVo);
         // 发货地址
         Map param = Maps.newHashMap();
