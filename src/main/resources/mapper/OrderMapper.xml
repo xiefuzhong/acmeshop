@@ -69,8 +69,11 @@
         <result property="refund_express_code" column="refund_express_code"/>
         <!--        cusMark-->
         <result property="cusRemark" column="cus_remark"/>
+        <!--        refund_status-->
+        <result property="refund_status" column="refund_status"/>
         <collection property="items" ofType="com.acme.acmemall.model.OrderGoodsVo" javaType="java.util.List">
             <!-- id:明细唯一标识 property:要将订单明细的唯一标识映射到com.acme.acmemall.model.OrderGoodsVo的对应属性 -->
+            <result property="id" column="id"/>
             <result property="order_id" column="order_id"/>
             <result property="goods_id" column="goods_id"/>
             <result property="goods_specifition_name_value" column="goods_specifition_name_value"/>
