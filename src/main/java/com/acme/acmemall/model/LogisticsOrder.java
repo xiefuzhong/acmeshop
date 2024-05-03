@@ -32,7 +32,8 @@ public class LogisticsOrder implements Serializable {
 
     private String custom_remark; // 快递备注信息，比如"易碎物品"，不超过1024字节
 
-    private Long tagid; // 订单标签id，用于平台型小程序区分平台上的入驻方，tagid须与入驻方账号一一对应，非平台型小程序无需填写该字段
+    @Builder.Default
+    private Long tagid = null; // 订单标签id，用于平台型小程序区分平台上的入驻方，tagid须与入驻方账号一一对应，非平台型小程序无需填写该字段
 
     private int add_source = 0; // 订单来源，0为小程序订单，2为App或H5订单，填2则不发送物流服务通知
 

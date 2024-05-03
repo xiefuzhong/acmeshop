@@ -75,7 +75,7 @@ public class WeChatController extends ApiBase {
                 .delivery_id(json.getString("delivery_id"))
                 .biz_id(json.getString("biz_id"))
                 .openid(loginUser.getWeixin_openid())
-                .tagid(json.getLong("merchantId"))
+//                .tagid(json.getLong("merchantId"))
                 .build();
         OrderVo orderVo = orderService.findOrder(logisticsOrder.getOrder_id());
         logger.info("》》》orderVo为：" + orderVo);
