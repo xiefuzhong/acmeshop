@@ -337,9 +337,9 @@ public class OrderVo implements Serializable {
             return full_region;
         } else {
             StringBuffer strBuff = new StringBuffer();
-            if (StringUtils.isNotEmpty(this.country)) {
-                strBuff.append(StringUtils.equalsIgnoreCase("CN", this.country) ? "中国" : this.country).append(" ");
-            }
+//            if (StringUtils.isNotEmpty(this.country)) {
+//                strBuff.append(StringUtils.equalsIgnoreCase("CN", this.country) ? "中国" : this.country).append(" ");
+//            }
             if (StringUtils.isNotEmpty(this.province)) {
                 strBuff.append(this.province).append(" ");
             }
