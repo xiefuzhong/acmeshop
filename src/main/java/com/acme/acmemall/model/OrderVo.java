@@ -30,7 +30,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 /**
  * @description:
@@ -731,8 +730,9 @@ public class OrderVo implements Serializable {
         if (CollectionUtils.isEmpty(items)) {
             return this.id;
         }
-        List<String> names = items.stream().map(OrderGoodsVo::getPayBody_title).collect(Collectors.toList());
-        return names.stream().collect(Collectors.joining(",")) + " and so on";
+        OrderGoodsVo orderGoods = items.stream().findFirst().get();
+//        List<String> names = items.stream().map(OrderGoodsVo::getPayBody_title).collect(Collectors.toList());
+        return orderGoods.getPayBody_title() + " and so on";
 
     }
 
