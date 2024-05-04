@@ -54,10 +54,6 @@ public class AddressController extends ApiBase {
         if (entity == null) {
             return toResponsSuccess(null);
         }
-        //判断越权行为，智能删除用户自己的
-        if (!entity.getUserId().equals(loginUser.getUserId())) {
-            return toResponsObject(403, "您无权查看", "");
-        }
         return toResponsSuccess(entity);
     }
 
@@ -69,10 +65,11 @@ public class AddressController extends ApiBase {
     public Object save(@LoginUser LoginUserVo loginUser) {
         JSONObject addressJson = this.getJsonRequest();
         AddressVo entity = new AddressVo();
-
+        Long userId = addressJson.containsKey("merchantId") ? addressJson.getLong("merchantId") : loginUser.getUserId();
         if (null != addressJson) {
             entity.setId(addressJson.getLong("id"));
-            entity.setUserId(loginUser.getUserId());
+            entity.setType(addressJson.getInteger("type"));
+            entity.setUserId(userId);
             entity.setUserName(addressJson.getString("userName"));
             entity.setPostalCode(addressJson.getString("postalCode"));
             entity.setProvinceName(addressJson.getString("provinceName"));
@@ -83,8 +80,8 @@ public class AddressController extends ApiBase {
             entity.setTelNumber(addressJson.getString("telNumber"));
             entity.setIs_default(addressJson.getInteger("is_default"));
         }
-        Map<String, Object> param = new HashMap<String, Object>();
-        param.put("user_id", loginUser.getUserId());
+        Map<String, Object> param = Maps.newHashMap();
+        param.put("user_id", userId);
         List<AddressVo> addressEntities = addressService.queryAddressList(param);
         if (addressEntities.size() == 0) {//第一次添加设置为默认地址
             entity.setIs_default(1);
