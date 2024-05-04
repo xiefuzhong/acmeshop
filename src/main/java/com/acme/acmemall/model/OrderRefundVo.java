@@ -164,7 +164,7 @@ public class OrderRefundVo implements Serializable {
         if (shipStatus == ShipStatusEnum.SHIP_NO) {
             this.refund_type = RefundType.REFUND_ONLY.getCode();
         } else if (shipStatus == ShipStatusEnum.SHIP_YES || shipStatus == ShipStatusEnum.SHIP_ROG) {
-            this.refund_type = RefundType.REFUND_ONLY.getCode();
+            this.refund_type = RefundType.REFUND_RETURN.getCode();
         }
     }
 
