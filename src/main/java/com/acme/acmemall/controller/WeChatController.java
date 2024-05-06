@@ -114,4 +114,22 @@ public class WeChatController extends ApiBase {
         String res = weChatService.getAllDelivery(requestUrl);
         return toResponsSuccess(res);
     }
+
+    @PostMapping("/logistics/get-path")
+    public Object getPath(@LoginUser LoginUserVo loginUser) {
+        logger.info("》》》物流助手>>>getPath");
+        Map result = tokenService.getTokens(loginUser.getUserId());
+        String accessToken = MapUtils.getString("token", result);
+        String requestUrl = UserUtils.getWxExpressTrack(accessToken);
+        OrderVo orderVo = orderService.findOrder(getJsonRequest().getString("orderId"));
+        if (orderVo == null) {
+            return toResponsFail("订单不存在");
+        }
+        Map params = Maps.newHashMap();
+        params.put("openid", loginUser.getWeixin_openid());
+        params.put("delivery_id", orderVo.getShipping_code());
+        params.put("waybill_id", orderVo.getShipping_no());
+        String res = weChatService.getPath(requestUrl, params);
+        return toResponsSuccess(res);
+    }
 }

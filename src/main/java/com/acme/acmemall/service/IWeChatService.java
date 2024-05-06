@@ -24,4 +24,6 @@ public interface IWeChatService {
     String getAllDelivery(String requestUrl);
 
     String getExpressAccount(String requestUrl);
+
+    String getPath(String requestUrl, Map<String, Object> param);
 }

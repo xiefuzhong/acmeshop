@@ -101,4 +101,24 @@ public class WeChatServiceImpl implements IWeChatService {
         return response;
     }
 
+    /**
+     * @param requestUrl
+     * @param param
+     * @return
+     */
+    @Override
+    public String getPath(String requestUrl, Map<String, Object> param) {
+        log.info("请求参数：{}", GsonUtil.toJson(param));
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<Map<String, Object>> request = new HttpEntity<>(param, headers);
+        String response = null;
+        try {
+            response = restTemplate.postForObject(requestUrl, request, String.class);
+        } catch (RestClientException e) {
+            log.error("查询报错:" + Throwables.getStackTraceAsString(e));
+        }
+        return response;
+    }
+
 }
