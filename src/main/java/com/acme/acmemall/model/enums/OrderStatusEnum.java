@@ -8,7 +8,7 @@ public enum OrderStatusEnum {
     PAID(200, "已付款"),
     SHIPPED(300, "已发货"),
     ROG(301, "已收货"),
-    CLOSED(500, "交易完结"),
+    CLOSED(500, "交易关闭"),
     COMPLETE(501, "交易完成"),
     CANCELED(101, "已取消"),
     DELETED(102, "已删除"),
