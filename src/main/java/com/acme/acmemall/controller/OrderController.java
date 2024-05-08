@@ -11,11 +11,10 @@ import com.acme.acmemall.model.LoginUserVo;
 import com.acme.acmemall.model.OrderGoodsVo;
 import com.acme.acmemall.model.OrderRefundVo;
 import com.acme.acmemall.model.OrderVo;
-import com.acme.acmemall.service.IOrderGoodsService;
-import com.acme.acmemall.service.IOrderRefundService;
-import com.acme.acmemall.service.IOrderService;
-import com.acme.acmemall.service.IUserService;
+import com.acme.acmemall.service.*;
+import com.acme.acmemall.utils.MapUtils;
 import com.acme.acmemall.utils.PageUtils;
+import com.acme.acmemall.utils.UserUtils;
 import com.acme.acmemall.utils.wechat.WechatRefundApiResult;
 import com.acme.acmemall.utils.wechat.WechatUtil;
 import com.alibaba.fastjson.JSONObject;
@@ -59,10 +58,16 @@ public class OrderController extends ApiBase {
     ExpressService expressService;
 
     @Resource
+    IWeChatService wechatService;
+
+    @Resource
     IOrderRefundService refundService;
 
     @Resource
     IUserService userService;
+
+    @Resource
+    ITokenService tokenService;
 
     @ApiOperation(value = "订单提交")
     @PostMapping("submit")
@@ -269,8 +274,16 @@ public class OrderController extends ApiBase {
             shippingCode = orderVo.getRefund_express();
             shippingNo = orderVo.getRefund_express_code();
         }
-        String result = expressService.query(shippingCode, shippingNo);
-        return toResponsSuccess(result);
+        logger.info("》》》物流助手>>>getPath");
+        Map result = tokenService.getTokens(loginUserVo.getUserId());
+        String accessToken = MapUtils.getString("token", result);
+        String requestUrl = UserUtils.getWxExpressTrack(accessToken);
+        Map params = Maps.newHashMap();
+        params.put("openid", loginUserVo.getWeixin_openid());
+        params.put("delivery_id", shippingCode);
+        params.put("waybill_id", shippingNo);
+        String res = wechatService.getPath(requestUrl, params);
+        return toResponsSuccess(res);
     }
 
 
