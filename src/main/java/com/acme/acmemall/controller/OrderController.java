@@ -7,10 +7,7 @@ import com.acme.acmemall.controller.reqeust.OrderSubmitRequest;
 import com.acme.acmemall.kuaidi100.response.QueryTrackResp;
 import com.acme.acmemall.kuaidi100.service.KuaiDi100QueryService;
 import com.acme.acmemall.kuainiao.ExpressService;
-import com.acme.acmemall.model.LoginUserVo;
-import com.acme.acmemall.model.OrderGoodsVo;
-import com.acme.acmemall.model.OrderRefundVo;
-import com.acme.acmemall.model.OrderVo;
+import com.acme.acmemall.model.*;
 import com.acme.acmemall.service.*;
 import com.acme.acmemall.utils.MapUtils;
 import com.acme.acmemall.utils.PageUtils;
@@ -283,7 +280,8 @@ public class OrderController extends ApiBase {
         params.put("delivery_id", shippingCode);
         params.put("waybill_id", shippingNo);
         String res = wechatService.getPath(requestUrl, params);
-        return toResponsSuccess(res);
+        WaybillTrackVo track = JSONObject.toJavaObject(JSONObject.parseObject(res), WaybillTrackVo.class);
+        return toResponsSuccess(track);
     }
 
 

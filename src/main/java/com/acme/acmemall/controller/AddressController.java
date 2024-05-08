@@ -5,6 +5,7 @@ import com.acme.acmemall.annotation.LoginUser;
 import com.acme.acmemall.model.AddressVo;
 import com.acme.acmemall.model.LoginUserVo;
 import com.acme.acmemall.service.IAddressService;
+import com.acme.acmemall.service.IUserService;
 import com.acme.acmemall.utils.GsonUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Maps;
@@ -15,6 +16,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,6 +32,9 @@ import java.util.Map;
 public class AddressController extends ApiBase {
     @Autowired
     IAddressService addressService;
+
+    @Resource
+    IUserService userService;
 
     /**
      * 获取用户的收货地址
@@ -113,8 +118,8 @@ public class AddressController extends ApiBase {
 
         AddressVo entity = addressService.queryObject(id);
         //判断越权行为
-        if (!entity.getUserId().equals(loginUser.getUserId())) {
-            return toResponsObject(403, "您无权删除", "");
+        if (!userService.checkAdmin(loginUser.getUserId())) {
+            return toResponsFail("您不是管理员");
         }
         addressService.delete(id);
         return toResponsSuccess("");
