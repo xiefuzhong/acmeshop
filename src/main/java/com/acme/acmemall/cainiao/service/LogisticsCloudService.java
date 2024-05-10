@@ -69,7 +69,7 @@ public class LogisticsCloudService {
         log.info("【菜鸟物流】请求参数：{}", origin);
         String sign = MD5Util.MD5Encode(origin, "utf8");
         Map<String, String> params = Maps.newHashMap();
-        params.put("appid", properties.getAppKey());
+        params.put("appid", properties.getAppId());
         params.put("sign", sign);
         //请求头
         Map<String, String> headers = Maps.newHashMap();
