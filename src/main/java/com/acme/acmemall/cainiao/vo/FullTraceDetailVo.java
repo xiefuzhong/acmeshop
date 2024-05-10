@@ -19,15 +19,19 @@ import java.io.Serializable;
  */
 @Data
 public class FullTraceDetailVo implements Serializable {
-    private String desc;
+    private String desc; // 物流说明内容
 
-    private String time;
+    private String time; // 物流发生时间格式yyyy-MM-dd HH:mm:ss
 
-    private String city;
+    private String city; // 城市
 
-    private String status;
+    private String status; // 物流状态
 
     private String status_text;
+
+    private String deliveryMan; // 派件快递员（只有派件节点才会有值）
+
+    private String deliveryManTel; // 派件快递员手机号（只有派件节点才会有值）
 
     public String getStatus_text() {
         return status_text;

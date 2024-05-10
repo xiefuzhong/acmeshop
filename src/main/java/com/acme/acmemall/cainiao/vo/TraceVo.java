@@ -26,19 +26,19 @@ public class TraceVo implements Serializable {
 
     private String errorMsg;
 
-    private String mailNo;
+    private String mailNo; // 快递单号
 
-    private String cpCode;
+    private String cpCode; // 查询的快递公司的编码
 
-    private String logisticsStatus;
+    private String logisticsStatus; // 快递单当前主状态
 
-    private String logisticsStatusDesc;
+    private String logisticsStatusDesc; // 快递单当前主状态说明
 
-    private String logisticsStatusEx;
+    private String logisticsStatusEx; // 快递单当前详细状态
 
-    private String logisticsStatusExDesc;
+    private String logisticsStatusExDesc; // 快递单当前详细状态说明
 
-    private String city;
+    private String city; // 快递当前所在城市
 
-    private List<FullTraceDetailVo> fullTraceDetail;
+    private List<FullTraceDetailVo> fullTraceDetail;// 物流轨迹跟踪信息
 }
