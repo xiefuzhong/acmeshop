@@ -4,6 +4,7 @@ import com.acme.acmemall.annotation.LoginUser;
 import com.acme.acmemall.common.ResultMap;
 import com.acme.acmemall.controller.reqeust.OrderRefundRequest;
 import com.acme.acmemall.controller.reqeust.OrderSubmitRequest;
+import com.acme.acmemall.exception.ResultCodeEnum;
 import com.acme.acmemall.kuaidi100.response.QueryTrackResp;
 import com.acme.acmemall.kuaidi100.service.KuaiDi100QueryService;
 import com.acme.acmemall.kuainiao.ExpressService;
@@ -66,6 +67,9 @@ public class OrderController extends ApiBase {
     @Resource
     ITokenService tokenService;
 
+    @Resource
+    IWorkbenchService workbenchService;
+
     @ApiOperation(value = "订单提交")
     @PostMapping("submit")
     public Object submit(@LoginUser LoginUserVo loginUser) {
@@ -81,6 +85,18 @@ public class OrderController extends ApiBase {
             e.printStackTrace();
         }
         return toResponsFail("提交失败");
+    }
+
+    @RequestMapping("statistics")
+    public Object statistics(@LoginUser LoginUserVo loginUser) {
+        if (loginUser == null) {
+            return ResultMap.response(ResultCodeEnum.USER_NOT_LOGIN);
+        }
+        Map<String, Object> params = Maps.newHashMap();
+        params.put("user_id", loginUser.getUserId());
+        List<StatisticsVo> statistics = workbenchService.statistics(params);
+        Map<String, Integer> statisticsMap = statistics.stream().collect(Collectors.toMap(StatisticsVo::getType, StatisticsVo::getNum, (ke1, ke2) -> ke1));
+        return ResultMap.response(ResultCodeEnum.SUCCESS, statisticsMap);
     }
 
     /**

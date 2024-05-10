@@ -45,6 +45,7 @@ public class WorkbenchController extends ApiBase {
         }
         JSONObject object = super.getJsonRequest();
         Map<String, Object> params = Maps.newHashMap();
+        // 商家订单统计
         params.put("merchant_id", object.getString("merchant_id"));
         List<StatisticsVo> statistics = workbenchService.statistics(params);
         Map<String, Integer> statisticsMap = statistics.stream().collect(Collectors.toMap(StatisticsVo::getType, StatisticsVo::getNum, (ke1, ke2) -> ke1));

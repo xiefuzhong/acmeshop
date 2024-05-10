@@ -470,7 +470,25 @@
         <include refid="topay"/>
         UNION ALL
         <include refid="afterSales"/>
+        union all
+        <include refid="toReceived"/>
     </select>
+
+    <!--    待收货-->
+    <sql id="toReceived">
+        SELECT
+        'toReceived' as type,
+        count(1) as num
+        FROM
+        t_acme_mall_order o
+        <where>
+            AND o.merchant_id = #{merchant_id}
+            <if test="user_id != null and user_id != ''">
+                AND o.user_id = #{user_id}
+            </if>
+            AND o.order_status = 300
+        </where>
+    </sql>
 
     <sql id="toShipped">
         SELECT
@@ -478,10 +496,15 @@
         count(1) as num
         FROM
         t_acme_mall_order o
-        WHERE
-        o.merchant_id = #{merchant_id}
-        <!--        已付款（未发货(未打单)，未发货（已打单），已发货（已填入物流信息））-->
-        AND o.order_status IN (200,201)
+        <where>
+            AND o.merchant_id = #{merchant_id}
+            <if test="user_id != null and user_id != ''">
+                AND o.user_id = #{user_id}
+            </if>
+            <!--        已付款（未发货(未打单)，未发货（已打单），已发货（已填入物流信息））-->
+            AND o.order_status IN (200,201)
+        </where>
+
     </sql>
 
     <sql id="topay">
@@ -490,9 +513,13 @@
         count(1) as num
         FROM
         t_acme_mall_order o
-        WHERE
-        o.merchant_id = #{merchant_id}
-        AND o.order_status =0
+        <where>
+            AND o.merchant_id = #{merchant_id}
+            <if test="user_id != null and user_id != ''">
+                AND o.user_id = #{user_id}
+            </if>
+            AND o.order_status =0
+        </where>
     </sql>
 
     <sql id="afterSales">
@@ -501,9 +528,13 @@
         count(1) as num
         FROM
         t_acme_mall_order o
-        WHERE
-        o.merchant_id = #{merchant_id}
-        AND o.order_status =400
+        <where>
+            AND o.merchant_id = #{merchant_id}
+            <if test="user_id != null and user_id != ''">
+                AND o.user_id = #{user_id}
+            </if>
+            AND o.order_status =400
+        </where>
     </sql>
 
     <select id="queryListByIds" resultMap="orderMap">
