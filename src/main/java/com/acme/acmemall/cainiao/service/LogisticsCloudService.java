@@ -9,8 +9,10 @@
 package com.acme.acmemall.cainiao.service;
 
 import com.acme.acmemall.cainiao.config.LogisticsCloudProperties;
+import com.acme.acmemall.cainiao.vo.LogisticsCloudRequest;
 import com.acme.acmemall.utils.HttpClientUtil;
 import com.acme.acmemall.utils.MD5Util;
+import com.acme.acmemall.utils.MapUtils;
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Maps;
 import lombok.extern.slf4j.Slf4j;
@@ -44,15 +46,13 @@ public class LogisticsCloudService {
      */
     public String queryExpressRoutes(String expressNo) {
         log.info("【菜鸟物流】查询快递信息，快递单号：{}", expressNo);
-        Map<String, String> requestParams = Maps.newHashMap();
-        requestParams.put("mailNo", expressNo);
-        // 按顺序将参数拼接起来 如：requestData+appSecret
-        String origin = JSONObject.toJSONString(requestParams).concat(properties.getAppSecret());
-        log.info("【菜鸟物流】请求参数：{}", origin);
-        String sign = MD5Util.MD5Encode(origin, "utf8");
-        Map<String, String> params = Maps.newHashMap();
-        params.put("appid", properties.getAppId());
-        params.put("sign", sign);
+        LogisticsCloudRequest request = LogisticsCloudRequest.builder()
+                .appid(properties.getAppId())
+                .build();
+        request.buildParams(properties.getAppSecret(), expressNo);
+        log.info("【菜鸟物流】请求参数：{}", request);
+
+        Map<String, Object> params = MapUtils.beanToMap(request);
         //请求头
         Map<String, String> headers = Maps.newHashMap();
         headers.put("Content-Type", "application/x-www-form-urlencoded;charset=utf-8");
@@ -68,7 +68,7 @@ public class LogisticsCloudService {
         String origin = JSONObject.toJSONString(requestParams).concat(properties.getAppSecret());
         log.info("【菜鸟物流】请求参数：{}", origin);
         String sign = MD5Util.MD5Encode(origin, "utf8");
-        Map<String, String> params = Maps.newHashMap();
+        Map<String, Object> params = Maps.newHashMap();
         params.put("appid", properties.getAppId());
         params.put("sign", sign);
         //请求头

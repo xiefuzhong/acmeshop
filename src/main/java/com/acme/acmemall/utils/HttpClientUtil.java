@@ -40,7 +40,7 @@ public class HttpClientUtil {
      * @param headers
      * @return
      */
-    public static String httpPostWithForm(String url, Map<String, String> params, Map<String, String> headers) {
+    public static String httpPostWithForm(String url, Map<String, Object> params, Map<String, String> headers) {
         // 用于接收返回的结果
         String resultData = "";
         try {
@@ -53,7 +53,7 @@ public class HttpClientUtil {
             }
             List<BasicNameValuePair> pairList = new ArrayList<>();
             for (String key : params.keySet()) {
-                pairList.add(new BasicNameValuePair(key, params.get(key)));
+                pairList.add(new BasicNameValuePair(key, StringUtils.toStringByObject(params.get(key))));
             }
             UrlEncodedFormEntity uefe = new UrlEncodedFormEntity(pairList, "utf-8");
             post.setEntity(uefe);
