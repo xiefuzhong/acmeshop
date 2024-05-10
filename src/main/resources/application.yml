@@ -1,5 +1,18 @@
 server:
   port: 80
+# 菜鸟物流系统配置
+cainiao:
+  logistics:
+    cloud:
+      appId: 6582699039d14a07b3e88be33286527a
+      appSecret: 6f161fd79e624f4099a23b76e533fe9a
+      queryExpressRoutes: https://express.xuanquetech.com/express/v2/queryExpressRoutes
+      interceptPackage: https://express.xuanquetech.com/express/v2/interceptPackage
+#      apiList:
+#        - queryExpressRoutes: https://express.xuanquetech.com/express/v2/queryExpressRoutes
+#          method: POST
+#        - interceptPackage: https://express.xuanquetech.com/express/v2/interceptPackage
+#          method: POST
 # 快鸟物流查询配置
 kuainiao:
   express:
