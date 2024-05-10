@@ -6,7 +6,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties(prefix = "cainiao.logistics.cloud")
 @Data
 public class LogisticsCloudProperties {
-    private String appKey;
+    private String appId;
     private String appSecret;
     private String queryExpressRoutes;
     private String interceptPackage;
