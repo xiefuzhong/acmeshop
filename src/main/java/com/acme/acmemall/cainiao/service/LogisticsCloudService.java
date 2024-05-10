@@ -48,6 +48,7 @@ public class LogisticsCloudService {
         requestParams.put("mailNo", expressNo);
         // 按顺序将参数拼接起来 如：requestData+appSecret
         String origin = JSONObject.toJSONString(requestParams).concat(properties.getAppSecret());
+        log.info("【菜鸟物流】请求参数：{}", origin);
         String sign = MD5Util.MD5Encode(origin, "utf8");
         Map<String, String> params = Maps.newHashMap();
         params.put("appid", properties.getAppKey());
