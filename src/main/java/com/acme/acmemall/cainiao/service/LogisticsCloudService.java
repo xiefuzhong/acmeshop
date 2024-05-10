@@ -59,4 +59,22 @@ public class LogisticsCloudService {
         String resultData = HttpClientUtil.httpPostWithForm(properties.getQueryExpressRoutes(), params, headers);
         return resultData;
     }
+
+    public String interceptPackage(String expressNo) {
+        log.info("【菜鸟物流】拦截快递信息，快递单号：{}", expressNo);
+        // 按顺序将参数拼接起来 如：requestData+appSecret
+        Map<String, String> requestParams = Maps.newHashMap();
+        requestParams.put("mailNo", expressNo);
+        String origin = JSONObject.toJSONString(requestParams).concat(properties.getAppSecret());
+        log.info("【菜鸟物流】请求参数：{}", origin);
+        String sign = MD5Util.MD5Encode(origin, "utf8");
+        Map<String, String> params = Maps.newHashMap();
+        params.put("appid", properties.getAppKey());
+        params.put("sign", sign);
+        //请求头
+        Map<String, String> headers = Maps.newHashMap();
+        headers.put("Content-Type", "application/x-www-form-urlencoded;charset=utf-8");
+        String resultData = HttpClientUtil.httpPostWithForm(properties.getInterceptPackage(), params, headers);
+        return resultData;
+    }
 }
