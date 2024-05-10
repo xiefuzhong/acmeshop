@@ -470,9 +470,29 @@
         <include refid="topay"/>
         UNION ALL
         <include refid="afterSales"/>
-        union all
+        UNION ALL
         <include refid="toReceived"/>
+        UNION ALL
+        <include refid="waitForEvalue"/>
     </select>
+    <!--    待评价（已收货、未评价）-->
+    <sql id="waitForEvalue">
+        SELECT
+        'waitForEvalue' as type,
+        count(1) as num
+        FROM
+        t_acme_mall_order o
+        <where>
+            <if test="merchant_id != null and merchant_id >0">
+                AND o.merchant_id = #{merchant_id}
+            </if>
+            <if test="user_id != null and user_id != ''">
+                AND o.user_id = #{user_id}
+            </if>
+            AND o.order_status = 301
+            AND o.comment_status = 0
+        </where>
+    </sql>
 
     <!--    待收货-->
     <sql id="toReceived">
