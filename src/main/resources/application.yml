@@ -5,7 +5,7 @@ cainiao:
   logistics:
     cloud:
       appId: 6582699039d14a07b3e88be33286527a
-      appSecret: 6f161fd79e624f4099a23b76e533fe9a
+      appSecret: ${CAINIAO_LOGISTICS_APPSECRET}
       queryExpressRoutes: https://express.xuanquetech.com/express/v2/queryExpressRoutes
       interceptPackage: https://express.xuanquetech.com/express/v2/interceptPackage
 #      apiList:
