@@ -482,7 +482,10 @@
         FROM
         t_acme_mall_order o
         <where>
-            AND o.merchant_id = #{merchant_id}
+            <if test="merchant_id != null and merchant_id >0">
+                AND o.merchant_id = #{merchant_id}
+            </if>
+
             <if test="user_id != null and user_id != ''">
                 AND o.user_id = #{user_id}
             </if>
@@ -497,7 +500,9 @@
         FROM
         t_acme_mall_order o
         <where>
-            AND o.merchant_id = #{merchant_id}
+            <if test="merchant_id != null and merchant_id >0">
+                AND o.merchant_id = #{merchant_id}
+            </if>
             <if test="user_id != null and user_id != ''">
                 AND o.user_id = #{user_id}
             </if>
@@ -514,7 +519,9 @@
         FROM
         t_acme_mall_order o
         <where>
-            AND o.merchant_id = #{merchant_id}
+            <if test="merchant_id != null and merchant_id >0">
+                AND o.merchant_id = #{merchant_id}
+            </if>
             <if test="user_id != null and user_id != ''">
                 AND o.user_id = #{user_id}
             </if>
@@ -529,7 +536,9 @@
         FROM
         t_acme_mall_order o
         <where>
-            AND o.merchant_id = #{merchant_id}
+            <if test="merchant_id != null and merchant_id >0">
+                AND o.merchant_id = #{merchant_id}
+            </if>
             <if test="user_id != null and user_id != ''">
                 AND o.user_id = #{user_id}
             </if>
