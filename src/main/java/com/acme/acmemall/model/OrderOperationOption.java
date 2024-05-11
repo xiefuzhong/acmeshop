@@ -147,6 +147,7 @@ public class OrderOperationOption {
                 // 待收货 查看看物流，确认收货，申请退货退款
                 this.viewLogistics = Boolean.TRUE;
                 this.confirmReceipt = Boolean.TRUE;
+                this.refundRequest = Boolean.TRUE;
                 break;
             }
             case ROG: {
