@@ -7,6 +7,8 @@ public enum ShipStatusEnum {
     SHIP_NO(0, "未发货"),
     SHIP_YES(1, "已发货"),
     SHIP_ROG(2, "已收货"),
+    SHIP_CANCE_SUCCESS(3, "拦截成功"), // 拦截成功
+    SHIP_CANCEL_FAILED(5, "拦截失败"), // 拦截失败
     SHIP_RETURN(4, "退还商品");
 
     //    发货状态 商品配送情况;0未发货,1已发货,2已收货,4退货
