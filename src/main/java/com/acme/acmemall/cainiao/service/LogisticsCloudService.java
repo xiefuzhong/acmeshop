@@ -56,11 +56,10 @@ public class LogisticsCloudService {
         //请求头
         Map<String, String> headers = Maps.newHashMap();
         headers.put("Content-Type", "application/x-www-form-urlencoded;charset=utf-8");
-        String resultData = HttpClientUtil.httpPostWithForm(properties.getQueryExpressRoutes(), params, headers);
-        return resultData;
+        return HttpClientUtil.httpPostWithForm(properties.getQueryExpressRoutes(), params, headers);
     }
 
-    public String interceptPackage(String expressNo) {
+    public String interceptPackage(String expressNo, String cpCode) {
         log.info("【菜鸟物流】拦截快递信息，快递单号：{}", expressNo);
         // 按顺序将参数拼接起来 如：requestData+appSecret
         Map<String, String> requestParams = Maps.newHashMap();
@@ -74,7 +73,6 @@ public class LogisticsCloudService {
         //请求头
         Map<String, String> headers = Maps.newHashMap();
         headers.put("Content-Type", "application/x-www-form-urlencoded;charset=utf-8");
-        String resultData = HttpClientUtil.httpPostWithForm(properties.getInterceptPackage(), params, headers);
-        return resultData;
+        return HttpClientUtil.httpPostWithForm(properties.getInterceptPackage(), params, headers);
     }
 }

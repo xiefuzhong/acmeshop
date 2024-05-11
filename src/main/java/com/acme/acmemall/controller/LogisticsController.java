@@ -39,4 +39,19 @@ public class LogisticsController extends ApiBase {
         TraceVo traceVo = JSONObject.toJavaObject(object, TraceVo.class);
         return toResponsSuccess(traceVo);
     }
+
+    @PostMapping("/intercept")
+    public Object interceptPackage(@LoginUser LoginUserVo loginUser) {
+        if (loginUser == null) {
+            return ResultMap.error("请先登录");
+        }
+        JSONObject jsonObject = getJsonRequest();
+        if (jsonObject == null) {
+            return ResultMap.error("参数错误");
+        }
+        String expressNo = jsonObject.getString("expressNo");
+        String cpCode = jsonObject.getString("cpCode");
+        String result = logisticsCloudService.interceptPackage(expressNo, cpCode);
+        return toResponsSuccess(result);
+    }
 }

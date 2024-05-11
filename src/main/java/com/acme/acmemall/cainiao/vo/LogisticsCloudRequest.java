@@ -37,8 +37,7 @@ public class LogisticsCloudRequest implements Serializable {
         String requestData = JSONObject.toJSONString(requestParams);
         this.requestData = requestData;
         String origin = requestData.concat(appSecret);
-        String sign = MD5Util.MD5Encode(origin, "utf8");
-        this.sign = sign;
+        this.sign = MD5Util.MD5Encode(origin, "utf8");
     }
 
     @Override
