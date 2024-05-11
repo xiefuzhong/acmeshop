@@ -27,7 +27,7 @@ public class FullTraceDetailVo implements Serializable {
 
     private String status; // 物流状态
 
-    private String status_text;
+    private String status_text; // 物流描述
 
     private String deliveryMan; // 派件快递员（只有派件节点才会有值）
 
