@@ -11,7 +11,7 @@ public enum ShipStatusEnum {
     SHIP_CANCEL_FAILED(5, "拦截失败"), // 拦截失败
     SHIP_RETURN(4, "退还商品");
 
-    //    发货状态 商品配送情况;0未发货,1已发货,2已收货,4退货
+    //    发货状态 商品配送情况;0未发货,1已发货,2已收货,4退货,3拦截成功 5拦截失败不可退款。
     private final String name;
     private final int code;
 
