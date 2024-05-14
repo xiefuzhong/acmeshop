@@ -28,10 +28,10 @@ import java.util.stream.Collectors;
 public class UserService implements IUserService {
 
     @Resource
-    private UserMapper userDao;
+    UserMapper userDao;
 
     @Resource
-    private SysRoleMapper sysRoleMapper;
+    SysRoleMapper sysRoleMapper;
 
     /**
      * @param openId

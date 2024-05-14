@@ -159,6 +159,10 @@ public class AuthController extends ApiBase {
         logger.info("》》》requestUrl为：" + requestUrl);
         String res = weChatService.getUserPhoneNumber(requestUrl, request.getString("code"));
         logger.info("res==" + res);
-        return ResultMap.ok();
+        JSONObject phoneObj = JSONObject.parseObject(res);
+        JSONObject phone_info = phoneObj.getJSONObject("phone_info");
+        userVo.setMobile(phone_info.getString("phoneNumber"));
+        userService.updateUser(userVo);
+        return toResponsSuccess(userVo);
     }
 }
