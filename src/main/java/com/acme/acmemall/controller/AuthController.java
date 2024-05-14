@@ -161,8 +161,10 @@ public class AuthController extends ApiBase {
         logger.info("res==" + res);
         JSONObject phoneObj = JSONObject.parseObject(res);
         JSONObject phone_info = phoneObj.getJSONObject("phone_info");
-        userVo.setMobile(phone_info.getString("phoneNumber"));
-        userService.updateUser(userVo);
-        return toResponsSuccess(userVo);
+        LoginUserVo updateUser = new LoginUserVo();
+        updateUser.setUserId(userVo.getUserId());
+        updateUser.setMobile(phone_info.getString("phoneNumber"));
+        userService.updateUser(updateUser);
+        return ResultMap.ok();
     }
 }
