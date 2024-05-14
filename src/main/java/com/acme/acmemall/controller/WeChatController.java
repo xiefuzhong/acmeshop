@@ -1,5 +1,6 @@
 package com.acme.acmemall.controller;
 
+import com.acme.acmemall.annotation.IgnoreAuth;
 import com.acme.acmemall.annotation.LoginUser;
 import com.acme.acmemall.model.AddressVo;
 import com.acme.acmemall.model.LoginUserVo;
@@ -47,6 +48,7 @@ public class WeChatController extends ApiBase {
      * @param code      code
      * @return 获取用户手机号
      */
+    @IgnoreAuth
     @GetMapping("/get-mobile")
     public Object getUserPhoneNumber(@LoginUser LoginUserVo loginUser, @RequestParam("code") String code) {
         logger.info("》》》获取用户手机号>>>getUserPhoneNumber");
