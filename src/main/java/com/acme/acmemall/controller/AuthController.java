@@ -22,6 +22,7 @@ import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * API登录授权
@@ -116,5 +117,31 @@ public class AuthController extends ApiBase {
         Map result = tokenService.getTokens(request.getLong("merchantId"));
         logger.info("getToken==" + GsonUtil.toJson(result));
         return toResponsSuccess(result);
+    }
+
+    @IgnoreAuth
+    @PostMapping("/get-openid")
+    public Object getOpenId() {
+        JSONObject request = this.getJsonRequest();
+        if (request == null) {
+            return ResultMap.badArgument();
+        }
+        String code = request.getString("code");
+        String requestUrl = UserUtils.getWebAccess(code);//通过自定义工具类组合出小程序需要的登录凭证 code
+
+        logger.info("》》》requestUrl为：" + requestUrl);
+        String res = restTemplate.getForObject(requestUrl, String.class);
+        logger.info("res==" + res);
+        JSONObject sessionData = JSON.parseObject(res);
+        // {"session_key":"GhiV7gQt9PYZc5OTo\/lp8Q==","openid":"oSjwN5S9p3sk02PXauTTz3TR1zP0"}
+
+        String openid = Objects.requireNonNull(sessionData).getString("openid");
+        String session_key = sessionData.getString("session_key");// 用于解密 getUserInfo返回的敏感数据。
+        if (StringUtils.isNullOrEmpty(openid)) {
+            logger.error("session_key>>" + session_key);
+            return toResponsFail("登录失败");
+        }
+
+        return toResponsSuccess(sessionData);
     }
 }
