@@ -52,7 +52,6 @@ public class AuthController extends ApiBase {
         String res = restTemplate.getForObject(requestUrl, String.class);
         logger.info("res==" + res);
         JSONObject sessionData = JSON.parseObject(res);
-        // {"session_key":"GhiV7gQt9PYZc5OTo\/lp8Q==","openid":"oSjwN5S9p3sk02PXauTTz3TR1zP0"}
         String openid = sessionData.getString("openid");
         logger.info("》》》promoterId：" + loginInfo.getPromoterId());
         String session_key = sessionData.getString("session_key");// 用于解密 getUserInfo返回的敏感数据。
@@ -60,17 +59,9 @@ public class AuthController extends ApiBase {
             logger.error("session_key>>" + session_key);
             return toResponsFail("登录失败");
         }
-        //验证用户信息完整性 防止攻击
-//        String sha1 = CommonUtil.getSha1(fullUserInfo.getRawData() + sessionData.getString("session_key"));
-//        if (!fullUserInfo.getSignature().equals(sha1)) {
-//        	 logger.info("登录失败---验证用户信息完整性"+fullUserInfo.getSignature());
-//        	 logger.info("登录失败---验证用户信息完整性 sha1"+sha1);
-//            return toResponsFail("登录失败");
-//        }
         LoginUserVo userVo = userService.queryByOpenId(openid);
         logger.info("LoginUserVo>>" + JSONObject.toJSON(userVo));
         if (null == userVo) {
-//            userVo = LoginUserVo.builder().weixin_openid(openid).build();
             userVo = new LoginUserVo();
             userVo.setWeixin_openid(openid);
             userVo.loginByWeixin(loginInfo, this.getClientIp());
@@ -133,8 +124,6 @@ public class AuthController extends ApiBase {
         String res = restTemplate.getForObject(requestUrl, String.class);
         logger.info("res==" + res);
         JSONObject sessionData = JSON.parseObject(res);
-        // {"session_key":"GhiV7gQt9PYZc5OTo\/lp8Q==","openid":"oSjwN5S9p3sk02PXauTTz3TR1zP0"}
-
         String openid = Objects.requireNonNull(sessionData).getString("openid");
         String session_key = sessionData.getString("session_key");// 用于解密 getUserInfo返回的敏感数据。
         if (StringUtils.isNullOrEmpty(openid)) {
