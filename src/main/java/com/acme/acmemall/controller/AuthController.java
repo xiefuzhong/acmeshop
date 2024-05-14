@@ -163,6 +163,6 @@ public class AuthController extends ApiBase {
         JSONObject phone_info = phoneObj.getJSONObject("phone_info");
         userVo.setMobile(phone_info.getString("phoneNumber"));
         userService.updateUser(userVo);
-        return ResultMap.ok();
+        return toResponsSuccess(userVo);
     }
 }
