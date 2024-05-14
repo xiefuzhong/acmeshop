@@ -1,12 +1,15 @@
 package com.acme.acmemall.controller;
 
 import com.acme.acmemall.annotation.IgnoreAuth;
+import com.acme.acmemall.annotation.LoginUser;
 import com.acme.acmemall.common.ResultMap;
 import com.acme.acmemall.exception.Assert;
+import com.acme.acmemall.exception.ResultCodeEnum;
 import com.acme.acmemall.model.LoginInfo;
 import com.acme.acmemall.model.LoginUserVo;
 import com.acme.acmemall.service.ITokenService;
 import com.acme.acmemall.service.IUserService;
+import com.acme.acmemall.service.IWeChatService;
 import com.acme.acmemall.utils.GsonUtil;
 import com.acme.acmemall.utils.StringUtils;
 import com.acme.acmemall.utils.UserUtils;
@@ -16,10 +19,13 @@ import com.google.common.collect.Maps;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.collections.MapUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 import java.util.Objects;
@@ -31,12 +37,15 @@ import java.util.Objects;
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController extends ApiBase {
-    @Autowired
-    private IUserService userService;
-    @Autowired
-    private ITokenService tokenService;
-    @Autowired
-    private RestTemplate restTemplate;
+    @Resource
+    IUserService userService;
+    @Resource
+    ITokenService tokenService;
+    @Resource
+    RestTemplate restTemplate;
+
+    @Resource
+    IWeChatService weChatService;
 
     /**
      * 微信授权登录
@@ -52,10 +61,10 @@ public class AuthController extends ApiBase {
         String res = restTemplate.getForObject(requestUrl, String.class);
         logger.info("res==" + res);
         JSONObject sessionData = JSON.parseObject(res);
-        String openid = sessionData.getString("openid");
+        String openid = Objects.requireNonNull(sessionData).getString("openid");
         logger.info("》》》promoterId：" + loginInfo.getPromoterId());
         String session_key = sessionData.getString("session_key");// 用于解密 getUserInfo返回的敏感数据。
-        if (null == sessionData || StringUtils.isNullOrEmpty(openid)) {
+        if (StringUtils.isNullOrEmpty(openid)) {
             logger.error("session_key>>" + session_key);
             return toResponsFail("登录失败");
         }
@@ -105,7 +114,7 @@ public class AuthController extends ApiBase {
         if (request == null) {
             return ResultMap.badArgument();
         }
-        Map result = tokenService.getTokens(request.getLong("merchantId"));
+        Map<String, Object> result = tokenService.getTokens(request.getLong("merchantId"));
         logger.info("getToken==" + GsonUtil.toJson(result));
         return toResponsSuccess(result);
     }
@@ -132,5 +141,24 @@ public class AuthController extends ApiBase {
         }
 
         return toResponsSuccess(sessionData);
+    }
+
+    @PostMapping("/bind-phone")
+    public Object bindPhone(@LoginUser LoginUserVo userVo) {
+        logger.info("》》》获取用户手机号>>>bindPhone");
+        if (userVo == null) {
+            return ResultMap.response(ResultCodeEnum.USER_NOT_LOGIN);
+        }
+        JSONObject request = this.getJsonRequest();
+        if (request == null) {
+            return ResultMap.badArgument();
+        }
+        Map<String, Object> tokenMap = tokenService.getTokens(userVo.getUserId());
+        String accessToken = com.acme.acmemall.utils.MapUtils.getString("token", tokenMap);
+        String requestUrl = UserUtils.getUserPhoneNumber(accessToken);//通过自定义工具类组合出小程序需要的登录凭证 code
+        logger.info("》》》requestUrl为：" + requestUrl);
+        String res = weChatService.getUserPhoneNumber(requestUrl, request.getString("code"));
+        logger.info("res==" + res);
+        return ResultMap.ok();
     }
 }

@@ -50,10 +50,8 @@ public class WeChatController extends ApiBase {
     @GetMapping("/get-mobile")
     public Object getUserPhoneNumber(@LoginUser LoginUserVo loginUser, @RequestParam("code") String code) {
         logger.info("》》》获取用户手机号>>>getUserPhoneNumber");
-        Map result = tokenService.getTokens(loginUser.getUserId());
+        Map<String, Object> result = tokenService.getTokens(loginUser.getUserId());
         String accessToken = MapUtils.getString("token", result);
-        Map<String, Object> param = Maps.newHashMap();
-        param.put("code", code);
         String requestUrl = UserUtils.getUserPhoneNumber(accessToken);//通过自定义工具类组合出小程序需要的登录凭证 code
         logger.info("》》》requestUrl为：" + requestUrl);
         String res = weChatService.getUserPhoneNumber(requestUrl, code);
@@ -63,7 +61,7 @@ public class WeChatController extends ApiBase {
     @PostMapping("/logistics/add-order")
     public Object addOrder(@LoginUser LoginUserVo loginUser) {
         logger.info("》》》物流助手>>>addOrder");
-        Map result = tokenService.getTokens(loginUser.getUserId());
+        Map<String, Object> result = tokenService.getTokens(loginUser.getUserId());
         String accessToken = MapUtils.getString("token", result);
         String requestUrl = UserUtils.getWxAddLogisticsOrder(accessToken);
         logger.info("》》》requestUrl为：" + requestUrl);
@@ -76,19 +74,15 @@ public class WeChatController extends ApiBase {
                 .delivery_id(json.getString("delivery_id"))
                 .biz_id(json.getString("biz_id"))
                 .openid(loginUser.getWeixin_openid())
-//                .tagid(json.getLong("merchantId"))
                 .custom_remark(orderVo.getGoods_name() + "_" + orderVo.getMerRemark())
                 .build();
-
-//        logger.info("》》》orderVo为：" + orderVo);
         // 发货地址
-        Map param = Maps.newHashMap();
+        Map<String, Object> param = Maps.newHashMap();
         param.put("user_id", json.getLong("merchantId"));
         param.put("type", Integer.valueOf(0));
         List<AddressVo> addressEntities = addressService.queryaddressUserlist(param);
-//        logger.info("》》》addressEntities为：" + addressEntities);
         logisticsOrder.addOrder(orderVo, addressEntities.get(0), json);
-        Map requestParams = MapUtils.beanToMap(logisticsOrder);
+        Map<String, Object> requestParams = MapUtils.beanToMap(logisticsOrder);
         String res = weChatService.addOrder(requestUrl, requestParams);
         return toResponsSuccess(res);
     }
@@ -96,7 +90,7 @@ public class WeChatController extends ApiBase {
     @GetMapping("/logistics/account-get")
     public Object getAccount(@LoginUser LoginUserVo loginUser) {
         logger.info("》》》物流助手>>>getAccount");
-        Map result = tokenService.getTokens(loginUser.getUserId());
+        Map<String, Object> result = tokenService.getTokens(loginUser.getUserId());
         String accessToken = MapUtils.getString("token", result);
         String requestUrl = UserUtils.getExpressAccount(accessToken);
         logger.info("》》》requestUrl为：" + requestUrl);
@@ -107,7 +101,7 @@ public class WeChatController extends ApiBase {
     @GetMapping("/logistics/all-delivery")
     public Object getAllDelivery(@LoginUser LoginUserVo loginUser) {
         logger.info("》》》物流助手>>>getAllDelivery");
-        Map result = tokenService.getTokens(loginUser.getUserId());
+        Map<String, Object> result = tokenService.getTokens(loginUser.getUserId());
         String accessToken = MapUtils.getString("token", result);
         String requestUrl = UserUtils.getAllDelivery(accessToken);
         logger.info("》》》requestUrl为：" + requestUrl);
@@ -118,14 +112,14 @@ public class WeChatController extends ApiBase {
     @PostMapping("/logistics/get-path")
     public Object getPath(@LoginUser LoginUserVo loginUser) {
         logger.info("》》》物流助手>>>getPath");
-        Map result = tokenService.getTokens(loginUser.getUserId());
+        Map<String, Object> result = tokenService.getTokens(loginUser.getUserId());
         String accessToken = MapUtils.getString("token", result);
         String requestUrl = UserUtils.getWxExpressTrack(accessToken);
         OrderVo orderVo = orderService.findOrder(getJsonRequest().getString("orderId"));
         if (orderVo == null) {
             return toResponsFail("订单不存在");
         }
-        Map params = Maps.newHashMap();
+        Map<String, Object> params = Maps.newHashMap();
         params.put("openid", loginUser.getWeixin_openid());
         params.put("delivery_id", orderVo.getShipping_code());
         params.put("waybill_id", orderVo.getShipping_no());
