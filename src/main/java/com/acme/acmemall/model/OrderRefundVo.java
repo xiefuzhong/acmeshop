@@ -107,6 +107,8 @@ public class OrderRefundVo implements Serializable {
         this.refund_phone = request.getRefund_phone();
         this.refuse_reason = request.getRefuse_reason();
         this.refunded_price = request.getRefundPrice();
+        this.returnGoods = request.getReturnGoods();
+        this.noreturn_reason = request.getNoreturn_reason();
     }
 
     /**
