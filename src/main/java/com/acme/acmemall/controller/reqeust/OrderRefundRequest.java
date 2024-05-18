@@ -28,6 +28,8 @@ public class OrderRefundRequest implements Serializable {
     private String refund_express_code;
     private String refuse_reason;
     private String refundOption;
+    private String noreturn_reason; // 不需要退回的理由
+    private Boolean returnGoods; // 是否需要退回货物
 
     public void reqCheck() {
         Assert.isNull(this.orderId, "订单号不能为空!");

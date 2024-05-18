@@ -11,6 +11,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.apache.commons.lang.StringUtils;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -70,6 +71,9 @@ public class OrderRefundVo implements Serializable {
     private Integer refund_status;
     private String refund_status_text;
 
+    private String noreturn_reason; // 不需要退回的理由
+    private Boolean returnGoods; // 是否需要退回货物
+
     public String getRefund_status_text() {
         return RefundStatusEnum.parse(this.refund_status).getName();
     }
@@ -112,6 +116,10 @@ public class OrderRefundVo implements Serializable {
         this.refund_status = RefundStatusEnum.REFUND_PASS.getCode();
         this.refunded_price = refund_price;
         this.refunded_time = new Date();
+        // 退货退款 &审批选择了不退货 & 有理由
+        if (RefundType.isRefundReturn(this.refund_type) && !this.returnGoods && !StringUtils.isBlank(this.noreturn_reason)) {
+            this.refund_type = RefundType.REFUND_ONLY.getCode();
+        }
     }
 
     /**
