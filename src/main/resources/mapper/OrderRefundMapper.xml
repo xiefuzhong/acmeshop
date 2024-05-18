@@ -23,6 +23,10 @@
         <result property="refund_status" column="refund_status"/>
         <!--        refund_express_code-->
         <result property="refund_express_code" column="refund_express_code"/>
+        <!--        noreturn_reason-->
+        <result property="noreturn_reason" column="noreturn_reason"/>
+        <!--        returnGoods-->
+        <result property="returnGoods" column="return_goods"/>
 
     </resultMap>
 
@@ -97,6 +101,8 @@
             <if test="refund_express != null">`refund_express` = #{refund_express},</if>
             <if test="refund_express_name != null">`refund_express_name` = #{refund_express_name},</if>
             <if test="refuse_reason != null">`refuse_reason` = #{refuse_reason},</if>
+            <if test="noreturn_reason != null">`noreturn_reason` = #{noreturn_reason},</if>
+            <if test="returnGoods != null">`return_goods` = #{returnGoods},</if>
         </set>
         where order_id = #{order_id}
     </update>
