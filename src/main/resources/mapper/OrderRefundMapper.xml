@@ -103,6 +103,8 @@
             <if test="refuse_reason != null">`refuse_reason` = #{refuse_reason},</if>
             <if test="noreturn_reason != null">`noreturn_reason` = #{noreturn_reason},</if>
             <if test="returnGoods != null">`return_goods` = #{returnGoods},</if>
+            <!--            refund_type-->
+            <if test="refund_type != null">`refund_type` = #{refund_type},</if>
         </set>
         where order_id = #{order_id}
     </update>
