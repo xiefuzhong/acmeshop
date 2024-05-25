@@ -177,7 +177,7 @@ public class ApiBase {
     public Long getUserId() {
         LoginUserVo user = (LoginUserVo) request.getAttribute(AuthorizationInterceptor.LOGIN_USER_KEY);
         if (user == null) {
-            return 476L;
+            return 0L;
         } else {
             return user.getUserId();
         }

@@ -27,6 +27,7 @@ import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 import java.util.Map;
 import java.util.Objects;
 
@@ -77,6 +78,13 @@ public class AuthController extends ApiBase {
             // 保存授权登录信息
             userService.save(userVo);
             logger.info("userId>>" + userVo.getUserId());
+        } else {
+            // 更新登录时间，登录IP,
+            LoginUserVo updateUserVo = new LoginUserVo();
+            updateUserVo.setUserId(userVo.getUserId());
+            updateUserVo.setLast_login_ip(this.getClientIp());
+            updateUserVo.setLast_login_time(new Date());
+            userService.updateUser(updateUserVo);
         }
         logger.info("save.after.userVo>>" + JSONObject.toJSON(userVo));
         Map<String, Object> tokenMap = tokenService.createToken(userVo.getUserId());
