@@ -1,6 +1,7 @@
 package com.acme.acmemall.controller;
 
 import com.acme.acmemall.annotation.LoginUser;
+import com.acme.acmemall.common.ResultMap;
 import com.acme.acmemall.model.AddressVo;
 import com.acme.acmemall.model.LoginUserVo;
 import com.acme.acmemall.model.LogisticsOrder;
@@ -10,6 +11,7 @@ import com.acme.acmemall.service.IOrderService;
 import com.acme.acmemall.service.ITokenService;
 import com.acme.acmemall.service.IWeChatService;
 import com.acme.acmemall.utils.MapUtils;
+import com.acme.acmemall.utils.QRCodeUtils;
 import com.acme.acmemall.utils.UserUtils;
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Maps;
@@ -125,5 +127,16 @@ public class WeChatController extends ApiBase {
         params.put("waybill_id", orderVo.getShipping_no());
         String res = weChatService.getPath(requestUrl, params);
         return toResponsSuccess(res);
+    }
+
+    @PostMapping("/scan/parse-code")
+    public Object parseCode(@LoginUser LoginUserVo loginUser) {
+        logger.info("》》》扫码>>>parseCode");
+        JSONObject obj = getJsonRequest();
+        if (obj.getString("path") != null) {
+            String[] codes = QRCodeUtils.getMutiQRCode(obj.getString("path"));
+            return toResponsSuccess(codes);
+        }
+        return ResultMap.ok();
     }
 }
