@@ -37,7 +37,8 @@ public class QRCodeUtils {
 //        String path = "https://7072-prod-7g7eijryfa0dd373-1314032717.tcb.qcloud.la/trace/images/upload/IMG_20240608_204800.jpg";
 //        String path = "https://7072-prod-7g7eijryfa0dd373-1314032717.tcb.qcloud.la/trace/images/upload/IMG_20240608_205929.jpg";
 //        String path = "https://7072-prod-7g7eijryfa0dd373-1314032717.tcb.qcloud.la/trace/images/upload/IMG_20240608_210004.jpg";
-        String path = "https://7072-prod-7g7eijryfa0dd373-1314032717.tcb.qcloud.la/trace/images/upload/IMG_20240608_204754.jpg";
+//        String path = "https://7072-prod-7g7eijryfa0dd373-1314032717.tcb.qcloud.la/trace/images/upload/IMG_20240608_204754.jpg";
+        String path = "https://7072-prod-7g7eijryfa0dd373-1314032717.tcb.qcloud.la/trace/images/upload/qrcode_demo.jpg";
         getMutiQRCode(path);
     }
 
@@ -69,9 +70,8 @@ public class QRCodeUtils {
                 log.info("content1:" + result2.length);
                 // 识别结果处理
                 String[] sns = extractSNs(result2);
-                Arrays.stream(sns).forEach(item -> {
-                    log.info(item);
-                });
+                Arrays.stream(sns).forEach(log::info);
+                return sns;
             } catch (Exception ex1) {
                 // ignore
                 ex1.printStackTrace();
