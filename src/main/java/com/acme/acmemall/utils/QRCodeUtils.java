@@ -83,7 +83,7 @@ public class QRCodeUtils {
     // 使用Java 8的流来简化数组处理
     private static String[] extractSNs(Result[] results) {
         return Arrays.stream(results)
-                .filter(result -> result.getText().length() >= 12)
+                .filter(result -> result.getText().startsWith("SN") && result.getText().length() >= 12)
                 .sorted(Comparator.comparing(Result::getText))
                 .map(Result::getText)
                 .toArray(String[]::new);
