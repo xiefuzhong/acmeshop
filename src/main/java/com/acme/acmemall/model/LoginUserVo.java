@@ -78,7 +78,11 @@ public class LoginUserVo implements Serializable {
 
     private List<OrderVo> orderList = Lists.newArrayList();
     public void loginByWeixin(LoginInfo loginInfo, String requestIp) {
-        this.username = Base64.encode(loginInfo.getNickName());
+        if (StringUtils.isNotEmpty(loginInfo.getNickName())) {
+            String decodeStr = Base64.decode(loginInfo.getNickName());
+            this.nickname = decodeStr;
+            this.username = decodeStr;
+        }
         this.password = this.weixin_openid;
         this.register_time = new Date();
         this.register_ip = requestIp;
@@ -87,7 +91,6 @@ public class LoginUserVo implements Serializable {
         this.avatar = loginInfo.getAvatarUrl();
         this.gender = loginInfo.getGender();
         this.promoterId = loginInfo.getPromoterId();
-        this.nickname = Base64.encode(loginInfo.getNickName());
     }
 
     public Map<String, Object> response() {
