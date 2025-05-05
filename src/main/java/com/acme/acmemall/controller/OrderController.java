@@ -3,6 +3,7 @@ package com.acme.acmemall.controller;
 import com.acme.acmemall.annotation.LoginUser;
 import com.acme.acmemall.common.ResultMap;
 import com.acme.acmemall.controller.reqeust.OrderRefundRequest;
+import com.acme.acmemall.controller.reqeust.OrderShippedRequest;
 import com.acme.acmemall.controller.reqeust.OrderSubmitRequest;
 import com.acme.acmemall.exception.ResultCodeEnum;
 import com.acme.acmemall.kuaidi100.response.QueryTrackResp;
@@ -359,6 +360,28 @@ public class OrderController extends ApiBase {
         } catch (Exception e) {
             return ResultMap.error(Throwables.getStackTraceAsString(e));
         }
+    }
+
+    @PostMapping("update-logistics")
+    public Object updateLogistics(@LoginUser LoginUserVo userVo) {
+        try {
+            if (userVo == null) {
+                return ResultMap.error(400, "非有效用户操作");
+            }
+
+            OrderShippedRequest request = JSONObject.toJavaObject(getJsonRequest(), OrderShippedRequest.class);
+            OrderVo orderVo = orderService.findOrder(request.getOrderId());
+            if (orderVo == null) {
+                return ResultMap.badArgument("查无此单:" + request.getOrderId());
+            }
+            orderVo = OrderVo.builder().id(orderVo.getId()).build();
+            orderVo.updateLogistics(request.getLogisticsInfo());
+            orderService.updateOrder(orderVo);
+            return ResultMap.ok("确认成功");
+        } catch (Exception e) {
+            logger.error(Throwables.getStackTraceAsString(e));
+        }
+        return ResultMap.error("提交失败");
     }
 
 }

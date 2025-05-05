@@ -578,6 +578,16 @@ public class OrderVo implements Serializable {
         return this;
     }
 
+    /**
+     * 更新物流信息（发货信息）
+     *
+     * @param logisticsInfo
+     * @return void
+     */
+    public void updateLogistics(LogisticsInfo logisticsInfo) {
+        this.setLogistics(logisticsInfo);
+    }
+
     private void setLogistics(LogisticsInfo logisticsInfo) {
         this.shipping_code = logisticsInfo.getDelivery_id();
         this.shipping_no = logisticsInfo.getShipping_no();
