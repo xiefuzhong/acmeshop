@@ -360,7 +360,10 @@
             <if test="pay_id != null">`pay_id` = #{pay_id},</if>
             <if test="pay_name != null">`pay_name` = #{pay_name},</if>
             <if test="shipping_fee != null">`shipping_fee` = #{shipping_fee},</if>
-            <if test="actual_price != null">`actual_price` = #{actual_price},</if>
+            <!--            <if test="actual_price != null  and actual_price gt 0" >`actual_price` = #{actual_price},</if>-->
+            <if test="actual_price != null and actual_price.compareTo(BigDecimal.ZERO) > 0">
+                `actual_price` = #{actualPrice},
+            </if>
             <if test="integral != null">`integral` = #{integral},</if>
             <if test="integral_money != null">`integral_money` = #{integral_money},</if>
             <if test="order_price != null">`order_price` = #{order_price},</if>
