@@ -365,7 +365,7 @@
             </if>
             <!--            <if test="actual_price != null  and actual_price gt 0" >`actual_price` = #{actual_price},</if>-->
             <if test="actual_price != null and actual_price > 0">
-                `actual_price` = #{actualPrice},
+                `actual_price` = #{actual_price},
             </if>
             <if test="integral != null">`integral` = #{integral},</if>
             <if test="integral_money != null">`integral_money` = #{integral_money},</if>
